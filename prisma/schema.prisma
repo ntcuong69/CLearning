@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model problems {
+  PID         String              @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  Title       String?             @db.VarChar(255)
+  Description String?             @db.Text
+  Difficulty  problems_Difficulty @default(Easy)
+  Topic       String?             @db.VarChar(100)
+  CreatedAt   DateTime?           @default(now()) @db.Timestamp(0)
+  submissions submissions[]
+  testcases   testcases[]
+}
+
+model submissionresults {
+  SRID          String                   @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  SID           String                   @db.Char(36)
+  TID           String                   @db.Char(36)
+  Result        submissionresults_Result
+  ExecutionTime Float?                   @db.Float
+  submissions   submissions              @relation(fields: [SID], references: [SID], onDelete: NoAction, onUpdate: NoAction, map: "submissionresults_ibfk_1")
+  testcases     testcases                @relation(fields: [TID], references: [TID], onDelete: NoAction, onUpdate: NoAction, map: "submissionresults_ibfk_2")
+
+  @@index([SID], map: "SID")
+  @@index([TID], map: "TID")
+}
+
+model submissions {
+  SID               String              @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  UID               String              @db.Char(36)
+  PID               String              @db.Char(36)
+  Code              String              @db.Text
+  Status            submissions_Status  @default(Pending)
+  TimeOfSubmission  DateTime?           @default(now()) @db.Timestamp(0)
+  submissionresults submissionresults[]
+  users             users               @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "submissions_ibfk_1")
+  problems          problems            @relation(fields: [PID], references: [PID], onDelete: NoAction, onUpdate: NoAction, map: "submissions_ibfk_2")
+
+  @@index([PID], map: "PID")
+  @@index([UID], map: "UID")
+}
+
+model testcases {
+  TID               String              @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  PID               String              @db.Char(36)
+  InputData         String              @db.Text
+  ExpectedOutput    String              @db.Text
+  submissionresults submissionresults[]
+  problems          problems            @relation(fields: [PID], references: [PID], onDelete: NoAction, onUpdate: NoAction, map: "testcases_ibfk_1")
+
+  @@index([PID], map: "PID")
+}
+
+model users {
+  UID         String        @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  FirstName   String        @db.VarChar(50)
+  LastName    String        @db.VarChar(50)
+  Email       String        @unique(map: "Email") @db.VarChar(50)
+  Password    String        @db.VarChar(255)
+  Role        users_Role    @default(Member)
+  CreatedAt   DateTime?     @default(now()) @db.Timestamp(0)
+  submissions submissions[]
+}
+
+enum problems_Difficulty {
+  Easy
+  Medium
+  Hard
+}
+
+enum submissionresults_Result {
+  Pass
+  Fail
+}
+
+enum submissions_Status {
+  Pending
+  Correct
+  Wrong
+  Error
+}
+
+enum users_Role {
+  Member
+  Admin
+}
