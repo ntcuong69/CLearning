@@ -1,24 +1,14 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import { signOut } from "next-auth/react";
 
 export default function Home() {
-  const router = useRouter();
 
   async function handleLogout(){
-    try {
-      const res = await axios.post("http://localhost:3000/api/auth/logout");
-
-      if (res.status === 200) {
-        console.log("Đã logout thành công");
-        router.push("/auth");
-      } else {
-        console.error("Logout thất bại");
-      }
-    } catch (error) {
-      console.error("Có lỗi khi logout:", error);
-    }
+    await signOut({
+      callbackUrl: "/auth",
+    });
   };
 
   return (

@@ -1,34 +1,26 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export function middleware(request: NextRequest) {
-  const userCookie = request.cookies.get("user")?.value;
+export async function middleware(req: NextRequest) {
+  // Lấy token từ cookie
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-  const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
-  const isHomePage = request.nextUrl.pathname.startsWith("/homepage");
-  const isProtectedRoute = isHomePage || request.nextUrl.pathname.startsWith("/profile");
+  // Các route cần bảo vệ
+  const isAuthPage = req.nextUrl.pathname.startsWith("/auth");
+  const isHomePage = req.nextUrl.pathname.startsWith("/homepage");
+  const isProfilePage = req.nextUrl.pathname.startsWith("/profile");
+  const isProtectedRoute = isHomePage || isProfilePage;
 
-  // Validate if cookie contains valid JSON with required fields
-  let isValidCookie = false;
-  if (userCookie) {
-    try {
-      const userData = JSON.parse(userCookie);
-      isValidCookie = Boolean(userData?.UID);
-    } catch (e) {
-      // If parsing fails, cookie is invalid
-      isValidCookie = false;
-    }
-  }
-
-  // Redirect unauthenticated users from protected routes
-  if (isProtectedRoute && !isValidCookie) {
-    const loginUrl = new URL("/auth", request.url);
+  // Nếu là route bảo vệ và chưa đăng nhập (token không tồn tại)
+  if (isProtectedRoute && !token) {
+    const loginUrl = new URL("/auth", req.url); // Redirect đến trang login
     return NextResponse.redirect(loginUrl);
   }
 
-  // Redirect authenticated users from auth page
-  if (isAuthPage && isValidCookie) {
-    const homeUrl = new URL("/homepage", request.url);
+  // Nếu đã đăng nhập và đang cố gắng truy cập trang đăng nhập
+  if (isAuthPage && token) {
+    const homeUrl = new URL("/homepage", req.url); // Redirect đến trang chủ
     return NextResponse.redirect(homeUrl);
   }
 
@@ -40,6 +32,5 @@ export const config = {
     '/homepage/:path*',
     '/auth',
     '/profile/:path*',
-    // Add any other protected routes here
   ],
 };

@@ -3,9 +3,10 @@
 import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { TextField, Button, Checkbox, FormControlLabel, Card, CardContent, Typography, IconButton, InputAdornment, Divider, Box, Snackbar, Alert } from "@mui/material";
+import { TextField, Button, Card, CardContent, Typography, IconButton, InputAdornment, Divider, Box, Snackbar, Alert } from "@mui/material";
 import { Visibility, VisibilityOff, Email, Person, Lock, Facebook, Google, GitHub } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function AuthPage() {
   // State management
@@ -17,7 +18,6 @@ export default function AuthPage() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    rememberMe: false,
     firstName: "",
     lastName: "",
     confirmPassword: "",
@@ -30,13 +30,13 @@ export default function AuthPage() {
 
   // Event handlers
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, checked } = e.target;
+    const { name, value } = e.target;
     if (name === "confirmPassword") {
       setErrorMessage("");
     }
     setFormData({
       ...formData,
-      [name]: name === "rememberMe" ? checked : value,
+      [name]: value,
     });
   };
 
@@ -67,23 +67,25 @@ export default function AuthPage() {
       }
     } else {
       try {
-        const response = await axios.post("http://localhost:3000/api/auth/login", {
-          Email: formData.email,
-          Password: formData.password,
-          rememberMe: formData.rememberMe,
+        const result = await signIn("credentials", {
+          redirect: false,
+          email: formData.email,
+          password: formData.password,
         });
 
-        // Kiểm tra phản hồi từ server
-        if (response.status === 200) {
-          console.log(response.data.message);
-          setSnackbar({ open: true, message: response.data.message, severity: "success" });
-          router.push("/homepage");
+        if (result?.error) {
+          // Nếu login thất bại
+          setSnackbar({
+            open: true,
+            message: result.error || "Failed to login. Please try again.",
+            severity: "error",
+          });
         } else {
-          throw new Error("Unexpected response status");
+          // Nếu login thành công
+          router.push("/");
         }
       } catch (error: any) {
         console.error("Error during login:", error);
-
         setSnackbar({
           open: true,
           message: error.response?.data?.error || "Failed to login. Please try again.",
@@ -228,8 +230,7 @@ export default function AuthPage() {
 
               {/* Remember Me & Forgot Password */}
               {!isSignUp && (
-                <Box className="flex items-center justify-between mt-2">
-                  <FormControlLabel control={<Checkbox name="rememberMe" checked={formData.rememberMe} onChange={handleChange} color="primary" />} label="Remember me" />
+                <Box className="flex items-center justify-center mt-4">
                   <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
                     Forgot password?
                   </Link>
