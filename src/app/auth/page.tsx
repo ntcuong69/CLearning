@@ -7,6 +7,7 @@ import { TextField, Button, Card, CardContent, Typography, IconButton, InputAdor
 import { Visibility, VisibilityOff, Email, Person, Lock, Facebook, Google, GitHub } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import ThemeToggleSwitch from "@/components/ThemeToggleButton";
 
 export default function AuthPage() {
   // State management
@@ -101,8 +102,8 @@ export default function AuthPage() {
 
   return (
     <>
-      <Box className="flex items-center justify-center min-h-screen">
-        <Card className="w-full max-w-sm shadow-xl" elevation={6} sx={{ borderRadius: 3 }}>
+      <Box className="dark:bg-[linear-gradient(to_right,_#e2e2e2,_#c9d6ff)] flex items-center justify-center min-h-screen">
+        <Card className="w-full max-w-sm" sx={{ borderRadius: 3, boxShadow: 10 }}>
           <CardContent className="p-8">
             {/* Header */}
             <Typography variant="h5" component="h1" className="text-center" sx={{ fontWeight: "bold", marginBottom: 3 }}>
@@ -130,6 +131,9 @@ export default function AuthPage() {
                           <Person sx={{ color: "#6c5ce7" }} />
                         </InputAdornment>
                       ),
+                    }}
+                    sx={{
+                      borderRadius: 20,
                     }}
                   />
 
@@ -238,17 +242,18 @@ export default function AuthPage() {
               )}
 
               {/* Submit Button */}
-              <Box className="flex justify-center mt-2">
+              <Box className="flex justify-center mt-8">
                 <Button
                   type="submit"
                   variant="contained"
                   sx={{
                     px: 10,
-                    backgroundColor: "#512da8",
+                    backgroundColor: "#1F2937",
+                    transition: "background-color 0.3s ease",
+                    color: "#ffffff",
                     "&:hover": {
-                      backgroundColor: "#392683",
+                      backgroundColor: "#111827",
                     },
-                    marginTop: 2,
                   }}
                   disableElevation
                 >
