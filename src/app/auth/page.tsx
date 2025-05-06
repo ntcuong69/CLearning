@@ -115,7 +115,7 @@ export default function AuthPage() {
       paddingTop: "0.2rem",
       paddingBottom: "0.2rem",
       ".dark &": {
-        backgroundColor: "#2b2b2b",
+        backgroundColor: "#171823",
       },
     },
     "& .MuiOutlinedInput-input": {
@@ -137,9 +137,9 @@ export default function AuthPage() {
         <ThemeToggleSwitch />
         <Card
           className="w-full max-w-sm"
-          sx={{ borderRadius: 5, boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)", ".dark &": { backgroundColor: "#1f1f1f" } }}
+          sx={{ borderRadius: 5, boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)", ".dark &": { backgroundColor: "#242533" } }}
         >
-          <CardContent className="p-8 dark:bg-[#1f1f1f]">
+          <CardContent className="p-8 dark:bg-[#242533]">
             {/* Header */}
             <Typography variant="h5" component="h1" className="text-center dark:text-[#f1f1f1]" sx={{ fontWeight: "bold", marginBottom: 3 }}>
               {isSignUp ? "Sign Up" : "Sign In"}
@@ -298,7 +298,7 @@ export default function AuthPage() {
             {/* Toggle Sign In/Sign Up */}
             <Box className="mt-6 text-center">
               <Typography variant="body2" className="text-gray-700 dark:text-[#f1f1f1]">
-                {isSignUp ? "Already have an account? " : "Don’t have an account? "}
+                {isSignUp ? "Already have an account? " : "Don’t have any account? "}
                 <Button onClick={() => setIsSignUp(!isSignUp)} className="text-blue-600 hover:underline" sx={{ textTransform: "none", padding: 0 }}>
                   {isSignUp ? "Sign In" : "Sign Up"}
                 </Button>
@@ -309,7 +309,7 @@ export default function AuthPage() {
             <Box className="mt-8 mb-2">
               <Box className="relative flex items-center justify-center">
                 <Divider className="w-full" />
-                <Typography variant="body2" className="absolute px-4 bg-white dark:bg-[#1f1f1f] text-gray-600 dark:text-gray-400">
+                <Typography variant="body2" className="absolute px-4 bg-white dark:bg-[#242533] text-gray-600 dark:text-gray-400">
                   or connect with
                 </Typography>
               </Box>
@@ -349,7 +349,7 @@ export default function AuthPage() {
                   sx={{
                     color: "#1e2939",
                     ".dark &": {
-                      color: "#334155",
+                      color: "white",
                       "&:hover": {
                         backgroundColor: "#333333",
                       },

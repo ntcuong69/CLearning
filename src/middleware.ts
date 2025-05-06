@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest) {
 
   // Các route cần bảo vệ
   const isAuthPage = req.nextUrl.pathname.startsWith("/auth");
-  const isHomePage = req.nextUrl.pathname.startsWith("/homepage");
+  const isHomePage = req.nextUrl.pathname.startsWith("/home");
   const isProfilePage = req.nextUrl.pathname.startsWith("/profile");
   const isProtectedRoute = isHomePage || isProfilePage;
 
@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest) {
 
   // Nếu đã đăng nhập và đang cố gắng truy cập trang đăng nhập
   if (isAuthPage && token) {
-    const homeUrl = new URL("/homepage", req.url); // Redirect đến trang chủ
+    const homeUrl = new URL("/home", req.url); // Redirect đến trang chủ
     return NextResponse.redirect(homeUrl);
   }
 
@@ -29,7 +29,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    '/homepage/:path*',
+    '/home/:path*',
     '/auth',
     '/profile/:path*',
   ],
