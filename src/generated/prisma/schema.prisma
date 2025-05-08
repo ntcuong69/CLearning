@@ -9,7 +9,7 @@ datasource db {
 }
 
 model problems {
-  PID         String              @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  PID         Int                 @id @default(autoincrement())
   Title       String?             @db.VarChar(255)
   Description String?             @db.Text
   Difficulty  problems_Difficulty @default(Easy)
@@ -20,9 +20,9 @@ model problems {
 }
 
 model submissionresults {
-  SRID          String                   @id @default(dbgenerated("(uuid())")) @db.Char(36)
-  SID           String                   @db.Char(36)
-  TID           String                   @db.Char(36)
+  SRID          Int                      @id @default(autoincrement())
+  SID           Int
+  TID           Int
   Result        submissionresults_Result
   ExecutionTime Float?                   @db.Float
   submissions   submissions              @relation(fields: [SID], references: [SID], onDelete: NoAction, onUpdate: NoAction, map: "submissionresults_ibfk_1")
@@ -33,9 +33,9 @@ model submissionresults {
 }
 
 model submissions {
-  SID               String              @id @default(dbgenerated("(uuid())")) @db.Char(36)
-  UID               String              @db.Char(36)
-  PID               String              @db.Char(36)
+  SID               Int                 @id @default(autoincrement())
+  UID               Int
+  PID               Int
   Code              String              @db.Text
   Status            submissions_Status  @default(Pending)
   TimeOfSubmission  DateTime?           @default(now()) @db.Timestamp(0)
@@ -48,8 +48,8 @@ model submissions {
 }
 
 model testcases {
-  TID               String              @id @default(dbgenerated("(uuid())")) @db.Char(36)
-  PID               String              @db.Char(36)
+  TID               Int                 @id @default(autoincrement())
+  PID               Int
   InputData         String              @db.Text
   ExpectedOutput    String              @db.Text
   submissionresults submissionresults[]
@@ -59,7 +59,7 @@ model testcases {
 }
 
 model users {
-  UID         String        @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  UID         Int           @id @default(autoincrement())
   FirstName   String        @db.VarChar(50)
   LastName    String        @db.VarChar(50)
   Email       String        @unique(map: "Email") @db.VarChar(50)

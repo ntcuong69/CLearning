@@ -1387,12 +1387,22 @@ export namespace Prisma {
 
   export type AggregateProblems = {
     _count: ProblemsCountAggregateOutputType | null
+    _avg: ProblemsAvgAggregateOutputType | null
+    _sum: ProblemsSumAggregateOutputType | null
     _min: ProblemsMinAggregateOutputType | null
     _max: ProblemsMaxAggregateOutputType | null
   }
 
+  export type ProblemsAvgAggregateOutputType = {
+    PID: number | null
+  }
+
+  export type ProblemsSumAggregateOutputType = {
+    PID: number | null
+  }
+
   export type ProblemsMinAggregateOutputType = {
-    PID: string | null
+    PID: number | null
     Title: string | null
     Description: string | null
     Difficulty: $Enums.problems_Difficulty | null
@@ -1401,7 +1411,7 @@ export namespace Prisma {
   }
 
   export type ProblemsMaxAggregateOutputType = {
-    PID: string | null
+    PID: number | null
     Title: string | null
     Description: string | null
     Difficulty: $Enums.problems_Difficulty | null
@@ -1419,6 +1429,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type ProblemsAvgAggregateInputType = {
+    PID?: true
+  }
+
+  export type ProblemsSumAggregateInputType = {
+    PID?: true
+  }
 
   export type ProblemsMinAggregateInputType = {
     PID?: true
@@ -1486,6 +1504,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ProblemsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProblemsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ProblemsMinAggregateInputType
@@ -1516,18 +1546,22 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ProblemsCountAggregateInputType | true
+    _avg?: ProblemsAvgAggregateInputType
+    _sum?: ProblemsSumAggregateInputType
     _min?: ProblemsMinAggregateInputType
     _max?: ProblemsMaxAggregateInputType
   }
 
   export type ProblemsGroupByOutputType = {
-    PID: string
+    PID: number
     Title: string | null
     Description: string | null
     Difficulty: $Enums.problems_Difficulty
     Topic: string | null
     CreatedAt: Date | null
     _count: ProblemsCountAggregateOutputType | null
+    _avg: ProblemsAvgAggregateOutputType | null
+    _sum: ProblemsSumAggregateOutputType | null
     _min: ProblemsMinAggregateOutputType | null
     _max: ProblemsMaxAggregateOutputType | null
   }
@@ -1583,7 +1617,7 @@ export namespace Prisma {
       testcases: Prisma.$testcasesPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      PID: string
+      PID: number
       Title: string | null
       Description: string | null
       Difficulty: $Enums.problems_Difficulty
@@ -1960,7 +1994,7 @@ export namespace Prisma {
    * Fields of the problems model
    */
   interface problemsFieldRefs {
-    readonly PID: FieldRef<"problems", 'String'>
+    readonly PID: FieldRef<"problems", 'Int'>
     readonly Title: FieldRef<"problems", 'String'>
     readonly Description: FieldRef<"problems", 'String'>
     readonly Difficulty: FieldRef<"problems", 'problems_Difficulty'>
@@ -2388,25 +2422,31 @@ export namespace Prisma {
   }
 
   export type SubmissionresultsAvgAggregateOutputType = {
+    SRID: number | null
+    SID: number | null
+    TID: number | null
     ExecutionTime: number | null
   }
 
   export type SubmissionresultsSumAggregateOutputType = {
+    SRID: number | null
+    SID: number | null
+    TID: number | null
     ExecutionTime: number | null
   }
 
   export type SubmissionresultsMinAggregateOutputType = {
-    SRID: string | null
-    SID: string | null
-    TID: string | null
+    SRID: number | null
+    SID: number | null
+    TID: number | null
     Result: $Enums.submissionresults_Result | null
     ExecutionTime: number | null
   }
 
   export type SubmissionresultsMaxAggregateOutputType = {
-    SRID: string | null
-    SID: string | null
-    TID: string | null
+    SRID: number | null
+    SID: number | null
+    TID: number | null
     Result: $Enums.submissionresults_Result | null
     ExecutionTime: number | null
   }
@@ -2422,10 +2462,16 @@ export namespace Prisma {
 
 
   export type SubmissionresultsAvgAggregateInputType = {
+    SRID?: true
+    SID?: true
+    TID?: true
     ExecutionTime?: true
   }
 
   export type SubmissionresultsSumAggregateInputType = {
+    SRID?: true
+    SID?: true
+    TID?: true
     ExecutionTime?: true
   }
 
@@ -2541,9 +2587,9 @@ export namespace Prisma {
   }
 
   export type SubmissionresultsGroupByOutputType = {
-    SRID: string
-    SID: string
-    TID: string
+    SRID: number
+    SID: number
+    TID: number
     Result: $Enums.submissionresults_Result
     ExecutionTime: number | null
     _count: SubmissionresultsCountAggregateOutputType | null
@@ -2600,9 +2646,9 @@ export namespace Prisma {
       testcases: Prisma.$testcasesPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      SRID: string
-      SID: string
-      TID: string
+      SRID: number
+      SID: number
+      TID: number
       Result: $Enums.submissionresults_Result
       ExecutionTime: number | null
     }, ExtArgs["result"]["submissionresults"]>
@@ -2976,9 +3022,9 @@ export namespace Prisma {
    * Fields of the submissionresults model
    */
   interface submissionresultsFieldRefs {
-    readonly SRID: FieldRef<"submissionresults", 'String'>
-    readonly SID: FieldRef<"submissionresults", 'String'>
-    readonly TID: FieldRef<"submissionresults", 'String'>
+    readonly SRID: FieldRef<"submissionresults", 'Int'>
+    readonly SID: FieldRef<"submissionresults", 'Int'>
+    readonly TID: FieldRef<"submissionresults", 'Int'>
     readonly Result: FieldRef<"submissionresults", 'submissionresults_Result'>
     readonly ExecutionTime: FieldRef<"submissionresults", 'Float'>
   }
@@ -3348,23 +3394,37 @@ export namespace Prisma {
 
   export type AggregateSubmissions = {
     _count: SubmissionsCountAggregateOutputType | null
+    _avg: SubmissionsAvgAggregateOutputType | null
+    _sum: SubmissionsSumAggregateOutputType | null
     _min: SubmissionsMinAggregateOutputType | null
     _max: SubmissionsMaxAggregateOutputType | null
   }
 
+  export type SubmissionsAvgAggregateOutputType = {
+    SID: number | null
+    UID: number | null
+    PID: number | null
+  }
+
+  export type SubmissionsSumAggregateOutputType = {
+    SID: number | null
+    UID: number | null
+    PID: number | null
+  }
+
   export type SubmissionsMinAggregateOutputType = {
-    SID: string | null
-    UID: string | null
-    PID: string | null
+    SID: number | null
+    UID: number | null
+    PID: number | null
     Code: string | null
     Status: $Enums.submissions_Status | null
     TimeOfSubmission: Date | null
   }
 
   export type SubmissionsMaxAggregateOutputType = {
-    SID: string | null
-    UID: string | null
-    PID: string | null
+    SID: number | null
+    UID: number | null
+    PID: number | null
     Code: string | null
     Status: $Enums.submissions_Status | null
     TimeOfSubmission: Date | null
@@ -3380,6 +3440,18 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type SubmissionsAvgAggregateInputType = {
+    SID?: true
+    UID?: true
+    PID?: true
+  }
+
+  export type SubmissionsSumAggregateInputType = {
+    SID?: true
+    UID?: true
+    PID?: true
+  }
 
   export type SubmissionsMinAggregateInputType = {
     SID?: true
@@ -3447,6 +3519,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: SubmissionsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SubmissionsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SubmissionsMinAggregateInputType
@@ -3477,18 +3561,22 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: SubmissionsCountAggregateInputType | true
+    _avg?: SubmissionsAvgAggregateInputType
+    _sum?: SubmissionsSumAggregateInputType
     _min?: SubmissionsMinAggregateInputType
     _max?: SubmissionsMaxAggregateInputType
   }
 
   export type SubmissionsGroupByOutputType = {
-    SID: string
-    UID: string
-    PID: string
+    SID: number
+    UID: number
+    PID: number
     Code: string
     Status: $Enums.submissions_Status
     TimeOfSubmission: Date | null
     _count: SubmissionsCountAggregateOutputType | null
+    _avg: SubmissionsAvgAggregateOutputType | null
+    _sum: SubmissionsSumAggregateOutputType | null
     _min: SubmissionsMinAggregateOutputType | null
     _max: SubmissionsMaxAggregateOutputType | null
   }
@@ -3547,9 +3635,9 @@ export namespace Prisma {
       problems: Prisma.$problemsPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      SID: string
-      UID: string
-      PID: string
+      SID: number
+      UID: number
+      PID: number
       Code: string
       Status: $Enums.submissions_Status
       TimeOfSubmission: Date | null
@@ -3925,9 +4013,9 @@ export namespace Prisma {
    * Fields of the submissions model
    */
   interface submissionsFieldRefs {
-    readonly SID: FieldRef<"submissions", 'String'>
-    readonly UID: FieldRef<"submissions", 'String'>
-    readonly PID: FieldRef<"submissions", 'String'>
+    readonly SID: FieldRef<"submissions", 'Int'>
+    readonly UID: FieldRef<"submissions", 'Int'>
+    readonly PID: FieldRef<"submissions", 'Int'>
     readonly Code: FieldRef<"submissions", 'String'>
     readonly Status: FieldRef<"submissions", 'submissions_Status'>
     readonly TimeOfSubmission: FieldRef<"submissions", 'DateTime'>
@@ -4322,20 +4410,32 @@ export namespace Prisma {
 
   export type AggregateTestcases = {
     _count: TestcasesCountAggregateOutputType | null
+    _avg: TestcasesAvgAggregateOutputType | null
+    _sum: TestcasesSumAggregateOutputType | null
     _min: TestcasesMinAggregateOutputType | null
     _max: TestcasesMaxAggregateOutputType | null
   }
 
+  export type TestcasesAvgAggregateOutputType = {
+    TID: number | null
+    PID: number | null
+  }
+
+  export type TestcasesSumAggregateOutputType = {
+    TID: number | null
+    PID: number | null
+  }
+
   export type TestcasesMinAggregateOutputType = {
-    TID: string | null
-    PID: string | null
+    TID: number | null
+    PID: number | null
     InputData: string | null
     ExpectedOutput: string | null
   }
 
   export type TestcasesMaxAggregateOutputType = {
-    TID: string | null
-    PID: string | null
+    TID: number | null
+    PID: number | null
     InputData: string | null
     ExpectedOutput: string | null
   }
@@ -4348,6 +4448,16 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type TestcasesAvgAggregateInputType = {
+    TID?: true
+    PID?: true
+  }
+
+  export type TestcasesSumAggregateInputType = {
+    TID?: true
+    PID?: true
+  }
 
   export type TestcasesMinAggregateInputType = {
     TID?: true
@@ -4409,6 +4519,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: TestcasesAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TestcasesSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: TestcasesMinAggregateInputType
@@ -4439,16 +4561,20 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: TestcasesCountAggregateInputType | true
+    _avg?: TestcasesAvgAggregateInputType
+    _sum?: TestcasesSumAggregateInputType
     _min?: TestcasesMinAggregateInputType
     _max?: TestcasesMaxAggregateInputType
   }
 
   export type TestcasesGroupByOutputType = {
-    TID: string
-    PID: string
+    TID: number
+    PID: number
     InputData: string
     ExpectedOutput: string
     _count: TestcasesCountAggregateOutputType | null
+    _avg: TestcasesAvgAggregateOutputType | null
+    _sum: TestcasesSumAggregateOutputType | null
     _min: TestcasesMinAggregateOutputType | null
     _max: TestcasesMaxAggregateOutputType | null
   }
@@ -4500,8 +4626,8 @@ export namespace Prisma {
       problems: Prisma.$problemsPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      TID: string
-      PID: string
+      TID: number
+      PID: number
       InputData: string
       ExpectedOutput: string
     }, ExtArgs["result"]["testcases"]>
@@ -4875,8 +5001,8 @@ export namespace Prisma {
    * Fields of the testcases model
    */
   interface testcasesFieldRefs {
-    readonly TID: FieldRef<"testcases", 'String'>
-    readonly PID: FieldRef<"testcases", 'String'>
+    readonly TID: FieldRef<"testcases", 'Int'>
+    readonly PID: FieldRef<"testcases", 'Int'>
     readonly InputData: FieldRef<"testcases", 'String'>
     readonly ExpectedOutput: FieldRef<"testcases", 'String'>
   }
@@ -5270,12 +5396,22 @@ export namespace Prisma {
 
   export type AggregateUsers = {
     _count: UsersCountAggregateOutputType | null
+    _avg: UsersAvgAggregateOutputType | null
+    _sum: UsersSumAggregateOutputType | null
     _min: UsersMinAggregateOutputType | null
     _max: UsersMaxAggregateOutputType | null
   }
 
+  export type UsersAvgAggregateOutputType = {
+    UID: number | null
+  }
+
+  export type UsersSumAggregateOutputType = {
+    UID: number | null
+  }
+
   export type UsersMinAggregateOutputType = {
-    UID: string | null
+    UID: number | null
     FirstName: string | null
     LastName: string | null
     Email: string | null
@@ -5285,7 +5421,7 @@ export namespace Prisma {
   }
 
   export type UsersMaxAggregateOutputType = {
-    UID: string | null
+    UID: number | null
     FirstName: string | null
     LastName: string | null
     Email: string | null
@@ -5305,6 +5441,14 @@ export namespace Prisma {
     _all: number
   }
 
+
+  export type UsersAvgAggregateInputType = {
+    UID?: true
+  }
+
+  export type UsersSumAggregateInputType = {
+    UID?: true
+  }
 
   export type UsersMinAggregateInputType = {
     UID?: true
@@ -5375,6 +5519,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UsersAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UsersSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UsersMinAggregateInputType
@@ -5405,12 +5561,14 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UsersCountAggregateInputType | true
+    _avg?: UsersAvgAggregateInputType
+    _sum?: UsersSumAggregateInputType
     _min?: UsersMinAggregateInputType
     _max?: UsersMaxAggregateInputType
   }
 
   export type UsersGroupByOutputType = {
-    UID: string
+    UID: number
     FirstName: string
     LastName: string
     Email: string
@@ -5418,6 +5576,8 @@ export namespace Prisma {
     Role: $Enums.users_Role
     CreatedAt: Date | null
     _count: UsersCountAggregateOutputType | null
+    _avg: UsersAvgAggregateOutputType | null
+    _sum: UsersSumAggregateOutputType | null
     _min: UsersMinAggregateOutputType | null
     _max: UsersMaxAggregateOutputType | null
   }
@@ -5472,7 +5632,7 @@ export namespace Prisma {
       submissions: Prisma.$submissionsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      UID: string
+      UID: number
       FirstName: string
       LastName: string
       Email: string
@@ -5849,7 +6009,7 @@ export namespace Prisma {
    * Fields of the users model
    */
   interface usersFieldRefs {
-    readonly UID: FieldRef<"users", 'String'>
+    readonly UID: FieldRef<"users", 'Int'>
     readonly FirstName: FieldRef<"users", 'String'>
     readonly LastName: FieldRef<"users", 'String'>
     readonly Email: FieldRef<"users", 'String'>
@@ -6330,7 +6490,6 @@ export namespace Prisma {
 
 
   export const problemsOrderByRelevanceFieldEnum: {
-    PID: 'PID',
     Title: 'Title',
     Description: 'Description',
     Topic: 'Topic'
@@ -6339,19 +6498,7 @@ export namespace Prisma {
   export type problemsOrderByRelevanceFieldEnum = (typeof problemsOrderByRelevanceFieldEnum)[keyof typeof problemsOrderByRelevanceFieldEnum]
 
 
-  export const submissionresultsOrderByRelevanceFieldEnum: {
-    SRID: 'SRID',
-    SID: 'SID',
-    TID: 'TID'
-  };
-
-  export type submissionresultsOrderByRelevanceFieldEnum = (typeof submissionresultsOrderByRelevanceFieldEnum)[keyof typeof submissionresultsOrderByRelevanceFieldEnum]
-
-
   export const submissionsOrderByRelevanceFieldEnum: {
-    SID: 'SID',
-    UID: 'UID',
-    PID: 'PID',
     Code: 'Code'
   };
 
@@ -6359,8 +6506,6 @@ export namespace Prisma {
 
 
   export const testcasesOrderByRelevanceFieldEnum: {
-    TID: 'TID',
-    PID: 'PID',
     InputData: 'InputData',
     ExpectedOutput: 'ExpectedOutput'
   };
@@ -6369,7 +6514,6 @@ export namespace Prisma {
 
 
   export const usersOrderByRelevanceFieldEnum: {
-    UID: 'UID',
     FirstName: 'FirstName',
     LastName: 'LastName',
     Email: 'Email',
@@ -6382,6 +6526,13 @@ export namespace Prisma {
   /**
    * Field references
    */
+
+
+  /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
 
 
   /**
@@ -6431,13 +6582,6 @@ export namespace Prisma {
    */
   export type Enumusers_RoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'users_Role'>
     
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
   /**
    * Deep Input Types
    */
@@ -6447,7 +6591,7 @@ export namespace Prisma {
     AND?: problemsWhereInput | problemsWhereInput[]
     OR?: problemsWhereInput[]
     NOT?: problemsWhereInput | problemsWhereInput[]
-    PID?: StringFilter<"problems"> | string
+    PID?: IntFilter<"problems"> | number
     Title?: StringNullableFilter<"problems"> | string | null
     Description?: StringNullableFilter<"problems"> | string | null
     Difficulty?: Enumproblems_DifficultyFilter<"problems"> | $Enums.problems_Difficulty
@@ -6470,7 +6614,7 @@ export namespace Prisma {
   }
 
   export type problemsWhereUniqueInput = Prisma.AtLeast<{
-    PID?: string
+    PID?: number
     AND?: problemsWhereInput | problemsWhereInput[]
     OR?: problemsWhereInput[]
     NOT?: problemsWhereInput | problemsWhereInput[]
@@ -6491,15 +6635,17 @@ export namespace Prisma {
     Topic?: SortOrderInput | SortOrder
     CreatedAt?: SortOrderInput | SortOrder
     _count?: problemsCountOrderByAggregateInput
+    _avg?: problemsAvgOrderByAggregateInput
     _max?: problemsMaxOrderByAggregateInput
     _min?: problemsMinOrderByAggregateInput
+    _sum?: problemsSumOrderByAggregateInput
   }
 
   export type problemsScalarWhereWithAggregatesInput = {
     AND?: problemsScalarWhereWithAggregatesInput | problemsScalarWhereWithAggregatesInput[]
     OR?: problemsScalarWhereWithAggregatesInput[]
     NOT?: problemsScalarWhereWithAggregatesInput | problemsScalarWhereWithAggregatesInput[]
-    PID?: StringWithAggregatesFilter<"problems"> | string
+    PID?: IntWithAggregatesFilter<"problems"> | number
     Title?: StringNullableWithAggregatesFilter<"problems"> | string | null
     Description?: StringNullableWithAggregatesFilter<"problems"> | string | null
     Difficulty?: Enumproblems_DifficultyWithAggregatesFilter<"problems"> | $Enums.problems_Difficulty
@@ -6511,9 +6657,9 @@ export namespace Prisma {
     AND?: submissionresultsWhereInput | submissionresultsWhereInput[]
     OR?: submissionresultsWhereInput[]
     NOT?: submissionresultsWhereInput | submissionresultsWhereInput[]
-    SRID?: StringFilter<"submissionresults"> | string
-    SID?: StringFilter<"submissionresults"> | string
-    TID?: StringFilter<"submissionresults"> | string
+    SRID?: IntFilter<"submissionresults"> | number
+    SID?: IntFilter<"submissionresults"> | number
+    TID?: IntFilter<"submissionresults"> | number
     Result?: Enumsubmissionresults_ResultFilter<"submissionresults"> | $Enums.submissionresults_Result
     ExecutionTime?: FloatNullableFilter<"submissionresults"> | number | null
     submissions?: XOR<SubmissionsScalarRelationFilter, submissionsWhereInput>
@@ -6528,16 +6674,15 @@ export namespace Prisma {
     ExecutionTime?: SortOrderInput | SortOrder
     submissions?: submissionsOrderByWithRelationInput
     testcases?: testcasesOrderByWithRelationInput
-    _relevance?: submissionresultsOrderByRelevanceInput
   }
 
   export type submissionresultsWhereUniqueInput = Prisma.AtLeast<{
-    SRID?: string
+    SRID?: number
     AND?: submissionresultsWhereInput | submissionresultsWhereInput[]
     OR?: submissionresultsWhereInput[]
     NOT?: submissionresultsWhereInput | submissionresultsWhereInput[]
-    SID?: StringFilter<"submissionresults"> | string
-    TID?: StringFilter<"submissionresults"> | string
+    SID?: IntFilter<"submissionresults"> | number
+    TID?: IntFilter<"submissionresults"> | number
     Result?: Enumsubmissionresults_ResultFilter<"submissionresults"> | $Enums.submissionresults_Result
     ExecutionTime?: FloatNullableFilter<"submissionresults"> | number | null
     submissions?: XOR<SubmissionsScalarRelationFilter, submissionsWhereInput>
@@ -6561,9 +6706,9 @@ export namespace Prisma {
     AND?: submissionresultsScalarWhereWithAggregatesInput | submissionresultsScalarWhereWithAggregatesInput[]
     OR?: submissionresultsScalarWhereWithAggregatesInput[]
     NOT?: submissionresultsScalarWhereWithAggregatesInput | submissionresultsScalarWhereWithAggregatesInput[]
-    SRID?: StringWithAggregatesFilter<"submissionresults"> | string
-    SID?: StringWithAggregatesFilter<"submissionresults"> | string
-    TID?: StringWithAggregatesFilter<"submissionresults"> | string
+    SRID?: IntWithAggregatesFilter<"submissionresults"> | number
+    SID?: IntWithAggregatesFilter<"submissionresults"> | number
+    TID?: IntWithAggregatesFilter<"submissionresults"> | number
     Result?: Enumsubmissionresults_ResultWithAggregatesFilter<"submissionresults"> | $Enums.submissionresults_Result
     ExecutionTime?: FloatNullableWithAggregatesFilter<"submissionresults"> | number | null
   }
@@ -6572,9 +6717,9 @@ export namespace Prisma {
     AND?: submissionsWhereInput | submissionsWhereInput[]
     OR?: submissionsWhereInput[]
     NOT?: submissionsWhereInput | submissionsWhereInput[]
-    SID?: StringFilter<"submissions"> | string
-    UID?: StringFilter<"submissions"> | string
-    PID?: StringFilter<"submissions"> | string
+    SID?: IntFilter<"submissions"> | number
+    UID?: IntFilter<"submissions"> | number
+    PID?: IntFilter<"submissions"> | number
     Code?: StringFilter<"submissions"> | string
     Status?: Enumsubmissions_StatusFilter<"submissions"> | $Enums.submissions_Status
     TimeOfSubmission?: DateTimeNullableFilter<"submissions"> | Date | string | null
@@ -6597,12 +6742,12 @@ export namespace Prisma {
   }
 
   export type submissionsWhereUniqueInput = Prisma.AtLeast<{
-    SID?: string
+    SID?: number
     AND?: submissionsWhereInput | submissionsWhereInput[]
     OR?: submissionsWhereInput[]
     NOT?: submissionsWhereInput | submissionsWhereInput[]
-    UID?: StringFilter<"submissions"> | string
-    PID?: StringFilter<"submissions"> | string
+    UID?: IntFilter<"submissions"> | number
+    PID?: IntFilter<"submissions"> | number
     Code?: StringFilter<"submissions"> | string
     Status?: Enumsubmissions_StatusFilter<"submissions"> | $Enums.submissions_Status
     TimeOfSubmission?: DateTimeNullableFilter<"submissions"> | Date | string | null
@@ -6619,17 +6764,19 @@ export namespace Prisma {
     Status?: SortOrder
     TimeOfSubmission?: SortOrderInput | SortOrder
     _count?: submissionsCountOrderByAggregateInput
+    _avg?: submissionsAvgOrderByAggregateInput
     _max?: submissionsMaxOrderByAggregateInput
     _min?: submissionsMinOrderByAggregateInput
+    _sum?: submissionsSumOrderByAggregateInput
   }
 
   export type submissionsScalarWhereWithAggregatesInput = {
     AND?: submissionsScalarWhereWithAggregatesInput | submissionsScalarWhereWithAggregatesInput[]
     OR?: submissionsScalarWhereWithAggregatesInput[]
     NOT?: submissionsScalarWhereWithAggregatesInput | submissionsScalarWhereWithAggregatesInput[]
-    SID?: StringWithAggregatesFilter<"submissions"> | string
-    UID?: StringWithAggregatesFilter<"submissions"> | string
-    PID?: StringWithAggregatesFilter<"submissions"> | string
+    SID?: IntWithAggregatesFilter<"submissions"> | number
+    UID?: IntWithAggregatesFilter<"submissions"> | number
+    PID?: IntWithAggregatesFilter<"submissions"> | number
     Code?: StringWithAggregatesFilter<"submissions"> | string
     Status?: Enumsubmissions_StatusWithAggregatesFilter<"submissions"> | $Enums.submissions_Status
     TimeOfSubmission?: DateTimeNullableWithAggregatesFilter<"submissions"> | Date | string | null
@@ -6639,8 +6786,8 @@ export namespace Prisma {
     AND?: testcasesWhereInput | testcasesWhereInput[]
     OR?: testcasesWhereInput[]
     NOT?: testcasesWhereInput | testcasesWhereInput[]
-    TID?: StringFilter<"testcases"> | string
-    PID?: StringFilter<"testcases"> | string
+    TID?: IntFilter<"testcases"> | number
+    PID?: IntFilter<"testcases"> | number
     InputData?: StringFilter<"testcases"> | string
     ExpectedOutput?: StringFilter<"testcases"> | string
     submissionresults?: SubmissionresultsListRelationFilter
@@ -6658,11 +6805,11 @@ export namespace Prisma {
   }
 
   export type testcasesWhereUniqueInput = Prisma.AtLeast<{
-    TID?: string
+    TID?: number
     AND?: testcasesWhereInput | testcasesWhereInput[]
     OR?: testcasesWhereInput[]
     NOT?: testcasesWhereInput | testcasesWhereInput[]
-    PID?: StringFilter<"testcases"> | string
+    PID?: IntFilter<"testcases"> | number
     InputData?: StringFilter<"testcases"> | string
     ExpectedOutput?: StringFilter<"testcases"> | string
     submissionresults?: SubmissionresultsListRelationFilter
@@ -6675,16 +6822,18 @@ export namespace Prisma {
     InputData?: SortOrder
     ExpectedOutput?: SortOrder
     _count?: testcasesCountOrderByAggregateInput
+    _avg?: testcasesAvgOrderByAggregateInput
     _max?: testcasesMaxOrderByAggregateInput
     _min?: testcasesMinOrderByAggregateInput
+    _sum?: testcasesSumOrderByAggregateInput
   }
 
   export type testcasesScalarWhereWithAggregatesInput = {
     AND?: testcasesScalarWhereWithAggregatesInput | testcasesScalarWhereWithAggregatesInput[]
     OR?: testcasesScalarWhereWithAggregatesInput[]
     NOT?: testcasesScalarWhereWithAggregatesInput | testcasesScalarWhereWithAggregatesInput[]
-    TID?: StringWithAggregatesFilter<"testcases"> | string
-    PID?: StringWithAggregatesFilter<"testcases"> | string
+    TID?: IntWithAggregatesFilter<"testcases"> | number
+    PID?: IntWithAggregatesFilter<"testcases"> | number
     InputData?: StringWithAggregatesFilter<"testcases"> | string
     ExpectedOutput?: StringWithAggregatesFilter<"testcases"> | string
   }
@@ -6693,7 +6842,7 @@ export namespace Prisma {
     AND?: usersWhereInput | usersWhereInput[]
     OR?: usersWhereInput[]
     NOT?: usersWhereInput | usersWhereInput[]
-    UID?: StringFilter<"users"> | string
+    UID?: IntFilter<"users"> | number
     FirstName?: StringFilter<"users"> | string
     LastName?: StringFilter<"users"> | string
     Email?: StringFilter<"users"> | string
@@ -6716,7 +6865,7 @@ export namespace Prisma {
   }
 
   export type usersWhereUniqueInput = Prisma.AtLeast<{
-    UID?: string
+    UID?: number
     Email?: string
     AND?: usersWhereInput | usersWhereInput[]
     OR?: usersWhereInput[]
@@ -6738,15 +6887,17 @@ export namespace Prisma {
     Role?: SortOrder
     CreatedAt?: SortOrderInput | SortOrder
     _count?: usersCountOrderByAggregateInput
+    _avg?: usersAvgOrderByAggregateInput
     _max?: usersMaxOrderByAggregateInput
     _min?: usersMinOrderByAggregateInput
+    _sum?: usersSumOrderByAggregateInput
   }
 
   export type usersScalarWhereWithAggregatesInput = {
     AND?: usersScalarWhereWithAggregatesInput | usersScalarWhereWithAggregatesInput[]
     OR?: usersScalarWhereWithAggregatesInput[]
     NOT?: usersScalarWhereWithAggregatesInput | usersScalarWhereWithAggregatesInput[]
-    UID?: StringWithAggregatesFilter<"users"> | string
+    UID?: IntWithAggregatesFilter<"users"> | number
     FirstName?: StringWithAggregatesFilter<"users"> | string
     LastName?: StringWithAggregatesFilter<"users"> | string
     Email?: StringWithAggregatesFilter<"users"> | string
@@ -6756,7 +6907,6 @@ export namespace Prisma {
   }
 
   export type problemsCreateInput = {
-    PID?: string
     Title?: string | null
     Description?: string | null
     Difficulty?: $Enums.problems_Difficulty
@@ -6767,7 +6917,7 @@ export namespace Prisma {
   }
 
   export type problemsUncheckedCreateInput = {
-    PID?: string
+    PID?: number
     Title?: string | null
     Description?: string | null
     Difficulty?: $Enums.problems_Difficulty
@@ -6778,7 +6928,6 @@ export namespace Prisma {
   }
 
   export type problemsUpdateInput = {
-    PID?: StringFieldUpdateOperationsInput | string
     Title?: NullableStringFieldUpdateOperationsInput | string | null
     Description?: NullableStringFieldUpdateOperationsInput | string | null
     Difficulty?: Enumproblems_DifficultyFieldUpdateOperationsInput | $Enums.problems_Difficulty
@@ -6789,7 +6938,7 @@ export namespace Prisma {
   }
 
   export type problemsUncheckedUpdateInput = {
-    PID?: StringFieldUpdateOperationsInput | string
+    PID?: IntFieldUpdateOperationsInput | number
     Title?: NullableStringFieldUpdateOperationsInput | string | null
     Description?: NullableStringFieldUpdateOperationsInput | string | null
     Difficulty?: Enumproblems_DifficultyFieldUpdateOperationsInput | $Enums.problems_Difficulty
@@ -6800,7 +6949,7 @@ export namespace Prisma {
   }
 
   export type problemsCreateManyInput = {
-    PID?: string
+    PID?: number
     Title?: string | null
     Description?: string | null
     Difficulty?: $Enums.problems_Difficulty
@@ -6809,7 +6958,6 @@ export namespace Prisma {
   }
 
   export type problemsUpdateManyMutationInput = {
-    PID?: StringFieldUpdateOperationsInput | string
     Title?: NullableStringFieldUpdateOperationsInput | string | null
     Description?: NullableStringFieldUpdateOperationsInput | string | null
     Difficulty?: Enumproblems_DifficultyFieldUpdateOperationsInput | $Enums.problems_Difficulty
@@ -6818,7 +6966,7 @@ export namespace Prisma {
   }
 
   export type problemsUncheckedUpdateManyInput = {
-    PID?: StringFieldUpdateOperationsInput | string
+    PID?: IntFieldUpdateOperationsInput | number
     Title?: NullableStringFieldUpdateOperationsInput | string | null
     Description?: NullableStringFieldUpdateOperationsInput | string | null
     Difficulty?: Enumproblems_DifficultyFieldUpdateOperationsInput | $Enums.problems_Difficulty
@@ -6827,7 +6975,6 @@ export namespace Prisma {
   }
 
   export type submissionresultsCreateInput = {
-    SRID?: string
     Result: $Enums.submissionresults_Result
     ExecutionTime?: number | null
     submissions: submissionsCreateNestedOneWithoutSubmissionresultsInput
@@ -6835,15 +6982,14 @@ export namespace Prisma {
   }
 
   export type submissionresultsUncheckedCreateInput = {
-    SRID?: string
-    SID: string
-    TID: string
+    SRID?: number
+    SID: number
+    TID: number
     Result: $Enums.submissionresults_Result
     ExecutionTime?: number | null
   }
 
   export type submissionresultsUpdateInput = {
-    SRID?: StringFieldUpdateOperationsInput | string
     Result?: Enumsubmissionresults_ResultFieldUpdateOperationsInput | $Enums.submissionresults_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
     submissions?: submissionsUpdateOneRequiredWithoutSubmissionresultsNestedInput
@@ -6851,37 +6997,35 @@ export namespace Prisma {
   }
 
   export type submissionresultsUncheckedUpdateInput = {
-    SRID?: StringFieldUpdateOperationsInput | string
-    SID?: StringFieldUpdateOperationsInput | string
-    TID?: StringFieldUpdateOperationsInput | string
+    SRID?: IntFieldUpdateOperationsInput | number
+    SID?: IntFieldUpdateOperationsInput | number
+    TID?: IntFieldUpdateOperationsInput | number
     Result?: Enumsubmissionresults_ResultFieldUpdateOperationsInput | $Enums.submissionresults_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type submissionresultsCreateManyInput = {
-    SRID?: string
-    SID: string
-    TID: string
+    SRID?: number
+    SID: number
+    TID: number
     Result: $Enums.submissionresults_Result
     ExecutionTime?: number | null
   }
 
   export type submissionresultsUpdateManyMutationInput = {
-    SRID?: StringFieldUpdateOperationsInput | string
     Result?: Enumsubmissionresults_ResultFieldUpdateOperationsInput | $Enums.submissionresults_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type submissionresultsUncheckedUpdateManyInput = {
-    SRID?: StringFieldUpdateOperationsInput | string
-    SID?: StringFieldUpdateOperationsInput | string
-    TID?: StringFieldUpdateOperationsInput | string
+    SRID?: IntFieldUpdateOperationsInput | number
+    SID?: IntFieldUpdateOperationsInput | number
+    TID?: IntFieldUpdateOperationsInput | number
     Result?: Enumsubmissionresults_ResultFieldUpdateOperationsInput | $Enums.submissionresults_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type submissionsCreateInput = {
-    SID?: string
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
@@ -6891,9 +7035,9 @@ export namespace Prisma {
   }
 
   export type submissionsUncheckedCreateInput = {
-    SID?: string
-    UID: string
-    PID: string
+    SID?: number
+    UID: number
+    PID: number
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
@@ -6901,7 +7045,6 @@ export namespace Prisma {
   }
 
   export type submissionsUpdateInput = {
-    SID?: StringFieldUpdateOperationsInput | string
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6911,9 +7054,9 @@ export namespace Prisma {
   }
 
   export type submissionsUncheckedUpdateInput = {
-    SID?: StringFieldUpdateOperationsInput | string
-    UID?: StringFieldUpdateOperationsInput | string
-    PID?: StringFieldUpdateOperationsInput | string
+    SID?: IntFieldUpdateOperationsInput | number
+    UID?: IntFieldUpdateOperationsInput | number
+    PID?: IntFieldUpdateOperationsInput | number
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6921,32 +7064,30 @@ export namespace Prisma {
   }
 
   export type submissionsCreateManyInput = {
-    SID?: string
-    UID: string
-    PID: string
+    SID?: number
+    UID: number
+    PID: number
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
   }
 
   export type submissionsUpdateManyMutationInput = {
-    SID?: StringFieldUpdateOperationsInput | string
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type submissionsUncheckedUpdateManyInput = {
-    SID?: StringFieldUpdateOperationsInput | string
-    UID?: StringFieldUpdateOperationsInput | string
-    PID?: StringFieldUpdateOperationsInput | string
+    SID?: IntFieldUpdateOperationsInput | number
+    UID?: IntFieldUpdateOperationsInput | number
+    PID?: IntFieldUpdateOperationsInput | number
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type testcasesCreateInput = {
-    TID?: string
     InputData: string
     ExpectedOutput: string
     submissionresults?: submissionresultsCreateNestedManyWithoutTestcasesInput
@@ -6954,15 +7095,14 @@ export namespace Prisma {
   }
 
   export type testcasesUncheckedCreateInput = {
-    TID?: string
-    PID: string
+    TID?: number
+    PID: number
     InputData: string
     ExpectedOutput: string
     submissionresults?: submissionresultsUncheckedCreateNestedManyWithoutTestcasesInput
   }
 
   export type testcasesUpdateInput = {
-    TID?: StringFieldUpdateOperationsInput | string
     InputData?: StringFieldUpdateOperationsInput | string
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     submissionresults?: submissionresultsUpdateManyWithoutTestcasesNestedInput
@@ -6970,35 +7110,33 @@ export namespace Prisma {
   }
 
   export type testcasesUncheckedUpdateInput = {
-    TID?: StringFieldUpdateOperationsInput | string
-    PID?: StringFieldUpdateOperationsInput | string
+    TID?: IntFieldUpdateOperationsInput | number
+    PID?: IntFieldUpdateOperationsInput | number
     InputData?: StringFieldUpdateOperationsInput | string
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     submissionresults?: submissionresultsUncheckedUpdateManyWithoutTestcasesNestedInput
   }
 
   export type testcasesCreateManyInput = {
-    TID?: string
-    PID: string
+    TID?: number
+    PID: number
     InputData: string
     ExpectedOutput: string
   }
 
   export type testcasesUpdateManyMutationInput = {
-    TID?: StringFieldUpdateOperationsInput | string
     InputData?: StringFieldUpdateOperationsInput | string
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
   }
 
   export type testcasesUncheckedUpdateManyInput = {
-    TID?: StringFieldUpdateOperationsInput | string
-    PID?: StringFieldUpdateOperationsInput | string
+    TID?: IntFieldUpdateOperationsInput | number
+    PID?: IntFieldUpdateOperationsInput | number
     InputData?: StringFieldUpdateOperationsInput | string
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
   }
 
   export type usersCreateInput = {
-    UID?: string
     FirstName: string
     LastName: string
     Email: string
@@ -7009,7 +7147,7 @@ export namespace Prisma {
   }
 
   export type usersUncheckedCreateInput = {
-    UID?: string
+    UID?: number
     FirstName: string
     LastName: string
     Email: string
@@ -7020,7 +7158,6 @@ export namespace Prisma {
   }
 
   export type usersUpdateInput = {
-    UID?: StringFieldUpdateOperationsInput | string
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -7031,7 +7168,7 @@ export namespace Prisma {
   }
 
   export type usersUncheckedUpdateInput = {
-    UID?: StringFieldUpdateOperationsInput | string
+    UID?: IntFieldUpdateOperationsInput | number
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -7042,7 +7179,7 @@ export namespace Prisma {
   }
 
   export type usersCreateManyInput = {
-    UID?: string
+    UID?: number
     FirstName: string
     LastName: string
     Email: string
@@ -7052,7 +7189,6 @@ export namespace Prisma {
   }
 
   export type usersUpdateManyMutationInput = {
-    UID?: StringFieldUpdateOperationsInput | string
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -7062,7 +7198,7 @@ export namespace Prisma {
   }
 
   export type usersUncheckedUpdateManyInput = {
-    UID?: StringFieldUpdateOperationsInput | string
+    UID?: IntFieldUpdateOperationsInput | number
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -7071,19 +7207,15 @@ export namespace Prisma {
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type StringFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringFilter<$PrismaModel> | string
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type StringNullableFilter<$PrismaModel = never> = {
@@ -7159,6 +7291,10 @@ export namespace Prisma {
     CreatedAt?: SortOrder
   }
 
+  export type problemsAvgOrderByAggregateInput = {
+    PID?: SortOrder
+  }
+
   export type problemsMaxOrderByAggregateInput = {
     PID?: SortOrder
     Title?: SortOrder
@@ -7177,22 +7313,24 @@ export namespace Prisma {
     CreatedAt?: SortOrder
   }
 
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+  export type problemsSumOrderByAggregateInput = {
+    PID?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -7265,12 +7403,6 @@ export namespace Prisma {
     isNot?: testcasesWhereInput
   }
 
-  export type submissionresultsOrderByRelevanceInput = {
-    fields: submissionresultsOrderByRelevanceFieldEnum | submissionresultsOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
   export type submissionresultsCountOrderByAggregateInput = {
     SRID?: SortOrder
     SID?: SortOrder
@@ -7280,6 +7412,9 @@ export namespace Prisma {
   }
 
   export type submissionresultsAvgOrderByAggregateInput = {
+    SRID?: SortOrder
+    SID?: SortOrder
+    TID?: SortOrder
     ExecutionTime?: SortOrder
   }
 
@@ -7300,6 +7435,9 @@ export namespace Prisma {
   }
 
   export type submissionresultsSumOrderByAggregateInput = {
+    SRID?: SortOrder
+    SID?: SortOrder
+    TID?: SortOrder
     ExecutionTime?: SortOrder
   }
 
@@ -7327,6 +7465,21 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type StringFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type Enumsubmissions_StatusFilter<$PrismaModel = never> = {
@@ -7371,6 +7524,12 @@ export namespace Prisma {
     TimeOfSubmission?: SortOrder
   }
 
+  export type submissionsAvgOrderByAggregateInput = {
+    SID?: SortOrder
+    UID?: SortOrder
+    PID?: SortOrder
+  }
+
   export type submissionsMaxOrderByAggregateInput = {
     SID?: SortOrder
     UID?: SortOrder
@@ -7387,6 +7546,30 @@ export namespace Prisma {
     Code?: SortOrder
     Status?: SortOrder
     TimeOfSubmission?: SortOrder
+  }
+
+  export type submissionsSumOrderByAggregateInput = {
+    SID?: SortOrder
+    UID?: SortOrder
+    PID?: SortOrder
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type Enumsubmissions_StatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -7412,6 +7595,11 @@ export namespace Prisma {
     ExpectedOutput?: SortOrder
   }
 
+  export type testcasesAvgOrderByAggregateInput = {
+    TID?: SortOrder
+    PID?: SortOrder
+  }
+
   export type testcasesMaxOrderByAggregateInput = {
     TID?: SortOrder
     PID?: SortOrder
@@ -7424,6 +7612,11 @@ export namespace Prisma {
     PID?: SortOrder
     InputData?: SortOrder
     ExpectedOutput?: SortOrder
+  }
+
+  export type testcasesSumOrderByAggregateInput = {
+    TID?: SortOrder
+    PID?: SortOrder
   }
 
   export type Enumusers_RoleFilter<$PrismaModel = never> = {
@@ -7449,6 +7642,10 @@ export namespace Prisma {
     CreatedAt?: SortOrder
   }
 
+  export type usersAvgOrderByAggregateInput = {
+    UID?: SortOrder
+  }
+
   export type usersMaxOrderByAggregateInput = {
     UID?: SortOrder
     FirstName?: SortOrder
@@ -7467,6 +7664,10 @@ export namespace Prisma {
     Password?: SortOrder
     Role?: SortOrder
     CreatedAt?: SortOrder
+  }
+
+  export type usersSumOrderByAggregateInput = {
+    UID?: SortOrder
   }
 
   export type Enumusers_RoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -7507,10 +7708,6 @@ export namespace Prisma {
     connect?: testcasesWhereUniqueInput | testcasesWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
   }
@@ -7549,6 +7746,14 @@ export namespace Prisma {
     update?: testcasesUpdateWithWhereUniqueWithoutProblemsInput | testcasesUpdateWithWhereUniqueWithoutProblemsInput[]
     updateMany?: testcasesUpdateManyWithWhereWithoutProblemsInput | testcasesUpdateManyWithWhereWithoutProblemsInput[]
     deleteMany?: testcasesScalarWhereInput | testcasesScalarWhereInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type submissionsUncheckedUpdateManyWithoutProblemsNestedInput = {
@@ -7643,6 +7848,10 @@ export namespace Prisma {
     connectOrCreate?: submissionresultsCreateOrConnectWithoutSubmissionsInput | submissionresultsCreateOrConnectWithoutSubmissionsInput[]
     createMany?: submissionresultsCreateManySubmissionsInputEnvelope
     connect?: submissionresultsWhereUniqueInput | submissionresultsWhereUniqueInput[]
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
   export type Enumsubmissions_StatusFieldUpdateOperationsInput = {
@@ -7795,19 +8004,15 @@ export namespace Prisma {
     deleteMany?: submissionsScalarWhereInput | submissionsScalarWhereInput[]
   }
 
-  export type NestedStringFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringFilter<$PrismaModel> | string
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
@@ -7843,25 +8048,7 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type NestedIntFilter<$PrismaModel = never> = {
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
     notIn?: number[]
@@ -7869,7 +8056,23 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -7969,11 +8172,44 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type NestedStringFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringFilter<$PrismaModel> | string
+  }
+
   export type NestedEnumsubmissions_StatusFilter<$PrismaModel = never> = {
     equals?: $Enums.submissions_Status | Enumsubmissions_StatusFieldRefInput<$PrismaModel>
     in?: $Enums.submissions_Status[]
     notIn?: $Enums.submissions_Status[]
     not?: NestedEnumsubmissions_StatusFilter<$PrismaModel> | $Enums.submissions_Status
+  }
+
+  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type NestedEnumsubmissions_StatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -8004,7 +8240,6 @@ export namespace Prisma {
   }
 
   export type submissionsCreateWithoutProblemsInput = {
-    SID?: string
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
@@ -8013,8 +8248,8 @@ export namespace Prisma {
   }
 
   export type submissionsUncheckedCreateWithoutProblemsInput = {
-    SID?: string
-    UID: string
+    SID?: number
+    UID: number
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
@@ -8032,14 +8267,13 @@ export namespace Prisma {
   }
 
   export type testcasesCreateWithoutProblemsInput = {
-    TID?: string
     InputData: string
     ExpectedOutput: string
     submissionresults?: submissionresultsCreateNestedManyWithoutTestcasesInput
   }
 
   export type testcasesUncheckedCreateWithoutProblemsInput = {
-    TID?: string
+    TID?: number
     InputData: string
     ExpectedOutput: string
     submissionresults?: submissionresultsUncheckedCreateNestedManyWithoutTestcasesInput
@@ -8075,9 +8309,9 @@ export namespace Prisma {
     AND?: submissionsScalarWhereInput | submissionsScalarWhereInput[]
     OR?: submissionsScalarWhereInput[]
     NOT?: submissionsScalarWhereInput | submissionsScalarWhereInput[]
-    SID?: StringFilter<"submissions"> | string
-    UID?: StringFilter<"submissions"> | string
-    PID?: StringFilter<"submissions"> | string
+    SID?: IntFilter<"submissions"> | number
+    UID?: IntFilter<"submissions"> | number
+    PID?: IntFilter<"submissions"> | number
     Code?: StringFilter<"submissions"> | string
     Status?: Enumsubmissions_StatusFilter<"submissions"> | $Enums.submissions_Status
     TimeOfSubmission?: DateTimeNullableFilter<"submissions"> | Date | string | null
@@ -8103,14 +8337,13 @@ export namespace Prisma {
     AND?: testcasesScalarWhereInput | testcasesScalarWhereInput[]
     OR?: testcasesScalarWhereInput[]
     NOT?: testcasesScalarWhereInput | testcasesScalarWhereInput[]
-    TID?: StringFilter<"testcases"> | string
-    PID?: StringFilter<"testcases"> | string
+    TID?: IntFilter<"testcases"> | number
+    PID?: IntFilter<"testcases"> | number
     InputData?: StringFilter<"testcases"> | string
     ExpectedOutput?: StringFilter<"testcases"> | string
   }
 
   export type submissionsCreateWithoutSubmissionresultsInput = {
-    SID?: string
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
@@ -8119,9 +8352,9 @@ export namespace Prisma {
   }
 
   export type submissionsUncheckedCreateWithoutSubmissionresultsInput = {
-    SID?: string
-    UID: string
-    PID: string
+    SID?: number
+    UID: number
+    PID: number
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
@@ -8133,15 +8366,14 @@ export namespace Prisma {
   }
 
   export type testcasesCreateWithoutSubmissionresultsInput = {
-    TID?: string
     InputData: string
     ExpectedOutput: string
     problems: problemsCreateNestedOneWithoutTestcasesInput
   }
 
   export type testcasesUncheckedCreateWithoutSubmissionresultsInput = {
-    TID?: string
-    PID: string
+    TID?: number
+    PID: number
     InputData: string
     ExpectedOutput: string
   }
@@ -8163,7 +8395,6 @@ export namespace Prisma {
   }
 
   export type submissionsUpdateWithoutSubmissionresultsInput = {
-    SID?: StringFieldUpdateOperationsInput | string
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8172,9 +8403,9 @@ export namespace Prisma {
   }
 
   export type submissionsUncheckedUpdateWithoutSubmissionresultsInput = {
-    SID?: StringFieldUpdateOperationsInput | string
-    UID?: StringFieldUpdateOperationsInput | string
-    PID?: StringFieldUpdateOperationsInput | string
+    SID?: IntFieldUpdateOperationsInput | number
+    UID?: IntFieldUpdateOperationsInput | number
+    PID?: IntFieldUpdateOperationsInput | number
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8192,29 +8423,27 @@ export namespace Prisma {
   }
 
   export type testcasesUpdateWithoutSubmissionresultsInput = {
-    TID?: StringFieldUpdateOperationsInput | string
     InputData?: StringFieldUpdateOperationsInput | string
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     problems?: problemsUpdateOneRequiredWithoutTestcasesNestedInput
   }
 
   export type testcasesUncheckedUpdateWithoutSubmissionresultsInput = {
-    TID?: StringFieldUpdateOperationsInput | string
-    PID?: StringFieldUpdateOperationsInput | string
+    TID?: IntFieldUpdateOperationsInput | number
+    PID?: IntFieldUpdateOperationsInput | number
     InputData?: StringFieldUpdateOperationsInput | string
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
   }
 
   export type submissionresultsCreateWithoutSubmissionsInput = {
-    SRID?: string
     Result: $Enums.submissionresults_Result
     ExecutionTime?: number | null
     testcases: testcasesCreateNestedOneWithoutSubmissionresultsInput
   }
 
   export type submissionresultsUncheckedCreateWithoutSubmissionsInput = {
-    SRID?: string
-    TID: string
+    SRID?: number
+    TID: number
     Result: $Enums.submissionresults_Result
     ExecutionTime?: number | null
   }
@@ -8230,7 +8459,6 @@ export namespace Prisma {
   }
 
   export type usersCreateWithoutSubmissionsInput = {
-    UID?: string
     FirstName: string
     LastName: string
     Email: string
@@ -8240,7 +8468,7 @@ export namespace Prisma {
   }
 
   export type usersUncheckedCreateWithoutSubmissionsInput = {
-    UID?: string
+    UID?: number
     FirstName: string
     LastName: string
     Email: string
@@ -8255,7 +8483,6 @@ export namespace Prisma {
   }
 
   export type problemsCreateWithoutSubmissionsInput = {
-    PID?: string
     Title?: string | null
     Description?: string | null
     Difficulty?: $Enums.problems_Difficulty
@@ -8265,7 +8492,7 @@ export namespace Prisma {
   }
 
   export type problemsUncheckedCreateWithoutSubmissionsInput = {
-    PID?: string
+    PID?: number
     Title?: string | null
     Description?: string | null
     Difficulty?: $Enums.problems_Difficulty
@@ -8299,9 +8526,9 @@ export namespace Prisma {
     AND?: submissionresultsScalarWhereInput | submissionresultsScalarWhereInput[]
     OR?: submissionresultsScalarWhereInput[]
     NOT?: submissionresultsScalarWhereInput | submissionresultsScalarWhereInput[]
-    SRID?: StringFilter<"submissionresults"> | string
-    SID?: StringFilter<"submissionresults"> | string
-    TID?: StringFilter<"submissionresults"> | string
+    SRID?: IntFilter<"submissionresults"> | number
+    SID?: IntFilter<"submissionresults"> | number
+    TID?: IntFilter<"submissionresults"> | number
     Result?: Enumsubmissionresults_ResultFilter<"submissionresults"> | $Enums.submissionresults_Result
     ExecutionTime?: FloatNullableFilter<"submissionresults"> | number | null
   }
@@ -8318,7 +8545,6 @@ export namespace Prisma {
   }
 
   export type usersUpdateWithoutSubmissionsInput = {
-    UID?: StringFieldUpdateOperationsInput | string
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -8328,7 +8554,7 @@ export namespace Prisma {
   }
 
   export type usersUncheckedUpdateWithoutSubmissionsInput = {
-    UID?: StringFieldUpdateOperationsInput | string
+    UID?: IntFieldUpdateOperationsInput | number
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -8349,7 +8575,6 @@ export namespace Prisma {
   }
 
   export type problemsUpdateWithoutSubmissionsInput = {
-    PID?: StringFieldUpdateOperationsInput | string
     Title?: NullableStringFieldUpdateOperationsInput | string | null
     Description?: NullableStringFieldUpdateOperationsInput | string | null
     Difficulty?: Enumproblems_DifficultyFieldUpdateOperationsInput | $Enums.problems_Difficulty
@@ -8359,7 +8584,7 @@ export namespace Prisma {
   }
 
   export type problemsUncheckedUpdateWithoutSubmissionsInput = {
-    PID?: StringFieldUpdateOperationsInput | string
+    PID?: IntFieldUpdateOperationsInput | number
     Title?: NullableStringFieldUpdateOperationsInput | string | null
     Description?: NullableStringFieldUpdateOperationsInput | string | null
     Difficulty?: Enumproblems_DifficultyFieldUpdateOperationsInput | $Enums.problems_Difficulty
@@ -8369,15 +8594,14 @@ export namespace Prisma {
   }
 
   export type submissionresultsCreateWithoutTestcasesInput = {
-    SRID?: string
     Result: $Enums.submissionresults_Result
     ExecutionTime?: number | null
     submissions: submissionsCreateNestedOneWithoutSubmissionresultsInput
   }
 
   export type submissionresultsUncheckedCreateWithoutTestcasesInput = {
-    SRID?: string
-    SID: string
+    SRID?: number
+    SID: number
     Result: $Enums.submissionresults_Result
     ExecutionTime?: number | null
   }
@@ -8393,7 +8617,6 @@ export namespace Prisma {
   }
 
   export type problemsCreateWithoutTestcasesInput = {
-    PID?: string
     Title?: string | null
     Description?: string | null
     Difficulty?: $Enums.problems_Difficulty
@@ -8403,7 +8626,7 @@ export namespace Prisma {
   }
 
   export type problemsUncheckedCreateWithoutTestcasesInput = {
-    PID?: string
+    PID?: number
     Title?: string | null
     Description?: string | null
     Difficulty?: $Enums.problems_Difficulty
@@ -8445,7 +8668,6 @@ export namespace Prisma {
   }
 
   export type problemsUpdateWithoutTestcasesInput = {
-    PID?: StringFieldUpdateOperationsInput | string
     Title?: NullableStringFieldUpdateOperationsInput | string | null
     Description?: NullableStringFieldUpdateOperationsInput | string | null
     Difficulty?: Enumproblems_DifficultyFieldUpdateOperationsInput | $Enums.problems_Difficulty
@@ -8455,7 +8677,7 @@ export namespace Prisma {
   }
 
   export type problemsUncheckedUpdateWithoutTestcasesInput = {
-    PID?: StringFieldUpdateOperationsInput | string
+    PID?: IntFieldUpdateOperationsInput | number
     Title?: NullableStringFieldUpdateOperationsInput | string | null
     Description?: NullableStringFieldUpdateOperationsInput | string | null
     Difficulty?: Enumproblems_DifficultyFieldUpdateOperationsInput | $Enums.problems_Difficulty
@@ -8465,7 +8687,6 @@ export namespace Prisma {
   }
 
   export type submissionsCreateWithoutUsersInput = {
-    SID?: string
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
@@ -8474,8 +8695,8 @@ export namespace Prisma {
   }
 
   export type submissionsUncheckedCreateWithoutUsersInput = {
-    SID?: string
-    PID: string
+    SID?: number
+    PID: number
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
@@ -8509,21 +8730,20 @@ export namespace Prisma {
   }
 
   export type submissionsCreateManyProblemsInput = {
-    SID?: string
-    UID: string
+    SID?: number
+    UID: number
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
   }
 
   export type testcasesCreateManyProblemsInput = {
-    TID?: string
+    TID?: number
     InputData: string
     ExpectedOutput: string
   }
 
   export type submissionsUpdateWithoutProblemsInput = {
-    SID?: StringFieldUpdateOperationsInput | string
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8532,8 +8752,8 @@ export namespace Prisma {
   }
 
   export type submissionsUncheckedUpdateWithoutProblemsInput = {
-    SID?: StringFieldUpdateOperationsInput | string
-    UID?: StringFieldUpdateOperationsInput | string
+    SID?: IntFieldUpdateOperationsInput | number
+    UID?: IntFieldUpdateOperationsInput | number
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8541,99 +8761,95 @@ export namespace Prisma {
   }
 
   export type submissionsUncheckedUpdateManyWithoutProblemsInput = {
-    SID?: StringFieldUpdateOperationsInput | string
-    UID?: StringFieldUpdateOperationsInput | string
+    SID?: IntFieldUpdateOperationsInput | number
+    UID?: IntFieldUpdateOperationsInput | number
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type testcasesUpdateWithoutProblemsInput = {
-    TID?: StringFieldUpdateOperationsInput | string
     InputData?: StringFieldUpdateOperationsInput | string
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     submissionresults?: submissionresultsUpdateManyWithoutTestcasesNestedInput
   }
 
   export type testcasesUncheckedUpdateWithoutProblemsInput = {
-    TID?: StringFieldUpdateOperationsInput | string
+    TID?: IntFieldUpdateOperationsInput | number
     InputData?: StringFieldUpdateOperationsInput | string
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     submissionresults?: submissionresultsUncheckedUpdateManyWithoutTestcasesNestedInput
   }
 
   export type testcasesUncheckedUpdateManyWithoutProblemsInput = {
-    TID?: StringFieldUpdateOperationsInput | string
+    TID?: IntFieldUpdateOperationsInput | number
     InputData?: StringFieldUpdateOperationsInput | string
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
   }
 
   export type submissionresultsCreateManySubmissionsInput = {
-    SRID?: string
-    TID: string
+    SRID?: number
+    TID: number
     Result: $Enums.submissionresults_Result
     ExecutionTime?: number | null
   }
 
   export type submissionresultsUpdateWithoutSubmissionsInput = {
-    SRID?: StringFieldUpdateOperationsInput | string
     Result?: Enumsubmissionresults_ResultFieldUpdateOperationsInput | $Enums.submissionresults_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
     testcases?: testcasesUpdateOneRequiredWithoutSubmissionresultsNestedInput
   }
 
   export type submissionresultsUncheckedUpdateWithoutSubmissionsInput = {
-    SRID?: StringFieldUpdateOperationsInput | string
-    TID?: StringFieldUpdateOperationsInput | string
+    SRID?: IntFieldUpdateOperationsInput | number
+    TID?: IntFieldUpdateOperationsInput | number
     Result?: Enumsubmissionresults_ResultFieldUpdateOperationsInput | $Enums.submissionresults_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type submissionresultsUncheckedUpdateManyWithoutSubmissionsInput = {
-    SRID?: StringFieldUpdateOperationsInput | string
-    TID?: StringFieldUpdateOperationsInput | string
+    SRID?: IntFieldUpdateOperationsInput | number
+    TID?: IntFieldUpdateOperationsInput | number
     Result?: Enumsubmissionresults_ResultFieldUpdateOperationsInput | $Enums.submissionresults_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type submissionresultsCreateManyTestcasesInput = {
-    SRID?: string
-    SID: string
+    SRID?: number
+    SID: number
     Result: $Enums.submissionresults_Result
     ExecutionTime?: number | null
   }
 
   export type submissionresultsUpdateWithoutTestcasesInput = {
-    SRID?: StringFieldUpdateOperationsInput | string
     Result?: Enumsubmissionresults_ResultFieldUpdateOperationsInput | $Enums.submissionresults_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
     submissions?: submissionsUpdateOneRequiredWithoutSubmissionresultsNestedInput
   }
 
   export type submissionresultsUncheckedUpdateWithoutTestcasesInput = {
-    SRID?: StringFieldUpdateOperationsInput | string
-    SID?: StringFieldUpdateOperationsInput | string
+    SRID?: IntFieldUpdateOperationsInput | number
+    SID?: IntFieldUpdateOperationsInput | number
     Result?: Enumsubmissionresults_ResultFieldUpdateOperationsInput | $Enums.submissionresults_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type submissionresultsUncheckedUpdateManyWithoutTestcasesInput = {
-    SRID?: StringFieldUpdateOperationsInput | string
-    SID?: StringFieldUpdateOperationsInput | string
+    SRID?: IntFieldUpdateOperationsInput | number
+    SID?: IntFieldUpdateOperationsInput | number
     Result?: Enumsubmissionresults_ResultFieldUpdateOperationsInput | $Enums.submissionresults_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type submissionsCreateManyUsersInput = {
-    SID?: string
-    PID: string
+    SID?: number
+    PID: number
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
   }
 
   export type submissionsUpdateWithoutUsersInput = {
-    SID?: StringFieldUpdateOperationsInput | string
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8642,8 +8858,8 @@ export namespace Prisma {
   }
 
   export type submissionsUncheckedUpdateWithoutUsersInput = {
-    SID?: StringFieldUpdateOperationsInput | string
-    PID?: StringFieldUpdateOperationsInput | string
+    SID?: IntFieldUpdateOperationsInput | number
+    PID?: IntFieldUpdateOperationsInput | number
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8651,8 +8867,8 @@ export namespace Prisma {
   }
 
   export type submissionsUncheckedUpdateManyWithoutUsersInput = {
-    SID?: StringFieldUpdateOperationsInput | string
-    PID?: StringFieldUpdateOperationsInput | string
+    SID?: IntFieldUpdateOperationsInput | number
+    PID?: IntFieldUpdateOperationsInput | number
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

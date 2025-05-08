@@ -171,34 +171,21 @@ exports.Prisma.NullsOrder = {
 };
 
 exports.Prisma.problemsOrderByRelevanceFieldEnum = {
-  PID: 'PID',
   Title: 'Title',
   Description: 'Description',
   Topic: 'Topic'
 };
 
-exports.Prisma.submissionresultsOrderByRelevanceFieldEnum = {
-  SRID: 'SRID',
-  SID: 'SID',
-  TID: 'TID'
-};
-
 exports.Prisma.submissionsOrderByRelevanceFieldEnum = {
-  SID: 'SID',
-  UID: 'UID',
-  PID: 'PID',
   Code: 'Code'
 };
 
 exports.Prisma.testcasesOrderByRelevanceFieldEnum = {
-  TID: 'TID',
-  PID: 'PID',
   InputData: 'InputData',
   ExpectedOutput: 'ExpectedOutput'
 };
 
 exports.Prisma.usersOrderByRelevanceFieldEnum = {
-  UID: 'UID',
   FirstName: 'FirstName',
   LastName: 'LastName',
   Email: 'Email',

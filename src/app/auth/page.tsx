@@ -90,7 +90,7 @@ export default function AuthPage() {
           });
         } else {
           // If login succeeds
-          router.push("/");
+          router.push("/home");
         }
       } catch (error: any) {
         console.error("Error during login:", error);
