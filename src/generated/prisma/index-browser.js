@@ -177,6 +177,7 @@ exports.Prisma.problemsOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.submissionsOrderByRelevanceFieldEnum = {
+  UID: 'UID',
   Code: 'Code'
 };
 
@@ -186,6 +187,7 @@ exports.Prisma.testcasesOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.usersOrderByRelevanceFieldEnum = {
+  UID: 'UID',
   FirstName: 'FirstName',
   LastName: 'LastName',
   Email: 'Email',

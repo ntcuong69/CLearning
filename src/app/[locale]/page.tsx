@@ -1,9 +1,14 @@
 import React from "react";
+import {useTranslations} from 'next-intl';
 import Link from "next/link";
 import { Button, Typography, Box, Grid, Card, CardContent } from "@mui/material";
 import { AccountCircle, Code, CheckCircle } from "@mui/icons-material";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
 
 export default function GettingStarted() {
+ 
+  const t = useTranslations('GettingStarted');
+
   return (
     <main className="min-h-screen bg-[linear-gradient(to_left_bottom,_#3f2a9c,_#141b56)] text-white font-sans px-6 py-12">
       <Box className="max-w-6xl mx-auto">
@@ -12,6 +17,7 @@ export default function GettingStarted() {
           <Typography variant="h5" className="font-bold">
             &lt;/&gt; CODE CHALLENGE
           </Typography>
+          <LocaleSwitcher/>
           <Box className="space-x-4">
             <Link href="/auth">
               <Button variant="text">
@@ -40,11 +46,10 @@ export default function GettingStarted() {
                 display: "inline-block",
               }}
             >
-              Getting Started
+              {t('title')}
             </Typography>
             <Typography variant="body1" sx={{ marginBottom: 3 }}>
-              Here, you can practice fun programming problems, improve step by step, and get better every day. Whether you&apos;re learning for school
-              or just curious, we&apos;re here to help you grow with code.
+            {t('description')}
             </Typography>
             <Link href="/auth">
               <Button

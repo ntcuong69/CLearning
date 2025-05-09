@@ -3402,19 +3402,17 @@ export namespace Prisma {
 
   export type SubmissionsAvgAggregateOutputType = {
     SID: number | null
-    UID: number | null
     PID: number | null
   }
 
   export type SubmissionsSumAggregateOutputType = {
     SID: number | null
-    UID: number | null
     PID: number | null
   }
 
   export type SubmissionsMinAggregateOutputType = {
     SID: number | null
-    UID: number | null
+    UID: string | null
     PID: number | null
     Code: string | null
     Status: $Enums.submissions_Status | null
@@ -3423,7 +3421,7 @@ export namespace Prisma {
 
   export type SubmissionsMaxAggregateOutputType = {
     SID: number | null
-    UID: number | null
+    UID: string | null
     PID: number | null
     Code: string | null
     Status: $Enums.submissions_Status | null
@@ -3443,13 +3441,11 @@ export namespace Prisma {
 
   export type SubmissionsAvgAggregateInputType = {
     SID?: true
-    UID?: true
     PID?: true
   }
 
   export type SubmissionsSumAggregateInputType = {
     SID?: true
-    UID?: true
     PID?: true
   }
 
@@ -3569,7 +3565,7 @@ export namespace Prisma {
 
   export type SubmissionsGroupByOutputType = {
     SID: number
-    UID: number
+    UID: string
     PID: number
     Code: string
     Status: $Enums.submissions_Status
@@ -3636,7 +3632,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       SID: number
-      UID: number
+      UID: string
       PID: number
       Code: string
       Status: $Enums.submissions_Status
@@ -4014,7 +4010,7 @@ export namespace Prisma {
    */
   interface submissionsFieldRefs {
     readonly SID: FieldRef<"submissions", 'Int'>
-    readonly UID: FieldRef<"submissions", 'Int'>
+    readonly UID: FieldRef<"submissions", 'String'>
     readonly PID: FieldRef<"submissions", 'Int'>
     readonly Code: FieldRef<"submissions", 'String'>
     readonly Status: FieldRef<"submissions", 'submissions_Status'>
@@ -5396,22 +5392,12 @@ export namespace Prisma {
 
   export type AggregateUsers = {
     _count: UsersCountAggregateOutputType | null
-    _avg: UsersAvgAggregateOutputType | null
-    _sum: UsersSumAggregateOutputType | null
     _min: UsersMinAggregateOutputType | null
     _max: UsersMaxAggregateOutputType | null
   }
 
-  export type UsersAvgAggregateOutputType = {
-    UID: number | null
-  }
-
-  export type UsersSumAggregateOutputType = {
-    UID: number | null
-  }
-
   export type UsersMinAggregateOutputType = {
-    UID: number | null
+    UID: string | null
     FirstName: string | null
     LastName: string | null
     Email: string | null
@@ -5421,7 +5407,7 @@ export namespace Prisma {
   }
 
   export type UsersMaxAggregateOutputType = {
-    UID: number | null
+    UID: string | null
     FirstName: string | null
     LastName: string | null
     Email: string | null
@@ -5441,14 +5427,6 @@ export namespace Prisma {
     _all: number
   }
 
-
-  export type UsersAvgAggregateInputType = {
-    UID?: true
-  }
-
-  export type UsersSumAggregateInputType = {
-    UID?: true
-  }
 
   export type UsersMinAggregateInputType = {
     UID?: true
@@ -5519,18 +5497,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: UsersAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: UsersSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: UsersMinAggregateInputType
@@ -5561,14 +5527,12 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UsersCountAggregateInputType | true
-    _avg?: UsersAvgAggregateInputType
-    _sum?: UsersSumAggregateInputType
     _min?: UsersMinAggregateInputType
     _max?: UsersMaxAggregateInputType
   }
 
   export type UsersGroupByOutputType = {
-    UID: number
+    UID: string
     FirstName: string
     LastName: string
     Email: string
@@ -5576,8 +5540,6 @@ export namespace Prisma {
     Role: $Enums.users_Role
     CreatedAt: Date | null
     _count: UsersCountAggregateOutputType | null
-    _avg: UsersAvgAggregateOutputType | null
-    _sum: UsersSumAggregateOutputType | null
     _min: UsersMinAggregateOutputType | null
     _max: UsersMaxAggregateOutputType | null
   }
@@ -5632,7 +5594,7 @@ export namespace Prisma {
       submissions: Prisma.$submissionsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
-      UID: number
+      UID: string
       FirstName: string
       LastName: string
       Email: string
@@ -6009,7 +5971,7 @@ export namespace Prisma {
    * Fields of the users model
    */
   interface usersFieldRefs {
-    readonly UID: FieldRef<"users", 'Int'>
+    readonly UID: FieldRef<"users", 'String'>
     readonly FirstName: FieldRef<"users", 'String'>
     readonly LastName: FieldRef<"users", 'String'>
     readonly Email: FieldRef<"users", 'String'>
@@ -6499,6 +6461,7 @@ export namespace Prisma {
 
 
   export const submissionsOrderByRelevanceFieldEnum: {
+    UID: 'UID',
     Code: 'Code'
   };
 
@@ -6514,6 +6477,7 @@ export namespace Prisma {
 
 
   export const usersOrderByRelevanceFieldEnum: {
+    UID: 'UID',
     FirstName: 'FirstName',
     LastName: 'LastName',
     Email: 'Email',
@@ -6718,7 +6682,7 @@ export namespace Prisma {
     OR?: submissionsWhereInput[]
     NOT?: submissionsWhereInput | submissionsWhereInput[]
     SID?: IntFilter<"submissions"> | number
-    UID?: IntFilter<"submissions"> | number
+    UID?: StringFilter<"submissions"> | string
     PID?: IntFilter<"submissions"> | number
     Code?: StringFilter<"submissions"> | string
     Status?: Enumsubmissions_StatusFilter<"submissions"> | $Enums.submissions_Status
@@ -6746,7 +6710,7 @@ export namespace Prisma {
     AND?: submissionsWhereInput | submissionsWhereInput[]
     OR?: submissionsWhereInput[]
     NOT?: submissionsWhereInput | submissionsWhereInput[]
-    UID?: IntFilter<"submissions"> | number
+    UID?: StringFilter<"submissions"> | string
     PID?: IntFilter<"submissions"> | number
     Code?: StringFilter<"submissions"> | string
     Status?: Enumsubmissions_StatusFilter<"submissions"> | $Enums.submissions_Status
@@ -6775,7 +6739,7 @@ export namespace Prisma {
     OR?: submissionsScalarWhereWithAggregatesInput[]
     NOT?: submissionsScalarWhereWithAggregatesInput | submissionsScalarWhereWithAggregatesInput[]
     SID?: IntWithAggregatesFilter<"submissions"> | number
-    UID?: IntWithAggregatesFilter<"submissions"> | number
+    UID?: StringWithAggregatesFilter<"submissions"> | string
     PID?: IntWithAggregatesFilter<"submissions"> | number
     Code?: StringWithAggregatesFilter<"submissions"> | string
     Status?: Enumsubmissions_StatusWithAggregatesFilter<"submissions"> | $Enums.submissions_Status
@@ -6842,7 +6806,7 @@ export namespace Prisma {
     AND?: usersWhereInput | usersWhereInput[]
     OR?: usersWhereInput[]
     NOT?: usersWhereInput | usersWhereInput[]
-    UID?: IntFilter<"users"> | number
+    UID?: StringFilter<"users"> | string
     FirstName?: StringFilter<"users"> | string
     LastName?: StringFilter<"users"> | string
     Email?: StringFilter<"users"> | string
@@ -6865,7 +6829,7 @@ export namespace Prisma {
   }
 
   export type usersWhereUniqueInput = Prisma.AtLeast<{
-    UID?: number
+    UID?: string
     Email?: string
     AND?: usersWhereInput | usersWhereInput[]
     OR?: usersWhereInput[]
@@ -6887,17 +6851,15 @@ export namespace Prisma {
     Role?: SortOrder
     CreatedAt?: SortOrderInput | SortOrder
     _count?: usersCountOrderByAggregateInput
-    _avg?: usersAvgOrderByAggregateInput
     _max?: usersMaxOrderByAggregateInput
     _min?: usersMinOrderByAggregateInput
-    _sum?: usersSumOrderByAggregateInput
   }
 
   export type usersScalarWhereWithAggregatesInput = {
     AND?: usersScalarWhereWithAggregatesInput | usersScalarWhereWithAggregatesInput[]
     OR?: usersScalarWhereWithAggregatesInput[]
     NOT?: usersScalarWhereWithAggregatesInput | usersScalarWhereWithAggregatesInput[]
-    UID?: IntWithAggregatesFilter<"users"> | number
+    UID?: StringWithAggregatesFilter<"users"> | string
     FirstName?: StringWithAggregatesFilter<"users"> | string
     LastName?: StringWithAggregatesFilter<"users"> | string
     Email?: StringWithAggregatesFilter<"users"> | string
@@ -7036,7 +6998,7 @@ export namespace Prisma {
 
   export type submissionsUncheckedCreateInput = {
     SID?: number
-    UID: number
+    UID: string
     PID: number
     Code: string
     Status?: $Enums.submissions_Status
@@ -7055,7 +7017,7 @@ export namespace Prisma {
 
   export type submissionsUncheckedUpdateInput = {
     SID?: IntFieldUpdateOperationsInput | number
-    UID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
     PID?: IntFieldUpdateOperationsInput | number
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
@@ -7065,7 +7027,7 @@ export namespace Prisma {
 
   export type submissionsCreateManyInput = {
     SID?: number
-    UID: number
+    UID: string
     PID: number
     Code: string
     Status?: $Enums.submissions_Status
@@ -7080,7 +7042,7 @@ export namespace Prisma {
 
   export type submissionsUncheckedUpdateManyInput = {
     SID?: IntFieldUpdateOperationsInput | number
-    UID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
     PID?: IntFieldUpdateOperationsInput | number
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
@@ -7137,6 +7099,7 @@ export namespace Prisma {
   }
 
   export type usersCreateInput = {
+    UID?: string
     FirstName: string
     LastName: string
     Email: string
@@ -7147,7 +7110,7 @@ export namespace Prisma {
   }
 
   export type usersUncheckedCreateInput = {
-    UID?: number
+    UID?: string
     FirstName: string
     LastName: string
     Email: string
@@ -7158,6 +7121,7 @@ export namespace Prisma {
   }
 
   export type usersUpdateInput = {
+    UID?: StringFieldUpdateOperationsInput | string
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -7168,7 +7132,7 @@ export namespace Prisma {
   }
 
   export type usersUncheckedUpdateInput = {
-    UID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -7179,7 +7143,7 @@ export namespace Prisma {
   }
 
   export type usersCreateManyInput = {
-    UID?: number
+    UID?: string
     FirstName: string
     LastName: string
     Email: string
@@ -7189,6 +7153,7 @@ export namespace Prisma {
   }
 
   export type usersUpdateManyMutationInput = {
+    UID?: StringFieldUpdateOperationsInput | string
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -7198,7 +7163,7 @@ export namespace Prisma {
   }
 
   export type usersUncheckedUpdateManyInput = {
-    UID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -7526,7 +7491,6 @@ export namespace Prisma {
 
   export type submissionsAvgOrderByAggregateInput = {
     SID?: SortOrder
-    UID?: SortOrder
     PID?: SortOrder
   }
 
@@ -7550,7 +7514,6 @@ export namespace Prisma {
 
   export type submissionsSumOrderByAggregateInput = {
     SID?: SortOrder
-    UID?: SortOrder
     PID?: SortOrder
   }
 
@@ -7642,10 +7605,6 @@ export namespace Prisma {
     CreatedAt?: SortOrder
   }
 
-  export type usersAvgOrderByAggregateInput = {
-    UID?: SortOrder
-  }
-
   export type usersMaxOrderByAggregateInput = {
     UID?: SortOrder
     FirstName?: SortOrder
@@ -7664,10 +7623,6 @@ export namespace Prisma {
     Password?: SortOrder
     Role?: SortOrder
     CreatedAt?: SortOrder
-  }
-
-  export type usersSumOrderByAggregateInput = {
-    UID?: SortOrder
   }
 
   export type Enumusers_RoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -8249,7 +8204,7 @@ export namespace Prisma {
 
   export type submissionsUncheckedCreateWithoutProblemsInput = {
     SID?: number
-    UID: number
+    UID: string
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
@@ -8310,7 +8265,7 @@ export namespace Prisma {
     OR?: submissionsScalarWhereInput[]
     NOT?: submissionsScalarWhereInput | submissionsScalarWhereInput[]
     SID?: IntFilter<"submissions"> | number
-    UID?: IntFilter<"submissions"> | number
+    UID?: StringFilter<"submissions"> | string
     PID?: IntFilter<"submissions"> | number
     Code?: StringFilter<"submissions"> | string
     Status?: Enumsubmissions_StatusFilter<"submissions"> | $Enums.submissions_Status
@@ -8353,7 +8308,7 @@ export namespace Prisma {
 
   export type submissionsUncheckedCreateWithoutSubmissionresultsInput = {
     SID?: number
-    UID: number
+    UID: string
     PID: number
     Code: string
     Status?: $Enums.submissions_Status
@@ -8404,7 +8359,7 @@ export namespace Prisma {
 
   export type submissionsUncheckedUpdateWithoutSubmissionresultsInput = {
     SID?: IntFieldUpdateOperationsInput | number
-    UID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
     PID?: IntFieldUpdateOperationsInput | number
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
@@ -8459,6 +8414,7 @@ export namespace Prisma {
   }
 
   export type usersCreateWithoutSubmissionsInput = {
+    UID?: string
     FirstName: string
     LastName: string
     Email: string
@@ -8468,7 +8424,7 @@ export namespace Prisma {
   }
 
   export type usersUncheckedCreateWithoutSubmissionsInput = {
-    UID?: number
+    UID?: string
     FirstName: string
     LastName: string
     Email: string
@@ -8545,6 +8501,7 @@ export namespace Prisma {
   }
 
   export type usersUpdateWithoutSubmissionsInput = {
+    UID?: StringFieldUpdateOperationsInput | string
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -8554,7 +8511,7 @@ export namespace Prisma {
   }
 
   export type usersUncheckedUpdateWithoutSubmissionsInput = {
-    UID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
     FirstName?: StringFieldUpdateOperationsInput | string
     LastName?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
@@ -8731,7 +8688,7 @@ export namespace Prisma {
 
   export type submissionsCreateManyProblemsInput = {
     SID?: number
-    UID: number
+    UID: string
     Code: string
     Status?: $Enums.submissions_Status
     TimeOfSubmission?: Date | string | null
@@ -8753,7 +8710,7 @@ export namespace Prisma {
 
   export type submissionsUncheckedUpdateWithoutProblemsInput = {
     SID?: IntFieldUpdateOperationsInput | number
-    UID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -8762,7 +8719,7 @@ export namespace Prisma {
 
   export type submissionsUncheckedUpdateManyWithoutProblemsInput = {
     SID?: IntFieldUpdateOperationsInput | number
-    UID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
     Code?: StringFieldUpdateOperationsInput | string
     Status?: Enumsubmissions_StatusFieldUpdateOperationsInput | $Enums.submissions_Status
     TimeOfSubmission?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

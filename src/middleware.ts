@@ -1,36 +1,44 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
+import i18nRouter from "next-intl/middleware";
+import { routing } from "./i18n/routing";
+
+const SUPPORTED_LOCALES = ["en", "vi"];
+
+function getLocaleFromPath(pathname: string) {
+  const locale = pathname.split("/")[1];
+  return SUPPORTED_LOCALES.includes(locale) ? locale : null;
+}
 
 export async function middleware(req: NextRequest) {
-  // Lấy token từ cookie
+  const { pathname } = req.nextUrl;
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-  // Các route cần bảo vệ
-  const isAuthPage = req.nextUrl.pathname.startsWith("/auth");
-  const isHomePage = req.nextUrl.pathname.startsWith("/home");
-  const isProfilePage = req.nextUrl.pathname.startsWith("/profile");
+  const locale = getLocaleFromPath(pathname);
+  const isAuthPage = pathname.includes("/auth");
+  const isHomePage = pathname.includes("/home");
+  const isProfilePage = pathname.includes("/profile");
   const isProtectedRoute = isHomePage || isProfilePage;
 
-  // Nếu là route bảo vệ và chưa đăng nhập (token không tồn tại)
   if (isProtectedRoute && !token) {
-    const loginUrl = new URL("/auth", req.url); // Redirect đến trang login
-    return NextResponse.redirect(loginUrl);
+    return NextResponse.redirect(
+      new URL(locale ? `/${locale}/auth` : "/auth", req.url)
+    );
   }
 
-  // Nếu đã đăng nhập và đang cố gắng truy cập trang đăng nhập
   if (isAuthPage && token) {
-    const homeUrl = new URL("/home", req.url); // Redirect đến trang chủ
-    return NextResponse.redirect(homeUrl);
+    return NextResponse.redirect(
+      new URL(locale ? `/${locale}/home` : "/home", req.url)
+    );
   }
+
+  const intlResponse = i18nRouter(routing)(req);
+  if (intlResponse) return intlResponse;
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/home/:path*',
-    '/auth',
-    '/profile/:path*',
-  ],
+  matcher: "/((?!api|_next|.*\\..*).*)", // Bỏ qua API, tệp tĩnh
 };

@@ -34,7 +34,7 @@ model submissionresults {
 
 model submissions {
   SID               Int                 @id @default(autoincrement())
-  UID               Int
+  UID               String              @db.Char(36)
   PID               Int
   Code              String              @db.Text
   Status            submissions_Status  @default(Pending)
@@ -59,7 +59,7 @@ model testcases {
 }
 
 model users {
-  UID         Int           @id @default(autoincrement())
+  UID         String        @id @default(dbgenerated("(uuid())")) @db.Char(36)
   FirstName   String        @db.VarChar(50)
   LastName    String        @db.VarChar(50)
   Email       String        @unique(map: "Email") @db.VarChar(50)
