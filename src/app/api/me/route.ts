@@ -14,12 +14,11 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Invalid user data" }, { status: 401 });
     }
 
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
       where: { UID: token.uid.toString() },
       select: {
         UID: true,
-        FirstName: true,
-        LastName: true,
+        Username: true,
         Email: true,
         Role: true,
         CreatedAt: true,

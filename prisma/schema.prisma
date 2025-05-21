@@ -8,86 +8,126 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model problems {
-  PID         Int                 @id @default(autoincrement())
-  Title       String?             @db.VarChar(255)
-  Description String?             @db.Text
-  Difficulty  problems_Difficulty @default(Easy)
-  Topic       String?             @db.VarChar(100)
-  CreatedAt   DateTime?           @default(now()) @db.Timestamp(0)
-  submissions submissions[]
-  testcases   testcases[]
+model exercise {
+  EID        Int                 @id @default(autoincrement())
+  LsID       Int
+  OrderIndex Int
+  Content    String              @db.Text
+  Difficulty exercise_Difficulty @default(Easy)
+  lession    lesson              @relation(fields: [LsID], references: [LsID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
+  submission submission[]
+  testcase   testcase[]
+
+  @@index([LsID], map: "LsID")
 }
 
-model submissionresults {
-  SRID          Int                      @id @default(autoincrement())
-  SID           Int
-  TID           Int
-  Result        submissionresults_Result
-  ExecutionTime Float?                   @db.Float
-  submissions   submissions              @relation(fields: [SID], references: [SID], onDelete: NoAction, onUpdate: NoAction, map: "submissionresults_ibfk_1")
-  testcases     testcases                @relation(fields: [TID], references: [TID], onDelete: NoAction, onUpdate: NoAction, map: "submissionresults_ibfk_2")
-
-  @@index([SID], map: "SID")
-  @@index([TID], map: "TID")
+model language {
+  LgID                Int                   @id @default(autoincrement())
+  Name                String                @db.VarChar(20)
+  Logo                String?               @db.VarChar(255)
+  topiclanguagedetail topiclanguagedetail[]
 }
 
-model submissions {
-  SID               Int                 @id @default(autoincrement())
-  UID               String              @db.Char(36)
-  PID               Int
-  Code              String              @db.Text
-  Status            submissions_Status  @default(Pending)
-  TimeOfSubmission  DateTime?           @default(now()) @db.Timestamp(0)
-  submissionresults submissionresults[]
-  users             users               @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "submissions_ibfk_1")
-  problems          problems            @relation(fields: [PID], references: [PID], onDelete: NoAction, onUpdate: NoAction, map: "submissions_ibfk_2")
+model submission {
+  SID            Int                @id @default(autoincrement())
+  UID            String             @db.Char(36)
+  EID            Int
+  Code           String?            @db.Text
+  CreatedAt      DateTime?          @default(now()) @db.Timestamp(0)
+  Result         submission_Result? @default(Pending)
+  exercise       exercise           @relation(fields: [EID], references: [EID], onDelete: NoAction, onUpdate: NoAction, map: "submission_ibfk_1")
+  user           user               @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "submission_ibfk_2")
+  testcaseresult testcaseresult[]
 
-  @@index([PID], map: "PID")
+  @@index([EID], map: "EID")
   @@index([UID], map: "UID")
 }
 
-model testcases {
-  TID               Int                 @id @default(autoincrement())
-  PID               Int
-  InputData         String              @db.Text
-  ExpectedOutput    String              @db.Text
-  submissionresults submissionresults[]
-  problems          problems            @relation(fields: [PID], references: [PID], onDelete: NoAction, onUpdate: NoAction, map: "testcases_ibfk_1")
+model testcase {
+  TCID           Int              @id @default(autoincrement())
+  EID            Int
+  Input          String           @db.Text
+  ExpectedOutput String           @db.Text
+  isHidden       Boolean?         @default(false)
+  exercise       exercise         @relation(fields: [EID], references: [EID], onDelete: NoAction, onUpdate: NoAction, map: "testcase_ibfk_1")
+  testcaseresult testcaseresult[]
 
-  @@index([PID], map: "PID")
+  @@index([EID], map: "EID")
 }
 
-model users {
-  UID         String        @id @default(dbgenerated("(uuid())")) @db.Char(36)
-  FirstName   String        @db.VarChar(50)
-  LastName    String        @db.VarChar(50)
-  Email       String        @unique(map: "Email") @db.VarChar(50)
-  Password    String        @db.VarChar(255)
-  Role        users_Role    @default(Member)
-  CreatedAt   DateTime?     @default(now()) @db.Timestamp(0)
-  submissions submissions[]
+model testcaseresult {
+  TCRID         Int                    @id @default(autoincrement())
+  SID           Int
+  TCID          Int
+  ActualOutput  String                 @db.Text
+  Result        testcaseresult_Result?
+  ExecutionTime Float?                 @db.Float
+  submission    submission             @relation(fields: [SID], references: [SID], onDelete: NoAction, onUpdate: NoAction, map: "testcaseresult_ibfk_1")
+  testcase      testcase               @relation(fields: [TCID], references: [TCID], onDelete: NoAction, onUpdate: NoAction, map: "testcaseresult_ibfk_2")
+
+  @@index([SID], map: "SID")
+  @@index([TCID], map: "TCID")
 }
 
-enum problems_Difficulty {
+model topic {
+  TpID                Int                   @id @default(autoincrement())
+  Name                String                @db.VarChar(50)
+  Description         String?               @db.VarChar(100)
+  topiclanguagedetail topiclanguagedetail[]
+}
+
+model topiclanguagedetail {
+  TLDID    Int      @id @default(autoincrement())
+  TpID     Int
+  LgID     Int
+  lesson   lesson[]
+  topic    topic    @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "topiclanguagedetail_ibfk_1")
+  language language @relation(fields: [LgID], references: [LgID], onDelete: NoAction, onUpdate: NoAction, map: "topiclanguagedetail_ibfk_2")
+
+  @@index([LgID], map: "LgID")
+  @@index([TpID], map: "TpID")
+}
+
+model user {
+  UID        String       @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  Username   String?      @db.VarChar(50)
+  Email      String       @unique(map: "Email") @db.VarChar(50)
+  Password   String       @db.VarChar(255)
+  Role       user_Role    @default(User)
+  CreatedAt  DateTime?    @default(now()) @db.Timestamp(0)
+  submission submission[]
+}
+
+model lesson {
+  LsID                Int                 @id @default(autoincrement())
+  TLDID               Int
+  OrderIndex          Int
+  Tittle              String              @db.VarChar(50)
+  Content             String              @db.Text
+  exercise            exercise[]
+  topiclanguagedetail topiclanguagedetail @relation(fields: [TLDID], references: [TLDID], onDelete: NoAction, onUpdate: NoAction, map: "lesson_ibfk_1")
+
+  @@index([TLDID], map: "TLDID")
+}
+
+enum exercise_Difficulty {
   Easy
   Medium
   Hard
 }
 
-enum submissionresults_Result {
+enum testcaseresult_Result {
+  Correct
+  Incorrect
+}
+
+enum user_Role {
+  User
+  Admin
+}
+
+enum submission_Result {
   Pass
   Fail
-}
-
-enum submissions_Status {
   Pending
-  Correct
-  Wrong
-  Error
-}
-
-enum users_Role {
-  Member
-  Admin
 }

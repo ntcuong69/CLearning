@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Email and password are required");
         }
 
-        const user = await prisma.users.findUnique({
+        const user = await prisma.user.findUnique({
           where: { Email: credentials.email },
         });
 
@@ -35,7 +35,6 @@ export const authOptions: NextAuthOptions = {
         return {
           id: user.UID,
           email: user.Email,
-          name: `${user.LastName} ${user.FirstName}`,
         };
       },
     }),
@@ -44,10 +43,6 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
-  },
-  pages: {
-    signIn: "/login",
-    error: "/login",
   },
   callbacks: {
     async jwt({ token, user }: { token: JWT; user?: User }) {

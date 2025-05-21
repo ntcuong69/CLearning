@@ -10,12 +10,12 @@ import { signIn } from "next-auth/react";
 import ThemeToggleSwitch from "@/components/ThemeToggleButton";
 
 export default function AuthPage() {
-  // State management
   const router = useRouter();
 
-  const [errorMessage, setErrorMessage] = useState("");
+  // State quản lý form và trạng thái
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,77 +23,66 @@ export default function AuthPage() {
     lastName: "",
     confirmPassword: "",
   });
+  const [fieldErrors, setFieldErrors] = useState({ email: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState("");
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-  const [isLoading, setIsLoading] = useState(false); // State to manage loading
 
-  // Event handlers
+  // Xử lý thay đổi input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === "confirmPassword") {
-      setErrorMessage("");
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (["email", "password", "confirmPassword"].includes(name)) {
+      setFieldErrors((prev) => ({ ...prev, [name]: "" }));
+      if (name === "confirmPassword") setErrorMessage("");
     }
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
   };
 
+  // Xử lý submit form đăng nhập/đăng ký
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Sign up logic
+
     if (isSignUp) {
+      // Đăng ký
       if (formData.password !== formData.confirmPassword) {
         setErrorMessage("Password does not match.");
         setIsLoading(false);
         return;
       }
-      setErrorMessage("");
       try {
-        const response = await axios.post("http://localhost:3000/api/auth/signup", {
-          FirstName: formData.firstName,
-          LastName: formData.lastName,
+        const res = await axios.post("http://localhost:3000/api/auth/signup", {
           Email: formData.email,
           Password: formData.password,
         });
-        console.log(response.data.message);
-        setSnackbar({ open: true, message: response.data.message, severity: "success" });
+        setSnackbar({ open: true, message: res.data.message, severity: "success" });
       } catch (error) {
-        console.error("Error during sign up:", error);
-        setSnackbar({
-          open: true,
-          message: "Failed to register. Please try again.",
-          severity: "error",
-        });
+        if (axios.isAxiosError(error) && error.response?.data?.message?.includes("Email already registered")) {
+          setFieldErrors({ email: "Email đã được sử dụng", password: "" });
+        }
       } finally {
         setIsLoading(false);
       }
     } else {
-      // Sign in logic
+      // Đăng nhập
       try {
         const result = await signIn("credentials", {
           redirect: false,
           email: formData.email,
           password: formData.password,
         });
-
         if (result?.error) {
-          // If login fails
-          setSnackbar({
-            open: true,
-            message: result.error || "Failed to login. Please try again.",
-            severity: "error",
-          });
+          if (result.error.toLowerCase().includes("email")) setFieldErrors({ email: "Email không tồn tại", password: "" });
+          else if (result.error.toLowerCase().includes("password")) setFieldErrors({ email: "", password: "Mật khẩu không đúng" });
+          else setFieldErrors({ email: "", password: "Đăng nhập thất bại" });
         } else {
-          // If login succeeds
+          setFieldErrors({ email: "", password: "" });
           router.push("/home");
         }
       } catch (error: any) {
-        console.error("Error during login:", error);
         setSnackbar({
           open: true,
           message: error.response?.data?.error || "Failed to login. Please try again.",
@@ -105,34 +94,42 @@ export default function AuthPage() {
     }
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar({ ...snackbar, open: false });
-  };
+  // Đóng snackbar thông báo
+  const handleCloseSnackbar = () => setSnackbar((prev) => ({ ...prev, open: false }));
 
+  // Style chung cho các TextField
   const commonTextFieldStyles = {
     "& .MuiOutlinedInput-root": {
       borderRadius: "10px",
       paddingTop: "0.2rem",
       paddingBottom: "0.2rem",
-      ".dark &": {
-        backgroundColor: "#171823",
-      },
+      ".dark &": { backgroundColor: "#171823" },
     },
     "& .MuiOutlinedInput-input": {
-      "&::placeholder": {
-        ".dark &": {
-          color: "#d1d5db",
-        },
-      },
-      ".dark &": {
-        caretColor: "#ffffff",
-        color: "#ffffff",
-      },
+      "&::placeholder": { ".dark &": { color: "#d1d5db" } },
+      ".dark &": { caretColor: "#ffffff", color: "#ffffff" },
     },
   };
 
   return (
     <>
+      <style>
+        {`
+          input:-webkit-autofill,
+          input:-webkit-autofill:hover,
+          input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
+            -webkit-text-fill-color: #000000 !important;
+          }
+          
+          .dark input:-webkit-autofill,
+          .dark input:-webkit-autofill:hover,
+          .dark input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0px 1000px #171823 inset !important; /* Gray background for dark mode */
+            -webkit-text-fill-color: #ffffff !important;
+          }
+        `}
+      </style>
       <Box className="flex items-center justify-center min-h-screen">
         <ThemeToggleSwitch />
         <Card
@@ -140,57 +137,18 @@ export default function AuthPage() {
           sx={{ borderRadius: 5, boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)", ".dark &": { backgroundColor: "#242533" } }}
         >
           <CardContent className="p-8 dark:bg-[#242533]">
-            {/* Header */}
+            {/* Tiêu đề */}
             <Typography variant="h5" component="h1" className="text-center dark:text-[#f1f1f1]" sx={{ fontWeight: "bold", marginBottom: 3 }}>
               {isSignUp ? "Sign Up" : "Sign In"}
             </Typography>
 
-            {/* Form */}
+            {/* Form đăng nhập/đăng ký */}
             <Box component="form" onSubmit={handleSubmit} className="space-y-4">
-              {isSignUp && (
-                <Box display="flex" gap={2} mb={0}>
-                  {/* First Name and Last Name Inputs */}
-                  <TextField
-                    fullWidth
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    placeholder="First Name"
-                    variant="outlined"
-                    size="small"
-                    margin="normal"
-                    required
-                    sx={commonTextFieldStyles}
-                  />
 
-                  {/* Last Name Input */}
-                  <TextField
-                    fullWidth
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    placeholder="Last Name"
-                    variant="outlined"
-                    size="small"
-                    margin="normal"
-                    required
-                    sx={commonTextFieldStyles}
-                  />
-                </Box>
-              )}
-
-              {/* Email Input */}
               <TextField
-                fullWidth
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email"
-                type="email"
-                variant="outlined"
-                size="small"
-                margin="normal"
-                required
+                fullWidth name="email" value={formData.email} onChange={handleChange}
+                placeholder="Email" type="email" variant="outlined" size="small" margin="normal" required
+                error={!!fieldErrors.email} helperText={fieldErrors.email}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -201,18 +159,10 @@ export default function AuthPage() {
                 sx={commonTextFieldStyles}
               />
 
-              {/* Password Input */}
               <TextField
-                fullWidth
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Password"
-                variant="outlined"
-                size="small"
-                margin="normal"
-                required
+                fullWidth type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange}
+                placeholder="Password" variant="outlined" size="small" margin="normal" required
+                error={!!fieldErrors.password} helperText={fieldErrors.password}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -221,8 +171,12 @@ export default function AuthPage() {
                   ),
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" aria-label="toggle password visibility">
-                        {showPassword ? <VisibilityOff sx={{ color: "black", ".dark &": { color: "white" } }} /> : <Visibility sx={{ color: "black", ".dark &": { color: "white" } }} />}
+                      <IconButton onClick={() => setShowPassword((v) => !v)} edge="end" aria-label="toggle password visibility">
+                        {showPassword ? (
+                          <VisibilityOff sx={{ color: "black", ".dark &": { color: "white" } }} />
+                        ) : (
+                          <Visibility sx={{ color: "black", ".dark &": { color: "white" } }} />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -232,18 +186,9 @@ export default function AuthPage() {
 
               {isSignUp && (
                 <TextField
-                  fullWidth
-                  type={showPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="Confirm Password"
-                  variant="outlined"
-                  size="small"
-                  margin="normal"
-                  required
-                  error={!!errorMessage}
-                  helperText={errorMessage}
+                  fullWidth type={showPassword ? "text" : "password"} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange}
+                  placeholder="Confirm Password" variant="outlined" size="small" margin="normal" required
+                  error={!!errorMessage} helperText={errorMessage}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -255,7 +200,7 @@ export default function AuthPage() {
                 />
               )}
 
-              {/* Remember Me & Forgot Password */}
+              {/* Link quên mật khẩu */}
               {!isSignUp && (
                 <Box className="flex items-center justify-center mt-4">
                   <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
@@ -264,48 +209,42 @@ export default function AuthPage() {
                 </Box>
               )}
 
-              {/* Submit Button */}
+              {/* Nút submit */}
               <Box className="flex justify-center mt-8">
                 <Button
-                  type="submit"
-                  variant="contained"
+                  type="submit" variant="contained" disableElevation disabled={isLoading}
                   sx={{
-                    backgroundColor: "#1F2937",
-                    width: "50%",
+                    backgroundColor: "#1F2937", width: "50%", color: "#ffffff",
                     transition: "background-color 0.3s ease",
-                    color: "#ffffff",
-                    "&:hover": {
-                      backgroundColor: "#111827",
-                    },
-                    "&.Mui-disabled": {
-                      backgroundColor: "#111827",
-                    },
-                    ".dark &": {
-                      backgroundColor: "#2d79f3",
-                      "&:hover": {
-                        backgroundColor: "#1e40af",
-                      },
-                    },
+                    "&:hover": { backgroundColor: "#111827" },
+                    "&.Mui-disabled": { backgroundColor: "#111827" },
+                    ".dark &": { backgroundColor: "#2d79f3", "&:hover": { backgroundColor: "#1e40af" } },
                   }}
-                  disableElevation
-                  disabled={isLoading}
                 >
                   {isLoading ? <CircularProgress size={25} sx={{ color: "#ffffff" }} /> : isSignUp ? "Sign Up" : "Login"}
                 </Button>
               </Box>
             </Box>
 
-            {/* Toggle Sign In/Sign Up */}
+            {/* Chuyển đổi giữa đăng nhập/đăng ký */}
             <Box className="mt-6 text-center">
               <Typography variant="body2" className="text-gray-700 dark:text-[#f1f1f1]">
                 {isSignUp ? "Already have an account? " : "Don’t have any account? "}
-                <Button onClick={() => setIsSignUp(!isSignUp)} className="text-blue-600 hover:underline" sx={{ textTransform: "none", padding: 0 }}>
+                <Button
+                  onClick={() => {
+                    setIsSignUp((v) => !v);
+                    setFieldErrors({ email: "", password: "" });
+                    setErrorMessage("");
+                  }}
+                  className="text-blue-600 hover:underline"
+                  sx={{ textTransform: "none", padding: 0 }}
+                >
                   {isSignUp ? "Sign In" : "Sign Up"}
                 </Button>
               </Typography>
             </Box>
 
-            {/* Social Login */}
+            {/* Đăng nhập mạng xã hội (chỉ giao diện, chưa có logic) */}
             <Box className="mt-8 mb-2">
               <Box className="relative flex items-center justify-center">
                 <Divider className="w-full" />
@@ -313,51 +252,14 @@ export default function AuthPage() {
                   or connect with
                 </Typography>
               </Box>
-
               <Box className="flex justify-center mt-6 space-x-4">
-                <IconButton
-                  sx={{
-                    color: "#155dfc",
-                    ".dark &": {
-                      color: "#4c6ef5",
-                      "&:hover": {
-                        backgroundColor: "#333333",
-                      },
-                    },
-                  }}
-                  size="large"
-                  aria-label="login with Facebook"
-                >
+                <IconButton sx={{ color: "#155dfc", ".dark &": { color: "#4c6ef5", "&:hover": { backgroundColor: "#333333" } } }} size="large" aria-label="login with Facebook">
                   <Facebook />
                 </IconButton>
-                <IconButton
-                  sx={{
-                    color: "#dc2626",
-                    ".dark &": {
-                      color: "#f87171",
-                      "&:hover": {
-                        backgroundColor: "#333333",
-                      },
-                    },
-                  }}
-                  size="large"
-                  aria-label="login with Google"
-                >
+                <IconButton sx={{ color: "#dc2626", ".dark &": { color: "#f87171", "&:hover": { backgroundColor: "#333333" } } }} size="large" aria-label="login with Google">
                   <Google />
                 </IconButton>
-                <IconButton
-                  sx={{
-                    color: "#1e2939",
-                    ".dark &": {
-                      color: "white",
-                      "&:hover": {
-                        backgroundColor: "#333333",
-                      },
-                    },
-                  }}
-                  size="large"
-                  aria-label="login with GitHub"
-                >
+                <IconButton sx={{ color: "#1e2939", ".dark &": { color: "white", "&:hover": { backgroundColor: "#333333" } } }} size="large" aria-label="login with GitHub">
                   <GitHub />
                 </IconButton>
               </Box>
@@ -365,7 +267,7 @@ export default function AuthPage() {
           </CardContent>
         </Card>
       </Box>
-      {/* Snackbar */}
+      {/* Thông báo snackbar */}
       <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: "top", horizontal: "right" }}>
         <Alert onClose={handleCloseSnackbar} severity={snackbar.severity as "success" | "error"}>
           {snackbar.message}

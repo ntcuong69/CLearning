@@ -7,7 +7,7 @@ import LocaleSwitcher from "@/components/LocaleSwitcher";
 
 export default function GettingStarted() {
  
-  const t = useTranslations('GettingStarted');
+  const t = useTranslations('LandingPage');
 
   return (
     <main className="min-h-screen bg-[linear-gradient(to_left_bottom,_#3f2a9c,_#141b56)] text-white font-sans px-6 py-12">
@@ -15,7 +15,7 @@ export default function GettingStarted() {
         {/* Header */}
         <Box component="header" className="flex justify-between items-center mb-8">
           <Typography variant="h5" className="font-bold">
-            &lt;/&gt; CODE CHALLENGE
+            &lt;/&gt; CODE FORGE
           </Typography>
           <LocaleSwitcher/>
           <Box className="space-x-4">

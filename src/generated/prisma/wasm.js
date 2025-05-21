@@ -117,47 +117,73 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.ProblemsScalarFieldEnum = {
-  PID: 'PID',
-  Title: 'Title',
-  Description: 'Description',
-  Difficulty: 'Difficulty',
-  Topic: 'Topic',
-  CreatedAt: 'CreatedAt'
+exports.Prisma.ExerciseScalarFieldEnum = {
+  EID: 'EID',
+  LsID: 'LsID',
+  OrderIndex: 'OrderIndex',
+  Content: 'Content',
+  Difficulty: 'Difficulty'
 };
 
-exports.Prisma.SubmissionresultsScalarFieldEnum = {
-  SRID: 'SRID',
+exports.Prisma.LanguageScalarFieldEnum = {
+  LgID: 'LgID',
+  Name: 'Name',
+  Logo: 'Logo'
+};
+
+exports.Prisma.SubmissionScalarFieldEnum = {
   SID: 'SID',
-  TID: 'TID',
+  UID: 'UID',
+  EID: 'EID',
+  Code: 'Code',
+  CreatedAt: 'CreatedAt',
+  Result: 'Result'
+};
+
+exports.Prisma.TestcaseScalarFieldEnum = {
+  TCID: 'TCID',
+  EID: 'EID',
+  Input: 'Input',
+  ExpectedOutput: 'ExpectedOutput',
+  isHidden: 'isHidden'
+};
+
+exports.Prisma.TestcaseresultScalarFieldEnum = {
+  TCRID: 'TCRID',
+  SID: 'SID',
+  TCID: 'TCID',
+  ActualOutput: 'ActualOutput',
   Result: 'Result',
   ExecutionTime: 'ExecutionTime'
 };
 
-exports.Prisma.SubmissionsScalarFieldEnum = {
-  SID: 'SID',
-  UID: 'UID',
-  PID: 'PID',
-  Code: 'Code',
-  Status: 'Status',
-  TimeOfSubmission: 'TimeOfSubmission'
+exports.Prisma.TopicScalarFieldEnum = {
+  TpID: 'TpID',
+  Name: 'Name',
+  Description: 'Description'
 };
 
-exports.Prisma.TestcasesScalarFieldEnum = {
-  TID: 'TID',
-  PID: 'PID',
-  InputData: 'InputData',
-  ExpectedOutput: 'ExpectedOutput'
+exports.Prisma.TopiclanguagedetailScalarFieldEnum = {
+  TLDID: 'TLDID',
+  TpID: 'TpID',
+  LgID: 'LgID'
 };
 
-exports.Prisma.UsersScalarFieldEnum = {
+exports.Prisma.UserScalarFieldEnum = {
   UID: 'UID',
-  FirstName: 'FirstName',
-  LastName: 'LastName',
+  Username: 'Username',
   Email: 'Email',
   Password: 'Password',
   Role: 'Role',
   CreatedAt: 'CreatedAt'
+};
+
+exports.Prisma.LessonScalarFieldEnum = {
+  LsID: 'LsID',
+  TLDID: 'TLDID',
+  OrderIndex: 'OrderIndex',
+  Tittle: 'Tittle',
+  Content: 'Content'
 };
 
 exports.Prisma.SortOrder = {
@@ -165,63 +191,82 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.exerciseOrderByRelevanceFieldEnum = {
+  Content: 'Content'
+};
+
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
 
-exports.Prisma.problemsOrderByRelevanceFieldEnum = {
-  Title: 'Title',
-  Description: 'Description',
-  Topic: 'Topic'
+exports.Prisma.languageOrderByRelevanceFieldEnum = {
+  Name: 'Name',
+  Logo: 'Logo'
 };
 
-exports.Prisma.submissionsOrderByRelevanceFieldEnum = {
+exports.Prisma.submissionOrderByRelevanceFieldEnum = {
   UID: 'UID',
   Code: 'Code'
 };
 
-exports.Prisma.testcasesOrderByRelevanceFieldEnum = {
-  InputData: 'InputData',
+exports.Prisma.testcaseOrderByRelevanceFieldEnum = {
+  Input: 'Input',
   ExpectedOutput: 'ExpectedOutput'
 };
 
-exports.Prisma.usersOrderByRelevanceFieldEnum = {
+exports.Prisma.testcaseresultOrderByRelevanceFieldEnum = {
+  ActualOutput: 'ActualOutput'
+};
+
+exports.Prisma.topicOrderByRelevanceFieldEnum = {
+  Name: 'Name',
+  Description: 'Description'
+};
+
+exports.Prisma.userOrderByRelevanceFieldEnum = {
   UID: 'UID',
-  FirstName: 'FirstName',
-  LastName: 'LastName',
+  Username: 'Username',
   Email: 'Email',
   Password: 'Password'
 };
-exports.problems_Difficulty = exports.$Enums.problems_Difficulty = {
+
+exports.Prisma.lessonOrderByRelevanceFieldEnum = {
+  Tittle: 'Tittle',
+  Content: 'Content'
+};
+exports.exercise_Difficulty = exports.$Enums.exercise_Difficulty = {
   Easy: 'Easy',
   Medium: 'Medium',
   Hard: 'Hard'
 };
 
-exports.submissionresults_Result = exports.$Enums.submissionresults_Result = {
+exports.submission_Result = exports.$Enums.submission_Result = {
   Pass: 'Pass',
-  Fail: 'Fail'
+  Fail: 'Fail',
+  Pending: 'Pending'
 };
 
-exports.submissions_Status = exports.$Enums.submissions_Status = {
-  Pending: 'Pending',
+exports.testcaseresult_Result = exports.$Enums.testcaseresult_Result = {
   Correct: 'Correct',
-  Wrong: 'Wrong',
-  Error: 'Error'
+  Incorrect: 'Incorrect'
 };
 
-exports.users_Role = exports.$Enums.users_Role = {
-  Member: 'Member',
+exports.user_Role = exports.$Enums.user_Role = {
+  User: 'User',
   Admin: 'Admin'
 };
 
 exports.Prisma.ModelName = {
-  problems: 'problems',
-  submissionresults: 'submissionresults',
-  submissions: 'submissions',
-  testcases: 'testcases',
-  users: 'users'
+  exercise: 'exercise',
+  language: 'language',
+  submission: 'submission',
+  testcase: 'testcase',
+  testcaseresult: 'testcaseresult',
+  topic: 'topic',
+  topiclanguagedetail: 'topiclanguagedetail',
+  user: 'user',
+  lesson: 'lesson'
 };
 
 /**

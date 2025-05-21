@@ -1,6 +1,23 @@
 {
-    "GettingStarted": {
+    "LandingPage": {
       "title": "Getting Started",
-      "description": "Here, you can practice fun programming problems, improve step by step, and get better every day. Whether you're learning for school or just curious, we're here to help you grow with code."
+      "description": "Practice fun programming problems step-by-step, whether you're learning for school or just curious - we’re here to help you grow."
+    },
+    "HomePage": {
+      "topics_list": "List of Topics"
+    },
+    "Topic": {
+      "basic_programming": {
+        "name": "Basic Programming",
+        "des": "Basic programming provides the foundation for writing code, using variables, loops, conditionals, and functions to solve simple problems."
+      },
+      "oop": {
+        "name": "Object-Oriented Programming",
+        "des": "Object-Oriented Programming organizes code around objects, enabling better data management and behavior through concepts like classes, inheritance, encapsulation, and polymorphism"
+      },
+      "ds_algo": {
+        "name": "Data Structures and Algorithms",
+        "des": "Data Structures and Algorithms focus on efficiently organizing and processing data to solve complex programming problems."
+      }
     }
 }

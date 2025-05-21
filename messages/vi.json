@@ -1,6 +1,11 @@
 {
-    "GettingStarted": {
+    "LandingPage": {
       "title": "Khởi động",
-      "description": "Tại đây, bạn có thể thực hành các bài toán lập trình thú vị, cải thiện từng bước và trở nên tốt hơn mỗi ngày. Cho dù bạn đang học để đi học hay chỉ tò mò, chúng tôi luôn ở đây để giúp bạn phát triển với mã."
+      "description": "Luyện tập các bài toán lập trình thú vị từng bước một, dù bạn học để phục vụ việc học ở trường hay chỉ vì tò mò - chúng tôi luôn sẵn sàng hỗ trợ bạn phát triển."
+    },
+    "Topic": {
+      "basic_programming": "Lập trình căn bản",
+      "oop": "Lập trình hướng đối tượng",
+      "ds_algo": "Cấu trúc dữ liệu và Giải thuật"
     }
 }

@@ -1,122 +1,102 @@
 "use client";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { useTranslations } from "next-intl";
+import { Box, Drawer, Avatar, Divider } from "@mui/material";
 import Image from "next/image";
-import { signOut } from "next-auth/react";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
 
-export default function Home() {
+interface Topic {
+  TpID: number;
+  Name: string;
+  Description: string | null;
+}
 
-  async function handleLogout(){
-    await signOut({
-      callbackUrl: "/auth",
-    });
-  };
+export default function TopicsPage() {
+  const t1 = useTranslations("Topic");
+  const t2 = useTranslations("HomePage");
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState<string>("");
+
+  useEffect(() => {
+    axios
+      .get("/api/topics")
+      .then((res) => {
+        setTopics(res.data.topics);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching topics:", err);
+        setLoading(false);
+      });
+    axios
+      .get("/api/me")
+      .then((res) => {
+        setUserEmail(res.data.user.Email);
+      })
+      .catch(() => {
+        setUserEmail("");
+      });
+  }, []);
+
+  if (loading) return <p className="p-4">Đang tải...</p>;
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <ThemeToggleButton/>
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-
-        {/* Nút Logout */}
-        <button
-          onClick={handleLogout}
-          className="mt-4 bg-red-500 text-white font-medium text-sm sm:text-base h-10 sm:h-12 px-6 rounded-full hover:bg-red-600 transition-all"
-        >
-          Logout
-        </button>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+      {/* Sidebar */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: 260,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: 260, boxSizing: "border-box", background: "#f5f5f5" },
+        }}
+      >
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", p: 3 }}>
+          <Image src="/next.svg" alt="CodeForge Logo" width={80} height={80} style={{ marginBottom: 16 }} />
+          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+            CodeForge
+          </Typography>
+          <Divider sx={{ width: "100%", my: 2 }} />
+          <Avatar sx={{ mb: 1, bgcolor: "primary.main" }}>{userEmail ? userEmail[0].toUpperCase() : "?"}</Avatar>
+          <Typography variant="body2" color="text.secondary">
+            {userEmail || "Chưa đăng nhập"}
+          </Typography>
+        </Box>
+      </Drawer>
+      {/* Main Content */}
+      <Box component="main" sx={{ flexGrow: 1, p: 6 }}>
+      <Typography
+        variant="h5"
+        component="h2"
+        className="text-gray-800 dark:text-white font-semibold"
+        sx={{
+          fontSize: { xs: '1.25rem', sm: '1.5rem' },
+          mb: 2,
+        }}
+      >
+        👋 Xin chào! Hôm nay bạn định học gì?
+      </Typography>
+        <h1 className="text-2xl font-bold mb-4">{t2('topics_list')}</h1>
+        <Grid container spacing={4}>
+          {topics.map((topic) => (
+            <Grid size={{ xs: 12, md: 4 }} key={topic.TpID}>
+              <Card key={topic.TpID} variant="outlined" sx={{borderRadius: 3, height: "170px"}}>
+                <CardContent>
+                  <Typography variant="h6" sx={{mb: 1.5}}>{t1(topic.Name)}</Typography>
+                  {topic.Description && (
+                    <Typography variant="body2" color="text.secondary">
+                      {t1(topic.Description)}
+                    </Typography>
+                  )}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </Box>
   );
 }
