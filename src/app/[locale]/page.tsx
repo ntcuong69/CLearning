@@ -13,23 +13,11 @@ export default function GettingStarted() {
     <main className="min-h-screen bg-[linear-gradient(to_left_bottom,_#3f2a9c,_#141b56)] text-white font-sans px-6 py-12">
       <Box className="max-w-6xl mx-auto">
         {/* Header */}
-        <Box component="header" className="flex justify-between items-center mb-8">
+        <Box component="header" className="flex items-center mb-8 space-x-2">
+          <img src="/code.png" width="40px" height="40px" className="inline-block"/>
           <Typography variant="h5" className="font-bold">
-            &lt;/&gt; CODE FORGE
+             CODE FORGE
           </Typography>
-          <LocaleSwitcher/>
-          <Box className="space-x-4">
-            <Link href="/auth">
-              <Button variant="text">
-                Sign Up
-              </Button>
-            </Link>
-            <Link href="/auth">
-              <Button variant="text">
-                Log In
-              </Button>
-            </Link>
-          </Box>
         </Box>
 
         {/* Main Section */}

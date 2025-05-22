@@ -3,7 +3,22 @@
       "title": "Getting Started",
       "description": "Practice fun programming problems step-by-step, whether you're learning for school or just curious - we’re here to help you grow."
     },
+    "AuthPage": {
+      "signin": "Sign In",
+      "signup": "Sign Up",
+      "password": "Password",
+      "confirm_password": "Confirm Password",
+      "forgot_password": "Forgot password?",
+      "login": "Login",
+      "create": "Create",
+      "do_not_have_any_account": "Don't have any account?",
+      "already_have_an_account": "Already have an account?",
+      "sign_in": "Sign In",
+      "sign_up": "Sign Up",
+      "or_connect_with": "or connect with"
+    },
     "HomePage": {
+      "welcome": "👋 Hello! What do you want to learn today?",
       "topics_list": "List of Topics"
     },
     "Topic": {

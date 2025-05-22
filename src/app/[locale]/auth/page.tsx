@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { TextField, Button, Card, CardContent, Typography, IconButton, InputAdornment, CircularProgress, Divider, Box, Snackbar, Alert } from "@mui/material";
 import { Visibility, VisibilityOff, AlternateEmail, LockOutlined, Facebook, Google, GitHub } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import ThemeToggleSwitch from "@/components/ThemeToggleButton";
+import { useTranslations } from "next-intl";
 
 export default function AuthPage() {
+  const t = useTranslations("AuthPage");
   const router = useRouter();
 
   // State quản lý form và trạng thái
@@ -131,7 +132,6 @@ export default function AuthPage() {
         `}
       </style>
       <Box className="flex items-center justify-center min-h-screen">
-        <ThemeToggleSwitch />
         <Card
           className="w-full max-w-sm"
           sx={{ borderRadius: 5, boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.3)", ".dark &": { backgroundColor: "#242533" } }}
@@ -139,7 +139,7 @@ export default function AuthPage() {
           <CardContent className="p-8 dark:bg-[#242533]">
             {/* Tiêu đề */}
             <Typography variant="h5" component="h1" className="text-center dark:text-[#f1f1f1]" sx={{ fontWeight: "bold", marginBottom: 3 }}>
-              {isSignUp ? "Sign Up" : "Sign In"}
+              {isSignUp ? t("signup") : t("signin")}
             </Typography>
 
             {/* Form đăng nhập/đăng ký */}
@@ -161,7 +161,7 @@ export default function AuthPage() {
 
               <TextField
                 fullWidth type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange}
-                placeholder="Password" variant="outlined" size="small" margin="normal" required
+                placeholder={t("password")} variant="outlined" size="small" margin="normal" required
                 error={!!fieldErrors.password} helperText={fieldErrors.password}
                 InputProps={{
                   startAdornment: (
@@ -187,7 +187,7 @@ export default function AuthPage() {
               {isSignUp && (
                 <TextField
                   fullWidth type={showPassword ? "text" : "password"} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange}
-                  placeholder="Confirm Password" variant="outlined" size="small" margin="normal" required
+                  placeholder={t("confirm_password")} variant="outlined" size="small" margin="normal" required
                   error={!!errorMessage} helperText={errorMessage}
                   InputProps={{
                     startAdornment: (
@@ -204,7 +204,7 @@ export default function AuthPage() {
               {!isSignUp && (
                 <Box className="flex items-center justify-center mt-4">
                   <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
-                    Forgot password?
+                    {t("forgot_password")}
                   </Link>
                 </Box>
               )}
@@ -221,7 +221,7 @@ export default function AuthPage() {
                     ".dark &": { backgroundColor: "#2d79f3", "&:hover": { backgroundColor: "#1e40af" } },
                   }}
                 >
-                  {isLoading ? <CircularProgress size={25} sx={{ color: "#ffffff" }} /> : isSignUp ? "Sign Up" : "Login"}
+                  {isLoading ? <CircularProgress size={25} sx={{ color: "#ffffff" }} /> : isSignUp ? t("create") : t("login")}
                 </Button>
               </Box>
             </Box>
@@ -229,7 +229,7 @@ export default function AuthPage() {
             {/* Chuyển đổi giữa đăng nhập/đăng ký */}
             <Box className="mt-6 text-center">
               <Typography variant="body2" className="text-gray-700 dark:text-[#f1f1f1]">
-                {isSignUp ? "Already have an account? " : "Don’t have any account? "}
+                {isSignUp ? t("already_have_an_account") : t("do_not_have_any_account")}
                 <Button
                   onClick={() => {
                     setIsSignUp((v) => !v);
@@ -237,9 +237,9 @@ export default function AuthPage() {
                     setErrorMessage("");
                   }}
                   className="text-blue-600 hover:underline"
-                  sx={{ textTransform: "none", padding: 0 }}
+                  sx={{ textTransform: "none", padding: 0, ml: 1 }}
                 >
-                  {isSignUp ? "Sign In" : "Sign Up"}
+                  {isSignUp ? t("sign_in") : t("sign_up")}
                 </Button>
               </Typography>
             </Box>
@@ -247,9 +247,9 @@ export default function AuthPage() {
             {/* Đăng nhập mạng xã hội (chỉ giao diện, chưa có logic) */}
             <Box className="mt-8 mb-2">
               <Box className="relative flex items-center justify-center">
-                <Divider className="w-full" />
+                <Divider className="w-full" sx={{".dark &": { borderColor: "#99a1af", borderBottomWidth: '1px' }}}/>
                 <Typography variant="body2" className="absolute px-4 bg-white dark:bg-[#242533] text-gray-600 dark:text-gray-400">
-                  or connect with
+                  {t("or_connect_with")}
                 </Typography>
               </Box>
               <Box className="flex justify-center mt-6 space-x-4">

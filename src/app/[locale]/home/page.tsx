@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import { Button, Card, CardContent, CircularProgress, Grid, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { Box, Drawer, Avatar, Divider } from "@mui/material";
 import Image from "next/image";
+import { signOut } from "next-auth/react";
 
 interface Topic {
   TpID: number;
@@ -41,7 +42,12 @@ export default function TopicsPage() {
       });
   }, []);
 
-  if (loading) return <p className="p-4">Đang tải...</p>;
+  if (loading)
+    return (
+      <Box className="flex justify-center items-center h-screen">
+        <CircularProgress size={100} sx={{ color: "#cc2b5e" }} />
+      </Box>
+    );
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
@@ -65,27 +71,32 @@ export default function TopicsPage() {
             {userEmail || "Chưa đăng nhập"}
           </Typography>
         </Box>
+        <Button onClick={() => signOut({ callbackUrl: "/auth" })} className="px-4 py-2">
+          Logout
+        </Button>
       </Drawer>
       {/* Main Content */}
       <Box component="main" sx={{ flexGrow: 1, p: 6 }}>
-      <Typography
-        variant="h5"
-        component="h2"
-        className="text-gray-800 dark:text-white font-semibold"
-        sx={{
-          fontSize: { xs: '1.25rem', sm: '1.5rem' },
-          mb: 2,
-        }}
-      >
-        👋 Xin chào! Hôm nay bạn định học gì?
-      </Typography>
-        <h1 className="text-2xl font-bold mb-4">{t2('topics_list')}</h1>
+        <Typography
+          variant="h5"
+          component="h2"
+          className="text-gray-800 dark:text-white font-semibold"
+          sx={{
+            fontSize: { xs: "1.25rem", sm: "1.5rem" },
+            mb: 2,
+          }}
+        >
+          {t2("welcome")}
+        </Typography>
+        <h1 className="text-2xl font-bold mb-4">{t2("topics_list")}</h1>
         <Grid container spacing={4}>
           {topics.map((topic) => (
             <Grid size={{ xs: 12, md: 4 }} key={topic.TpID}>
-              <Card key={topic.TpID} variant="outlined" sx={{borderRadius: 3, height: "170px"}}>
+              <Card key={topic.TpID} variant="outlined" sx={{ borderRadius: 3, height: "170px" }}>
                 <CardContent>
-                  <Typography variant="h6" sx={{mb: 1.5}}>{t1(topic.Name)}</Typography>
+                  <Typography variant="h6" sx={{ mb: 1.5 }}>
+                    {t1(topic.Name)}
+                  </Typography>
                   {topic.Description && (
                     <Typography variant="body2" color="text.secondary">
                       {t1(topic.Description)}

@@ -3,11 +3,11 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { useTransition } from 'react';
-import { Select, MenuItem, SelectChangeEvent  } from '@mui/material';
+import { Select, MenuItem, SelectChangeEvent, Box } from '@mui/material';
 
 const locales = [
-  { code: 'en', label: 'English' },
-  { code: 'vi', label: 'Tiếng Việt' }
+  { code: 'en', label: 'EN', flag: '/EN.png'},
+  { code: 'vi', label: 'VN', flag: '/VN.png'},
 ];
 
 export default function LocaleSwitcher() {
@@ -28,21 +28,23 @@ export default function LocaleSwitcher() {
   };
 
   return (
-    <div className="w-32">
+    <Box>
       <Select
         value={currentLocale}
         onChange={handleChange}
-        fullWidth
-        className="bg-white dark:bg-gray-800 text-sm"
+        className="bg-white text-sm"
         size="small"
         disabled={isPending}
+        sx={{
+          ".dark &": { backgroundColor: "rgba(255,255,255,0.08)", color: "white" },
+        }}
       >
         {locales.map((locale) => (
-          <MenuItem key={locale.code} value={locale.code}>
-            {locale.label}
+          <MenuItem key={locale.code} value={locale.code} className="flex items-center gap-2">
+            <img src={locale.flag} width={20} height={14} className='inline-block'/> {locale.label}
           </MenuItem>
         ))}
       </Select>
-    </div>
+    </Box>
   );
 }

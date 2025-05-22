@@ -3,9 +3,36 @@
       "title": "Khởi động",
       "description": "Luyện tập các bài toán lập trình thú vị từng bước một, dù bạn học để phục vụ việc học ở trường hay chỉ vì tò mò - chúng tôi luôn sẵn sàng hỗ trợ bạn phát triển."
     },
+    "AuthPage": {
+      "signin": "Đăng nhập",
+      "signup": "Đăng ký",
+      "password": "Mật khẩu",
+      "confirm_password": "Xác nhận mật khẩu",
+      "forgot_password": "Quên mật khẩu?",
+      "login": "Đăng nhập",
+      "create": "Tạo tài khoản",
+      "do_not_have_any_account": "Chưa có tài khoản?",
+      "already_have_an_account": "Đã có tài khoản?",
+      "sign_in": "Đăng nhập ngay",
+      "sign_up": "Tạo tài khoản mới",
+      "or_connect_with": "hoặc đăng nhập với"
+    },
+    "HomePage": {
+      "welcome": "👋 Xin chào! Hôm nay bạn định học gì?",
+      "topics_list": "Danh sách các chủ đề"
+    },
     "Topic": {
-      "basic_programming": "Lập trình căn bản",
-      "oop": "Lập trình hướng đối tượng",
-      "ds_algo": "Cấu trúc dữ liệu và Giải thuật"
+      "basic_programming": {
+        "name": "Lập trình căn bản",
+        "des": "Nền tảng giúp người học hiểu cách viết mã, sử dụng biến, vòng lặp, điều kiện và hàm để giải quyết các bài toán đơn giản."
+      },
+      "oop": {
+        "name": "Lập trình hướng đối tượng",
+        "des": "Phương pháp tổ chức chương trình dựa trên các đối tượng, giúp quản lý dữ liệu và hành vi của chương trình thông qua các khái niệm như lớp, kế thừa, đóng gói và đa hình."
+      },
+      "ds_algo": {
+        "name": "Cấu trúc dữ liệu và Giải thuật",
+        "des": "Lĩnh vực nghiên cứu cách tổ chức và xử lý dữ liệu hiệu quả để giải quyết các bài toán phức tạp trong lập trình."
+      }
     }
 }
