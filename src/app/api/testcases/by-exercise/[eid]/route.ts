@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 // Lấy tất cả testcase của exercise theo EID
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ id: string; eid: string }> }
+  context: { params: Promise<{ eid: string }> }
 ) {
   const { eid } = await context.params;
 
