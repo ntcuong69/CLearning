@@ -10,22 +10,14 @@ datasource db {
 
 model exercise {
   EID        Int                 @id @default(autoincrement())
-  LsID       Int
-  OrderIndex Int
+  TpID       Int
   Content    String              @db.Text
   Difficulty exercise_Difficulty @default(Easy)
-  lession    lesson              @relation(fields: [LsID], references: [LsID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
+  topic      topic               @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
   submission submission[]
   testcase   testcase[]
 
-  @@index([LsID], map: "LsID")
-}
-
-model language {
-  LgID                Int                   @id @default(autoincrement())
-  Name                String                @db.VarChar(20)
-  Logo                String?               @db.VarChar(255)
-  topiclanguagedetail topiclanguagedetail[]
+  @@index([TpID], map: "TpID")
 }
 
 model submission {
@@ -35,6 +27,7 @@ model submission {
   Code           String?            @db.Text
   CreatedAt      DateTime?          @default(now()) @db.Timestamp(0)
   Result         submission_Result? @default(Pending)
+  isPublic       Boolean?           @default(false)
   exercise       exercise           @relation(fields: [EID], references: [EID], onDelete: NoAction, onUpdate: NoAction, map: "submission_ibfk_1")
   user           user               @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "submission_ibfk_2")
   testcaseresult testcaseresult[]
@@ -56,69 +49,54 @@ model testcase {
 }
 
 model testcaseresult {
-  TCRID         Int                    @id @default(autoincrement())
+  TCRID         Int                   @id @default(autoincrement())
   SID           Int
   TCID          Int
-  ActualOutput  String                 @db.Text
-  Result        testcaseresult_Result?
-  ExecutionTime Float?                 @db.Float
-  submission    submission             @relation(fields: [SID], references: [SID], onDelete: NoAction, onUpdate: NoAction, map: "testcaseresult_ibfk_1")
-  testcase      testcase               @relation(fields: [TCID], references: [TCID], onDelete: NoAction, onUpdate: NoAction, map: "testcaseresult_ibfk_2")
+  ActualOutput  String                @db.Text
+  Result        testcaseresult_Result @default(Pending)
+  ExecutionTime Float?                @db.Float
+  submission    submission            @relation(fields: [SID], references: [SID], onDelete: NoAction, onUpdate: NoAction, map: "testcaseresult_ibfk_1")
+  testcase      testcase              @relation(fields: [TCID], references: [TCID], onDelete: NoAction, onUpdate: NoAction, map: "testcaseresult_ibfk_2")
 
   @@index([SID], map: "SID")
   @@index([TCID], map: "TCID")
 }
 
 model topic {
-  TpID                Int                   @id @default(autoincrement())
-  Name                String                @db.VarChar(50)
-  Description         String?               @db.VarChar(100)
-  topiclanguagedetail topiclanguagedetail[]
-}
-
-model topiclanguagedetail {
-  TLDID    Int      @id @default(autoincrement())
-  TpID     Int
-  LgID     Int
-  lesson   lesson[]
-  topic    topic    @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "topiclanguagedetail_ibfk_1")
-  language language @relation(fields: [LgID], references: [LgID], onDelete: NoAction, onUpdate: NoAction, map: "topiclanguagedetail_ibfk_2")
-
-  @@index([LgID], map: "LgID")
-  @@index([TpID], map: "TpID")
+  TpID     Int        @id @default(autoincrement())
+  Name     String     @db.VarChar(50)
+  exercise exercise[]
 }
 
 model user {
-  UID        String       @id @default(dbgenerated("(uuid())")) @db.Char(36)
-  Username   String?      @db.VarChar(50)
-  Email      String       @unique(map: "Email") @db.VarChar(50)
-  Password   String       @db.VarChar(255)
-  Role       user_Role    @default(User)
-  CreatedAt  DateTime?    @default(now()) @db.Timestamp(0)
-  submission submission[]
+  UID                                   String       @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  Username                              String       @db.VarChar(50)
+  Email                                 String       @unique(map: "Email") @db.VarChar(50)
+  Password                              String       @db.VarChar(255)
+  Role                                  user_Role    @default(User)
+  CreatedAt                             DateTime?    @default(now()) @db.Timestamp(0)
+  friendship_friendship_requesterTouser friendship[] @relation("friendship_requesterTouser")
+  friendship_friendship_addresseeTouser friendship[] @relation("friendship_addresseeTouser")
+  submission                            submission[]
 }
 
-model lesson {
-  LsID                Int                 @id @default(autoincrement())
-  TLDID               Int
-  OrderIndex          Int
-  Tittle              String              @db.VarChar(50)
-  Content             String              @db.Text
-  exercise            exercise[]
-  topiclanguagedetail topiclanguagedetail @relation(fields: [TLDID], references: [TLDID], onDelete: NoAction, onUpdate: NoAction, map: "lesson_ibfk_1")
+model friendship {
+  FID                             Int               @id @default(autoincrement())
+  requester                       String            @db.Char(36)
+  addressee                       String            @db.Char(36)
+  status                          friendship_status @default(Pending)
+  CreatedAt                       DateTime?         @default(now()) @db.Timestamp(0)
+  user_friendship_requesterTouser user              @relation("friendship_requesterTouser", fields: [requester], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "friendship_ibfk_1")
+  user_friendship_addresseeTouser user              @relation("friendship_addresseeTouser", fields: [addressee], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "friendship_ibfk_2")
 
-  @@index([TLDID], map: "TLDID")
+  @@unique([requester, addressee], map: "requester")
+  @@index([addressee], map: "addressee")
 }
 
 enum exercise_Difficulty {
   Easy
   Medium
   Hard
-}
-
-enum testcaseresult_Result {
-  Correct
-  Incorrect
 }
 
 enum user_Role {
@@ -129,5 +107,18 @@ enum user_Role {
 enum submission_Result {
   Pass
   Fail
+  Pending
+}
+
+enum friendship_status {
+  Pending
+  Accepted
+}
+
+enum testcaseresult_Result {
+  Correct
+  Partial
+  Wrong
+  Error
   Pending
 }

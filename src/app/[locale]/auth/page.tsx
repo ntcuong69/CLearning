@@ -3,8 +3,21 @@
 import React, { use, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
-import { TextField, Button, Card, CardContent, Typography, IconButton, InputAdornment, CircularProgress, Divider, Box, Snackbar, Alert } from "@mui/material";
-import { Visibility, VisibilityOff, AlternateEmail, LockOutlined, Facebook, Google, GitHub } from "@mui/icons-material";
+import {
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  IconButton,
+  InputAdornment,
+  CircularProgress,
+  Divider,
+  Box,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import { Visibility, VisibilityOff, AlternateEmail, LockOutlined, Facebook, Google, GitHub, Person2Outlined } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
@@ -20,8 +33,7 @@ export default function AuthPage() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    firstName: "",
-    lastName: "",
+    username: "",
     confirmPassword: "",
   });
   const [fieldErrors, setFieldErrors] = useState({ email: "", password: "" });
@@ -56,6 +68,7 @@ export default function AuthPage() {
       }
       try {
         const res = await axios.post("http://localhost:3000/api/auth/signup", {
+          Name: formData.username,
           Email: formData.email,
           Password: formData.password,
         });
@@ -76,8 +89,8 @@ export default function AuthPage() {
           password: formData.password,
         });
         if (result?.error) {
-          if (result.error.toLowerCase().includes("email")) setFieldErrors({ email: "Email không tồn tại", password: "" });
-          else if (result.error.toLowerCase().includes("password")) setFieldErrors({ email: "", password: "Mật khẩu không đúng" });
+          if (result.error.toLowerCase().includes("email")) setFieldErrors({email: "Email không tồn tại", password: "" });
+          else if (result.error.toLowerCase().includes("password")) setFieldErrors({email: "", password: "Mật khẩu không đúng" });
           else setFieldErrors({ email: "", password: "Đăng nhập thất bại" });
         } else {
           setFieldErrors({ email: "", password: "" });
@@ -144,11 +157,43 @@ export default function AuthPage() {
 
             {/* Form đăng nhập/đăng ký */}
             <Box component="form" onSubmit={handleSubmit} className="space-y-4">
-
+              {isSignUp && 
+                <Box mb={0}>
+                  {/* Name Input */}
+                  <TextField
+                    fullWidth
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    placeholder={t("name")}
+                    variant="outlined"
+                    size="small"
+                    margin="normal"
+                    required
+                    sx={commonTextFieldStyles}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <Person2Outlined sx={{ color: "black", ".dark &": { color: "white" }, marginRight: 1 }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Box>
+              }
               <TextField
-                fullWidth name="email" value={formData.email} onChange={handleChange}
-                placeholder="Email" type="email" variant="outlined" size="small" margin="normal" required
-                error={!!fieldErrors.email} helperText={fieldErrors.email}
+                fullWidth
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                type="email"
+                variant="outlined"
+                size="small"
+                margin="normal"
+                required
+                error={!!fieldErrors.email}
+                helperText={fieldErrors.email}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -160,9 +205,18 @@ export default function AuthPage() {
               />
 
               <TextField
-                fullWidth type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange}
-                placeholder={t("password")} variant="outlined" size="small" margin="normal" required
-                error={!!fieldErrors.password} helperText={fieldErrors.password}
+                fullWidth
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder={t("password")}
+                variant="outlined"
+                size="small"
+                margin="normal"
+                required
+                error={!!fieldErrors.password}
+                helperText={fieldErrors.password}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -186,9 +240,18 @@ export default function AuthPage() {
 
               {isSignUp && (
                 <TextField
-                  fullWidth type={showPassword ? "text" : "password"} name="confirmPassword" value={formData.confirmPassword} onChange={handleChange}
-                  placeholder={t("confirm_password")} variant="outlined" size="small" margin="normal" required
-                  error={!!errorMessage} helperText={errorMessage}
+                  fullWidth
+                  type={showPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder={t("confirm_password")}
+                  variant="outlined"
+                  size="small"
+                  margin="normal"
+                  required
+                  error={!!errorMessage}
+                  helperText={errorMessage}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -212,9 +275,14 @@ export default function AuthPage() {
               {/* Nút submit */}
               <Box className="flex justify-center mt-8">
                 <Button
-                  type="submit" variant="contained" disableElevation disabled={isLoading}
+                  type="submit"
+                  variant="contained"
+                  disableElevation
+                  disabled={isLoading}
                   sx={{
-                    backgroundColor: "#1F2937", width: "50%", color: "#ffffff",
+                    backgroundColor: "#1F2937",
+                    width: "50%",
+                    color: "#ffffff",
                     transition: "background-color 0.3s ease",
                     "&:hover": { backgroundColor: "#111827" },
                     "&.Mui-disabled": { backgroundColor: "#111827" },
@@ -247,19 +315,31 @@ export default function AuthPage() {
             {/* Đăng nhập mạng xã hội (chỉ giao diện, chưa có logic) */}
             <Box className="mt-8 mb-2">
               <Box className="relative flex items-center justify-center">
-                <Divider className="w-full" sx={{".dark &": { borderColor: "#99a1af", borderBottomWidth: '1px' }}}/>
+                <Divider className="w-full" sx={{ ".dark &": { borderColor: "#99a1af", borderBottomWidth: "1px" } }} />
                 <Typography variant="body2" className="absolute px-4 bg-white dark:bg-[#242533] text-gray-600 dark:text-gray-400">
                   {t("or_connect_with")}
                 </Typography>
               </Box>
               <Box className="flex justify-center mt-6 space-x-4">
-                <IconButton sx={{ color: "#155dfc", ".dark &": { color: "#4c6ef5", "&:hover": { backgroundColor: "#333333" } } }} size="large" aria-label="login with Facebook">
+                <IconButton
+                  sx={{ color: "#155dfc", ".dark &": { color: "#4c6ef5", "&:hover": { backgroundColor: "#333333" } } }}
+                  size="large"
+                  aria-label="login with Facebook"
+                >
                   <Facebook />
                 </IconButton>
-                <IconButton sx={{ color: "#dc2626", ".dark &": { color: "#f87171", "&:hover": { backgroundColor: "#333333" } } }} size="large" aria-label="login with Google">
+                <IconButton
+                  sx={{ color: "#dc2626", ".dark &": { color: "#f87171", "&:hover": { backgroundColor: "#333333" } } }}
+                  size="large"
+                  aria-label="login with Google"
+                >
                   <Google />
                 </IconButton>
-                <IconButton sx={{ color: "#1e2939", ".dark &": { color: "white", "&:hover": { backgroundColor: "#333333" } } }} size="large" aria-label="login with GitHub">
+                <IconButton
+                  sx={{ color: "#1e2939", ".dark &": { color: "white", "&:hover": { backgroundColor: "#333333" } } }}
+                  size="large"
+                  aria-label="login with GitHub"
+                >
                   <GitHub />
                 </IconButton>
               </Box>

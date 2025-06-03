@@ -5,9 +5,9 @@ import { prisma } from "@/lib/prisma";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { Email, Password } = body;
+    const { Name, Email, Password } = body;
 
-    if (!Email || !Password) {
+    if (!Name || !Email || !Password) {
       return NextResponse.json({ message: "All fields are required" }, { status: 400 });
     }
 
@@ -26,6 +26,7 @@ export async function POST(req: Request) {
     // Tạo user mới
     await prisma.user.create({
       data: {
+        Username: Name,
         Email,
         Password: hashedPassword,
       },

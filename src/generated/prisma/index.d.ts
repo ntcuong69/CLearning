@@ -19,11 +19,6 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type exercise = $Result.DefaultSelection<Prisma.$exercisePayload>
 /**
- * Model language
- * 
- */
-export type language = $Result.DefaultSelection<Prisma.$languagePayload>
-/**
  * Model submission
  * 
  */
@@ -44,20 +39,15 @@ export type testcaseresult = $Result.DefaultSelection<Prisma.$testcaseresultPayl
  */
 export type topic = $Result.DefaultSelection<Prisma.$topicPayload>
 /**
- * Model topiclanguagedetail
- * 
- */
-export type topiclanguagedetail = $Result.DefaultSelection<Prisma.$topiclanguagedetailPayload>
-/**
  * Model user
  * 
  */
 export type user = $Result.DefaultSelection<Prisma.$userPayload>
 /**
- * Model lesson
+ * Model friendship
  * 
  */
-export type lesson = $Result.DefaultSelection<Prisma.$lessonPayload>
+export type friendship = $Result.DefaultSelection<Prisma.$friendshipPayload>
 
 /**
  * Enums
@@ -70,14 +60,6 @@ export namespace $Enums {
 };
 
 export type exercise_Difficulty = (typeof exercise_Difficulty)[keyof typeof exercise_Difficulty]
-
-
-export const testcaseresult_Result: {
-  Correct: 'Correct',
-  Incorrect: 'Incorrect'
-};
-
-export type testcaseresult_Result = (typeof testcaseresult_Result)[keyof typeof testcaseresult_Result]
 
 
 export const user_Role: {
@@ -96,15 +78,30 @@ export const submission_Result: {
 
 export type submission_Result = (typeof submission_Result)[keyof typeof submission_Result]
 
+
+export const friendship_status: {
+  Pending: 'Pending',
+  Accepted: 'Accepted'
+};
+
+export type friendship_status = (typeof friendship_status)[keyof typeof friendship_status]
+
+
+export const testcaseresult_Result: {
+  Correct: 'Correct',
+  Partial: 'Partial',
+  Wrong: 'Wrong',
+  Error: 'Error',
+  Pending: 'Pending'
+};
+
+export type testcaseresult_Result = (typeof testcaseresult_Result)[keyof typeof testcaseresult_Result]
+
 }
 
 export type exercise_Difficulty = $Enums.exercise_Difficulty
 
 export const exercise_Difficulty: typeof $Enums.exercise_Difficulty
-
-export type testcaseresult_Result = $Enums.testcaseresult_Result
-
-export const testcaseresult_Result: typeof $Enums.testcaseresult_Result
 
 export type user_Role = $Enums.user_Role
 
@@ -113,6 +110,14 @@ export const user_Role: typeof $Enums.user_Role
 export type submission_Result = $Enums.submission_Result
 
 export const submission_Result: typeof $Enums.submission_Result
+
+export type friendship_status = $Enums.friendship_status
+
+export const friendship_status: typeof $Enums.friendship_status
+
+export type testcaseresult_Result = $Enums.testcaseresult_Result
+
+export const testcaseresult_Result: typeof $Enums.testcaseresult_Result
 
 /**
  * ##  Prisma Client ʲˢ
@@ -250,16 +255,6 @@ export class PrismaClient<
   get exercise(): Prisma.exerciseDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.language`: Exposes CRUD operations for the **language** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Languages
-    * const languages = await prisma.language.findMany()
-    * ```
-    */
-  get language(): Prisma.languageDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.submission`: Exposes CRUD operations for the **submission** model.
     * Example usage:
     * ```ts
@@ -300,16 +295,6 @@ export class PrismaClient<
   get topic(): Prisma.topicDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.topiclanguagedetail`: Exposes CRUD operations for the **topiclanguagedetail** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Topiclanguagedetails
-    * const topiclanguagedetails = await prisma.topiclanguagedetail.findMany()
-    * ```
-    */
-  get topiclanguagedetail(): Prisma.topiclanguagedetailDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.user`: Exposes CRUD operations for the **user** model.
     * Example usage:
     * ```ts
@@ -320,14 +305,14 @@ export class PrismaClient<
   get user(): Prisma.userDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.lesson`: Exposes CRUD operations for the **lesson** model.
+   * `prisma.friendship`: Exposes CRUD operations for the **friendship** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Lessons
-    * const lessons = await prisma.lesson.findMany()
+    * // Fetch zero or more Friendships
+    * const friendships = await prisma.friendship.findMany()
     * ```
     */
-  get lesson(): Prisma.lessonDelegate<ExtArgs, ClientOptions>;
+  get friendship(): Prisma.friendshipDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -769,14 +754,12 @@ export namespace Prisma {
 
   export const ModelName: {
     exercise: 'exercise',
-    language: 'language',
     submission: 'submission',
     testcase: 'testcase',
     testcaseresult: 'testcaseresult',
     topic: 'topic',
-    topiclanguagedetail: 'topiclanguagedetail',
     user: 'user',
-    lesson: 'lesson'
+    friendship: 'friendship'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -795,7 +778,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "exercise" | "language" | "submission" | "testcase" | "testcaseresult" | "topic" | "topiclanguagedetail" | "user" | "lesson"
+      modelProps: "exercise" | "submission" | "testcase" | "testcaseresult" | "topic" | "user" | "friendship"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -862,72 +845,6 @@ export namespace Prisma {
           count: {
             args: Prisma.exerciseCountArgs<ExtArgs>
             result: $Utils.Optional<ExerciseCountAggregateOutputType> | number
-          }
-        }
-      }
-      language: {
-        payload: Prisma.$languagePayload<ExtArgs>
-        fields: Prisma.languageFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.languageFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$languagePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.languageFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$languagePayload>
-          }
-          findFirst: {
-            args: Prisma.languageFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$languagePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.languageFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$languagePayload>
-          }
-          findMany: {
-            args: Prisma.languageFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$languagePayload>[]
-          }
-          create: {
-            args: Prisma.languageCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$languagePayload>
-          }
-          createMany: {
-            args: Prisma.languageCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.languageDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$languagePayload>
-          }
-          update: {
-            args: Prisma.languageUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$languagePayload>
-          }
-          deleteMany: {
-            args: Prisma.languageDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.languageUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.languageUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$languagePayload>
-          }
-          aggregate: {
-            args: Prisma.LanguageAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateLanguage>
-          }
-          groupBy: {
-            args: Prisma.languageGroupByArgs<ExtArgs>
-            result: $Utils.Optional<LanguageGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.languageCountArgs<ExtArgs>
-            result: $Utils.Optional<LanguageCountAggregateOutputType> | number
           }
         }
       }
@@ -1195,72 +1112,6 @@ export namespace Prisma {
           }
         }
       }
-      topiclanguagedetail: {
-        payload: Prisma.$topiclanguagedetailPayload<ExtArgs>
-        fields: Prisma.topiclanguagedetailFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.topiclanguagedetailFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$topiclanguagedetailPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.topiclanguagedetailFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$topiclanguagedetailPayload>
-          }
-          findFirst: {
-            args: Prisma.topiclanguagedetailFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$topiclanguagedetailPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.topiclanguagedetailFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$topiclanguagedetailPayload>
-          }
-          findMany: {
-            args: Prisma.topiclanguagedetailFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$topiclanguagedetailPayload>[]
-          }
-          create: {
-            args: Prisma.topiclanguagedetailCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$topiclanguagedetailPayload>
-          }
-          createMany: {
-            args: Prisma.topiclanguagedetailCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.topiclanguagedetailDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$topiclanguagedetailPayload>
-          }
-          update: {
-            args: Prisma.topiclanguagedetailUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$topiclanguagedetailPayload>
-          }
-          deleteMany: {
-            args: Prisma.topiclanguagedetailDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.topiclanguagedetailUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.topiclanguagedetailUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$topiclanguagedetailPayload>
-          }
-          aggregate: {
-            args: Prisma.TopiclanguagedetailAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateTopiclanguagedetail>
-          }
-          groupBy: {
-            args: Prisma.topiclanguagedetailGroupByArgs<ExtArgs>
-            result: $Utils.Optional<TopiclanguagedetailGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.topiclanguagedetailCountArgs<ExtArgs>
-            result: $Utils.Optional<TopiclanguagedetailCountAggregateOutputType> | number
-          }
-        }
-      }
       user: {
         payload: Prisma.$userPayload<ExtArgs>
         fields: Prisma.userFieldRefs
@@ -1327,69 +1178,69 @@ export namespace Prisma {
           }
         }
       }
-      lesson: {
-        payload: Prisma.$lessonPayload<ExtArgs>
-        fields: Prisma.lessonFieldRefs
+      friendship: {
+        payload: Prisma.$friendshipPayload<ExtArgs>
+        fields: Prisma.friendshipFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.lessonFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$lessonPayload> | null
+            args: Prisma.friendshipFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$friendshipPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.lessonFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$lessonPayload>
+            args: Prisma.friendshipFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$friendshipPayload>
           }
           findFirst: {
-            args: Prisma.lessonFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$lessonPayload> | null
+            args: Prisma.friendshipFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$friendshipPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.lessonFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$lessonPayload>
+            args: Prisma.friendshipFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$friendshipPayload>
           }
           findMany: {
-            args: Prisma.lessonFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$lessonPayload>[]
+            args: Prisma.friendshipFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$friendshipPayload>[]
           }
           create: {
-            args: Prisma.lessonCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$lessonPayload>
+            args: Prisma.friendshipCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$friendshipPayload>
           }
           createMany: {
-            args: Prisma.lessonCreateManyArgs<ExtArgs>
+            args: Prisma.friendshipCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           delete: {
-            args: Prisma.lessonDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$lessonPayload>
+            args: Prisma.friendshipDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$friendshipPayload>
           }
           update: {
-            args: Prisma.lessonUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$lessonPayload>
+            args: Prisma.friendshipUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$friendshipPayload>
           }
           deleteMany: {
-            args: Prisma.lessonDeleteManyArgs<ExtArgs>
+            args: Prisma.friendshipDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.lessonUpdateManyArgs<ExtArgs>
+            args: Prisma.friendshipUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           upsert: {
-            args: Prisma.lessonUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$lessonPayload>
+            args: Prisma.friendshipUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$friendshipPayload>
           }
           aggregate: {
-            args: Prisma.LessonAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateLesson>
+            args: Prisma.FriendshipAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFriendship>
           }
           groupBy: {
-            args: Prisma.lessonGroupByArgs<ExtArgs>
-            result: $Utils.Optional<LessonGroupByOutputType>[]
+            args: Prisma.friendshipGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FriendshipGroupByOutputType>[]
           }
           count: {
-            args: Prisma.lessonCountArgs<ExtArgs>
-            result: $Utils.Optional<LessonCountAggregateOutputType> | number
+            args: Prisma.friendshipCountArgs<ExtArgs>
+            result: $Utils.Optional<FriendshipCountAggregateOutputType> | number
           }
         }
       }
@@ -1478,14 +1329,12 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     exercise?: exerciseOmit
-    language?: languageOmit
     submission?: submissionOmit
     testcase?: testcaseOmit
     testcaseresult?: testcaseresultOmit
     topic?: topicOmit
-    topiclanguagedetail?: topiclanguagedetailOmit
     user?: userOmit
-    lesson?: lessonOmit
+    friendship?: friendshipOmit
   }
 
   /* Types for Logging */
@@ -1616,37 +1465,6 @@ export namespace Prisma {
 
 
   /**
-   * Count Type LanguageCountOutputType
-   */
-
-  export type LanguageCountOutputType = {
-    topiclanguagedetail: number
-  }
-
-  export type LanguageCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    topiclanguagedetail?: boolean | LanguageCountOutputTypeCountTopiclanguagedetailArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * LanguageCountOutputType without action
-   */
-  export type LanguageCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LanguageCountOutputType
-     */
-    select?: LanguageCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * LanguageCountOutputType without action
-   */
-  export type LanguageCountOutputTypeCountTopiclanguagedetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: topiclanguagedetailWhereInput
-  }
-
-
-  /**
    * Count Type SubmissionCountOutputType
    */
 
@@ -1713,11 +1531,11 @@ export namespace Prisma {
    */
 
   export type TopicCountOutputType = {
-    topiclanguagedetail: number
+    exercise: number
   }
 
   export type TopicCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    topiclanguagedetail?: boolean | TopicCountOutputTypeCountTopiclanguagedetailArgs
+    exercise?: boolean | TopicCountOutputTypeCountExerciseArgs
   }
 
   // Custom InputTypes
@@ -1734,39 +1552,8 @@ export namespace Prisma {
   /**
    * TopicCountOutputType without action
    */
-  export type TopicCountOutputTypeCountTopiclanguagedetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: topiclanguagedetailWhereInput
-  }
-
-
-  /**
-   * Count Type TopiclanguagedetailCountOutputType
-   */
-
-  export type TopiclanguagedetailCountOutputType = {
-    lesson: number
-  }
-
-  export type TopiclanguagedetailCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    lesson?: boolean | TopiclanguagedetailCountOutputTypeCountLessonArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * TopiclanguagedetailCountOutputType without action
-   */
-  export type TopiclanguagedetailCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the TopiclanguagedetailCountOutputType
-     */
-    select?: TopiclanguagedetailCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * TopiclanguagedetailCountOutputType without action
-   */
-  export type TopiclanguagedetailCountOutputTypeCountLessonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: lessonWhereInput
+  export type TopicCountOutputTypeCountExerciseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: exerciseWhereInput
   }
 
 
@@ -1775,10 +1562,14 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
+    friendship_friendship_requesterTouser: number
+    friendship_friendship_addresseeTouser: number
     submission: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    friendship_friendship_requesterTouser?: boolean | UserCountOutputTypeCountFriendship_friendship_requesterTouserArgs
+    friendship_friendship_addresseeTouser?: boolean | UserCountOutputTypeCountFriendship_friendship_addresseeTouserArgs
     submission?: boolean | UserCountOutputTypeCountSubmissionArgs
   }
 
@@ -1796,39 +1587,22 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountFriendship_friendship_requesterTouserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: friendshipWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFriendship_friendship_addresseeTouserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: friendshipWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountSubmissionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: submissionWhereInput
-  }
-
-
-  /**
-   * Count Type LessonCountOutputType
-   */
-
-  export type LessonCountOutputType = {
-    exercise: number
-  }
-
-  export type LessonCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    exercise?: boolean | LessonCountOutputTypeCountExerciseArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * LessonCountOutputType without action
-   */
-  export type LessonCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the LessonCountOutputType
-     */
-    select?: LessonCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * LessonCountOutputType without action
-   */
-  export type LessonCountOutputTypeCountExerciseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: exerciseWhereInput
   }
 
 
@@ -1850,36 +1624,31 @@ export namespace Prisma {
 
   export type ExerciseAvgAggregateOutputType = {
     EID: number | null
-    LsID: number | null
-    OrderIndex: number | null
+    TpID: number | null
   }
 
   export type ExerciseSumAggregateOutputType = {
     EID: number | null
-    LsID: number | null
-    OrderIndex: number | null
+    TpID: number | null
   }
 
   export type ExerciseMinAggregateOutputType = {
     EID: number | null
-    LsID: number | null
-    OrderIndex: number | null
+    TpID: number | null
     Content: string | null
     Difficulty: $Enums.exercise_Difficulty | null
   }
 
   export type ExerciseMaxAggregateOutputType = {
     EID: number | null
-    LsID: number | null
-    OrderIndex: number | null
+    TpID: number | null
     Content: string | null
     Difficulty: $Enums.exercise_Difficulty | null
   }
 
   export type ExerciseCountAggregateOutputType = {
     EID: number
-    LsID: number
-    OrderIndex: number
+    TpID: number
     Content: number
     Difficulty: number
     _all: number
@@ -1888,36 +1657,31 @@ export namespace Prisma {
 
   export type ExerciseAvgAggregateInputType = {
     EID?: true
-    LsID?: true
-    OrderIndex?: true
+    TpID?: true
   }
 
   export type ExerciseSumAggregateInputType = {
     EID?: true
-    LsID?: true
-    OrderIndex?: true
+    TpID?: true
   }
 
   export type ExerciseMinAggregateInputType = {
     EID?: true
-    LsID?: true
-    OrderIndex?: true
+    TpID?: true
     Content?: true
     Difficulty?: true
   }
 
   export type ExerciseMaxAggregateInputType = {
     EID?: true
-    LsID?: true
-    OrderIndex?: true
+    TpID?: true
     Content?: true
     Difficulty?: true
   }
 
   export type ExerciseCountAggregateInputType = {
     EID?: true
-    LsID?: true
-    OrderIndex?: true
+    TpID?: true
     Content?: true
     Difficulty?: true
     _all?: true
@@ -2011,8 +1775,7 @@ export namespace Prisma {
 
   export type ExerciseGroupByOutputType = {
     EID: number
-    LsID: number
-    OrderIndex: number
+    TpID: number
     Content: string
     Difficulty: $Enums.exercise_Difficulty
     _count: ExerciseCountAggregateOutputType | null
@@ -2038,11 +1801,10 @@ export namespace Prisma {
 
   export type exerciseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     EID?: boolean
-    LsID?: boolean
-    OrderIndex?: boolean
+    TpID?: boolean
     Content?: boolean
     Difficulty?: boolean
-    lession?: boolean | lessonDefaultArgs<ExtArgs>
+    topic?: boolean | topicDefaultArgs<ExtArgs>
     submission?: boolean | exercise$submissionArgs<ExtArgs>
     testcase?: boolean | exercise$testcaseArgs<ExtArgs>
     _count?: boolean | ExerciseCountOutputTypeDefaultArgs<ExtArgs>
@@ -2052,15 +1814,14 @@ export namespace Prisma {
 
   export type exerciseSelectScalar = {
     EID?: boolean
-    LsID?: boolean
-    OrderIndex?: boolean
+    TpID?: boolean
     Content?: boolean
     Difficulty?: boolean
   }
 
-  export type exerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"EID" | "LsID" | "OrderIndex" | "Content" | "Difficulty", ExtArgs["result"]["exercise"]>
+  export type exerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"EID" | "TpID" | "Content" | "Difficulty", ExtArgs["result"]["exercise"]>
   export type exerciseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    lession?: boolean | lessonDefaultArgs<ExtArgs>
+    topic?: boolean | topicDefaultArgs<ExtArgs>
     submission?: boolean | exercise$submissionArgs<ExtArgs>
     testcase?: boolean | exercise$testcaseArgs<ExtArgs>
     _count?: boolean | ExerciseCountOutputTypeDefaultArgs<ExtArgs>
@@ -2069,14 +1830,13 @@ export namespace Prisma {
   export type $exercisePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "exercise"
     objects: {
-      lession: Prisma.$lessonPayload<ExtArgs>
+      topic: Prisma.$topicPayload<ExtArgs>
       submission: Prisma.$submissionPayload<ExtArgs>[]
       testcase: Prisma.$testcasePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       EID: number
-      LsID: number
-      OrderIndex: number
+      TpID: number
       Content: string
       Difficulty: $Enums.exercise_Difficulty
     }, ExtArgs["result"]["exercise"]>
@@ -2419,7 +2179,7 @@ export namespace Prisma {
    */
   export interface Prisma__exerciseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    lession<T extends lessonDefaultArgs<ExtArgs> = {}>(args?: Subset<T, lessonDefaultArgs<ExtArgs>>): Prisma__lessonClient<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    topic<T extends topicDefaultArgs<ExtArgs> = {}>(args?: Subset<T, topicDefaultArgs<ExtArgs>>): Prisma__topicClient<$Result.GetResult<Prisma.$topicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     submission<T extends exercise$submissionArgs<ExtArgs> = {}>(args?: Subset<T, exercise$submissionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$submissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     testcase<T extends exercise$testcaseArgs<ExtArgs> = {}>(args?: Subset<T, exercise$testcaseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$testcasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -2452,8 +2212,7 @@ export namespace Prisma {
    */
   interface exerciseFieldRefs {
     readonly EID: FieldRef<"exercise", 'Int'>
-    readonly LsID: FieldRef<"exercise", 'Int'>
-    readonly OrderIndex: FieldRef<"exercise", 'Int'>
+    readonly TpID: FieldRef<"exercise", 'Int'>
     readonly Content: FieldRef<"exercise", 'String'>
     readonly Difficulty: FieldRef<"exercise", 'exercise_Difficulty'>
   }
@@ -2866,973 +2625,6 @@ export namespace Prisma {
 
 
   /**
-   * Model language
-   */
-
-  export type AggregateLanguage = {
-    _count: LanguageCountAggregateOutputType | null
-    _avg: LanguageAvgAggregateOutputType | null
-    _sum: LanguageSumAggregateOutputType | null
-    _min: LanguageMinAggregateOutputType | null
-    _max: LanguageMaxAggregateOutputType | null
-  }
-
-  export type LanguageAvgAggregateOutputType = {
-    LgID: number | null
-  }
-
-  export type LanguageSumAggregateOutputType = {
-    LgID: number | null
-  }
-
-  export type LanguageMinAggregateOutputType = {
-    LgID: number | null
-    Name: string | null
-    Logo: string | null
-  }
-
-  export type LanguageMaxAggregateOutputType = {
-    LgID: number | null
-    Name: string | null
-    Logo: string | null
-  }
-
-  export type LanguageCountAggregateOutputType = {
-    LgID: number
-    Name: number
-    Logo: number
-    _all: number
-  }
-
-
-  export type LanguageAvgAggregateInputType = {
-    LgID?: true
-  }
-
-  export type LanguageSumAggregateInputType = {
-    LgID?: true
-  }
-
-  export type LanguageMinAggregateInputType = {
-    LgID?: true
-    Name?: true
-    Logo?: true
-  }
-
-  export type LanguageMaxAggregateInputType = {
-    LgID?: true
-    Name?: true
-    Logo?: true
-  }
-
-  export type LanguageCountAggregateInputType = {
-    LgID?: true
-    Name?: true
-    Logo?: true
-    _all?: true
-  }
-
-  export type LanguageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which language to aggregate.
-     */
-    where?: languageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of languages to fetch.
-     */
-    orderBy?: languageOrderByWithRelationInput | languageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: languageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` languages from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` languages.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned languages
-    **/
-    _count?: true | LanguageCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: LanguageAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: LanguageSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: LanguageMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: LanguageMaxAggregateInputType
-  }
-
-  export type GetLanguageAggregateType<T extends LanguageAggregateArgs> = {
-        [P in keyof T & keyof AggregateLanguage]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateLanguage[P]>
-      : GetScalarType<T[P], AggregateLanguage[P]>
-  }
-
-
-
-
-  export type languageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: languageWhereInput
-    orderBy?: languageOrderByWithAggregationInput | languageOrderByWithAggregationInput[]
-    by: LanguageScalarFieldEnum[] | LanguageScalarFieldEnum
-    having?: languageScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: LanguageCountAggregateInputType | true
-    _avg?: LanguageAvgAggregateInputType
-    _sum?: LanguageSumAggregateInputType
-    _min?: LanguageMinAggregateInputType
-    _max?: LanguageMaxAggregateInputType
-  }
-
-  export type LanguageGroupByOutputType = {
-    LgID: number
-    Name: string
-    Logo: string | null
-    _count: LanguageCountAggregateOutputType | null
-    _avg: LanguageAvgAggregateOutputType | null
-    _sum: LanguageSumAggregateOutputType | null
-    _min: LanguageMinAggregateOutputType | null
-    _max: LanguageMaxAggregateOutputType | null
-  }
-
-  type GetLanguageGroupByPayload<T extends languageGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<LanguageGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof LanguageGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], LanguageGroupByOutputType[P]>
-            : GetScalarType<T[P], LanguageGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type languageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    LgID?: boolean
-    Name?: boolean
-    Logo?: boolean
-    topiclanguagedetail?: boolean | language$topiclanguagedetailArgs<ExtArgs>
-    _count?: boolean | LanguageCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["language"]>
-
-
-
-  export type languageSelectScalar = {
-    LgID?: boolean
-    Name?: boolean
-    Logo?: boolean
-  }
-
-  export type languageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"LgID" | "Name" | "Logo", ExtArgs["result"]["language"]>
-  export type languageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    topiclanguagedetail?: boolean | language$topiclanguagedetailArgs<ExtArgs>
-    _count?: boolean | LanguageCountOutputTypeDefaultArgs<ExtArgs>
-  }
-
-  export type $languagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "language"
-    objects: {
-      topiclanguagedetail: Prisma.$topiclanguagedetailPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      LgID: number
-      Name: string
-      Logo: string | null
-    }, ExtArgs["result"]["language"]>
-    composites: {}
-  }
-
-  type languageGetPayload<S extends boolean | null | undefined | languageDefaultArgs> = $Result.GetResult<Prisma.$languagePayload, S>
-
-  type languageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<languageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: LanguageCountAggregateInputType | true
-    }
-
-  export interface languageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['language'], meta: { name: 'language' } }
-    /**
-     * Find zero or one Language that matches the filter.
-     * @param {languageFindUniqueArgs} args - Arguments to find a Language
-     * @example
-     * // Get one Language
-     * const language = await prisma.language.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends languageFindUniqueArgs>(args: SelectSubset<T, languageFindUniqueArgs<ExtArgs>>): Prisma__languageClient<$Result.GetResult<Prisma.$languagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Language that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {languageFindUniqueOrThrowArgs} args - Arguments to find a Language
-     * @example
-     * // Get one Language
-     * const language = await prisma.language.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends languageFindUniqueOrThrowArgs>(args: SelectSubset<T, languageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__languageClient<$Result.GetResult<Prisma.$languagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Language that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {languageFindFirstArgs} args - Arguments to find a Language
-     * @example
-     * // Get one Language
-     * const language = await prisma.language.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends languageFindFirstArgs>(args?: SelectSubset<T, languageFindFirstArgs<ExtArgs>>): Prisma__languageClient<$Result.GetResult<Prisma.$languagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Language that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {languageFindFirstOrThrowArgs} args - Arguments to find a Language
-     * @example
-     * // Get one Language
-     * const language = await prisma.language.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends languageFindFirstOrThrowArgs>(args?: SelectSubset<T, languageFindFirstOrThrowArgs<ExtArgs>>): Prisma__languageClient<$Result.GetResult<Prisma.$languagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Languages that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {languageFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Languages
-     * const languages = await prisma.language.findMany()
-     * 
-     * // Get first 10 Languages
-     * const languages = await prisma.language.findMany({ take: 10 })
-     * 
-     * // Only select the `LgID`
-     * const languageWithLgIDOnly = await prisma.language.findMany({ select: { LgID: true } })
-     * 
-     */
-    findMany<T extends languageFindManyArgs>(args?: SelectSubset<T, languageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$languagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Language.
-     * @param {languageCreateArgs} args - Arguments to create a Language.
-     * @example
-     * // Create one Language
-     * const Language = await prisma.language.create({
-     *   data: {
-     *     // ... data to create a Language
-     *   }
-     * })
-     * 
-     */
-    create<T extends languageCreateArgs>(args: SelectSubset<T, languageCreateArgs<ExtArgs>>): Prisma__languageClient<$Result.GetResult<Prisma.$languagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Languages.
-     * @param {languageCreateManyArgs} args - Arguments to create many Languages.
-     * @example
-     * // Create many Languages
-     * const language = await prisma.language.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends languageCreateManyArgs>(args?: SelectSubset<T, languageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Language.
-     * @param {languageDeleteArgs} args - Arguments to delete one Language.
-     * @example
-     * // Delete one Language
-     * const Language = await prisma.language.delete({
-     *   where: {
-     *     // ... filter to delete one Language
-     *   }
-     * })
-     * 
-     */
-    delete<T extends languageDeleteArgs>(args: SelectSubset<T, languageDeleteArgs<ExtArgs>>): Prisma__languageClient<$Result.GetResult<Prisma.$languagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Language.
-     * @param {languageUpdateArgs} args - Arguments to update one Language.
-     * @example
-     * // Update one Language
-     * const language = await prisma.language.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends languageUpdateArgs>(args: SelectSubset<T, languageUpdateArgs<ExtArgs>>): Prisma__languageClient<$Result.GetResult<Prisma.$languagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Languages.
-     * @param {languageDeleteManyArgs} args - Arguments to filter Languages to delete.
-     * @example
-     * // Delete a few Languages
-     * const { count } = await prisma.language.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends languageDeleteManyArgs>(args?: SelectSubset<T, languageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Languages.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {languageUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Languages
-     * const language = await prisma.language.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends languageUpdateManyArgs>(args: SelectSubset<T, languageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Language.
-     * @param {languageUpsertArgs} args - Arguments to update or create a Language.
-     * @example
-     * // Update or create a Language
-     * const language = await prisma.language.upsert({
-     *   create: {
-     *     // ... data to create a Language
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Language we want to update
-     *   }
-     * })
-     */
-    upsert<T extends languageUpsertArgs>(args: SelectSubset<T, languageUpsertArgs<ExtArgs>>): Prisma__languageClient<$Result.GetResult<Prisma.$languagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Languages.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {languageCountArgs} args - Arguments to filter Languages to count.
-     * @example
-     * // Count the number of Languages
-     * const count = await prisma.language.count({
-     *   where: {
-     *     // ... the filter for the Languages we want to count
-     *   }
-     * })
-    **/
-    count<T extends languageCountArgs>(
-      args?: Subset<T, languageCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], LanguageCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Language.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {LanguageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends LanguageAggregateArgs>(args: Subset<T, LanguageAggregateArgs>): Prisma.PrismaPromise<GetLanguageAggregateType<T>>
-
-    /**
-     * Group by Language.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {languageGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends languageGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: languageGroupByArgs['orderBy'] }
-        : { orderBy?: languageGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, languageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLanguageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the language model
-   */
-  readonly fields: languageFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for language.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__languageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    topiclanguagedetail<T extends language$topiclanguagedetailArgs<ExtArgs> = {}>(args?: Subset<T, language$topiclanguagedetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the language model
-   */
-  interface languageFieldRefs {
-    readonly LgID: FieldRef<"language", 'Int'>
-    readonly Name: FieldRef<"language", 'String'>
-    readonly Logo: FieldRef<"language", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * language findUnique
-   */
-  export type languageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the language
-     */
-    select?: languageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the language
-     */
-    omit?: languageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: languageInclude<ExtArgs> | null
-    /**
-     * Filter, which language to fetch.
-     */
-    where: languageWhereUniqueInput
-  }
-
-  /**
-   * language findUniqueOrThrow
-   */
-  export type languageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the language
-     */
-    select?: languageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the language
-     */
-    omit?: languageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: languageInclude<ExtArgs> | null
-    /**
-     * Filter, which language to fetch.
-     */
-    where: languageWhereUniqueInput
-  }
-
-  /**
-   * language findFirst
-   */
-  export type languageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the language
-     */
-    select?: languageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the language
-     */
-    omit?: languageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: languageInclude<ExtArgs> | null
-    /**
-     * Filter, which language to fetch.
-     */
-    where?: languageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of languages to fetch.
-     */
-    orderBy?: languageOrderByWithRelationInput | languageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for languages.
-     */
-    cursor?: languageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` languages from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` languages.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of languages.
-     */
-    distinct?: LanguageScalarFieldEnum | LanguageScalarFieldEnum[]
-  }
-
-  /**
-   * language findFirstOrThrow
-   */
-  export type languageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the language
-     */
-    select?: languageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the language
-     */
-    omit?: languageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: languageInclude<ExtArgs> | null
-    /**
-     * Filter, which language to fetch.
-     */
-    where?: languageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of languages to fetch.
-     */
-    orderBy?: languageOrderByWithRelationInput | languageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for languages.
-     */
-    cursor?: languageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` languages from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` languages.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of languages.
-     */
-    distinct?: LanguageScalarFieldEnum | LanguageScalarFieldEnum[]
-  }
-
-  /**
-   * language findMany
-   */
-  export type languageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the language
-     */
-    select?: languageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the language
-     */
-    omit?: languageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: languageInclude<ExtArgs> | null
-    /**
-     * Filter, which languages to fetch.
-     */
-    where?: languageWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of languages to fetch.
-     */
-    orderBy?: languageOrderByWithRelationInput | languageOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing languages.
-     */
-    cursor?: languageWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` languages from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` languages.
-     */
-    skip?: number
-    distinct?: LanguageScalarFieldEnum | LanguageScalarFieldEnum[]
-  }
-
-  /**
-   * language create
-   */
-  export type languageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the language
-     */
-    select?: languageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the language
-     */
-    omit?: languageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: languageInclude<ExtArgs> | null
-    /**
-     * The data needed to create a language.
-     */
-    data: XOR<languageCreateInput, languageUncheckedCreateInput>
-  }
-
-  /**
-   * language createMany
-   */
-  export type languageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many languages.
-     */
-    data: languageCreateManyInput | languageCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * language update
-   */
-  export type languageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the language
-     */
-    select?: languageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the language
-     */
-    omit?: languageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: languageInclude<ExtArgs> | null
-    /**
-     * The data needed to update a language.
-     */
-    data: XOR<languageUpdateInput, languageUncheckedUpdateInput>
-    /**
-     * Choose, which language to update.
-     */
-    where: languageWhereUniqueInput
-  }
-
-  /**
-   * language updateMany
-   */
-  export type languageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update languages.
-     */
-    data: XOR<languageUpdateManyMutationInput, languageUncheckedUpdateManyInput>
-    /**
-     * Filter which languages to update
-     */
-    where?: languageWhereInput
-    /**
-     * Limit how many languages to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * language upsert
-   */
-  export type languageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the language
-     */
-    select?: languageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the language
-     */
-    omit?: languageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: languageInclude<ExtArgs> | null
-    /**
-     * The filter to search for the language to update in case it exists.
-     */
-    where: languageWhereUniqueInput
-    /**
-     * In case the language found by the `where` argument doesn't exist, create a new language with this data.
-     */
-    create: XOR<languageCreateInput, languageUncheckedCreateInput>
-    /**
-     * In case the language was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<languageUpdateInput, languageUncheckedUpdateInput>
-  }
-
-  /**
-   * language delete
-   */
-  export type languageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the language
-     */
-    select?: languageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the language
-     */
-    omit?: languageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: languageInclude<ExtArgs> | null
-    /**
-     * Filter which language to delete.
-     */
-    where: languageWhereUniqueInput
-  }
-
-  /**
-   * language deleteMany
-   */
-  export type languageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which languages to delete
-     */
-    where?: languageWhereInput
-    /**
-     * Limit how many languages to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * language.topiclanguagedetail
-   */
-  export type language$topiclanguagedetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    where?: topiclanguagedetailWhereInput
-    orderBy?: topiclanguagedetailOrderByWithRelationInput | topiclanguagedetailOrderByWithRelationInput[]
-    cursor?: topiclanguagedetailWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TopiclanguagedetailScalarFieldEnum | TopiclanguagedetailScalarFieldEnum[]
-  }
-
-  /**
-   * language without action
-   */
-  export type languageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the language
-     */
-    select?: languageSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the language
-     */
-    omit?: languageOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: languageInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model submission
    */
 
@@ -3861,6 +2653,7 @@ export namespace Prisma {
     Code: string | null
     CreatedAt: Date | null
     Result: $Enums.submission_Result | null
+    isPublic: boolean | null
   }
 
   export type SubmissionMaxAggregateOutputType = {
@@ -3870,6 +2663,7 @@ export namespace Prisma {
     Code: string | null
     CreatedAt: Date | null
     Result: $Enums.submission_Result | null
+    isPublic: boolean | null
   }
 
   export type SubmissionCountAggregateOutputType = {
@@ -3879,6 +2673,7 @@ export namespace Prisma {
     Code: number
     CreatedAt: number
     Result: number
+    isPublic: number
     _all: number
   }
 
@@ -3900,6 +2695,7 @@ export namespace Prisma {
     Code?: true
     CreatedAt?: true
     Result?: true
+    isPublic?: true
   }
 
   export type SubmissionMaxAggregateInputType = {
@@ -3909,6 +2705,7 @@ export namespace Prisma {
     Code?: true
     CreatedAt?: true
     Result?: true
+    isPublic?: true
   }
 
   export type SubmissionCountAggregateInputType = {
@@ -3918,6 +2715,7 @@ export namespace Prisma {
     Code?: true
     CreatedAt?: true
     Result?: true
+    isPublic?: true
     _all?: true
   }
 
@@ -4014,6 +2812,7 @@ export namespace Prisma {
     Code: string | null
     CreatedAt: Date | null
     Result: $Enums.submission_Result | null
+    isPublic: boolean | null
     _count: SubmissionCountAggregateOutputType | null
     _avg: SubmissionAvgAggregateOutputType | null
     _sum: SubmissionSumAggregateOutputType | null
@@ -4042,6 +2841,7 @@ export namespace Prisma {
     Code?: boolean
     CreatedAt?: boolean
     Result?: boolean
+    isPublic?: boolean
     exercise?: boolean | exerciseDefaultArgs<ExtArgs>
     user?: boolean | userDefaultArgs<ExtArgs>
     testcaseresult?: boolean | submission$testcaseresultArgs<ExtArgs>
@@ -4057,9 +2857,10 @@ export namespace Prisma {
     Code?: boolean
     CreatedAt?: boolean
     Result?: boolean
+    isPublic?: boolean
   }
 
-  export type submissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"SID" | "UID" | "EID" | "Code" | "CreatedAt" | "Result", ExtArgs["result"]["submission"]>
+  export type submissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"SID" | "UID" | "EID" | "Code" | "CreatedAt" | "Result" | "isPublic", ExtArgs["result"]["submission"]>
   export type submissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     exercise?: boolean | exerciseDefaultArgs<ExtArgs>
     user?: boolean | userDefaultArgs<ExtArgs>
@@ -4081,6 +2882,7 @@ export namespace Prisma {
       Code: string | null
       CreatedAt: Date | null
       Result: $Enums.submission_Result | null
+      isPublic: boolean | null
     }, ExtArgs["result"]["submission"]>
     composites: {}
   }
@@ -4459,6 +3261,7 @@ export namespace Prisma {
     readonly Code: FieldRef<"submission", 'String'>
     readonly CreatedAt: FieldRef<"submission", 'DateTime'>
     readonly Result: FieldRef<"submission", 'submission_Result'>
+    readonly isPublic: FieldRef<"submission", 'Boolean'>
   }
     
 
@@ -6029,7 +4832,7 @@ export namespace Prisma {
     SID: number
     TCID: number
     ActualOutput: string
-    Result: $Enums.testcaseresult_Result | null
+    Result: $Enums.testcaseresult_Result
     ExecutionTime: number | null
     _count: TestcaseresultCountAggregateOutputType | null
     _avg: TestcaseresultAvgAggregateOutputType | null
@@ -6091,7 +4894,7 @@ export namespace Prisma {
       SID: number
       TCID: number
       ActualOutput: string
-      Result: $Enums.testcaseresult_Result | null
+      Result: $Enums.testcaseresult_Result
       ExecutionTime: number | null
     }, ExtArgs["result"]["testcaseresult"]>
     composites: {}
@@ -6854,19 +5657,16 @@ export namespace Prisma {
   export type TopicMinAggregateOutputType = {
     TpID: number | null
     Name: string | null
-    Description: string | null
   }
 
   export type TopicMaxAggregateOutputType = {
     TpID: number | null
     Name: string | null
-    Description: string | null
   }
 
   export type TopicCountAggregateOutputType = {
     TpID: number
     Name: number
-    Description: number
     _all: number
   }
 
@@ -6882,19 +5682,16 @@ export namespace Prisma {
   export type TopicMinAggregateInputType = {
     TpID?: true
     Name?: true
-    Description?: true
   }
 
   export type TopicMaxAggregateInputType = {
     TpID?: true
     Name?: true
-    Description?: true
   }
 
   export type TopicCountAggregateInputType = {
     TpID?: true
     Name?: true
-    Description?: true
     _all?: true
   }
 
@@ -6987,7 +5784,6 @@ export namespace Prisma {
   export type TopicGroupByOutputType = {
     TpID: number
     Name: string
-    Description: string | null
     _count: TopicCountAggregateOutputType | null
     _avg: TopicAvgAggregateOutputType | null
     _sum: TopicSumAggregateOutputType | null
@@ -7012,8 +5808,7 @@ export namespace Prisma {
   export type topicSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     TpID?: boolean
     Name?: boolean
-    Description?: boolean
-    topiclanguagedetail?: boolean | topic$topiclanguagedetailArgs<ExtArgs>
+    exercise?: boolean | topic$exerciseArgs<ExtArgs>
     _count?: boolean | TopicCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topic"]>
 
@@ -7022,24 +5817,22 @@ export namespace Prisma {
   export type topicSelectScalar = {
     TpID?: boolean
     Name?: boolean
-    Description?: boolean
   }
 
-  export type topicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"TpID" | "Name" | "Description", ExtArgs["result"]["topic"]>
+  export type topicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"TpID" | "Name", ExtArgs["result"]["topic"]>
   export type topicInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    topiclanguagedetail?: boolean | topic$topiclanguagedetailArgs<ExtArgs>
+    exercise?: boolean | topic$exerciseArgs<ExtArgs>
     _count?: boolean | TopicCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $topicPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "topic"
     objects: {
-      topiclanguagedetail: Prisma.$topiclanguagedetailPayload<ExtArgs>[]
+      exercise: Prisma.$exercisePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       TpID: number
       Name: string
-      Description: string | null
     }, ExtArgs["result"]["topic"]>
     composites: {}
   }
@@ -7380,7 +6173,7 @@ export namespace Prisma {
    */
   export interface Prisma__topicClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    topiclanguagedetail<T extends topic$topiclanguagedetailArgs<ExtArgs> = {}>(args?: Subset<T, topic$topiclanguagedetailArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exercise<T extends topic$exerciseArgs<ExtArgs> = {}>(args?: Subset<T, topic$exerciseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7412,7 +6205,6 @@ export namespace Prisma {
   interface topicFieldRefs {
     readonly TpID: FieldRef<"topic", 'Int'>
     readonly Name: FieldRef<"topic", 'String'>
-    readonly Description: FieldRef<"topic", 'String'>
   }
     
 
@@ -7756,27 +6548,27 @@ export namespace Prisma {
   }
 
   /**
-   * topic.topiclanguagedetail
+   * topic.exercise
    */
-  export type topic$topiclanguagedetailArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type topic$exerciseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the topiclanguagedetail
+     * Select specific fields to fetch from the exercise
      */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
+    select?: exerciseSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the topiclanguagedetail
+     * Omit specific fields from the exercise
      */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
+    omit?: exerciseOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    where?: topiclanguagedetailWhereInput
-    orderBy?: topiclanguagedetailOrderByWithRelationInput | topiclanguagedetailOrderByWithRelationInput[]
-    cursor?: topiclanguagedetailWhereUniqueInput
+    include?: exerciseInclude<ExtArgs> | null
+    where?: exerciseWhereInput
+    orderBy?: exerciseOrderByWithRelationInput | exerciseOrderByWithRelationInput[]
+    cursor?: exerciseWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: TopiclanguagedetailScalarFieldEnum | TopiclanguagedetailScalarFieldEnum[]
+    distinct?: ExerciseScalarFieldEnum | ExerciseScalarFieldEnum[]
   }
 
   /**
@@ -7795,989 +6587,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: topicInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model topiclanguagedetail
-   */
-
-  export type AggregateTopiclanguagedetail = {
-    _count: TopiclanguagedetailCountAggregateOutputType | null
-    _avg: TopiclanguagedetailAvgAggregateOutputType | null
-    _sum: TopiclanguagedetailSumAggregateOutputType | null
-    _min: TopiclanguagedetailMinAggregateOutputType | null
-    _max: TopiclanguagedetailMaxAggregateOutputType | null
-  }
-
-  export type TopiclanguagedetailAvgAggregateOutputType = {
-    TLDID: number | null
-    TpID: number | null
-    LgID: number | null
-  }
-
-  export type TopiclanguagedetailSumAggregateOutputType = {
-    TLDID: number | null
-    TpID: number | null
-    LgID: number | null
-  }
-
-  export type TopiclanguagedetailMinAggregateOutputType = {
-    TLDID: number | null
-    TpID: number | null
-    LgID: number | null
-  }
-
-  export type TopiclanguagedetailMaxAggregateOutputType = {
-    TLDID: number | null
-    TpID: number | null
-    LgID: number | null
-  }
-
-  export type TopiclanguagedetailCountAggregateOutputType = {
-    TLDID: number
-    TpID: number
-    LgID: number
-    _all: number
-  }
-
-
-  export type TopiclanguagedetailAvgAggregateInputType = {
-    TLDID?: true
-    TpID?: true
-    LgID?: true
-  }
-
-  export type TopiclanguagedetailSumAggregateInputType = {
-    TLDID?: true
-    TpID?: true
-    LgID?: true
-  }
-
-  export type TopiclanguagedetailMinAggregateInputType = {
-    TLDID?: true
-    TpID?: true
-    LgID?: true
-  }
-
-  export type TopiclanguagedetailMaxAggregateInputType = {
-    TLDID?: true
-    TpID?: true
-    LgID?: true
-  }
-
-  export type TopiclanguagedetailCountAggregateInputType = {
-    TLDID?: true
-    TpID?: true
-    LgID?: true
-    _all?: true
-  }
-
-  export type TopiclanguagedetailAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which topiclanguagedetail to aggregate.
-     */
-    where?: topiclanguagedetailWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of topiclanguagedetails to fetch.
-     */
-    orderBy?: topiclanguagedetailOrderByWithRelationInput | topiclanguagedetailOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: topiclanguagedetailWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` topiclanguagedetails from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` topiclanguagedetails.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned topiclanguagedetails
-    **/
-    _count?: true | TopiclanguagedetailCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: TopiclanguagedetailAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: TopiclanguagedetailSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: TopiclanguagedetailMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: TopiclanguagedetailMaxAggregateInputType
-  }
-
-  export type GetTopiclanguagedetailAggregateType<T extends TopiclanguagedetailAggregateArgs> = {
-        [P in keyof T & keyof AggregateTopiclanguagedetail]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateTopiclanguagedetail[P]>
-      : GetScalarType<T[P], AggregateTopiclanguagedetail[P]>
-  }
-
-
-
-
-  export type topiclanguagedetailGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: topiclanguagedetailWhereInput
-    orderBy?: topiclanguagedetailOrderByWithAggregationInput | topiclanguagedetailOrderByWithAggregationInput[]
-    by: TopiclanguagedetailScalarFieldEnum[] | TopiclanguagedetailScalarFieldEnum
-    having?: topiclanguagedetailScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: TopiclanguagedetailCountAggregateInputType | true
-    _avg?: TopiclanguagedetailAvgAggregateInputType
-    _sum?: TopiclanguagedetailSumAggregateInputType
-    _min?: TopiclanguagedetailMinAggregateInputType
-    _max?: TopiclanguagedetailMaxAggregateInputType
-  }
-
-  export type TopiclanguagedetailGroupByOutputType = {
-    TLDID: number
-    TpID: number
-    LgID: number
-    _count: TopiclanguagedetailCountAggregateOutputType | null
-    _avg: TopiclanguagedetailAvgAggregateOutputType | null
-    _sum: TopiclanguagedetailSumAggregateOutputType | null
-    _min: TopiclanguagedetailMinAggregateOutputType | null
-    _max: TopiclanguagedetailMaxAggregateOutputType | null
-  }
-
-  type GetTopiclanguagedetailGroupByPayload<T extends topiclanguagedetailGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<TopiclanguagedetailGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof TopiclanguagedetailGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], TopiclanguagedetailGroupByOutputType[P]>
-            : GetScalarType<T[P], TopiclanguagedetailGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type topiclanguagedetailSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    TLDID?: boolean
-    TpID?: boolean
-    LgID?: boolean
-    lesson?: boolean | topiclanguagedetail$lessonArgs<ExtArgs>
-    topic?: boolean | topicDefaultArgs<ExtArgs>
-    language?: boolean | languageDefaultArgs<ExtArgs>
-    _count?: boolean | TopiclanguagedetailCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["topiclanguagedetail"]>
-
-
-
-  export type topiclanguagedetailSelectScalar = {
-    TLDID?: boolean
-    TpID?: boolean
-    LgID?: boolean
-  }
-
-  export type topiclanguagedetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"TLDID" | "TpID" | "LgID", ExtArgs["result"]["topiclanguagedetail"]>
-  export type topiclanguagedetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    lesson?: boolean | topiclanguagedetail$lessonArgs<ExtArgs>
-    topic?: boolean | topicDefaultArgs<ExtArgs>
-    language?: boolean | languageDefaultArgs<ExtArgs>
-    _count?: boolean | TopiclanguagedetailCountOutputTypeDefaultArgs<ExtArgs>
-  }
-
-  export type $topiclanguagedetailPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "topiclanguagedetail"
-    objects: {
-      lesson: Prisma.$lessonPayload<ExtArgs>[]
-      topic: Prisma.$topicPayload<ExtArgs>
-      language: Prisma.$languagePayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      TLDID: number
-      TpID: number
-      LgID: number
-    }, ExtArgs["result"]["topiclanguagedetail"]>
-    composites: {}
-  }
-
-  type topiclanguagedetailGetPayload<S extends boolean | null | undefined | topiclanguagedetailDefaultArgs> = $Result.GetResult<Prisma.$topiclanguagedetailPayload, S>
-
-  type topiclanguagedetailCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<topiclanguagedetailFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: TopiclanguagedetailCountAggregateInputType | true
-    }
-
-  export interface topiclanguagedetailDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['topiclanguagedetail'], meta: { name: 'topiclanguagedetail' } }
-    /**
-     * Find zero or one Topiclanguagedetail that matches the filter.
-     * @param {topiclanguagedetailFindUniqueArgs} args - Arguments to find a Topiclanguagedetail
-     * @example
-     * // Get one Topiclanguagedetail
-     * const topiclanguagedetail = await prisma.topiclanguagedetail.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends topiclanguagedetailFindUniqueArgs>(args: SelectSubset<T, topiclanguagedetailFindUniqueArgs<ExtArgs>>): Prisma__topiclanguagedetailClient<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Topiclanguagedetail that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {topiclanguagedetailFindUniqueOrThrowArgs} args - Arguments to find a Topiclanguagedetail
-     * @example
-     * // Get one Topiclanguagedetail
-     * const topiclanguagedetail = await prisma.topiclanguagedetail.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends topiclanguagedetailFindUniqueOrThrowArgs>(args: SelectSubset<T, topiclanguagedetailFindUniqueOrThrowArgs<ExtArgs>>): Prisma__topiclanguagedetailClient<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Topiclanguagedetail that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {topiclanguagedetailFindFirstArgs} args - Arguments to find a Topiclanguagedetail
-     * @example
-     * // Get one Topiclanguagedetail
-     * const topiclanguagedetail = await prisma.topiclanguagedetail.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends topiclanguagedetailFindFirstArgs>(args?: SelectSubset<T, topiclanguagedetailFindFirstArgs<ExtArgs>>): Prisma__topiclanguagedetailClient<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Topiclanguagedetail that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {topiclanguagedetailFindFirstOrThrowArgs} args - Arguments to find a Topiclanguagedetail
-     * @example
-     * // Get one Topiclanguagedetail
-     * const topiclanguagedetail = await prisma.topiclanguagedetail.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends topiclanguagedetailFindFirstOrThrowArgs>(args?: SelectSubset<T, topiclanguagedetailFindFirstOrThrowArgs<ExtArgs>>): Prisma__topiclanguagedetailClient<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Topiclanguagedetails that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {topiclanguagedetailFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Topiclanguagedetails
-     * const topiclanguagedetails = await prisma.topiclanguagedetail.findMany()
-     * 
-     * // Get first 10 Topiclanguagedetails
-     * const topiclanguagedetails = await prisma.topiclanguagedetail.findMany({ take: 10 })
-     * 
-     * // Only select the `TLDID`
-     * const topiclanguagedetailWithTLDIDOnly = await prisma.topiclanguagedetail.findMany({ select: { TLDID: true } })
-     * 
-     */
-    findMany<T extends topiclanguagedetailFindManyArgs>(args?: SelectSubset<T, topiclanguagedetailFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Topiclanguagedetail.
-     * @param {topiclanguagedetailCreateArgs} args - Arguments to create a Topiclanguagedetail.
-     * @example
-     * // Create one Topiclanguagedetail
-     * const Topiclanguagedetail = await prisma.topiclanguagedetail.create({
-     *   data: {
-     *     // ... data to create a Topiclanguagedetail
-     *   }
-     * })
-     * 
-     */
-    create<T extends topiclanguagedetailCreateArgs>(args: SelectSubset<T, topiclanguagedetailCreateArgs<ExtArgs>>): Prisma__topiclanguagedetailClient<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Topiclanguagedetails.
-     * @param {topiclanguagedetailCreateManyArgs} args - Arguments to create many Topiclanguagedetails.
-     * @example
-     * // Create many Topiclanguagedetails
-     * const topiclanguagedetail = await prisma.topiclanguagedetail.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends topiclanguagedetailCreateManyArgs>(args?: SelectSubset<T, topiclanguagedetailCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Topiclanguagedetail.
-     * @param {topiclanguagedetailDeleteArgs} args - Arguments to delete one Topiclanguagedetail.
-     * @example
-     * // Delete one Topiclanguagedetail
-     * const Topiclanguagedetail = await prisma.topiclanguagedetail.delete({
-     *   where: {
-     *     // ... filter to delete one Topiclanguagedetail
-     *   }
-     * })
-     * 
-     */
-    delete<T extends topiclanguagedetailDeleteArgs>(args: SelectSubset<T, topiclanguagedetailDeleteArgs<ExtArgs>>): Prisma__topiclanguagedetailClient<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Topiclanguagedetail.
-     * @param {topiclanguagedetailUpdateArgs} args - Arguments to update one Topiclanguagedetail.
-     * @example
-     * // Update one Topiclanguagedetail
-     * const topiclanguagedetail = await prisma.topiclanguagedetail.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends topiclanguagedetailUpdateArgs>(args: SelectSubset<T, topiclanguagedetailUpdateArgs<ExtArgs>>): Prisma__topiclanguagedetailClient<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Topiclanguagedetails.
-     * @param {topiclanguagedetailDeleteManyArgs} args - Arguments to filter Topiclanguagedetails to delete.
-     * @example
-     * // Delete a few Topiclanguagedetails
-     * const { count } = await prisma.topiclanguagedetail.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends topiclanguagedetailDeleteManyArgs>(args?: SelectSubset<T, topiclanguagedetailDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Topiclanguagedetails.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {topiclanguagedetailUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Topiclanguagedetails
-     * const topiclanguagedetail = await prisma.topiclanguagedetail.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends topiclanguagedetailUpdateManyArgs>(args: SelectSubset<T, topiclanguagedetailUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Topiclanguagedetail.
-     * @param {topiclanguagedetailUpsertArgs} args - Arguments to update or create a Topiclanguagedetail.
-     * @example
-     * // Update or create a Topiclanguagedetail
-     * const topiclanguagedetail = await prisma.topiclanguagedetail.upsert({
-     *   create: {
-     *     // ... data to create a Topiclanguagedetail
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Topiclanguagedetail we want to update
-     *   }
-     * })
-     */
-    upsert<T extends topiclanguagedetailUpsertArgs>(args: SelectSubset<T, topiclanguagedetailUpsertArgs<ExtArgs>>): Prisma__topiclanguagedetailClient<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Topiclanguagedetails.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {topiclanguagedetailCountArgs} args - Arguments to filter Topiclanguagedetails to count.
-     * @example
-     * // Count the number of Topiclanguagedetails
-     * const count = await prisma.topiclanguagedetail.count({
-     *   where: {
-     *     // ... the filter for the Topiclanguagedetails we want to count
-     *   }
-     * })
-    **/
-    count<T extends topiclanguagedetailCountArgs>(
-      args?: Subset<T, topiclanguagedetailCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], TopiclanguagedetailCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Topiclanguagedetail.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {TopiclanguagedetailAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends TopiclanguagedetailAggregateArgs>(args: Subset<T, TopiclanguagedetailAggregateArgs>): Prisma.PrismaPromise<GetTopiclanguagedetailAggregateType<T>>
-
-    /**
-     * Group by Topiclanguagedetail.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {topiclanguagedetailGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends topiclanguagedetailGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: topiclanguagedetailGroupByArgs['orderBy'] }
-        : { orderBy?: topiclanguagedetailGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, topiclanguagedetailGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTopiclanguagedetailGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the topiclanguagedetail model
-   */
-  readonly fields: topiclanguagedetailFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for topiclanguagedetail.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__topiclanguagedetailClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    lesson<T extends topiclanguagedetail$lessonArgs<ExtArgs> = {}>(args?: Subset<T, topiclanguagedetail$lessonArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    topic<T extends topicDefaultArgs<ExtArgs> = {}>(args?: Subset<T, topicDefaultArgs<ExtArgs>>): Prisma__topicClient<$Result.GetResult<Prisma.$topicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    language<T extends languageDefaultArgs<ExtArgs> = {}>(args?: Subset<T, languageDefaultArgs<ExtArgs>>): Prisma__languageClient<$Result.GetResult<Prisma.$languagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the topiclanguagedetail model
-   */
-  interface topiclanguagedetailFieldRefs {
-    readonly TLDID: FieldRef<"topiclanguagedetail", 'Int'>
-    readonly TpID: FieldRef<"topiclanguagedetail", 'Int'>
-    readonly LgID: FieldRef<"topiclanguagedetail", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * topiclanguagedetail findUnique
-   */
-  export type topiclanguagedetailFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    /**
-     * Filter, which topiclanguagedetail to fetch.
-     */
-    where: topiclanguagedetailWhereUniqueInput
-  }
-
-  /**
-   * topiclanguagedetail findUniqueOrThrow
-   */
-  export type topiclanguagedetailFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    /**
-     * Filter, which topiclanguagedetail to fetch.
-     */
-    where: topiclanguagedetailWhereUniqueInput
-  }
-
-  /**
-   * topiclanguagedetail findFirst
-   */
-  export type topiclanguagedetailFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    /**
-     * Filter, which topiclanguagedetail to fetch.
-     */
-    where?: topiclanguagedetailWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of topiclanguagedetails to fetch.
-     */
-    orderBy?: topiclanguagedetailOrderByWithRelationInput | topiclanguagedetailOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for topiclanguagedetails.
-     */
-    cursor?: topiclanguagedetailWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` topiclanguagedetails from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` topiclanguagedetails.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of topiclanguagedetails.
-     */
-    distinct?: TopiclanguagedetailScalarFieldEnum | TopiclanguagedetailScalarFieldEnum[]
-  }
-
-  /**
-   * topiclanguagedetail findFirstOrThrow
-   */
-  export type topiclanguagedetailFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    /**
-     * Filter, which topiclanguagedetail to fetch.
-     */
-    where?: topiclanguagedetailWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of topiclanguagedetails to fetch.
-     */
-    orderBy?: topiclanguagedetailOrderByWithRelationInput | topiclanguagedetailOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for topiclanguagedetails.
-     */
-    cursor?: topiclanguagedetailWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` topiclanguagedetails from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` topiclanguagedetails.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of topiclanguagedetails.
-     */
-    distinct?: TopiclanguagedetailScalarFieldEnum | TopiclanguagedetailScalarFieldEnum[]
-  }
-
-  /**
-   * topiclanguagedetail findMany
-   */
-  export type topiclanguagedetailFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    /**
-     * Filter, which topiclanguagedetails to fetch.
-     */
-    where?: topiclanguagedetailWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of topiclanguagedetails to fetch.
-     */
-    orderBy?: topiclanguagedetailOrderByWithRelationInput | topiclanguagedetailOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing topiclanguagedetails.
-     */
-    cursor?: topiclanguagedetailWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` topiclanguagedetails from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` topiclanguagedetails.
-     */
-    skip?: number
-    distinct?: TopiclanguagedetailScalarFieldEnum | TopiclanguagedetailScalarFieldEnum[]
-  }
-
-  /**
-   * topiclanguagedetail create
-   */
-  export type topiclanguagedetailCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    /**
-     * The data needed to create a topiclanguagedetail.
-     */
-    data: XOR<topiclanguagedetailCreateInput, topiclanguagedetailUncheckedCreateInput>
-  }
-
-  /**
-   * topiclanguagedetail createMany
-   */
-  export type topiclanguagedetailCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many topiclanguagedetails.
-     */
-    data: topiclanguagedetailCreateManyInput | topiclanguagedetailCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * topiclanguagedetail update
-   */
-  export type topiclanguagedetailUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    /**
-     * The data needed to update a topiclanguagedetail.
-     */
-    data: XOR<topiclanguagedetailUpdateInput, topiclanguagedetailUncheckedUpdateInput>
-    /**
-     * Choose, which topiclanguagedetail to update.
-     */
-    where: topiclanguagedetailWhereUniqueInput
-  }
-
-  /**
-   * topiclanguagedetail updateMany
-   */
-  export type topiclanguagedetailUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update topiclanguagedetails.
-     */
-    data: XOR<topiclanguagedetailUpdateManyMutationInput, topiclanguagedetailUncheckedUpdateManyInput>
-    /**
-     * Filter which topiclanguagedetails to update
-     */
-    where?: topiclanguagedetailWhereInput
-    /**
-     * Limit how many topiclanguagedetails to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * topiclanguagedetail upsert
-   */
-  export type topiclanguagedetailUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    /**
-     * The filter to search for the topiclanguagedetail to update in case it exists.
-     */
-    where: topiclanguagedetailWhereUniqueInput
-    /**
-     * In case the topiclanguagedetail found by the `where` argument doesn't exist, create a new topiclanguagedetail with this data.
-     */
-    create: XOR<topiclanguagedetailCreateInput, topiclanguagedetailUncheckedCreateInput>
-    /**
-     * In case the topiclanguagedetail was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<topiclanguagedetailUpdateInput, topiclanguagedetailUncheckedUpdateInput>
-  }
-
-  /**
-   * topiclanguagedetail delete
-   */
-  export type topiclanguagedetailDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
-    /**
-     * Filter which topiclanguagedetail to delete.
-     */
-    where: topiclanguagedetailWhereUniqueInput
-  }
-
-  /**
-   * topiclanguagedetail deleteMany
-   */
-  export type topiclanguagedetailDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which topiclanguagedetails to delete
-     */
-    where?: topiclanguagedetailWhereInput
-    /**
-     * Limit how many topiclanguagedetails to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * topiclanguagedetail.lesson
-   */
-  export type topiclanguagedetail$lessonArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the lesson
-     */
-    select?: lessonSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the lesson
-     */
-    omit?: lessonOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: lessonInclude<ExtArgs> | null
-    where?: lessonWhereInput
-    orderBy?: lessonOrderByWithRelationInput | lessonOrderByWithRelationInput[]
-    cursor?: lessonWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: LessonScalarFieldEnum | LessonScalarFieldEnum[]
-  }
-
-  /**
-   * topiclanguagedetail without action
-   */
-  export type topiclanguagedetailDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the topiclanguagedetail
-     */
-    select?: topiclanguagedetailSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the topiclanguagedetail
-     */
-    omit?: topiclanguagedetailOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: topiclanguagedetailInclude<ExtArgs> | null
   }
 
 
@@ -8922,7 +6731,7 @@ export namespace Prisma {
 
   export type UserGroupByOutputType = {
     UID: string
-    Username: string | null
+    Username: string
     Email: string
     Password: string
     Role: $Enums.user_Role
@@ -8953,6 +6762,8 @@ export namespace Prisma {
     Password?: boolean
     Role?: boolean
     CreatedAt?: boolean
+    friendship_friendship_requesterTouser?: boolean | user$friendship_friendship_requesterTouserArgs<ExtArgs>
+    friendship_friendship_addresseeTouser?: boolean | user$friendship_friendship_addresseeTouserArgs<ExtArgs>
     submission?: boolean | user$submissionArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -8970,6 +6781,8 @@ export namespace Prisma {
 
   export type userOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"UID" | "Username" | "Email" | "Password" | "Role" | "CreatedAt", ExtArgs["result"]["user"]>
   export type userInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    friendship_friendship_requesterTouser?: boolean | user$friendship_friendship_requesterTouserArgs<ExtArgs>
+    friendship_friendship_addresseeTouser?: boolean | user$friendship_friendship_addresseeTouserArgs<ExtArgs>
     submission?: boolean | user$submissionArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -8977,11 +6790,13 @@ export namespace Prisma {
   export type $userPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "user"
     objects: {
+      friendship_friendship_requesterTouser: Prisma.$friendshipPayload<ExtArgs>[]
+      friendship_friendship_addresseeTouser: Prisma.$friendshipPayload<ExtArgs>[]
       submission: Prisma.$submissionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       UID: string
-      Username: string | null
+      Username: string
       Email: string
       Password: string
       Role: $Enums.user_Role
@@ -9326,6 +7141,8 @@ export namespace Prisma {
    */
   export interface Prisma__userClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    friendship_friendship_requesterTouser<T extends user$friendship_friendship_requesterTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$friendship_friendship_requesterTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    friendship_friendship_addresseeTouser<T extends user$friendship_friendship_addresseeTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$friendship_friendship_addresseeTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     submission<T extends user$submissionArgs<ExtArgs> = {}>(args?: Subset<T, user$submissionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$submissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9705,6 +7522,54 @@ export namespace Prisma {
   }
 
   /**
+   * user.friendship_friendship_requesterTouser
+   */
+  export type user$friendship_friendship_requesterTouserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the friendship
+     */
+    select?: friendshipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the friendship
+     */
+    omit?: friendshipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: friendshipInclude<ExtArgs> | null
+    where?: friendshipWhereInput
+    orderBy?: friendshipOrderByWithRelationInput | friendshipOrderByWithRelationInput[]
+    cursor?: friendshipWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FriendshipScalarFieldEnum | FriendshipScalarFieldEnum[]
+  }
+
+  /**
+   * user.friendship_friendship_addresseeTouser
+   */
+  export type user$friendship_friendship_addresseeTouserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the friendship
+     */
+    select?: friendshipSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the friendship
+     */
+    omit?: friendshipOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: friendshipInclude<ExtArgs> | null
+    where?: friendshipWhereInput
+    orderBy?: friendshipOrderByWithRelationInput | friendshipOrderByWithRelationInput[]
+    cursor?: friendshipWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FriendshipScalarFieldEnum | FriendshipScalarFieldEnum[]
+  }
+
+  /**
    * user.submission
    */
   export type user$submissionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9748,382 +7613,372 @@ export namespace Prisma {
 
 
   /**
-   * Model lesson
+   * Model friendship
    */
 
-  export type AggregateLesson = {
-    _count: LessonCountAggregateOutputType | null
-    _avg: LessonAvgAggregateOutputType | null
-    _sum: LessonSumAggregateOutputType | null
-    _min: LessonMinAggregateOutputType | null
-    _max: LessonMaxAggregateOutputType | null
+  export type AggregateFriendship = {
+    _count: FriendshipCountAggregateOutputType | null
+    _avg: FriendshipAvgAggregateOutputType | null
+    _sum: FriendshipSumAggregateOutputType | null
+    _min: FriendshipMinAggregateOutputType | null
+    _max: FriendshipMaxAggregateOutputType | null
   }
 
-  export type LessonAvgAggregateOutputType = {
-    LsID: number | null
-    TLDID: number | null
-    OrderIndex: number | null
+  export type FriendshipAvgAggregateOutputType = {
+    FID: number | null
   }
 
-  export type LessonSumAggregateOutputType = {
-    LsID: number | null
-    TLDID: number | null
-    OrderIndex: number | null
+  export type FriendshipSumAggregateOutputType = {
+    FID: number | null
   }
 
-  export type LessonMinAggregateOutputType = {
-    LsID: number | null
-    TLDID: number | null
-    OrderIndex: number | null
-    Tittle: string | null
-    Content: string | null
+  export type FriendshipMinAggregateOutputType = {
+    FID: number | null
+    requester: string | null
+    addressee: string | null
+    status: $Enums.friendship_status | null
+    CreatedAt: Date | null
   }
 
-  export type LessonMaxAggregateOutputType = {
-    LsID: number | null
-    TLDID: number | null
-    OrderIndex: number | null
-    Tittle: string | null
-    Content: string | null
+  export type FriendshipMaxAggregateOutputType = {
+    FID: number | null
+    requester: string | null
+    addressee: string | null
+    status: $Enums.friendship_status | null
+    CreatedAt: Date | null
   }
 
-  export type LessonCountAggregateOutputType = {
-    LsID: number
-    TLDID: number
-    OrderIndex: number
-    Tittle: number
-    Content: number
+  export type FriendshipCountAggregateOutputType = {
+    FID: number
+    requester: number
+    addressee: number
+    status: number
+    CreatedAt: number
     _all: number
   }
 
 
-  export type LessonAvgAggregateInputType = {
-    LsID?: true
-    TLDID?: true
-    OrderIndex?: true
+  export type FriendshipAvgAggregateInputType = {
+    FID?: true
   }
 
-  export type LessonSumAggregateInputType = {
-    LsID?: true
-    TLDID?: true
-    OrderIndex?: true
+  export type FriendshipSumAggregateInputType = {
+    FID?: true
   }
 
-  export type LessonMinAggregateInputType = {
-    LsID?: true
-    TLDID?: true
-    OrderIndex?: true
-    Tittle?: true
-    Content?: true
+  export type FriendshipMinAggregateInputType = {
+    FID?: true
+    requester?: true
+    addressee?: true
+    status?: true
+    CreatedAt?: true
   }
 
-  export type LessonMaxAggregateInputType = {
-    LsID?: true
-    TLDID?: true
-    OrderIndex?: true
-    Tittle?: true
-    Content?: true
+  export type FriendshipMaxAggregateInputType = {
+    FID?: true
+    requester?: true
+    addressee?: true
+    status?: true
+    CreatedAt?: true
   }
 
-  export type LessonCountAggregateInputType = {
-    LsID?: true
-    TLDID?: true
-    OrderIndex?: true
-    Tittle?: true
-    Content?: true
+  export type FriendshipCountAggregateInputType = {
+    FID?: true
+    requester?: true
+    addressee?: true
+    status?: true
+    CreatedAt?: true
     _all?: true
   }
 
-  export type LessonAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type FriendshipAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which lesson to aggregate.
+     * Filter which friendship to aggregate.
      */
-    where?: lessonWhereInput
+    where?: friendshipWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of lessons to fetch.
+     * Determine the order of friendships to fetch.
      */
-    orderBy?: lessonOrderByWithRelationInput | lessonOrderByWithRelationInput[]
+    orderBy?: friendshipOrderByWithRelationInput | friendshipOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: lessonWhereUniqueInput
+    cursor?: friendshipWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` lessons from the position of the cursor.
+     * Take `±n` friendships from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` lessons.
+     * Skip the first `n` friendships.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned lessons
+     * Count returned friendships
     **/
-    _count?: true | LessonCountAggregateInputType
+    _count?: true | FriendshipCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: LessonAvgAggregateInputType
+    _avg?: FriendshipAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: LessonSumAggregateInputType
+    _sum?: FriendshipSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: LessonMinAggregateInputType
+    _min?: FriendshipMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: LessonMaxAggregateInputType
+    _max?: FriendshipMaxAggregateInputType
   }
 
-  export type GetLessonAggregateType<T extends LessonAggregateArgs> = {
-        [P in keyof T & keyof AggregateLesson]: P extends '_count' | 'count'
+  export type GetFriendshipAggregateType<T extends FriendshipAggregateArgs> = {
+        [P in keyof T & keyof AggregateFriendship]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateLesson[P]>
-      : GetScalarType<T[P], AggregateLesson[P]>
+        : GetScalarType<T[P], AggregateFriendship[P]>
+      : GetScalarType<T[P], AggregateFriendship[P]>
   }
 
 
 
 
-  export type lessonGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: lessonWhereInput
-    orderBy?: lessonOrderByWithAggregationInput | lessonOrderByWithAggregationInput[]
-    by: LessonScalarFieldEnum[] | LessonScalarFieldEnum
-    having?: lessonScalarWhereWithAggregatesInput
+  export type friendshipGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: friendshipWhereInput
+    orderBy?: friendshipOrderByWithAggregationInput | friendshipOrderByWithAggregationInput[]
+    by: FriendshipScalarFieldEnum[] | FriendshipScalarFieldEnum
+    having?: friendshipScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: LessonCountAggregateInputType | true
-    _avg?: LessonAvgAggregateInputType
-    _sum?: LessonSumAggregateInputType
-    _min?: LessonMinAggregateInputType
-    _max?: LessonMaxAggregateInputType
+    _count?: FriendshipCountAggregateInputType | true
+    _avg?: FriendshipAvgAggregateInputType
+    _sum?: FriendshipSumAggregateInputType
+    _min?: FriendshipMinAggregateInputType
+    _max?: FriendshipMaxAggregateInputType
   }
 
-  export type LessonGroupByOutputType = {
-    LsID: number
-    TLDID: number
-    OrderIndex: number
-    Tittle: string
-    Content: string
-    _count: LessonCountAggregateOutputType | null
-    _avg: LessonAvgAggregateOutputType | null
-    _sum: LessonSumAggregateOutputType | null
-    _min: LessonMinAggregateOutputType | null
-    _max: LessonMaxAggregateOutputType | null
+  export type FriendshipGroupByOutputType = {
+    FID: number
+    requester: string
+    addressee: string
+    status: $Enums.friendship_status
+    CreatedAt: Date | null
+    _count: FriendshipCountAggregateOutputType | null
+    _avg: FriendshipAvgAggregateOutputType | null
+    _sum: FriendshipSumAggregateOutputType | null
+    _min: FriendshipMinAggregateOutputType | null
+    _max: FriendshipMaxAggregateOutputType | null
   }
 
-  type GetLessonGroupByPayload<T extends lessonGroupByArgs> = Prisma.PrismaPromise<
+  type GetFriendshipGroupByPayload<T extends friendshipGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<LessonGroupByOutputType, T['by']> &
+      PickEnumerable<FriendshipGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof LessonGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof FriendshipGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], LessonGroupByOutputType[P]>
-            : GetScalarType<T[P], LessonGroupByOutputType[P]>
+              : GetScalarType<T[P], FriendshipGroupByOutputType[P]>
+            : GetScalarType<T[P], FriendshipGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type lessonSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    LsID?: boolean
-    TLDID?: boolean
-    OrderIndex?: boolean
-    Tittle?: boolean
-    Content?: boolean
-    exercise?: boolean | lesson$exerciseArgs<ExtArgs>
-    topiclanguagedetail?: boolean | topiclanguagedetailDefaultArgs<ExtArgs>
-    _count?: boolean | LessonCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["lesson"]>
+  export type friendshipSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    FID?: boolean
+    requester?: boolean
+    addressee?: boolean
+    status?: boolean
+    CreatedAt?: boolean
+    user_friendship_requesterTouser?: boolean | userDefaultArgs<ExtArgs>
+    user_friendship_addresseeTouser?: boolean | userDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["friendship"]>
 
 
 
-  export type lessonSelectScalar = {
-    LsID?: boolean
-    TLDID?: boolean
-    OrderIndex?: boolean
-    Tittle?: boolean
-    Content?: boolean
+  export type friendshipSelectScalar = {
+    FID?: boolean
+    requester?: boolean
+    addressee?: boolean
+    status?: boolean
+    CreatedAt?: boolean
   }
 
-  export type lessonOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"LsID" | "TLDID" | "OrderIndex" | "Tittle" | "Content", ExtArgs["result"]["lesson"]>
-  export type lessonInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    exercise?: boolean | lesson$exerciseArgs<ExtArgs>
-    topiclanguagedetail?: boolean | topiclanguagedetailDefaultArgs<ExtArgs>
-    _count?: boolean | LessonCountOutputTypeDefaultArgs<ExtArgs>
+  export type friendshipOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"FID" | "requester" | "addressee" | "status" | "CreatedAt", ExtArgs["result"]["friendship"]>
+  export type friendshipInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user_friendship_requesterTouser?: boolean | userDefaultArgs<ExtArgs>
+    user_friendship_addresseeTouser?: boolean | userDefaultArgs<ExtArgs>
   }
 
-  export type $lessonPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "lesson"
+  export type $friendshipPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "friendship"
     objects: {
-      exercise: Prisma.$exercisePayload<ExtArgs>[]
-      topiclanguagedetail: Prisma.$topiclanguagedetailPayload<ExtArgs>
+      user_friendship_requesterTouser: Prisma.$userPayload<ExtArgs>
+      user_friendship_addresseeTouser: Prisma.$userPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      LsID: number
-      TLDID: number
-      OrderIndex: number
-      Tittle: string
-      Content: string
-    }, ExtArgs["result"]["lesson"]>
+      FID: number
+      requester: string
+      addressee: string
+      status: $Enums.friendship_status
+      CreatedAt: Date | null
+    }, ExtArgs["result"]["friendship"]>
     composites: {}
   }
 
-  type lessonGetPayload<S extends boolean | null | undefined | lessonDefaultArgs> = $Result.GetResult<Prisma.$lessonPayload, S>
+  type friendshipGetPayload<S extends boolean | null | undefined | friendshipDefaultArgs> = $Result.GetResult<Prisma.$friendshipPayload, S>
 
-  type lessonCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<lessonFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: LessonCountAggregateInputType | true
+  type friendshipCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<friendshipFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FriendshipCountAggregateInputType | true
     }
 
-  export interface lessonDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['lesson'], meta: { name: 'lesson' } }
+  export interface friendshipDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['friendship'], meta: { name: 'friendship' } }
     /**
-     * Find zero or one Lesson that matches the filter.
-     * @param {lessonFindUniqueArgs} args - Arguments to find a Lesson
+     * Find zero or one Friendship that matches the filter.
+     * @param {friendshipFindUniqueArgs} args - Arguments to find a Friendship
      * @example
-     * // Get one Lesson
-     * const lesson = await prisma.lesson.findUnique({
+     * // Get one Friendship
+     * const friendship = await prisma.friendship.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends lessonFindUniqueArgs>(args: SelectSubset<T, lessonFindUniqueArgs<ExtArgs>>): Prisma__lessonClient<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends friendshipFindUniqueArgs>(args: SelectSubset<T, friendshipFindUniqueArgs<ExtArgs>>): Prisma__friendshipClient<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one Lesson that matches the filter or throw an error with `error.code='P2025'`
+     * Find one Friendship that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {lessonFindUniqueOrThrowArgs} args - Arguments to find a Lesson
+     * @param {friendshipFindUniqueOrThrowArgs} args - Arguments to find a Friendship
      * @example
-     * // Get one Lesson
-     * const lesson = await prisma.lesson.findUniqueOrThrow({
+     * // Get one Friendship
+     * const friendship = await prisma.friendship.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends lessonFindUniqueOrThrowArgs>(args: SelectSubset<T, lessonFindUniqueOrThrowArgs<ExtArgs>>): Prisma__lessonClient<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends friendshipFindUniqueOrThrowArgs>(args: SelectSubset<T, friendshipFindUniqueOrThrowArgs<ExtArgs>>): Prisma__friendshipClient<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Lesson that matches the filter.
+     * Find the first Friendship that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {lessonFindFirstArgs} args - Arguments to find a Lesson
+     * @param {friendshipFindFirstArgs} args - Arguments to find a Friendship
      * @example
-     * // Get one Lesson
-     * const lesson = await prisma.lesson.findFirst({
+     * // Get one Friendship
+     * const friendship = await prisma.friendship.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends lessonFindFirstArgs>(args?: SelectSubset<T, lessonFindFirstArgs<ExtArgs>>): Prisma__lessonClient<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends friendshipFindFirstArgs>(args?: SelectSubset<T, friendshipFindFirstArgs<ExtArgs>>): Prisma__friendshipClient<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first Lesson that matches the filter or
+     * Find the first Friendship that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {lessonFindFirstOrThrowArgs} args - Arguments to find a Lesson
+     * @param {friendshipFindFirstOrThrowArgs} args - Arguments to find a Friendship
      * @example
-     * // Get one Lesson
-     * const lesson = await prisma.lesson.findFirstOrThrow({
+     * // Get one Friendship
+     * const friendship = await prisma.friendship.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends lessonFindFirstOrThrowArgs>(args?: SelectSubset<T, lessonFindFirstOrThrowArgs<ExtArgs>>): Prisma__lessonClient<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends friendshipFindFirstOrThrowArgs>(args?: SelectSubset<T, friendshipFindFirstOrThrowArgs<ExtArgs>>): Prisma__friendshipClient<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more Lessons that matches the filter.
+     * Find zero or more Friendships that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {lessonFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {friendshipFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Lessons
-     * const lessons = await prisma.lesson.findMany()
+     * // Get all Friendships
+     * const friendships = await prisma.friendship.findMany()
      * 
-     * // Get first 10 Lessons
-     * const lessons = await prisma.lesson.findMany({ take: 10 })
+     * // Get first 10 Friendships
+     * const friendships = await prisma.friendship.findMany({ take: 10 })
      * 
-     * // Only select the `LsID`
-     * const lessonWithLsIDOnly = await prisma.lesson.findMany({ select: { LsID: true } })
+     * // Only select the `FID`
+     * const friendshipWithFIDOnly = await prisma.friendship.findMany({ select: { FID: true } })
      * 
      */
-    findMany<T extends lessonFindManyArgs>(args?: SelectSubset<T, lessonFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends friendshipFindManyArgs>(args?: SelectSubset<T, friendshipFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a Lesson.
-     * @param {lessonCreateArgs} args - Arguments to create a Lesson.
+     * Create a Friendship.
+     * @param {friendshipCreateArgs} args - Arguments to create a Friendship.
      * @example
-     * // Create one Lesson
-     * const Lesson = await prisma.lesson.create({
+     * // Create one Friendship
+     * const Friendship = await prisma.friendship.create({
      *   data: {
-     *     // ... data to create a Lesson
+     *     // ... data to create a Friendship
      *   }
      * })
      * 
      */
-    create<T extends lessonCreateArgs>(args: SelectSubset<T, lessonCreateArgs<ExtArgs>>): Prisma__lessonClient<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends friendshipCreateArgs>(args: SelectSubset<T, friendshipCreateArgs<ExtArgs>>): Prisma__friendshipClient<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many Lessons.
-     * @param {lessonCreateManyArgs} args - Arguments to create many Lessons.
+     * Create many Friendships.
+     * @param {friendshipCreateManyArgs} args - Arguments to create many Friendships.
      * @example
-     * // Create many Lessons
-     * const lesson = await prisma.lesson.createMany({
+     * // Create many Friendships
+     * const friendship = await prisma.friendship.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends lessonCreateManyArgs>(args?: SelectSubset<T, lessonCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends friendshipCreateManyArgs>(args?: SelectSubset<T, friendshipCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a Lesson.
-     * @param {lessonDeleteArgs} args - Arguments to delete one Lesson.
+     * Delete a Friendship.
+     * @param {friendshipDeleteArgs} args - Arguments to delete one Friendship.
      * @example
-     * // Delete one Lesson
-     * const Lesson = await prisma.lesson.delete({
+     * // Delete one Friendship
+     * const Friendship = await prisma.friendship.delete({
      *   where: {
-     *     // ... filter to delete one Lesson
+     *     // ... filter to delete one Friendship
      *   }
      * })
      * 
      */
-    delete<T extends lessonDeleteArgs>(args: SelectSubset<T, lessonDeleteArgs<ExtArgs>>): Prisma__lessonClient<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends friendshipDeleteArgs>(args: SelectSubset<T, friendshipDeleteArgs<ExtArgs>>): Prisma__friendshipClient<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one Lesson.
-     * @param {lessonUpdateArgs} args - Arguments to update one Lesson.
+     * Update one Friendship.
+     * @param {friendshipUpdateArgs} args - Arguments to update one Friendship.
      * @example
-     * // Update one Lesson
-     * const lesson = await prisma.lesson.update({
+     * // Update one Friendship
+     * const friendship = await prisma.friendship.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -10133,30 +7988,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends lessonUpdateArgs>(args: SelectSubset<T, lessonUpdateArgs<ExtArgs>>): Prisma__lessonClient<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends friendshipUpdateArgs>(args: SelectSubset<T, friendshipUpdateArgs<ExtArgs>>): Prisma__friendshipClient<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more Lessons.
-     * @param {lessonDeleteManyArgs} args - Arguments to filter Lessons to delete.
+     * Delete zero or more Friendships.
+     * @param {friendshipDeleteManyArgs} args - Arguments to filter Friendships to delete.
      * @example
-     * // Delete a few Lessons
-     * const { count } = await prisma.lesson.deleteMany({
+     * // Delete a few Friendships
+     * const { count } = await prisma.friendship.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends lessonDeleteManyArgs>(args?: SelectSubset<T, lessonDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends friendshipDeleteManyArgs>(args?: SelectSubset<T, friendshipDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Lessons.
+     * Update zero or more Friendships.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {lessonUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {friendshipUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Lessons
-     * const lesson = await prisma.lesson.updateMany({
+     * // Update many Friendships
+     * const friendship = await prisma.friendship.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -10166,56 +8021,56 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends lessonUpdateManyArgs>(args: SelectSubset<T, lessonUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends friendshipUpdateManyArgs>(args: SelectSubset<T, friendshipUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Lesson.
-     * @param {lessonUpsertArgs} args - Arguments to update or create a Lesson.
+     * Create or update one Friendship.
+     * @param {friendshipUpsertArgs} args - Arguments to update or create a Friendship.
      * @example
-     * // Update or create a Lesson
-     * const lesson = await prisma.lesson.upsert({
+     * // Update or create a Friendship
+     * const friendship = await prisma.friendship.upsert({
      *   create: {
-     *     // ... data to create a Lesson
+     *     // ... data to create a Friendship
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Lesson we want to update
+     *     // ... the filter for the Friendship we want to update
      *   }
      * })
      */
-    upsert<T extends lessonUpsertArgs>(args: SelectSubset<T, lessonUpsertArgs<ExtArgs>>): Prisma__lessonClient<$Result.GetResult<Prisma.$lessonPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends friendshipUpsertArgs>(args: SelectSubset<T, friendshipUpsertArgs<ExtArgs>>): Prisma__friendshipClient<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of Lessons.
+     * Count the number of Friendships.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {lessonCountArgs} args - Arguments to filter Lessons to count.
+     * @param {friendshipCountArgs} args - Arguments to filter Friendships to count.
      * @example
-     * // Count the number of Lessons
-     * const count = await prisma.lesson.count({
+     * // Count the number of Friendships
+     * const count = await prisma.friendship.count({
      *   where: {
-     *     // ... the filter for the Lessons we want to count
+     *     // ... the filter for the Friendships we want to count
      *   }
      * })
     **/
-    count<T extends lessonCountArgs>(
-      args?: Subset<T, lessonCountArgs>,
+    count<T extends friendshipCountArgs>(
+      args?: Subset<T, friendshipCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], LessonCountAggregateOutputType>
+          : GetScalarType<T['select'], FriendshipCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Lesson.
+     * Allows you to perform aggregations operations on a Friendship.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {LessonAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {FriendshipAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -10235,13 +8090,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends LessonAggregateArgs>(args: Subset<T, LessonAggregateArgs>): Prisma.PrismaPromise<GetLessonAggregateType<T>>
+    aggregate<T extends FriendshipAggregateArgs>(args: Subset<T, FriendshipAggregateArgs>): Prisma.PrismaPromise<GetFriendshipAggregateType<T>>
 
     /**
-     * Group by Lesson.
+     * Group by Friendship.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {lessonGroupByArgs} args - Group by arguments.
+     * @param {friendshipGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -10256,14 +8111,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends lessonGroupByArgs,
+      T extends friendshipGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: lessonGroupByArgs['orderBy'] }
-        : { orderBy?: lessonGroupByArgs['orderBy'] },
+        ? { orderBy: friendshipGroupByArgs['orderBy'] }
+        : { orderBy?: friendshipGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -10312,23 +8167,23 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, lessonGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLessonGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, friendshipGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFriendshipGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the lesson model
+   * Fields of the friendship model
    */
-  readonly fields: lessonFieldRefs;
+  readonly fields: friendshipFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for lesson.
+   * The delegate class that acts as a "Promise-like" for friendship.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__lessonClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__friendshipClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    exercise<T extends lesson$exerciseArgs<ExtArgs> = {}>(args?: Subset<T, lesson$exerciseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    topiclanguagedetail<T extends topiclanguagedetailDefaultArgs<ExtArgs> = {}>(args?: Subset<T, topiclanguagedetailDefaultArgs<ExtArgs>>): Prisma__topiclanguagedetailClient<$Result.GetResult<Prisma.$topiclanguagedetailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user_friendship_requesterTouser<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user_friendship_addresseeTouser<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10355,396 +8210,372 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the lesson model
+   * Fields of the friendship model
    */
-  interface lessonFieldRefs {
-    readonly LsID: FieldRef<"lesson", 'Int'>
-    readonly TLDID: FieldRef<"lesson", 'Int'>
-    readonly OrderIndex: FieldRef<"lesson", 'Int'>
-    readonly Tittle: FieldRef<"lesson", 'String'>
-    readonly Content: FieldRef<"lesson", 'String'>
+  interface friendshipFieldRefs {
+    readonly FID: FieldRef<"friendship", 'Int'>
+    readonly requester: FieldRef<"friendship", 'String'>
+    readonly addressee: FieldRef<"friendship", 'String'>
+    readonly status: FieldRef<"friendship", 'friendship_status'>
+    readonly CreatedAt: FieldRef<"friendship", 'DateTime'>
   }
     
 
   // Custom InputTypes
   /**
-   * lesson findUnique
+   * friendship findUnique
    */
-  export type lessonFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the lesson
+     * Select specific fields to fetch from the friendship
      */
-    select?: lessonSelect<ExtArgs> | null
+    select?: friendshipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the lesson
+     * Omit specific fields from the friendship
      */
-    omit?: lessonOmit<ExtArgs> | null
+    omit?: friendshipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: lessonInclude<ExtArgs> | null
+    include?: friendshipInclude<ExtArgs> | null
     /**
-     * Filter, which lesson to fetch.
+     * Filter, which friendship to fetch.
      */
-    where: lessonWhereUniqueInput
+    where: friendshipWhereUniqueInput
   }
 
   /**
-   * lesson findUniqueOrThrow
+   * friendship findUniqueOrThrow
    */
-  export type lessonFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the lesson
+     * Select specific fields to fetch from the friendship
      */
-    select?: lessonSelect<ExtArgs> | null
+    select?: friendshipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the lesson
+     * Omit specific fields from the friendship
      */
-    omit?: lessonOmit<ExtArgs> | null
+    omit?: friendshipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: lessonInclude<ExtArgs> | null
+    include?: friendshipInclude<ExtArgs> | null
     /**
-     * Filter, which lesson to fetch.
+     * Filter, which friendship to fetch.
      */
-    where: lessonWhereUniqueInput
+    where: friendshipWhereUniqueInput
   }
 
   /**
-   * lesson findFirst
+   * friendship findFirst
    */
-  export type lessonFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the lesson
+     * Select specific fields to fetch from the friendship
      */
-    select?: lessonSelect<ExtArgs> | null
+    select?: friendshipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the lesson
+     * Omit specific fields from the friendship
      */
-    omit?: lessonOmit<ExtArgs> | null
+    omit?: friendshipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: lessonInclude<ExtArgs> | null
+    include?: friendshipInclude<ExtArgs> | null
     /**
-     * Filter, which lesson to fetch.
+     * Filter, which friendship to fetch.
      */
-    where?: lessonWhereInput
+    where?: friendshipWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of lessons to fetch.
+     * Determine the order of friendships to fetch.
      */
-    orderBy?: lessonOrderByWithRelationInput | lessonOrderByWithRelationInput[]
+    orderBy?: friendshipOrderByWithRelationInput | friendshipOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for lessons.
+     * Sets the position for searching for friendships.
      */
-    cursor?: lessonWhereUniqueInput
+    cursor?: friendshipWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` lessons from the position of the cursor.
+     * Take `±n` friendships from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` lessons.
+     * Skip the first `n` friendships.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of lessons.
+     * Filter by unique combinations of friendships.
      */
-    distinct?: LessonScalarFieldEnum | LessonScalarFieldEnum[]
+    distinct?: FriendshipScalarFieldEnum | FriendshipScalarFieldEnum[]
   }
 
   /**
-   * lesson findFirstOrThrow
+   * friendship findFirstOrThrow
    */
-  export type lessonFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the lesson
+     * Select specific fields to fetch from the friendship
      */
-    select?: lessonSelect<ExtArgs> | null
+    select?: friendshipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the lesson
+     * Omit specific fields from the friendship
      */
-    omit?: lessonOmit<ExtArgs> | null
+    omit?: friendshipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: lessonInclude<ExtArgs> | null
+    include?: friendshipInclude<ExtArgs> | null
     /**
-     * Filter, which lesson to fetch.
+     * Filter, which friendship to fetch.
      */
-    where?: lessonWhereInput
+    where?: friendshipWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of lessons to fetch.
+     * Determine the order of friendships to fetch.
      */
-    orderBy?: lessonOrderByWithRelationInput | lessonOrderByWithRelationInput[]
+    orderBy?: friendshipOrderByWithRelationInput | friendshipOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for lessons.
+     * Sets the position for searching for friendships.
      */
-    cursor?: lessonWhereUniqueInput
+    cursor?: friendshipWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` lessons from the position of the cursor.
+     * Take `±n` friendships from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` lessons.
+     * Skip the first `n` friendships.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of lessons.
+     * Filter by unique combinations of friendships.
      */
-    distinct?: LessonScalarFieldEnum | LessonScalarFieldEnum[]
+    distinct?: FriendshipScalarFieldEnum | FriendshipScalarFieldEnum[]
   }
 
   /**
-   * lesson findMany
+   * friendship findMany
    */
-  export type lessonFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the lesson
+     * Select specific fields to fetch from the friendship
      */
-    select?: lessonSelect<ExtArgs> | null
+    select?: friendshipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the lesson
+     * Omit specific fields from the friendship
      */
-    omit?: lessonOmit<ExtArgs> | null
+    omit?: friendshipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: lessonInclude<ExtArgs> | null
+    include?: friendshipInclude<ExtArgs> | null
     /**
-     * Filter, which lessons to fetch.
+     * Filter, which friendships to fetch.
      */
-    where?: lessonWhereInput
+    where?: friendshipWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of lessons to fetch.
+     * Determine the order of friendships to fetch.
      */
-    orderBy?: lessonOrderByWithRelationInput | lessonOrderByWithRelationInput[]
+    orderBy?: friendshipOrderByWithRelationInput | friendshipOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing lessons.
+     * Sets the position for listing friendships.
      */
-    cursor?: lessonWhereUniqueInput
+    cursor?: friendshipWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` lessons from the position of the cursor.
+     * Take `±n` friendships from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` lessons.
+     * Skip the first `n` friendships.
      */
     skip?: number
-    distinct?: LessonScalarFieldEnum | LessonScalarFieldEnum[]
+    distinct?: FriendshipScalarFieldEnum | FriendshipScalarFieldEnum[]
   }
 
   /**
-   * lesson create
+   * friendship create
    */
-  export type lessonCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the lesson
+     * Select specific fields to fetch from the friendship
      */
-    select?: lessonSelect<ExtArgs> | null
+    select?: friendshipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the lesson
+     * Omit specific fields from the friendship
      */
-    omit?: lessonOmit<ExtArgs> | null
+    omit?: friendshipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: lessonInclude<ExtArgs> | null
+    include?: friendshipInclude<ExtArgs> | null
     /**
-     * The data needed to create a lesson.
+     * The data needed to create a friendship.
      */
-    data: XOR<lessonCreateInput, lessonUncheckedCreateInput>
+    data: XOR<friendshipCreateInput, friendshipUncheckedCreateInput>
   }
 
   /**
-   * lesson createMany
+   * friendship createMany
    */
-  export type lessonCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many lessons.
+     * The data used to create many friendships.
      */
-    data: lessonCreateManyInput | lessonCreateManyInput[]
+    data: friendshipCreateManyInput | friendshipCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * lesson update
+   * friendship update
    */
-  export type lessonUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the lesson
+     * Select specific fields to fetch from the friendship
      */
-    select?: lessonSelect<ExtArgs> | null
+    select?: friendshipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the lesson
+     * Omit specific fields from the friendship
      */
-    omit?: lessonOmit<ExtArgs> | null
+    omit?: friendshipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: lessonInclude<ExtArgs> | null
+    include?: friendshipInclude<ExtArgs> | null
     /**
-     * The data needed to update a lesson.
+     * The data needed to update a friendship.
      */
-    data: XOR<lessonUpdateInput, lessonUncheckedUpdateInput>
+    data: XOR<friendshipUpdateInput, friendshipUncheckedUpdateInput>
     /**
-     * Choose, which lesson to update.
+     * Choose, which friendship to update.
      */
-    where: lessonWhereUniqueInput
+    where: friendshipWhereUniqueInput
   }
 
   /**
-   * lesson updateMany
+   * friendship updateMany
    */
-  export type lessonUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update lessons.
+     * The data used to update friendships.
      */
-    data: XOR<lessonUpdateManyMutationInput, lessonUncheckedUpdateManyInput>
+    data: XOR<friendshipUpdateManyMutationInput, friendshipUncheckedUpdateManyInput>
     /**
-     * Filter which lessons to update
+     * Filter which friendships to update
      */
-    where?: lessonWhereInput
+    where?: friendshipWhereInput
     /**
-     * Limit how many lessons to update.
+     * Limit how many friendships to update.
      */
     limit?: number
   }
 
   /**
-   * lesson upsert
+   * friendship upsert
    */
-  export type lessonUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the lesson
+     * Select specific fields to fetch from the friendship
      */
-    select?: lessonSelect<ExtArgs> | null
+    select?: friendshipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the lesson
+     * Omit specific fields from the friendship
      */
-    omit?: lessonOmit<ExtArgs> | null
+    omit?: friendshipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: lessonInclude<ExtArgs> | null
+    include?: friendshipInclude<ExtArgs> | null
     /**
-     * The filter to search for the lesson to update in case it exists.
+     * The filter to search for the friendship to update in case it exists.
      */
-    where: lessonWhereUniqueInput
+    where: friendshipWhereUniqueInput
     /**
-     * In case the lesson found by the `where` argument doesn't exist, create a new lesson with this data.
+     * In case the friendship found by the `where` argument doesn't exist, create a new friendship with this data.
      */
-    create: XOR<lessonCreateInput, lessonUncheckedCreateInput>
+    create: XOR<friendshipCreateInput, friendshipUncheckedCreateInput>
     /**
-     * In case the lesson was found with the provided `where` argument, update it with this data.
+     * In case the friendship was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<lessonUpdateInput, lessonUncheckedUpdateInput>
+    update: XOR<friendshipUpdateInput, friendshipUncheckedUpdateInput>
   }
 
   /**
-   * lesson delete
+   * friendship delete
    */
-  export type lessonDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the lesson
+     * Select specific fields to fetch from the friendship
      */
-    select?: lessonSelect<ExtArgs> | null
+    select?: friendshipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the lesson
+     * Omit specific fields from the friendship
      */
-    omit?: lessonOmit<ExtArgs> | null
+    omit?: friendshipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: lessonInclude<ExtArgs> | null
+    include?: friendshipInclude<ExtArgs> | null
     /**
-     * Filter which lesson to delete.
+     * Filter which friendship to delete.
      */
-    where: lessonWhereUniqueInput
+    where: friendshipWhereUniqueInput
   }
 
   /**
-   * lesson deleteMany
+   * friendship deleteMany
    */
-  export type lessonDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which lessons to delete
+     * Filter which friendships to delete
      */
-    where?: lessonWhereInput
+    where?: friendshipWhereInput
     /**
-     * Limit how many lessons to delete.
+     * Limit how many friendships to delete.
      */
     limit?: number
   }
 
   /**
-   * lesson.exercise
+   * friendship without action
    */
-  export type lesson$exerciseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type friendshipDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the exercise
+     * Select specific fields to fetch from the friendship
      */
-    select?: exerciseSelect<ExtArgs> | null
+    select?: friendshipSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the exercise
+     * Omit specific fields from the friendship
      */
-    omit?: exerciseOmit<ExtArgs> | null
+    omit?: friendshipOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: exerciseInclude<ExtArgs> | null
-    where?: exerciseWhereInput
-    orderBy?: exerciseOrderByWithRelationInput | exerciseOrderByWithRelationInput[]
-    cursor?: exerciseWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ExerciseScalarFieldEnum | ExerciseScalarFieldEnum[]
-  }
-
-  /**
-   * lesson without action
-   */
-  export type lessonDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the lesson
-     */
-    select?: lessonSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the lesson
-     */
-    omit?: lessonOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: lessonInclude<ExtArgs> | null
+    include?: friendshipInclude<ExtArgs> | null
   }
 
 
@@ -10764,22 +8595,12 @@ export namespace Prisma {
 
   export const ExerciseScalarFieldEnum: {
     EID: 'EID',
-    LsID: 'LsID',
-    OrderIndex: 'OrderIndex',
+    TpID: 'TpID',
     Content: 'Content',
     Difficulty: 'Difficulty'
   };
 
   export type ExerciseScalarFieldEnum = (typeof ExerciseScalarFieldEnum)[keyof typeof ExerciseScalarFieldEnum]
-
-
-  export const LanguageScalarFieldEnum: {
-    LgID: 'LgID',
-    Name: 'Name',
-    Logo: 'Logo'
-  };
-
-  export type LanguageScalarFieldEnum = (typeof LanguageScalarFieldEnum)[keyof typeof LanguageScalarFieldEnum]
 
 
   export const SubmissionScalarFieldEnum: {
@@ -10788,7 +8609,8 @@ export namespace Prisma {
     EID: 'EID',
     Code: 'Code',
     CreatedAt: 'CreatedAt',
-    Result: 'Result'
+    Result: 'Result',
+    isPublic: 'isPublic'
   };
 
   export type SubmissionScalarFieldEnum = (typeof SubmissionScalarFieldEnum)[keyof typeof SubmissionScalarFieldEnum]
@@ -10819,20 +8641,10 @@ export namespace Prisma {
 
   export const TopicScalarFieldEnum: {
     TpID: 'TpID',
-    Name: 'Name',
-    Description: 'Description'
+    Name: 'Name'
   };
 
   export type TopicScalarFieldEnum = (typeof TopicScalarFieldEnum)[keyof typeof TopicScalarFieldEnum]
-
-
-  export const TopiclanguagedetailScalarFieldEnum: {
-    TLDID: 'TLDID',
-    TpID: 'TpID',
-    LgID: 'LgID'
-  };
-
-  export type TopiclanguagedetailScalarFieldEnum = (typeof TopiclanguagedetailScalarFieldEnum)[keyof typeof TopiclanguagedetailScalarFieldEnum]
 
 
   export const UserScalarFieldEnum: {
@@ -10847,15 +8659,15 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const LessonScalarFieldEnum: {
-    LsID: 'LsID',
-    TLDID: 'TLDID',
-    OrderIndex: 'OrderIndex',
-    Tittle: 'Tittle',
-    Content: 'Content'
+  export const FriendshipScalarFieldEnum: {
+    FID: 'FID',
+    requester: 'requester',
+    addressee: 'addressee',
+    status: 'status',
+    CreatedAt: 'CreatedAt'
   };
 
-  export type LessonScalarFieldEnum = (typeof LessonScalarFieldEnum)[keyof typeof LessonScalarFieldEnum]
+  export type FriendshipScalarFieldEnum = (typeof FriendshipScalarFieldEnum)[keyof typeof FriendshipScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -10879,14 +8691,6 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
-  export const languageOrderByRelevanceFieldEnum: {
-    Name: 'Name',
-    Logo: 'Logo'
-  };
-
-  export type languageOrderByRelevanceFieldEnum = (typeof languageOrderByRelevanceFieldEnum)[keyof typeof languageOrderByRelevanceFieldEnum]
 
 
   export const submissionOrderByRelevanceFieldEnum: {
@@ -10913,8 +8717,7 @@ export namespace Prisma {
 
 
   export const topicOrderByRelevanceFieldEnum: {
-    Name: 'Name',
-    Description: 'Description'
+    Name: 'Name'
   };
 
   export type topicOrderByRelevanceFieldEnum = (typeof topicOrderByRelevanceFieldEnum)[keyof typeof topicOrderByRelevanceFieldEnum]
@@ -10930,12 +8733,12 @@ export namespace Prisma {
   export type userOrderByRelevanceFieldEnum = (typeof userOrderByRelevanceFieldEnum)[keyof typeof userOrderByRelevanceFieldEnum]
 
 
-  export const lessonOrderByRelevanceFieldEnum: {
-    Tittle: 'Tittle',
-    Content: 'Content'
+  export const friendshipOrderByRelevanceFieldEnum: {
+    requester: 'requester',
+    addressee: 'addressee'
   };
 
-  export type lessonOrderByRelevanceFieldEnum = (typeof lessonOrderByRelevanceFieldEnum)[keyof typeof lessonOrderByRelevanceFieldEnum]
+  export type friendshipOrderByRelevanceFieldEnum = (typeof friendshipOrderByRelevanceFieldEnum)[keyof typeof friendshipOrderByRelevanceFieldEnum]
 
 
   /**
@@ -11004,6 +8807,13 @@ export namespace Prisma {
    */
   export type Enumuser_RoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'user_Role'>
     
+
+
+  /**
+   * Reference to a field of type 'friendship_status'
+   */
+  export type Enumfriendship_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'friendship_status'>
+    
   /**
    * Deep Input Types
    */
@@ -11014,22 +8824,20 @@ export namespace Prisma {
     OR?: exerciseWhereInput[]
     NOT?: exerciseWhereInput | exerciseWhereInput[]
     EID?: IntFilter<"exercise"> | number
-    LsID?: IntFilter<"exercise"> | number
-    OrderIndex?: IntFilter<"exercise"> | number
+    TpID?: IntFilter<"exercise"> | number
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
-    lession?: XOR<LessonScalarRelationFilter, lessonWhereInput>
+    topic?: XOR<TopicScalarRelationFilter, topicWhereInput>
     submission?: SubmissionListRelationFilter
     testcase?: TestcaseListRelationFilter
   }
 
   export type exerciseOrderByWithRelationInput = {
     EID?: SortOrder
-    LsID?: SortOrder
-    OrderIndex?: SortOrder
+    TpID?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
-    lession?: lessonOrderByWithRelationInput
+    topic?: topicOrderByWithRelationInput
     submission?: submissionOrderByRelationAggregateInput
     testcase?: testcaseOrderByRelationAggregateInput
     _relevance?: exerciseOrderByRelevanceInput
@@ -11040,19 +8848,17 @@ export namespace Prisma {
     AND?: exerciseWhereInput | exerciseWhereInput[]
     OR?: exerciseWhereInput[]
     NOT?: exerciseWhereInput | exerciseWhereInput[]
-    LsID?: IntFilter<"exercise"> | number
-    OrderIndex?: IntFilter<"exercise"> | number
+    TpID?: IntFilter<"exercise"> | number
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
-    lession?: XOR<LessonScalarRelationFilter, lessonWhereInput>
+    topic?: XOR<TopicScalarRelationFilter, topicWhereInput>
     submission?: SubmissionListRelationFilter
     testcase?: TestcaseListRelationFilter
   }, "EID">
 
   export type exerciseOrderByWithAggregationInput = {
     EID?: SortOrder
-    LsID?: SortOrder
-    OrderIndex?: SortOrder
+    TpID?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
     _count?: exerciseCountOrderByAggregateInput
@@ -11067,58 +8873,9 @@ export namespace Prisma {
     OR?: exerciseScalarWhereWithAggregatesInput[]
     NOT?: exerciseScalarWhereWithAggregatesInput | exerciseScalarWhereWithAggregatesInput[]
     EID?: IntWithAggregatesFilter<"exercise"> | number
-    LsID?: IntWithAggregatesFilter<"exercise"> | number
-    OrderIndex?: IntWithAggregatesFilter<"exercise"> | number
+    TpID?: IntWithAggregatesFilter<"exercise"> | number
     Content?: StringWithAggregatesFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyWithAggregatesFilter<"exercise"> | $Enums.exercise_Difficulty
-  }
-
-  export type languageWhereInput = {
-    AND?: languageWhereInput | languageWhereInput[]
-    OR?: languageWhereInput[]
-    NOT?: languageWhereInput | languageWhereInput[]
-    LgID?: IntFilter<"language"> | number
-    Name?: StringFilter<"language"> | string
-    Logo?: StringNullableFilter<"language"> | string | null
-    topiclanguagedetail?: TopiclanguagedetailListRelationFilter
-  }
-
-  export type languageOrderByWithRelationInput = {
-    LgID?: SortOrder
-    Name?: SortOrder
-    Logo?: SortOrderInput | SortOrder
-    topiclanguagedetail?: topiclanguagedetailOrderByRelationAggregateInput
-    _relevance?: languageOrderByRelevanceInput
-  }
-
-  export type languageWhereUniqueInput = Prisma.AtLeast<{
-    LgID?: number
-    AND?: languageWhereInput | languageWhereInput[]
-    OR?: languageWhereInput[]
-    NOT?: languageWhereInput | languageWhereInput[]
-    Name?: StringFilter<"language"> | string
-    Logo?: StringNullableFilter<"language"> | string | null
-    topiclanguagedetail?: TopiclanguagedetailListRelationFilter
-  }, "LgID">
-
-  export type languageOrderByWithAggregationInput = {
-    LgID?: SortOrder
-    Name?: SortOrder
-    Logo?: SortOrderInput | SortOrder
-    _count?: languageCountOrderByAggregateInput
-    _avg?: languageAvgOrderByAggregateInput
-    _max?: languageMaxOrderByAggregateInput
-    _min?: languageMinOrderByAggregateInput
-    _sum?: languageSumOrderByAggregateInput
-  }
-
-  export type languageScalarWhereWithAggregatesInput = {
-    AND?: languageScalarWhereWithAggregatesInput | languageScalarWhereWithAggregatesInput[]
-    OR?: languageScalarWhereWithAggregatesInput[]
-    NOT?: languageScalarWhereWithAggregatesInput | languageScalarWhereWithAggregatesInput[]
-    LgID?: IntWithAggregatesFilter<"language"> | number
-    Name?: StringWithAggregatesFilter<"language"> | string
-    Logo?: StringNullableWithAggregatesFilter<"language"> | string | null
   }
 
   export type submissionWhereInput = {
@@ -11131,6 +8888,7 @@ export namespace Prisma {
     Code?: StringNullableFilter<"submission"> | string | null
     CreatedAt?: DateTimeNullableFilter<"submission"> | Date | string | null
     Result?: Enumsubmission_ResultNullableFilter<"submission"> | $Enums.submission_Result | null
+    isPublic?: BoolNullableFilter<"submission"> | boolean | null
     exercise?: XOR<ExerciseScalarRelationFilter, exerciseWhereInput>
     user?: XOR<UserScalarRelationFilter, userWhereInput>
     testcaseresult?: TestcaseresultListRelationFilter
@@ -11143,6 +8901,7 @@ export namespace Prisma {
     Code?: SortOrderInput | SortOrder
     CreatedAt?: SortOrderInput | SortOrder
     Result?: SortOrderInput | SortOrder
+    isPublic?: SortOrderInput | SortOrder
     exercise?: exerciseOrderByWithRelationInput
     user?: userOrderByWithRelationInput
     testcaseresult?: testcaseresultOrderByRelationAggregateInput
@@ -11159,6 +8918,7 @@ export namespace Prisma {
     Code?: StringNullableFilter<"submission"> | string | null
     CreatedAt?: DateTimeNullableFilter<"submission"> | Date | string | null
     Result?: Enumsubmission_ResultNullableFilter<"submission"> | $Enums.submission_Result | null
+    isPublic?: BoolNullableFilter<"submission"> | boolean | null
     exercise?: XOR<ExerciseScalarRelationFilter, exerciseWhereInput>
     user?: XOR<UserScalarRelationFilter, userWhereInput>
     testcaseresult?: TestcaseresultListRelationFilter
@@ -11171,6 +8931,7 @@ export namespace Prisma {
     Code?: SortOrderInput | SortOrder
     CreatedAt?: SortOrderInput | SortOrder
     Result?: SortOrderInput | SortOrder
+    isPublic?: SortOrderInput | SortOrder
     _count?: submissionCountOrderByAggregateInput
     _avg?: submissionAvgOrderByAggregateInput
     _max?: submissionMaxOrderByAggregateInput
@@ -11188,6 +8949,7 @@ export namespace Prisma {
     Code?: StringNullableWithAggregatesFilter<"submission"> | string | null
     CreatedAt?: DateTimeNullableWithAggregatesFilter<"submission"> | Date | string | null
     Result?: Enumsubmission_ResultNullableWithAggregatesFilter<"submission"> | $Enums.submission_Result | null
+    isPublic?: BoolNullableWithAggregatesFilter<"submission"> | boolean | null
   }
 
   export type testcaseWhereInput = {
@@ -11259,7 +9021,7 @@ export namespace Prisma {
     SID?: IntFilter<"testcaseresult"> | number
     TCID?: IntFilter<"testcaseresult"> | number
     ActualOutput?: StringFilter<"testcaseresult"> | string
-    Result?: Enumtestcaseresult_ResultNullableFilter<"testcaseresult"> | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFilter<"testcaseresult"> | $Enums.testcaseresult_Result
     ExecutionTime?: FloatNullableFilter<"testcaseresult"> | number | null
     submission?: XOR<SubmissionScalarRelationFilter, submissionWhereInput>
     testcase?: XOR<TestcaseScalarRelationFilter, testcaseWhereInput>
@@ -11270,7 +9032,7 @@ export namespace Prisma {
     SID?: SortOrder
     TCID?: SortOrder
     ActualOutput?: SortOrder
-    Result?: SortOrderInput | SortOrder
+    Result?: SortOrder
     ExecutionTime?: SortOrderInput | SortOrder
     submission?: submissionOrderByWithRelationInput
     testcase?: testcaseOrderByWithRelationInput
@@ -11285,7 +9047,7 @@ export namespace Prisma {
     SID?: IntFilter<"testcaseresult"> | number
     TCID?: IntFilter<"testcaseresult"> | number
     ActualOutput?: StringFilter<"testcaseresult"> | string
-    Result?: Enumtestcaseresult_ResultNullableFilter<"testcaseresult"> | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFilter<"testcaseresult"> | $Enums.testcaseresult_Result
     ExecutionTime?: FloatNullableFilter<"testcaseresult"> | number | null
     submission?: XOR<SubmissionScalarRelationFilter, submissionWhereInput>
     testcase?: XOR<TestcaseScalarRelationFilter, testcaseWhereInput>
@@ -11296,7 +9058,7 @@ export namespace Prisma {
     SID?: SortOrder
     TCID?: SortOrder
     ActualOutput?: SortOrder
-    Result?: SortOrderInput | SortOrder
+    Result?: SortOrder
     ExecutionTime?: SortOrderInput | SortOrder
     _count?: testcaseresultCountOrderByAggregateInput
     _avg?: testcaseresultAvgOrderByAggregateInput
@@ -11313,7 +9075,7 @@ export namespace Prisma {
     SID?: IntWithAggregatesFilter<"testcaseresult"> | number
     TCID?: IntWithAggregatesFilter<"testcaseresult"> | number
     ActualOutput?: StringWithAggregatesFilter<"testcaseresult"> | string
-    Result?: Enumtestcaseresult_ResultNullableWithAggregatesFilter<"testcaseresult"> | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultWithAggregatesFilter<"testcaseresult"> | $Enums.testcaseresult_Result
     ExecutionTime?: FloatNullableWithAggregatesFilter<"testcaseresult"> | number | null
   }
 
@@ -11323,15 +9085,13 @@ export namespace Prisma {
     NOT?: topicWhereInput | topicWhereInput[]
     TpID?: IntFilter<"topic"> | number
     Name?: StringFilter<"topic"> | string
-    Description?: StringNullableFilter<"topic"> | string | null
-    topiclanguagedetail?: TopiclanguagedetailListRelationFilter
+    exercise?: ExerciseListRelationFilter
   }
 
   export type topicOrderByWithRelationInput = {
     TpID?: SortOrder
     Name?: SortOrder
-    Description?: SortOrderInput | SortOrder
-    topiclanguagedetail?: topiclanguagedetailOrderByRelationAggregateInput
+    exercise?: exerciseOrderByRelationAggregateInput
     _relevance?: topicOrderByRelevanceInput
   }
 
@@ -11341,14 +9101,12 @@ export namespace Prisma {
     OR?: topicWhereInput[]
     NOT?: topicWhereInput | topicWhereInput[]
     Name?: StringFilter<"topic"> | string
-    Description?: StringNullableFilter<"topic"> | string | null
-    topiclanguagedetail?: TopiclanguagedetailListRelationFilter
+    exercise?: ExerciseListRelationFilter
   }, "TpID">
 
   export type topicOrderByWithAggregationInput = {
     TpID?: SortOrder
     Name?: SortOrder
-    Description?: SortOrderInput | SortOrder
     _count?: topicCountOrderByAggregateInput
     _avg?: topicAvgOrderByAggregateInput
     _max?: topicMaxOrderByAggregateInput
@@ -11362,60 +9120,6 @@ export namespace Prisma {
     NOT?: topicScalarWhereWithAggregatesInput | topicScalarWhereWithAggregatesInput[]
     TpID?: IntWithAggregatesFilter<"topic"> | number
     Name?: StringWithAggregatesFilter<"topic"> | string
-    Description?: StringNullableWithAggregatesFilter<"topic"> | string | null
-  }
-
-  export type topiclanguagedetailWhereInput = {
-    AND?: topiclanguagedetailWhereInput | topiclanguagedetailWhereInput[]
-    OR?: topiclanguagedetailWhereInput[]
-    NOT?: topiclanguagedetailWhereInput | topiclanguagedetailWhereInput[]
-    TLDID?: IntFilter<"topiclanguagedetail"> | number
-    TpID?: IntFilter<"topiclanguagedetail"> | number
-    LgID?: IntFilter<"topiclanguagedetail"> | number
-    lesson?: LessonListRelationFilter
-    topic?: XOR<TopicScalarRelationFilter, topicWhereInput>
-    language?: XOR<LanguageScalarRelationFilter, languageWhereInput>
-  }
-
-  export type topiclanguagedetailOrderByWithRelationInput = {
-    TLDID?: SortOrder
-    TpID?: SortOrder
-    LgID?: SortOrder
-    lesson?: lessonOrderByRelationAggregateInput
-    topic?: topicOrderByWithRelationInput
-    language?: languageOrderByWithRelationInput
-  }
-
-  export type topiclanguagedetailWhereUniqueInput = Prisma.AtLeast<{
-    TLDID?: number
-    AND?: topiclanguagedetailWhereInput | topiclanguagedetailWhereInput[]
-    OR?: topiclanguagedetailWhereInput[]
-    NOT?: topiclanguagedetailWhereInput | topiclanguagedetailWhereInput[]
-    TpID?: IntFilter<"topiclanguagedetail"> | number
-    LgID?: IntFilter<"topiclanguagedetail"> | number
-    lesson?: LessonListRelationFilter
-    topic?: XOR<TopicScalarRelationFilter, topicWhereInput>
-    language?: XOR<LanguageScalarRelationFilter, languageWhereInput>
-  }, "TLDID">
-
-  export type topiclanguagedetailOrderByWithAggregationInput = {
-    TLDID?: SortOrder
-    TpID?: SortOrder
-    LgID?: SortOrder
-    _count?: topiclanguagedetailCountOrderByAggregateInput
-    _avg?: topiclanguagedetailAvgOrderByAggregateInput
-    _max?: topiclanguagedetailMaxOrderByAggregateInput
-    _min?: topiclanguagedetailMinOrderByAggregateInput
-    _sum?: topiclanguagedetailSumOrderByAggregateInput
-  }
-
-  export type topiclanguagedetailScalarWhereWithAggregatesInput = {
-    AND?: topiclanguagedetailScalarWhereWithAggregatesInput | topiclanguagedetailScalarWhereWithAggregatesInput[]
-    OR?: topiclanguagedetailScalarWhereWithAggregatesInput[]
-    NOT?: topiclanguagedetailScalarWhereWithAggregatesInput | topiclanguagedetailScalarWhereWithAggregatesInput[]
-    TLDID?: IntWithAggregatesFilter<"topiclanguagedetail"> | number
-    TpID?: IntWithAggregatesFilter<"topiclanguagedetail"> | number
-    LgID?: IntWithAggregatesFilter<"topiclanguagedetail"> | number
   }
 
   export type userWhereInput = {
@@ -11423,21 +9127,25 @@ export namespace Prisma {
     OR?: userWhereInput[]
     NOT?: userWhereInput | userWhereInput[]
     UID?: StringFilter<"user"> | string
-    Username?: StringNullableFilter<"user"> | string | null
+    Username?: StringFilter<"user"> | string
     Email?: StringFilter<"user"> | string
     Password?: StringFilter<"user"> | string
     Role?: Enumuser_RoleFilter<"user"> | $Enums.user_Role
     CreatedAt?: DateTimeNullableFilter<"user"> | Date | string | null
+    friendship_friendship_requesterTouser?: FriendshipListRelationFilter
+    friendship_friendship_addresseeTouser?: FriendshipListRelationFilter
     submission?: SubmissionListRelationFilter
   }
 
   export type userOrderByWithRelationInput = {
     UID?: SortOrder
-    Username?: SortOrderInput | SortOrder
+    Username?: SortOrder
     Email?: SortOrder
     Password?: SortOrder
     Role?: SortOrder
     CreatedAt?: SortOrderInput | SortOrder
+    friendship_friendship_requesterTouser?: friendshipOrderByRelationAggregateInput
+    friendship_friendship_addresseeTouser?: friendshipOrderByRelationAggregateInput
     submission?: submissionOrderByRelationAggregateInput
     _relevance?: userOrderByRelevanceInput
   }
@@ -11448,16 +9156,18 @@ export namespace Prisma {
     AND?: userWhereInput | userWhereInput[]
     OR?: userWhereInput[]
     NOT?: userWhereInput | userWhereInput[]
-    Username?: StringNullableFilter<"user"> | string | null
+    Username?: StringFilter<"user"> | string
     Password?: StringFilter<"user"> | string
     Role?: Enumuser_RoleFilter<"user"> | $Enums.user_Role
     CreatedAt?: DateTimeNullableFilter<"user"> | Date | string | null
+    friendship_friendship_requesterTouser?: FriendshipListRelationFilter
+    friendship_friendship_addresseeTouser?: FriendshipListRelationFilter
     submission?: SubmissionListRelationFilter
   }, "UID" | "Email">
 
   export type userOrderByWithAggregationInput = {
     UID?: SortOrder
-    Username?: SortOrderInput | SortOrder
+    Username?: SortOrder
     Email?: SortOrder
     Password?: SortOrder
     Role?: SortOrder
@@ -11472,87 +9182,86 @@ export namespace Prisma {
     OR?: userScalarWhereWithAggregatesInput[]
     NOT?: userScalarWhereWithAggregatesInput | userScalarWhereWithAggregatesInput[]
     UID?: StringWithAggregatesFilter<"user"> | string
-    Username?: StringNullableWithAggregatesFilter<"user"> | string | null
+    Username?: StringWithAggregatesFilter<"user"> | string
     Email?: StringWithAggregatesFilter<"user"> | string
     Password?: StringWithAggregatesFilter<"user"> | string
     Role?: Enumuser_RoleWithAggregatesFilter<"user"> | $Enums.user_Role
     CreatedAt?: DateTimeNullableWithAggregatesFilter<"user"> | Date | string | null
   }
 
-  export type lessonWhereInput = {
-    AND?: lessonWhereInput | lessonWhereInput[]
-    OR?: lessonWhereInput[]
-    NOT?: lessonWhereInput | lessonWhereInput[]
-    LsID?: IntFilter<"lesson"> | number
-    TLDID?: IntFilter<"lesson"> | number
-    OrderIndex?: IntFilter<"lesson"> | number
-    Tittle?: StringFilter<"lesson"> | string
-    Content?: StringFilter<"lesson"> | string
-    exercise?: ExerciseListRelationFilter
-    topiclanguagedetail?: XOR<TopiclanguagedetailScalarRelationFilter, topiclanguagedetailWhereInput>
+  export type friendshipWhereInput = {
+    AND?: friendshipWhereInput | friendshipWhereInput[]
+    OR?: friendshipWhereInput[]
+    NOT?: friendshipWhereInput | friendshipWhereInput[]
+    FID?: IntFilter<"friendship"> | number
+    requester?: StringFilter<"friendship"> | string
+    addressee?: StringFilter<"friendship"> | string
+    status?: Enumfriendship_statusFilter<"friendship"> | $Enums.friendship_status
+    CreatedAt?: DateTimeNullableFilter<"friendship"> | Date | string | null
+    user_friendship_requesterTouser?: XOR<UserScalarRelationFilter, userWhereInput>
+    user_friendship_addresseeTouser?: XOR<UserScalarRelationFilter, userWhereInput>
   }
 
-  export type lessonOrderByWithRelationInput = {
-    LsID?: SortOrder
-    TLDID?: SortOrder
-    OrderIndex?: SortOrder
-    Tittle?: SortOrder
-    Content?: SortOrder
-    exercise?: exerciseOrderByRelationAggregateInput
-    topiclanguagedetail?: topiclanguagedetailOrderByWithRelationInput
-    _relevance?: lessonOrderByRelevanceInput
+  export type friendshipOrderByWithRelationInput = {
+    FID?: SortOrder
+    requester?: SortOrder
+    addressee?: SortOrder
+    status?: SortOrder
+    CreatedAt?: SortOrderInput | SortOrder
+    user_friendship_requesterTouser?: userOrderByWithRelationInput
+    user_friendship_addresseeTouser?: userOrderByWithRelationInput
+    _relevance?: friendshipOrderByRelevanceInput
   }
 
-  export type lessonWhereUniqueInput = Prisma.AtLeast<{
-    LsID?: number
-    AND?: lessonWhereInput | lessonWhereInput[]
-    OR?: lessonWhereInput[]
-    NOT?: lessonWhereInput | lessonWhereInput[]
-    TLDID?: IntFilter<"lesson"> | number
-    OrderIndex?: IntFilter<"lesson"> | number
-    Tittle?: StringFilter<"lesson"> | string
-    Content?: StringFilter<"lesson"> | string
-    exercise?: ExerciseListRelationFilter
-    topiclanguagedetail?: XOR<TopiclanguagedetailScalarRelationFilter, topiclanguagedetailWhereInput>
-  }, "LsID">
+  export type friendshipWhereUniqueInput = Prisma.AtLeast<{
+    FID?: number
+    requester_addressee?: friendshipRequesterAddresseeCompoundUniqueInput
+    AND?: friendshipWhereInput | friendshipWhereInput[]
+    OR?: friendshipWhereInput[]
+    NOT?: friendshipWhereInput | friendshipWhereInput[]
+    requester?: StringFilter<"friendship"> | string
+    addressee?: StringFilter<"friendship"> | string
+    status?: Enumfriendship_statusFilter<"friendship"> | $Enums.friendship_status
+    CreatedAt?: DateTimeNullableFilter<"friendship"> | Date | string | null
+    user_friendship_requesterTouser?: XOR<UserScalarRelationFilter, userWhereInput>
+    user_friendship_addresseeTouser?: XOR<UserScalarRelationFilter, userWhereInput>
+  }, "FID" | "requester_addressee">
 
-  export type lessonOrderByWithAggregationInput = {
-    LsID?: SortOrder
-    TLDID?: SortOrder
-    OrderIndex?: SortOrder
-    Tittle?: SortOrder
-    Content?: SortOrder
-    _count?: lessonCountOrderByAggregateInput
-    _avg?: lessonAvgOrderByAggregateInput
-    _max?: lessonMaxOrderByAggregateInput
-    _min?: lessonMinOrderByAggregateInput
-    _sum?: lessonSumOrderByAggregateInput
+  export type friendshipOrderByWithAggregationInput = {
+    FID?: SortOrder
+    requester?: SortOrder
+    addressee?: SortOrder
+    status?: SortOrder
+    CreatedAt?: SortOrderInput | SortOrder
+    _count?: friendshipCountOrderByAggregateInput
+    _avg?: friendshipAvgOrderByAggregateInput
+    _max?: friendshipMaxOrderByAggregateInput
+    _min?: friendshipMinOrderByAggregateInput
+    _sum?: friendshipSumOrderByAggregateInput
   }
 
-  export type lessonScalarWhereWithAggregatesInput = {
-    AND?: lessonScalarWhereWithAggregatesInput | lessonScalarWhereWithAggregatesInput[]
-    OR?: lessonScalarWhereWithAggregatesInput[]
-    NOT?: lessonScalarWhereWithAggregatesInput | lessonScalarWhereWithAggregatesInput[]
-    LsID?: IntWithAggregatesFilter<"lesson"> | number
-    TLDID?: IntWithAggregatesFilter<"lesson"> | number
-    OrderIndex?: IntWithAggregatesFilter<"lesson"> | number
-    Tittle?: StringWithAggregatesFilter<"lesson"> | string
-    Content?: StringWithAggregatesFilter<"lesson"> | string
+  export type friendshipScalarWhereWithAggregatesInput = {
+    AND?: friendshipScalarWhereWithAggregatesInput | friendshipScalarWhereWithAggregatesInput[]
+    OR?: friendshipScalarWhereWithAggregatesInput[]
+    NOT?: friendshipScalarWhereWithAggregatesInput | friendshipScalarWhereWithAggregatesInput[]
+    FID?: IntWithAggregatesFilter<"friendship"> | number
+    requester?: StringWithAggregatesFilter<"friendship"> | string
+    addressee?: StringWithAggregatesFilter<"friendship"> | string
+    status?: Enumfriendship_statusWithAggregatesFilter<"friendship"> | $Enums.friendship_status
+    CreatedAt?: DateTimeNullableWithAggregatesFilter<"friendship"> | Date | string | null
   }
 
   export type exerciseCreateInput = {
-    OrderIndex: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
-    lession: lessonCreateNestedOneWithoutExerciseInput
+    topic: topicCreateNestedOneWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
 
   export type exerciseUncheckedCreateInput = {
     EID?: number
-    LsID: number
-    OrderIndex: number
+    TpID: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
@@ -11560,18 +9269,16 @@ export namespace Prisma {
   }
 
   export type exerciseUpdateInput = {
-    OrderIndex?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
-    lession?: lessonUpdateOneRequiredWithoutExerciseNestedInput
+    topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
 
   export type exerciseUncheckedUpdateInput = {
     EID?: IntFieldUpdateOperationsInput | number
-    LsID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
+    TpID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
@@ -11580,73 +9287,28 @@ export namespace Prisma {
 
   export type exerciseCreateManyInput = {
     EID?: number
-    LsID: number
-    OrderIndex: number
+    TpID: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
   }
 
   export type exerciseUpdateManyMutationInput = {
-    OrderIndex?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
   }
 
   export type exerciseUncheckedUpdateManyInput = {
     EID?: IntFieldUpdateOperationsInput | number
-    LsID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
+    TpID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
-  }
-
-  export type languageCreateInput = {
-    Name: string
-    Logo?: string | null
-    topiclanguagedetail?: topiclanguagedetailCreateNestedManyWithoutLanguageInput
-  }
-
-  export type languageUncheckedCreateInput = {
-    LgID?: number
-    Name: string
-    Logo?: string | null
-    topiclanguagedetail?: topiclanguagedetailUncheckedCreateNestedManyWithoutLanguageInput
-  }
-
-  export type languageUpdateInput = {
-    Name?: StringFieldUpdateOperationsInput | string
-    Logo?: NullableStringFieldUpdateOperationsInput | string | null
-    topiclanguagedetail?: topiclanguagedetailUpdateManyWithoutLanguageNestedInput
-  }
-
-  export type languageUncheckedUpdateInput = {
-    LgID?: IntFieldUpdateOperationsInput | number
-    Name?: StringFieldUpdateOperationsInput | string
-    Logo?: NullableStringFieldUpdateOperationsInput | string | null
-    topiclanguagedetail?: topiclanguagedetailUncheckedUpdateManyWithoutLanguageNestedInput
-  }
-
-  export type languageCreateManyInput = {
-    LgID?: number
-    Name: string
-    Logo?: string | null
-  }
-
-  export type languageUpdateManyMutationInput = {
-    Name?: StringFieldUpdateOperationsInput | string
-    Logo?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type languageUncheckedUpdateManyInput = {
-    LgID?: IntFieldUpdateOperationsInput | number
-    Name?: StringFieldUpdateOperationsInput | string
-    Logo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type submissionCreateInput = {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
     exercise: exerciseCreateNestedOneWithoutSubmissionInput
     user: userCreateNestedOneWithoutSubmissionInput
     testcaseresult?: testcaseresultCreateNestedManyWithoutSubmissionInput
@@ -11659,6 +9321,7 @@ export namespace Prisma {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
     testcaseresult?: testcaseresultUncheckedCreateNestedManyWithoutSubmissionInput
   }
 
@@ -11666,6 +9329,7 @@ export namespace Prisma {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
     exercise?: exerciseUpdateOneRequiredWithoutSubmissionNestedInput
     user?: userUpdateOneRequiredWithoutSubmissionNestedInput
     testcaseresult?: testcaseresultUpdateManyWithoutSubmissionNestedInput
@@ -11678,6 +9342,7 @@ export namespace Prisma {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
     testcaseresult?: testcaseresultUncheckedUpdateManyWithoutSubmissionNestedInput
   }
 
@@ -11688,12 +9353,14 @@ export namespace Prisma {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
   }
 
   export type submissionUpdateManyMutationInput = {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type submissionUncheckedUpdateManyInput = {
@@ -11703,6 +9370,7 @@ export namespace Prisma {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type testcaseCreateInput = {
@@ -11763,7 +9431,7 @@ export namespace Prisma {
 
   export type testcaseresultCreateInput = {
     ActualOutput: string
-    Result?: $Enums.testcaseresult_Result | null
+    Result?: $Enums.testcaseresult_Result
     ExecutionTime?: number | null
     submission: submissionCreateNestedOneWithoutTestcaseresultInput
     testcase: testcaseCreateNestedOneWithoutTestcaseresultInput
@@ -11774,13 +9442,13 @@ export namespace Prisma {
     SID: number
     TCID: number
     ActualOutput: string
-    Result?: $Enums.testcaseresult_Result | null
+    Result?: $Enums.testcaseresult_Result
     ExecutionTime?: number | null
   }
 
   export type testcaseresultUpdateInput = {
     ActualOutput?: StringFieldUpdateOperationsInput | string
-    Result?: NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
     submission?: submissionUpdateOneRequiredWithoutTestcaseresultNestedInput
     testcase?: testcaseUpdateOneRequiredWithoutTestcaseresultNestedInput
@@ -11791,7 +9459,7 @@ export namespace Prisma {
     SID?: IntFieldUpdateOperationsInput | number
     TCID?: IntFieldUpdateOperationsInput | number
     ActualOutput?: StringFieldUpdateOperationsInput | string
-    Result?: NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
@@ -11800,13 +9468,13 @@ export namespace Prisma {
     SID: number
     TCID: number
     ActualOutput: string
-    Result?: $Enums.testcaseresult_Result | null
+    Result?: $Enums.testcaseresult_Result
     ExecutionTime?: number | null
   }
 
   export type testcaseresultUpdateManyMutationInput = {
     ActualOutput?: StringFieldUpdateOperationsInput | string
-    Result?: NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
@@ -11815,138 +9483,97 @@ export namespace Prisma {
     SID?: IntFieldUpdateOperationsInput | number
     TCID?: IntFieldUpdateOperationsInput | number
     ActualOutput?: StringFieldUpdateOperationsInput | string
-    Result?: NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type topicCreateInput = {
     Name: string
-    Description?: string | null
-    topiclanguagedetail?: topiclanguagedetailCreateNestedManyWithoutTopicInput
+    exercise?: exerciseCreateNestedManyWithoutTopicInput
   }
 
   export type topicUncheckedCreateInput = {
     TpID?: number
     Name: string
-    Description?: string | null
-    topiclanguagedetail?: topiclanguagedetailUncheckedCreateNestedManyWithoutTopicInput
+    exercise?: exerciseUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type topicUpdateInput = {
     Name?: StringFieldUpdateOperationsInput | string
-    Description?: NullableStringFieldUpdateOperationsInput | string | null
-    topiclanguagedetail?: topiclanguagedetailUpdateManyWithoutTopicNestedInput
+    exercise?: exerciseUpdateManyWithoutTopicNestedInput
   }
 
   export type topicUncheckedUpdateInput = {
     TpID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
-    Description?: NullableStringFieldUpdateOperationsInput | string | null
-    topiclanguagedetail?: topiclanguagedetailUncheckedUpdateManyWithoutTopicNestedInput
+    exercise?: exerciseUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type topicCreateManyInput = {
     TpID?: number
     Name: string
-    Description?: string | null
   }
 
   export type topicUpdateManyMutationInput = {
     Name?: StringFieldUpdateOperationsInput | string
-    Description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type topicUncheckedUpdateManyInput = {
     TpID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
-    Description?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type topiclanguagedetailCreateInput = {
-    lesson?: lessonCreateNestedManyWithoutTopiclanguagedetailInput
-    topic: topicCreateNestedOneWithoutTopiclanguagedetailInput
-    language: languageCreateNestedOneWithoutTopiclanguagedetailInput
-  }
-
-  export type topiclanguagedetailUncheckedCreateInput = {
-    TLDID?: number
-    TpID: number
-    LgID: number
-    lesson?: lessonUncheckedCreateNestedManyWithoutTopiclanguagedetailInput
-  }
-
-  export type topiclanguagedetailUpdateInput = {
-    lesson?: lessonUpdateManyWithoutTopiclanguagedetailNestedInput
-    topic?: topicUpdateOneRequiredWithoutTopiclanguagedetailNestedInput
-    language?: languageUpdateOneRequiredWithoutTopiclanguagedetailNestedInput
-  }
-
-  export type topiclanguagedetailUncheckedUpdateInput = {
-    TLDID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
-    LgID?: IntFieldUpdateOperationsInput | number
-    lesson?: lessonUncheckedUpdateManyWithoutTopiclanguagedetailNestedInput
-  }
-
-  export type topiclanguagedetailCreateManyInput = {
-    TLDID?: number
-    TpID: number
-    LgID: number
-  }
-
-  export type topiclanguagedetailUpdateManyMutationInput = {
-
-  }
-
-  export type topiclanguagedetailUncheckedUpdateManyInput = {
-    TLDID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
-    LgID?: IntFieldUpdateOperationsInput | number
   }
 
   export type userCreateInput = {
     UID?: string
-    Username?: string | null
+    Username: string
     Email: string
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     submission?: submissionCreateNestedManyWithoutUserInput
   }
 
   export type userUncheckedCreateInput = {
     UID?: string
-    Username?: string | null
+    Username: string
     Email: string
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type userUpdateInput = {
     UID?: StringFieldUpdateOperationsInput | string
-    Username?: NullableStringFieldUpdateOperationsInput | string | null
+    Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
   export type userUncheckedUpdateInput = {
     UID?: StringFieldUpdateOperationsInput | string
-    Username?: NullableStringFieldUpdateOperationsInput | string | null
+    Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type userCreateManyInput = {
     UID?: string
-    Username?: string | null
+    Username: string
     Email: string
     Password: string
     Role?: $Enums.user_Role
@@ -11955,7 +9582,7 @@ export namespace Prisma {
 
   export type userUpdateManyMutationInput = {
     UID?: StringFieldUpdateOperationsInput | string
-    Username?: NullableStringFieldUpdateOperationsInput | string | null
+    Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
@@ -11964,67 +9591,62 @@ export namespace Prisma {
 
   export type userUncheckedUpdateManyInput = {
     UID?: StringFieldUpdateOperationsInput | string
-    Username?: NullableStringFieldUpdateOperationsInput | string | null
+    Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type lessonCreateInput = {
-    OrderIndex: number
-    Tittle: string
-    Content: string
-    exercise?: exerciseCreateNestedManyWithoutLessionInput
-    topiclanguagedetail: topiclanguagedetailCreateNestedOneWithoutLessonInput
+  export type friendshipCreateInput = {
+    status?: $Enums.friendship_status
+    CreatedAt?: Date | string | null
+    user_friendship_requesterTouser: userCreateNestedOneWithoutFriendship_friendship_requesterTouserInput
+    user_friendship_addresseeTouser: userCreateNestedOneWithoutFriendship_friendship_addresseeTouserInput
   }
 
-  export type lessonUncheckedCreateInput = {
-    LsID?: number
-    TLDID: number
-    OrderIndex: number
-    Tittle: string
-    Content: string
-    exercise?: exerciseUncheckedCreateNestedManyWithoutLessionInput
+  export type friendshipUncheckedCreateInput = {
+    FID?: number
+    requester: string
+    addressee: string
+    status?: $Enums.friendship_status
+    CreatedAt?: Date | string | null
   }
 
-  export type lessonUpdateInput = {
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Tittle?: StringFieldUpdateOperationsInput | string
-    Content?: StringFieldUpdateOperationsInput | string
-    exercise?: exerciseUpdateManyWithoutLessionNestedInput
-    topiclanguagedetail?: topiclanguagedetailUpdateOneRequiredWithoutLessonNestedInput
+  export type friendshipUpdateInput = {
+    status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user_friendship_requesterTouser?: userUpdateOneRequiredWithoutFriendship_friendship_requesterTouserNestedInput
+    user_friendship_addresseeTouser?: userUpdateOneRequiredWithoutFriendship_friendship_addresseeTouserNestedInput
   }
 
-  export type lessonUncheckedUpdateInput = {
-    LsID?: IntFieldUpdateOperationsInput | number
-    TLDID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Tittle?: StringFieldUpdateOperationsInput | string
-    Content?: StringFieldUpdateOperationsInput | string
-    exercise?: exerciseUncheckedUpdateManyWithoutLessionNestedInput
+  export type friendshipUncheckedUpdateInput = {
+    FID?: IntFieldUpdateOperationsInput | number
+    requester?: StringFieldUpdateOperationsInput | string
+    addressee?: StringFieldUpdateOperationsInput | string
+    status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type lessonCreateManyInput = {
-    LsID?: number
-    TLDID: number
-    OrderIndex: number
-    Tittle: string
-    Content: string
+  export type friendshipCreateManyInput = {
+    FID?: number
+    requester: string
+    addressee: string
+    status?: $Enums.friendship_status
+    CreatedAt?: Date | string | null
   }
 
-  export type lessonUpdateManyMutationInput = {
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Tittle?: StringFieldUpdateOperationsInput | string
-    Content?: StringFieldUpdateOperationsInput | string
+  export type friendshipUpdateManyMutationInput = {
+    status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type lessonUncheckedUpdateManyInput = {
-    LsID?: IntFieldUpdateOperationsInput | number
-    TLDID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Tittle?: StringFieldUpdateOperationsInput | string
-    Content?: StringFieldUpdateOperationsInput | string
+  export type friendshipUncheckedUpdateManyInput = {
+    FID?: IntFieldUpdateOperationsInput | number
+    requester?: StringFieldUpdateOperationsInput | string
+    addressee?: StringFieldUpdateOperationsInput | string
+    status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -12060,9 +9682,9 @@ export namespace Prisma {
     not?: NestedEnumexercise_DifficultyFilter<$PrismaModel> | $Enums.exercise_Difficulty
   }
 
-  export type LessonScalarRelationFilter = {
-    is?: lessonWhereInput
-    isNot?: lessonWhereInput
+  export type TopicScalarRelationFilter = {
+    is?: topicWhereInput
+    isNot?: topicWhereInput
   }
 
   export type SubmissionListRelationFilter = {
@@ -12093,38 +9715,33 @@ export namespace Prisma {
 
   export type exerciseCountOrderByAggregateInput = {
     EID?: SortOrder
-    LsID?: SortOrder
-    OrderIndex?: SortOrder
+    TpID?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
   }
 
   export type exerciseAvgOrderByAggregateInput = {
     EID?: SortOrder
-    LsID?: SortOrder
-    OrderIndex?: SortOrder
+    TpID?: SortOrder
   }
 
   export type exerciseMaxOrderByAggregateInput = {
     EID?: SortOrder
-    LsID?: SortOrder
-    OrderIndex?: SortOrder
+    TpID?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
   }
 
   export type exerciseMinOrderByAggregateInput = {
     EID?: SortOrder
-    LsID?: SortOrder
-    OrderIndex?: SortOrder
+    TpID?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
   }
 
   export type exerciseSumOrderByAggregateInput = {
     EID?: SortOrder
-    LsID?: SortOrder
-    OrderIndex?: SortOrder
+    TpID?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -12186,71 +9803,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type TopiclanguagedetailListRelationFilter = {
-    every?: topiclanguagedetailWhereInput
-    some?: topiclanguagedetailWhereInput
-    none?: topiclanguagedetailWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
-  }
-
-  export type topiclanguagedetailOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type languageOrderByRelevanceInput = {
-    fields: languageOrderByRelevanceFieldEnum | languageOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type languageCountOrderByAggregateInput = {
-    LgID?: SortOrder
-    Name?: SortOrder
-    Logo?: SortOrder
-  }
-
-  export type languageAvgOrderByAggregateInput = {
-    LgID?: SortOrder
-  }
-
-  export type languageMaxOrderByAggregateInput = {
-    LgID?: SortOrder
-    Name?: SortOrder
-    Logo?: SortOrder
-  }
-
-  export type languageMinOrderByAggregateInput = {
-    LgID?: SortOrder
-    Name?: SortOrder
-    Logo?: SortOrder
-  }
-
-  export type languageSumOrderByAggregateInput = {
-    LgID?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | null
@@ -12269,6 +9821,11 @@ export namespace Prisma {
     not?: NestedEnumsubmission_ResultNullableFilter<$PrismaModel> | $Enums.submission_Result | null
   }
 
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
   export type ExerciseScalarRelationFilter = {
     is?: exerciseWhereInput
     isNot?: exerciseWhereInput
@@ -12283,6 +9840,11 @@ export namespace Prisma {
     every?: testcaseresultWhereInput
     some?: testcaseresultWhereInput
     none?: testcaseresultWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type testcaseresultOrderByRelationAggregateInput = {
@@ -12302,6 +9864,7 @@ export namespace Prisma {
     Code?: SortOrder
     CreatedAt?: SortOrder
     Result?: SortOrder
+    isPublic?: SortOrder
   }
 
   export type submissionAvgOrderByAggregateInput = {
@@ -12316,6 +9879,7 @@ export namespace Prisma {
     Code?: SortOrder
     CreatedAt?: SortOrder
     Result?: SortOrder
+    isPublic?: SortOrder
   }
 
   export type submissionMinOrderByAggregateInput = {
@@ -12325,11 +9889,30 @@ export namespace Prisma {
     Code?: SortOrder
     CreatedAt?: SortOrder
     Result?: SortOrder
+    isPublic?: SortOrder
   }
 
   export type submissionSumOrderByAggregateInput = {
     SID?: SortOrder
     EID?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -12356,9 +9939,12 @@ export namespace Prisma {
     _max?: NestedEnumsubmission_ResultNullableFilter<$PrismaModel>
   }
 
-  export type BoolNullableFilter<$PrismaModel = never> = {
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type testcaseOrderByRelevanceInput = {
@@ -12401,19 +9987,11 @@ export namespace Prisma {
     EID?: SortOrder
   }
 
-  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
-  export type Enumtestcaseresult_ResultNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.testcaseresult_Result | Enumtestcaseresult_ResultFieldRefInput<$PrismaModel> | null
-    in?: $Enums.testcaseresult_Result[] | null
-    notIn?: $Enums.testcaseresult_Result[] | null
-    not?: NestedEnumtestcaseresult_ResultNullableFilter<$PrismaModel> | $Enums.testcaseresult_Result | null
+  export type Enumtestcaseresult_ResultFilter<$PrismaModel = never> = {
+    equals?: $Enums.testcaseresult_Result | Enumtestcaseresult_ResultFieldRefInput<$PrismaModel>
+    in?: $Enums.testcaseresult_Result[]
+    notIn?: $Enums.testcaseresult_Result[]
+    not?: NestedEnumtestcaseresult_ResultFilter<$PrismaModel> | $Enums.testcaseresult_Result
   }
 
   export type FloatNullableFilter<$PrismaModel = never> = {
@@ -12484,14 +10062,14 @@ export namespace Prisma {
     ExecutionTime?: SortOrder
   }
 
-  export type Enumtestcaseresult_ResultNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.testcaseresult_Result | Enumtestcaseresult_ResultFieldRefInput<$PrismaModel> | null
-    in?: $Enums.testcaseresult_Result[] | null
-    notIn?: $Enums.testcaseresult_Result[] | null
-    not?: NestedEnumtestcaseresult_ResultNullableWithAggregatesFilter<$PrismaModel> | $Enums.testcaseresult_Result | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumtestcaseresult_ResultNullableFilter<$PrismaModel>
-    _max?: NestedEnumtestcaseresult_ResultNullableFilter<$PrismaModel>
+  export type Enumtestcaseresult_ResultWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.testcaseresult_Result | Enumtestcaseresult_ResultFieldRefInput<$PrismaModel>
+    in?: $Enums.testcaseresult_Result[]
+    notIn?: $Enums.testcaseresult_Result[]
+    not?: NestedEnumtestcaseresult_ResultWithAggregatesFilter<$PrismaModel> | $Enums.testcaseresult_Result
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumtestcaseresult_ResultFilter<$PrismaModel>
+    _max?: NestedEnumtestcaseresult_ResultFilter<$PrismaModel>
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -12510,6 +10088,16 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type ExerciseListRelationFilter = {
+    every?: exerciseWhereInput
+    some?: exerciseWhereInput
+    none?: exerciseWhereInput
+  }
+
+  export type exerciseOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type topicOrderByRelevanceInput = {
     fields: topicOrderByRelevanceFieldEnum | topicOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -12519,7 +10107,6 @@ export namespace Prisma {
   export type topicCountOrderByAggregateInput = {
     TpID?: SortOrder
     Name?: SortOrder
-    Description?: SortOrder
   }
 
   export type topicAvgOrderByAggregateInput = {
@@ -12529,67 +10116,15 @@ export namespace Prisma {
   export type topicMaxOrderByAggregateInput = {
     TpID?: SortOrder
     Name?: SortOrder
-    Description?: SortOrder
   }
 
   export type topicMinOrderByAggregateInput = {
     TpID?: SortOrder
     Name?: SortOrder
-    Description?: SortOrder
   }
 
   export type topicSumOrderByAggregateInput = {
     TpID?: SortOrder
-  }
-
-  export type LessonListRelationFilter = {
-    every?: lessonWhereInput
-    some?: lessonWhereInput
-    none?: lessonWhereInput
-  }
-
-  export type TopicScalarRelationFilter = {
-    is?: topicWhereInput
-    isNot?: topicWhereInput
-  }
-
-  export type LanguageScalarRelationFilter = {
-    is?: languageWhereInput
-    isNot?: languageWhereInput
-  }
-
-  export type lessonOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type topiclanguagedetailCountOrderByAggregateInput = {
-    TLDID?: SortOrder
-    TpID?: SortOrder
-    LgID?: SortOrder
-  }
-
-  export type topiclanguagedetailAvgOrderByAggregateInput = {
-    TLDID?: SortOrder
-    TpID?: SortOrder
-    LgID?: SortOrder
-  }
-
-  export type topiclanguagedetailMaxOrderByAggregateInput = {
-    TLDID?: SortOrder
-    TpID?: SortOrder
-    LgID?: SortOrder
-  }
-
-  export type topiclanguagedetailMinOrderByAggregateInput = {
-    TLDID?: SortOrder
-    TpID?: SortOrder
-    LgID?: SortOrder
-  }
-
-  export type topiclanguagedetailSumOrderByAggregateInput = {
-    TLDID?: SortOrder
-    TpID?: SortOrder
-    LgID?: SortOrder
   }
 
   export type Enumuser_RoleFilter<$PrismaModel = never> = {
@@ -12597,6 +10132,16 @@ export namespace Prisma {
     in?: $Enums.user_Role[]
     notIn?: $Enums.user_Role[]
     not?: NestedEnumuser_RoleFilter<$PrismaModel> | $Enums.user_Role
+  }
+
+  export type FriendshipListRelationFilter = {
+    every?: friendshipWhereInput
+    some?: friendshipWhereInput
+    none?: friendshipWhereInput
+  }
+
+  export type friendshipOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type userOrderByRelevanceInput = {
@@ -12642,67 +10187,70 @@ export namespace Prisma {
     _max?: NestedEnumuser_RoleFilter<$PrismaModel>
   }
 
-  export type ExerciseListRelationFilter = {
-    every?: exerciseWhereInput
-    some?: exerciseWhereInput
-    none?: exerciseWhereInput
+  export type Enumfriendship_statusFilter<$PrismaModel = never> = {
+    equals?: $Enums.friendship_status | Enumfriendship_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.friendship_status[]
+    notIn?: $Enums.friendship_status[]
+    not?: NestedEnumfriendship_statusFilter<$PrismaModel> | $Enums.friendship_status
   }
 
-  export type TopiclanguagedetailScalarRelationFilter = {
-    is?: topiclanguagedetailWhereInput
-    isNot?: topiclanguagedetailWhereInput
-  }
-
-  export type exerciseOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type lessonOrderByRelevanceInput = {
-    fields: lessonOrderByRelevanceFieldEnum | lessonOrderByRelevanceFieldEnum[]
+  export type friendshipOrderByRelevanceInput = {
+    fields: friendshipOrderByRelevanceFieldEnum | friendshipOrderByRelevanceFieldEnum[]
     sort: SortOrder
     search: string
   }
 
-  export type lessonCountOrderByAggregateInput = {
-    LsID?: SortOrder
-    TLDID?: SortOrder
-    OrderIndex?: SortOrder
-    Tittle?: SortOrder
-    Content?: SortOrder
+  export type friendshipRequesterAddresseeCompoundUniqueInput = {
+    requester: string
+    addressee: string
   }
 
-  export type lessonAvgOrderByAggregateInput = {
-    LsID?: SortOrder
-    TLDID?: SortOrder
-    OrderIndex?: SortOrder
+  export type friendshipCountOrderByAggregateInput = {
+    FID?: SortOrder
+    requester?: SortOrder
+    addressee?: SortOrder
+    status?: SortOrder
+    CreatedAt?: SortOrder
   }
 
-  export type lessonMaxOrderByAggregateInput = {
-    LsID?: SortOrder
-    TLDID?: SortOrder
-    OrderIndex?: SortOrder
-    Tittle?: SortOrder
-    Content?: SortOrder
+  export type friendshipAvgOrderByAggregateInput = {
+    FID?: SortOrder
   }
 
-  export type lessonMinOrderByAggregateInput = {
-    LsID?: SortOrder
-    TLDID?: SortOrder
-    OrderIndex?: SortOrder
-    Tittle?: SortOrder
-    Content?: SortOrder
+  export type friendshipMaxOrderByAggregateInput = {
+    FID?: SortOrder
+    requester?: SortOrder
+    addressee?: SortOrder
+    status?: SortOrder
+    CreatedAt?: SortOrder
   }
 
-  export type lessonSumOrderByAggregateInput = {
-    LsID?: SortOrder
-    TLDID?: SortOrder
-    OrderIndex?: SortOrder
+  export type friendshipMinOrderByAggregateInput = {
+    FID?: SortOrder
+    requester?: SortOrder
+    addressee?: SortOrder
+    status?: SortOrder
+    CreatedAt?: SortOrder
   }
 
-  export type lessonCreateNestedOneWithoutExerciseInput = {
-    create?: XOR<lessonCreateWithoutExerciseInput, lessonUncheckedCreateWithoutExerciseInput>
-    connectOrCreate?: lessonCreateOrConnectWithoutExerciseInput
-    connect?: lessonWhereUniqueInput
+  export type friendshipSumOrderByAggregateInput = {
+    FID?: SortOrder
+  }
+
+  export type Enumfriendship_statusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.friendship_status | Enumfriendship_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.friendship_status[]
+    notIn?: $Enums.friendship_status[]
+    not?: NestedEnumfriendship_statusWithAggregatesFilter<$PrismaModel> | $Enums.friendship_status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumfriendship_statusFilter<$PrismaModel>
+    _max?: NestedEnumfriendship_statusFilter<$PrismaModel>
+  }
+
+  export type topicCreateNestedOneWithoutExerciseInput = {
+    create?: XOR<topicCreateWithoutExerciseInput, topicUncheckedCreateWithoutExerciseInput>
+    connectOrCreate?: topicCreateOrConnectWithoutExerciseInput
+    connect?: topicWhereUniqueInput
   }
 
   export type submissionCreateNestedManyWithoutExerciseInput = {
@@ -12733,14 +10281,6 @@ export namespace Prisma {
     connect?: testcaseWhereUniqueInput | testcaseWhereUniqueInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -12749,12 +10289,12 @@ export namespace Prisma {
     set?: $Enums.exercise_Difficulty
   }
 
-  export type lessonUpdateOneRequiredWithoutExerciseNestedInput = {
-    create?: XOR<lessonCreateWithoutExerciseInput, lessonUncheckedCreateWithoutExerciseInput>
-    connectOrCreate?: lessonCreateOrConnectWithoutExerciseInput
-    upsert?: lessonUpsertWithoutExerciseInput
-    connect?: lessonWhereUniqueInput
-    update?: XOR<XOR<lessonUpdateToOneWithWhereWithoutExerciseInput, lessonUpdateWithoutExerciseInput>, lessonUncheckedUpdateWithoutExerciseInput>
+  export type topicUpdateOneRequiredWithoutExerciseNestedInput = {
+    create?: XOR<topicCreateWithoutExerciseInput, topicUncheckedCreateWithoutExerciseInput>
+    connectOrCreate?: topicCreateOrConnectWithoutExerciseInput
+    upsert?: topicUpsertWithoutExerciseInput
+    connect?: topicWhereUniqueInput
+    update?: XOR<XOR<topicUpdateToOneWithWhereWithoutExerciseInput, topicUpdateWithoutExerciseInput>, topicUncheckedUpdateWithoutExerciseInput>
   }
 
   export type submissionUpdateManyWithoutExerciseNestedInput = {
@@ -12785,6 +10325,14 @@ export namespace Prisma {
     deleteMany?: testcaseScalarWhereInput | testcaseScalarWhereInput[]
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type submissionUncheckedUpdateManyWithoutExerciseNestedInput = {
     create?: XOR<submissionCreateWithoutExerciseInput, submissionUncheckedCreateWithoutExerciseInput> | submissionCreateWithoutExerciseInput[] | submissionUncheckedCreateWithoutExerciseInput[]
     connectOrCreate?: submissionCreateOrConnectWithoutExerciseInput | submissionCreateOrConnectWithoutExerciseInput[]
@@ -12813,52 +10361,6 @@ export namespace Prisma {
     deleteMany?: testcaseScalarWhereInput | testcaseScalarWhereInput[]
   }
 
-  export type topiclanguagedetailCreateNestedManyWithoutLanguageInput = {
-    create?: XOR<topiclanguagedetailCreateWithoutLanguageInput, topiclanguagedetailUncheckedCreateWithoutLanguageInput> | topiclanguagedetailCreateWithoutLanguageInput[] | topiclanguagedetailUncheckedCreateWithoutLanguageInput[]
-    connectOrCreate?: topiclanguagedetailCreateOrConnectWithoutLanguageInput | topiclanguagedetailCreateOrConnectWithoutLanguageInput[]
-    createMany?: topiclanguagedetailCreateManyLanguageInputEnvelope
-    connect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-  }
-
-  export type topiclanguagedetailUncheckedCreateNestedManyWithoutLanguageInput = {
-    create?: XOR<topiclanguagedetailCreateWithoutLanguageInput, topiclanguagedetailUncheckedCreateWithoutLanguageInput> | topiclanguagedetailCreateWithoutLanguageInput[] | topiclanguagedetailUncheckedCreateWithoutLanguageInput[]
-    connectOrCreate?: topiclanguagedetailCreateOrConnectWithoutLanguageInput | topiclanguagedetailCreateOrConnectWithoutLanguageInput[]
-    createMany?: topiclanguagedetailCreateManyLanguageInputEnvelope
-    connect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
-  export type topiclanguagedetailUpdateManyWithoutLanguageNestedInput = {
-    create?: XOR<topiclanguagedetailCreateWithoutLanguageInput, topiclanguagedetailUncheckedCreateWithoutLanguageInput> | topiclanguagedetailCreateWithoutLanguageInput[] | topiclanguagedetailUncheckedCreateWithoutLanguageInput[]
-    connectOrCreate?: topiclanguagedetailCreateOrConnectWithoutLanguageInput | topiclanguagedetailCreateOrConnectWithoutLanguageInput[]
-    upsert?: topiclanguagedetailUpsertWithWhereUniqueWithoutLanguageInput | topiclanguagedetailUpsertWithWhereUniqueWithoutLanguageInput[]
-    createMany?: topiclanguagedetailCreateManyLanguageInputEnvelope
-    set?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    disconnect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    delete?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    connect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    update?: topiclanguagedetailUpdateWithWhereUniqueWithoutLanguageInput | topiclanguagedetailUpdateWithWhereUniqueWithoutLanguageInput[]
-    updateMany?: topiclanguagedetailUpdateManyWithWhereWithoutLanguageInput | topiclanguagedetailUpdateManyWithWhereWithoutLanguageInput[]
-    deleteMany?: topiclanguagedetailScalarWhereInput | topiclanguagedetailScalarWhereInput[]
-  }
-
-  export type topiclanguagedetailUncheckedUpdateManyWithoutLanguageNestedInput = {
-    create?: XOR<topiclanguagedetailCreateWithoutLanguageInput, topiclanguagedetailUncheckedCreateWithoutLanguageInput> | topiclanguagedetailCreateWithoutLanguageInput[] | topiclanguagedetailUncheckedCreateWithoutLanguageInput[]
-    connectOrCreate?: topiclanguagedetailCreateOrConnectWithoutLanguageInput | topiclanguagedetailCreateOrConnectWithoutLanguageInput[]
-    upsert?: topiclanguagedetailUpsertWithWhereUniqueWithoutLanguageInput | topiclanguagedetailUpsertWithWhereUniqueWithoutLanguageInput[]
-    createMany?: topiclanguagedetailCreateManyLanguageInputEnvelope
-    set?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    disconnect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    delete?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    connect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    update?: topiclanguagedetailUpdateWithWhereUniqueWithoutLanguageInput | topiclanguagedetailUpdateWithWhereUniqueWithoutLanguageInput[]
-    updateMany?: topiclanguagedetailUpdateManyWithWhereWithoutLanguageInput | topiclanguagedetailUpdateManyWithWhereWithoutLanguageInput[]
-    deleteMany?: topiclanguagedetailScalarWhereInput | topiclanguagedetailScalarWhereInput[]
-  }
-
   export type exerciseCreateNestedOneWithoutSubmissionInput = {
     create?: XOR<exerciseCreateWithoutSubmissionInput, exerciseUncheckedCreateWithoutSubmissionInput>
     connectOrCreate?: exerciseCreateOrConnectWithoutSubmissionInput
@@ -12885,12 +10387,20 @@ export namespace Prisma {
     connect?: testcaseresultWhereUniqueInput | testcaseresultWhereUniqueInput[]
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
   }
 
   export type NullableEnumsubmission_ResultFieldUpdateOperationsInput = {
     set?: $Enums.submission_Result | null
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
   }
 
   export type exerciseUpdateOneRequiredWithoutSubmissionNestedInput = {
@@ -12957,10 +10467,6 @@ export namespace Prisma {
     connect?: testcaseresultWhereUniqueInput | testcaseresultWhereUniqueInput[]
   }
 
-  export type NullableBoolFieldUpdateOperationsInput = {
-    set?: boolean | null
-  }
-
   export type exerciseUpdateOneRequiredWithoutTestcaseNestedInput = {
     create?: XOR<exerciseCreateWithoutTestcaseInput, exerciseUncheckedCreateWithoutTestcaseInput>
     connectOrCreate?: exerciseCreateOrConnectWithoutTestcaseInput
@@ -13009,8 +10515,8 @@ export namespace Prisma {
     connect?: testcaseWhereUniqueInput
   }
 
-  export type NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput = {
-    set?: $Enums.testcaseresult_Result | null
+  export type Enumtestcaseresult_ResultFieldUpdateOperationsInput = {
+    set?: $Enums.testcaseresult_Result
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -13037,116 +10543,60 @@ export namespace Prisma {
     update?: XOR<XOR<testcaseUpdateToOneWithWhereWithoutTestcaseresultInput, testcaseUpdateWithoutTestcaseresultInput>, testcaseUncheckedUpdateWithoutTestcaseresultInput>
   }
 
-  export type topiclanguagedetailCreateNestedManyWithoutTopicInput = {
-    create?: XOR<topiclanguagedetailCreateWithoutTopicInput, topiclanguagedetailUncheckedCreateWithoutTopicInput> | topiclanguagedetailCreateWithoutTopicInput[] | topiclanguagedetailUncheckedCreateWithoutTopicInput[]
-    connectOrCreate?: topiclanguagedetailCreateOrConnectWithoutTopicInput | topiclanguagedetailCreateOrConnectWithoutTopicInput[]
-    createMany?: topiclanguagedetailCreateManyTopicInputEnvelope
-    connect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
+  export type exerciseCreateNestedManyWithoutTopicInput = {
+    create?: XOR<exerciseCreateWithoutTopicInput, exerciseUncheckedCreateWithoutTopicInput> | exerciseCreateWithoutTopicInput[] | exerciseUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: exerciseCreateOrConnectWithoutTopicInput | exerciseCreateOrConnectWithoutTopicInput[]
+    createMany?: exerciseCreateManyTopicInputEnvelope
+    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
   }
 
-  export type topiclanguagedetailUncheckedCreateNestedManyWithoutTopicInput = {
-    create?: XOR<topiclanguagedetailCreateWithoutTopicInput, topiclanguagedetailUncheckedCreateWithoutTopicInput> | topiclanguagedetailCreateWithoutTopicInput[] | topiclanguagedetailUncheckedCreateWithoutTopicInput[]
-    connectOrCreate?: topiclanguagedetailCreateOrConnectWithoutTopicInput | topiclanguagedetailCreateOrConnectWithoutTopicInput[]
-    createMany?: topiclanguagedetailCreateManyTopicInputEnvelope
-    connect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
+  export type exerciseUncheckedCreateNestedManyWithoutTopicInput = {
+    create?: XOR<exerciseCreateWithoutTopicInput, exerciseUncheckedCreateWithoutTopicInput> | exerciseCreateWithoutTopicInput[] | exerciseUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: exerciseCreateOrConnectWithoutTopicInput | exerciseCreateOrConnectWithoutTopicInput[]
+    createMany?: exerciseCreateManyTopicInputEnvelope
+    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
   }
 
-  export type topiclanguagedetailUpdateManyWithoutTopicNestedInput = {
-    create?: XOR<topiclanguagedetailCreateWithoutTopicInput, topiclanguagedetailUncheckedCreateWithoutTopicInput> | topiclanguagedetailCreateWithoutTopicInput[] | topiclanguagedetailUncheckedCreateWithoutTopicInput[]
-    connectOrCreate?: topiclanguagedetailCreateOrConnectWithoutTopicInput | topiclanguagedetailCreateOrConnectWithoutTopicInput[]
-    upsert?: topiclanguagedetailUpsertWithWhereUniqueWithoutTopicInput | topiclanguagedetailUpsertWithWhereUniqueWithoutTopicInput[]
-    createMany?: topiclanguagedetailCreateManyTopicInputEnvelope
-    set?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    disconnect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    delete?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    connect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    update?: topiclanguagedetailUpdateWithWhereUniqueWithoutTopicInput | topiclanguagedetailUpdateWithWhereUniqueWithoutTopicInput[]
-    updateMany?: topiclanguagedetailUpdateManyWithWhereWithoutTopicInput | topiclanguagedetailUpdateManyWithWhereWithoutTopicInput[]
-    deleteMany?: topiclanguagedetailScalarWhereInput | topiclanguagedetailScalarWhereInput[]
+  export type exerciseUpdateManyWithoutTopicNestedInput = {
+    create?: XOR<exerciseCreateWithoutTopicInput, exerciseUncheckedCreateWithoutTopicInput> | exerciseCreateWithoutTopicInput[] | exerciseUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: exerciseCreateOrConnectWithoutTopicInput | exerciseCreateOrConnectWithoutTopicInput[]
+    upsert?: exerciseUpsertWithWhereUniqueWithoutTopicInput | exerciseUpsertWithWhereUniqueWithoutTopicInput[]
+    createMany?: exerciseCreateManyTopicInputEnvelope
+    set?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    disconnect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    delete?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    update?: exerciseUpdateWithWhereUniqueWithoutTopicInput | exerciseUpdateWithWhereUniqueWithoutTopicInput[]
+    updateMany?: exerciseUpdateManyWithWhereWithoutTopicInput | exerciseUpdateManyWithWhereWithoutTopicInput[]
+    deleteMany?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
   }
 
-  export type topiclanguagedetailUncheckedUpdateManyWithoutTopicNestedInput = {
-    create?: XOR<topiclanguagedetailCreateWithoutTopicInput, topiclanguagedetailUncheckedCreateWithoutTopicInput> | topiclanguagedetailCreateWithoutTopicInput[] | topiclanguagedetailUncheckedCreateWithoutTopicInput[]
-    connectOrCreate?: topiclanguagedetailCreateOrConnectWithoutTopicInput | topiclanguagedetailCreateOrConnectWithoutTopicInput[]
-    upsert?: topiclanguagedetailUpsertWithWhereUniqueWithoutTopicInput | topiclanguagedetailUpsertWithWhereUniqueWithoutTopicInput[]
-    createMany?: topiclanguagedetailCreateManyTopicInputEnvelope
-    set?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    disconnect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    delete?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    connect?: topiclanguagedetailWhereUniqueInput | topiclanguagedetailWhereUniqueInput[]
-    update?: topiclanguagedetailUpdateWithWhereUniqueWithoutTopicInput | topiclanguagedetailUpdateWithWhereUniqueWithoutTopicInput[]
-    updateMany?: topiclanguagedetailUpdateManyWithWhereWithoutTopicInput | topiclanguagedetailUpdateManyWithWhereWithoutTopicInput[]
-    deleteMany?: topiclanguagedetailScalarWhereInput | topiclanguagedetailScalarWhereInput[]
+  export type exerciseUncheckedUpdateManyWithoutTopicNestedInput = {
+    create?: XOR<exerciseCreateWithoutTopicInput, exerciseUncheckedCreateWithoutTopicInput> | exerciseCreateWithoutTopicInput[] | exerciseUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: exerciseCreateOrConnectWithoutTopicInput | exerciseCreateOrConnectWithoutTopicInput[]
+    upsert?: exerciseUpsertWithWhereUniqueWithoutTopicInput | exerciseUpsertWithWhereUniqueWithoutTopicInput[]
+    createMany?: exerciseCreateManyTopicInputEnvelope
+    set?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    disconnect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    delete?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    update?: exerciseUpdateWithWhereUniqueWithoutTopicInput | exerciseUpdateWithWhereUniqueWithoutTopicInput[]
+    updateMany?: exerciseUpdateManyWithWhereWithoutTopicInput | exerciseUpdateManyWithWhereWithoutTopicInput[]
+    deleteMany?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
   }
 
-  export type lessonCreateNestedManyWithoutTopiclanguagedetailInput = {
-    create?: XOR<lessonCreateWithoutTopiclanguagedetailInput, lessonUncheckedCreateWithoutTopiclanguagedetailInput> | lessonCreateWithoutTopiclanguagedetailInput[] | lessonUncheckedCreateWithoutTopiclanguagedetailInput[]
-    connectOrCreate?: lessonCreateOrConnectWithoutTopiclanguagedetailInput | lessonCreateOrConnectWithoutTopiclanguagedetailInput[]
-    createMany?: lessonCreateManyTopiclanguagedetailInputEnvelope
-    connect?: lessonWhereUniqueInput | lessonWhereUniqueInput[]
+  export type friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput = {
+    create?: XOR<friendshipCreateWithoutUser_friendship_requesterTouserInput, friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput> | friendshipCreateWithoutUser_friendship_requesterTouserInput[] | friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput[]
+    connectOrCreate?: friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput | friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput[]
+    createMany?: friendshipCreateManyUser_friendship_requesterTouserInputEnvelope
+    connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
   }
 
-  export type topicCreateNestedOneWithoutTopiclanguagedetailInput = {
-    create?: XOR<topicCreateWithoutTopiclanguagedetailInput, topicUncheckedCreateWithoutTopiclanguagedetailInput>
-    connectOrCreate?: topicCreateOrConnectWithoutTopiclanguagedetailInput
-    connect?: topicWhereUniqueInput
-  }
-
-  export type languageCreateNestedOneWithoutTopiclanguagedetailInput = {
-    create?: XOR<languageCreateWithoutTopiclanguagedetailInput, languageUncheckedCreateWithoutTopiclanguagedetailInput>
-    connectOrCreate?: languageCreateOrConnectWithoutTopiclanguagedetailInput
-    connect?: languageWhereUniqueInput
-  }
-
-  export type lessonUncheckedCreateNestedManyWithoutTopiclanguagedetailInput = {
-    create?: XOR<lessonCreateWithoutTopiclanguagedetailInput, lessonUncheckedCreateWithoutTopiclanguagedetailInput> | lessonCreateWithoutTopiclanguagedetailInput[] | lessonUncheckedCreateWithoutTopiclanguagedetailInput[]
-    connectOrCreate?: lessonCreateOrConnectWithoutTopiclanguagedetailInput | lessonCreateOrConnectWithoutTopiclanguagedetailInput[]
-    createMany?: lessonCreateManyTopiclanguagedetailInputEnvelope
-    connect?: lessonWhereUniqueInput | lessonWhereUniqueInput[]
-  }
-
-  export type lessonUpdateManyWithoutTopiclanguagedetailNestedInput = {
-    create?: XOR<lessonCreateWithoutTopiclanguagedetailInput, lessonUncheckedCreateWithoutTopiclanguagedetailInput> | lessonCreateWithoutTopiclanguagedetailInput[] | lessonUncheckedCreateWithoutTopiclanguagedetailInput[]
-    connectOrCreate?: lessonCreateOrConnectWithoutTopiclanguagedetailInput | lessonCreateOrConnectWithoutTopiclanguagedetailInput[]
-    upsert?: lessonUpsertWithWhereUniqueWithoutTopiclanguagedetailInput | lessonUpsertWithWhereUniqueWithoutTopiclanguagedetailInput[]
-    createMany?: lessonCreateManyTopiclanguagedetailInputEnvelope
-    set?: lessonWhereUniqueInput | lessonWhereUniqueInput[]
-    disconnect?: lessonWhereUniqueInput | lessonWhereUniqueInput[]
-    delete?: lessonWhereUniqueInput | lessonWhereUniqueInput[]
-    connect?: lessonWhereUniqueInput | lessonWhereUniqueInput[]
-    update?: lessonUpdateWithWhereUniqueWithoutTopiclanguagedetailInput | lessonUpdateWithWhereUniqueWithoutTopiclanguagedetailInput[]
-    updateMany?: lessonUpdateManyWithWhereWithoutTopiclanguagedetailInput | lessonUpdateManyWithWhereWithoutTopiclanguagedetailInput[]
-    deleteMany?: lessonScalarWhereInput | lessonScalarWhereInput[]
-  }
-
-  export type topicUpdateOneRequiredWithoutTopiclanguagedetailNestedInput = {
-    create?: XOR<topicCreateWithoutTopiclanguagedetailInput, topicUncheckedCreateWithoutTopiclanguagedetailInput>
-    connectOrCreate?: topicCreateOrConnectWithoutTopiclanguagedetailInput
-    upsert?: topicUpsertWithoutTopiclanguagedetailInput
-    connect?: topicWhereUniqueInput
-    update?: XOR<XOR<topicUpdateToOneWithWhereWithoutTopiclanguagedetailInput, topicUpdateWithoutTopiclanguagedetailInput>, topicUncheckedUpdateWithoutTopiclanguagedetailInput>
-  }
-
-  export type languageUpdateOneRequiredWithoutTopiclanguagedetailNestedInput = {
-    create?: XOR<languageCreateWithoutTopiclanguagedetailInput, languageUncheckedCreateWithoutTopiclanguagedetailInput>
-    connectOrCreate?: languageCreateOrConnectWithoutTopiclanguagedetailInput
-    upsert?: languageUpsertWithoutTopiclanguagedetailInput
-    connect?: languageWhereUniqueInput
-    update?: XOR<XOR<languageUpdateToOneWithWhereWithoutTopiclanguagedetailInput, languageUpdateWithoutTopiclanguagedetailInput>, languageUncheckedUpdateWithoutTopiclanguagedetailInput>
-  }
-
-  export type lessonUncheckedUpdateManyWithoutTopiclanguagedetailNestedInput = {
-    create?: XOR<lessonCreateWithoutTopiclanguagedetailInput, lessonUncheckedCreateWithoutTopiclanguagedetailInput> | lessonCreateWithoutTopiclanguagedetailInput[] | lessonUncheckedCreateWithoutTopiclanguagedetailInput[]
-    connectOrCreate?: lessonCreateOrConnectWithoutTopiclanguagedetailInput | lessonCreateOrConnectWithoutTopiclanguagedetailInput[]
-    upsert?: lessonUpsertWithWhereUniqueWithoutTopiclanguagedetailInput | lessonUpsertWithWhereUniqueWithoutTopiclanguagedetailInput[]
-    createMany?: lessonCreateManyTopiclanguagedetailInputEnvelope
-    set?: lessonWhereUniqueInput | lessonWhereUniqueInput[]
-    disconnect?: lessonWhereUniqueInput | lessonWhereUniqueInput[]
-    delete?: lessonWhereUniqueInput | lessonWhereUniqueInput[]
-    connect?: lessonWhereUniqueInput | lessonWhereUniqueInput[]
-    update?: lessonUpdateWithWhereUniqueWithoutTopiclanguagedetailInput | lessonUpdateWithWhereUniqueWithoutTopiclanguagedetailInput[]
-    updateMany?: lessonUpdateManyWithWhereWithoutTopiclanguagedetailInput | lessonUpdateManyWithWhereWithoutTopiclanguagedetailInput[]
-    deleteMany?: lessonScalarWhereInput | lessonScalarWhereInput[]
+  export type friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput = {
+    create?: XOR<friendshipCreateWithoutUser_friendship_addresseeTouserInput, friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput> | friendshipCreateWithoutUser_friendship_addresseeTouserInput[] | friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput[]
+    connectOrCreate?: friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput | friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput[]
+    createMany?: friendshipCreateManyUser_friendship_addresseeTouserInputEnvelope
+    connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
   }
 
   export type submissionCreateNestedManyWithoutUserInput = {
@@ -13154,6 +10604,20 @@ export namespace Prisma {
     connectOrCreate?: submissionCreateOrConnectWithoutUserInput | submissionCreateOrConnectWithoutUserInput[]
     createMany?: submissionCreateManyUserInputEnvelope
     connect?: submissionWhereUniqueInput | submissionWhereUniqueInput[]
+  }
+
+  export type friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput = {
+    create?: XOR<friendshipCreateWithoutUser_friendship_requesterTouserInput, friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput> | friendshipCreateWithoutUser_friendship_requesterTouserInput[] | friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput[]
+    connectOrCreate?: friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput | friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput[]
+    createMany?: friendshipCreateManyUser_friendship_requesterTouserInputEnvelope
+    connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+  }
+
+  export type friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput = {
+    create?: XOR<friendshipCreateWithoutUser_friendship_addresseeTouserInput, friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput> | friendshipCreateWithoutUser_friendship_addresseeTouserInput[] | friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput[]
+    connectOrCreate?: friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput | friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput[]
+    createMany?: friendshipCreateManyUser_friendship_addresseeTouserInputEnvelope
+    connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
   }
 
   export type submissionUncheckedCreateNestedManyWithoutUserInput = {
@@ -13165,6 +10629,34 @@ export namespace Prisma {
 
   export type Enumuser_RoleFieldUpdateOperationsInput = {
     set?: $Enums.user_Role
+  }
+
+  export type friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput = {
+    create?: XOR<friendshipCreateWithoutUser_friendship_requesterTouserInput, friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput> | friendshipCreateWithoutUser_friendship_requesterTouserInput[] | friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput[]
+    connectOrCreate?: friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput | friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput[]
+    upsert?: friendshipUpsertWithWhereUniqueWithoutUser_friendship_requesterTouserInput | friendshipUpsertWithWhereUniqueWithoutUser_friendship_requesterTouserInput[]
+    createMany?: friendshipCreateManyUser_friendship_requesterTouserInputEnvelope
+    set?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    disconnect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    delete?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    update?: friendshipUpdateWithWhereUniqueWithoutUser_friendship_requesterTouserInput | friendshipUpdateWithWhereUniqueWithoutUser_friendship_requesterTouserInput[]
+    updateMany?: friendshipUpdateManyWithWhereWithoutUser_friendship_requesterTouserInput | friendshipUpdateManyWithWhereWithoutUser_friendship_requesterTouserInput[]
+    deleteMany?: friendshipScalarWhereInput | friendshipScalarWhereInput[]
+  }
+
+  export type friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput = {
+    create?: XOR<friendshipCreateWithoutUser_friendship_addresseeTouserInput, friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput> | friendshipCreateWithoutUser_friendship_addresseeTouserInput[] | friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput[]
+    connectOrCreate?: friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput | friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput[]
+    upsert?: friendshipUpsertWithWhereUniqueWithoutUser_friendship_addresseeTouserInput | friendshipUpsertWithWhereUniqueWithoutUser_friendship_addresseeTouserInput[]
+    createMany?: friendshipCreateManyUser_friendship_addresseeTouserInputEnvelope
+    set?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    disconnect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    delete?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    update?: friendshipUpdateWithWhereUniqueWithoutUser_friendship_addresseeTouserInput | friendshipUpdateWithWhereUniqueWithoutUser_friendship_addresseeTouserInput[]
+    updateMany?: friendshipUpdateManyWithWhereWithoutUser_friendship_addresseeTouserInput | friendshipUpdateManyWithWhereWithoutUser_friendship_addresseeTouserInput[]
+    deleteMany?: friendshipScalarWhereInput | friendshipScalarWhereInput[]
   }
 
   export type submissionUpdateManyWithoutUserNestedInput = {
@@ -13181,6 +10673,34 @@ export namespace Prisma {
     deleteMany?: submissionScalarWhereInput | submissionScalarWhereInput[]
   }
 
+  export type friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput = {
+    create?: XOR<friendshipCreateWithoutUser_friendship_requesterTouserInput, friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput> | friendshipCreateWithoutUser_friendship_requesterTouserInput[] | friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput[]
+    connectOrCreate?: friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput | friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput[]
+    upsert?: friendshipUpsertWithWhereUniqueWithoutUser_friendship_requesterTouserInput | friendshipUpsertWithWhereUniqueWithoutUser_friendship_requesterTouserInput[]
+    createMany?: friendshipCreateManyUser_friendship_requesterTouserInputEnvelope
+    set?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    disconnect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    delete?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    update?: friendshipUpdateWithWhereUniqueWithoutUser_friendship_requesterTouserInput | friendshipUpdateWithWhereUniqueWithoutUser_friendship_requesterTouserInput[]
+    updateMany?: friendshipUpdateManyWithWhereWithoutUser_friendship_requesterTouserInput | friendshipUpdateManyWithWhereWithoutUser_friendship_requesterTouserInput[]
+    deleteMany?: friendshipScalarWhereInput | friendshipScalarWhereInput[]
+  }
+
+  export type friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput = {
+    create?: XOR<friendshipCreateWithoutUser_friendship_addresseeTouserInput, friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput> | friendshipCreateWithoutUser_friendship_addresseeTouserInput[] | friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput[]
+    connectOrCreate?: friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput | friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput[]
+    upsert?: friendshipUpsertWithWhereUniqueWithoutUser_friendship_addresseeTouserInput | friendshipUpsertWithWhereUniqueWithoutUser_friendship_addresseeTouserInput[]
+    createMany?: friendshipCreateManyUser_friendship_addresseeTouserInputEnvelope
+    set?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    disconnect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    delete?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+    update?: friendshipUpdateWithWhereUniqueWithoutUser_friendship_addresseeTouserInput | friendshipUpdateWithWhereUniqueWithoutUser_friendship_addresseeTouserInput[]
+    updateMany?: friendshipUpdateManyWithWhereWithoutUser_friendship_addresseeTouserInput | friendshipUpdateManyWithWhereWithoutUser_friendship_addresseeTouserInput[]
+    deleteMany?: friendshipScalarWhereInput | friendshipScalarWhereInput[]
+  }
+
   export type submissionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<submissionCreateWithoutUserInput, submissionUncheckedCreateWithoutUserInput> | submissionCreateWithoutUserInput[] | submissionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: submissionCreateOrConnectWithoutUserInput | submissionCreateOrConnectWithoutUserInput[]
@@ -13195,60 +10715,36 @@ export namespace Prisma {
     deleteMany?: submissionScalarWhereInput | submissionScalarWhereInput[]
   }
 
-  export type exerciseCreateNestedManyWithoutLessionInput = {
-    create?: XOR<exerciseCreateWithoutLessionInput, exerciseUncheckedCreateWithoutLessionInput> | exerciseCreateWithoutLessionInput[] | exerciseUncheckedCreateWithoutLessionInput[]
-    connectOrCreate?: exerciseCreateOrConnectWithoutLessionInput | exerciseCreateOrConnectWithoutLessionInput[]
-    createMany?: exerciseCreateManyLessionInputEnvelope
-    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+  export type userCreateNestedOneWithoutFriendship_friendship_requesterTouserInput = {
+    create?: XOR<userCreateWithoutFriendship_friendship_requesterTouserInput, userUncheckedCreateWithoutFriendship_friendship_requesterTouserInput>
+    connectOrCreate?: userCreateOrConnectWithoutFriendship_friendship_requesterTouserInput
+    connect?: userWhereUniqueInput
   }
 
-  export type topiclanguagedetailCreateNestedOneWithoutLessonInput = {
-    create?: XOR<topiclanguagedetailCreateWithoutLessonInput, topiclanguagedetailUncheckedCreateWithoutLessonInput>
-    connectOrCreate?: topiclanguagedetailCreateOrConnectWithoutLessonInput
-    connect?: topiclanguagedetailWhereUniqueInput
+  export type userCreateNestedOneWithoutFriendship_friendship_addresseeTouserInput = {
+    create?: XOR<userCreateWithoutFriendship_friendship_addresseeTouserInput, userUncheckedCreateWithoutFriendship_friendship_addresseeTouserInput>
+    connectOrCreate?: userCreateOrConnectWithoutFriendship_friendship_addresseeTouserInput
+    connect?: userWhereUniqueInput
   }
 
-  export type exerciseUncheckedCreateNestedManyWithoutLessionInput = {
-    create?: XOR<exerciseCreateWithoutLessionInput, exerciseUncheckedCreateWithoutLessionInput> | exerciseCreateWithoutLessionInput[] | exerciseUncheckedCreateWithoutLessionInput[]
-    connectOrCreate?: exerciseCreateOrConnectWithoutLessionInput | exerciseCreateOrConnectWithoutLessionInput[]
-    createMany?: exerciseCreateManyLessionInputEnvelope
-    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+  export type Enumfriendship_statusFieldUpdateOperationsInput = {
+    set?: $Enums.friendship_status
   }
 
-  export type exerciseUpdateManyWithoutLessionNestedInput = {
-    create?: XOR<exerciseCreateWithoutLessionInput, exerciseUncheckedCreateWithoutLessionInput> | exerciseCreateWithoutLessionInput[] | exerciseUncheckedCreateWithoutLessionInput[]
-    connectOrCreate?: exerciseCreateOrConnectWithoutLessionInput | exerciseCreateOrConnectWithoutLessionInput[]
-    upsert?: exerciseUpsertWithWhereUniqueWithoutLessionInput | exerciseUpsertWithWhereUniqueWithoutLessionInput[]
-    createMany?: exerciseCreateManyLessionInputEnvelope
-    set?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
-    disconnect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
-    delete?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
-    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
-    update?: exerciseUpdateWithWhereUniqueWithoutLessionInput | exerciseUpdateWithWhereUniqueWithoutLessionInput[]
-    updateMany?: exerciseUpdateManyWithWhereWithoutLessionInput | exerciseUpdateManyWithWhereWithoutLessionInput[]
-    deleteMany?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
+  export type userUpdateOneRequiredWithoutFriendship_friendship_requesterTouserNestedInput = {
+    create?: XOR<userCreateWithoutFriendship_friendship_requesterTouserInput, userUncheckedCreateWithoutFriendship_friendship_requesterTouserInput>
+    connectOrCreate?: userCreateOrConnectWithoutFriendship_friendship_requesterTouserInput
+    upsert?: userUpsertWithoutFriendship_friendship_requesterTouserInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutFriendship_friendship_requesterTouserInput, userUpdateWithoutFriendship_friendship_requesterTouserInput>, userUncheckedUpdateWithoutFriendship_friendship_requesterTouserInput>
   }
 
-  export type topiclanguagedetailUpdateOneRequiredWithoutLessonNestedInput = {
-    create?: XOR<topiclanguagedetailCreateWithoutLessonInput, topiclanguagedetailUncheckedCreateWithoutLessonInput>
-    connectOrCreate?: topiclanguagedetailCreateOrConnectWithoutLessonInput
-    upsert?: topiclanguagedetailUpsertWithoutLessonInput
-    connect?: topiclanguagedetailWhereUniqueInput
-    update?: XOR<XOR<topiclanguagedetailUpdateToOneWithWhereWithoutLessonInput, topiclanguagedetailUpdateWithoutLessonInput>, topiclanguagedetailUncheckedUpdateWithoutLessonInput>
-  }
-
-  export type exerciseUncheckedUpdateManyWithoutLessionNestedInput = {
-    create?: XOR<exerciseCreateWithoutLessionInput, exerciseUncheckedCreateWithoutLessionInput> | exerciseCreateWithoutLessionInput[] | exerciseUncheckedCreateWithoutLessionInput[]
-    connectOrCreate?: exerciseCreateOrConnectWithoutLessionInput | exerciseCreateOrConnectWithoutLessionInput[]
-    upsert?: exerciseUpsertWithWhereUniqueWithoutLessionInput | exerciseUpsertWithWhereUniqueWithoutLessionInput[]
-    createMany?: exerciseCreateManyLessionInputEnvelope
-    set?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
-    disconnect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
-    delete?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
-    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
-    update?: exerciseUpdateWithWhereUniqueWithoutLessionInput | exerciseUpdateWithWhereUniqueWithoutLessionInput[]
-    updateMany?: exerciseUpdateManyWithWhereWithoutLessionInput | exerciseUpdateManyWithWhereWithoutLessionInput[]
-    deleteMany?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
+  export type userUpdateOneRequiredWithoutFriendship_friendship_addresseeTouserNestedInput = {
+    create?: XOR<userCreateWithoutFriendship_friendship_addresseeTouserInput, userUncheckedCreateWithoutFriendship_friendship_addresseeTouserInput>
+    connectOrCreate?: userCreateOrConnectWithoutFriendship_friendship_addresseeTouserInput
+    upsert?: userUpsertWithoutFriendship_friendship_addresseeTouserInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutFriendship_friendship_addresseeTouserInput, userUpdateWithoutFriendship_friendship_addresseeTouserInput>, userUncheckedUpdateWithoutFriendship_friendship_addresseeTouserInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -13354,6 +10850,29 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumsubmission_ResultNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.submission_Result | Enumsubmission_ResultFieldRefInput<$PrismaModel> | null
+    in?: $Enums.submission_Result[] | null
+    notIn?: $Enums.submission_Result[] | null
+    not?: NestedEnumsubmission_ResultNullableFilter<$PrismaModel> | $Enums.submission_Result | null
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -13383,24 +10902,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedEnumsubmission_ResultNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.submission_Result | Enumsubmission_ResultFieldRefInput<$PrismaModel> | null
-    in?: $Enums.submission_Result[] | null
-    notIn?: $Enums.submission_Result[] | null
-    not?: NestedEnumsubmission_ResultNullableFilter<$PrismaModel> | $Enums.submission_Result | null
-  }
-
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | null
@@ -13425,11 +10926,6 @@ export namespace Prisma {
     _max?: NestedEnumsubmission_ResultNullableFilter<$PrismaModel>
   }
 
-  export type NestedBoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
   export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
     not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
@@ -13438,11 +10934,11 @@ export namespace Prisma {
     _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumtestcaseresult_ResultNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.testcaseresult_Result | Enumtestcaseresult_ResultFieldRefInput<$PrismaModel> | null
-    in?: $Enums.testcaseresult_Result[] | null
-    notIn?: $Enums.testcaseresult_Result[] | null
-    not?: NestedEnumtestcaseresult_ResultNullableFilter<$PrismaModel> | $Enums.testcaseresult_Result | null
+  export type NestedEnumtestcaseresult_ResultFilter<$PrismaModel = never> = {
+    equals?: $Enums.testcaseresult_Result | Enumtestcaseresult_ResultFieldRefInput<$PrismaModel>
+    in?: $Enums.testcaseresult_Result[]
+    notIn?: $Enums.testcaseresult_Result[]
+    not?: NestedEnumtestcaseresult_ResultFilter<$PrismaModel> | $Enums.testcaseresult_Result
   }
 
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
@@ -13456,14 +10952,14 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumtestcaseresult_ResultNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.testcaseresult_Result | Enumtestcaseresult_ResultFieldRefInput<$PrismaModel> | null
-    in?: $Enums.testcaseresult_Result[] | null
-    notIn?: $Enums.testcaseresult_Result[] | null
-    not?: NestedEnumtestcaseresult_ResultNullableWithAggregatesFilter<$PrismaModel> | $Enums.testcaseresult_Result | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedEnumtestcaseresult_ResultNullableFilter<$PrismaModel>
-    _max?: NestedEnumtestcaseresult_ResultNullableFilter<$PrismaModel>
+  export type NestedEnumtestcaseresult_ResultWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.testcaseresult_Result | Enumtestcaseresult_ResultFieldRefInput<$PrismaModel>
+    in?: $Enums.testcaseresult_Result[]
+    notIn?: $Enums.testcaseresult_Result[]
+    not?: NestedEnumtestcaseresult_ResultWithAggregatesFilter<$PrismaModel> | $Enums.testcaseresult_Result
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumtestcaseresult_ResultFilter<$PrismaModel>
+    _max?: NestedEnumtestcaseresult_ResultFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13499,30 +10995,42 @@ export namespace Prisma {
     _max?: NestedEnumuser_RoleFilter<$PrismaModel>
   }
 
-  export type lessonCreateWithoutExerciseInput = {
-    OrderIndex: number
-    Tittle: string
-    Content: string
-    topiclanguagedetail: topiclanguagedetailCreateNestedOneWithoutLessonInput
+  export type NestedEnumfriendship_statusFilter<$PrismaModel = never> = {
+    equals?: $Enums.friendship_status | Enumfriendship_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.friendship_status[]
+    notIn?: $Enums.friendship_status[]
+    not?: NestedEnumfriendship_statusFilter<$PrismaModel> | $Enums.friendship_status
   }
 
-  export type lessonUncheckedCreateWithoutExerciseInput = {
-    LsID?: number
-    TLDID: number
-    OrderIndex: number
-    Tittle: string
-    Content: string
+  export type NestedEnumfriendship_statusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.friendship_status | Enumfriendship_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.friendship_status[]
+    notIn?: $Enums.friendship_status[]
+    not?: NestedEnumfriendship_statusWithAggregatesFilter<$PrismaModel> | $Enums.friendship_status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumfriendship_statusFilter<$PrismaModel>
+    _max?: NestedEnumfriendship_statusFilter<$PrismaModel>
   }
 
-  export type lessonCreateOrConnectWithoutExerciseInput = {
-    where: lessonWhereUniqueInput
-    create: XOR<lessonCreateWithoutExerciseInput, lessonUncheckedCreateWithoutExerciseInput>
+  export type topicCreateWithoutExerciseInput = {
+    Name: string
+  }
+
+  export type topicUncheckedCreateWithoutExerciseInput = {
+    TpID?: number
+    Name: string
+  }
+
+  export type topicCreateOrConnectWithoutExerciseInput = {
+    where: topicWhereUniqueInput
+    create: XOR<topicCreateWithoutExerciseInput, topicUncheckedCreateWithoutExerciseInput>
   }
 
   export type submissionCreateWithoutExerciseInput = {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
     user: userCreateNestedOneWithoutSubmissionInput
     testcaseresult?: testcaseresultCreateNestedManyWithoutSubmissionInput
   }
@@ -13533,6 +11041,7 @@ export namespace Prisma {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
     testcaseresult?: testcaseresultUncheckedCreateNestedManyWithoutSubmissionInput
   }
 
@@ -13571,30 +11080,24 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type lessonUpsertWithoutExerciseInput = {
-    update: XOR<lessonUpdateWithoutExerciseInput, lessonUncheckedUpdateWithoutExerciseInput>
-    create: XOR<lessonCreateWithoutExerciseInput, lessonUncheckedCreateWithoutExerciseInput>
-    where?: lessonWhereInput
+  export type topicUpsertWithoutExerciseInput = {
+    update: XOR<topicUpdateWithoutExerciseInput, topicUncheckedUpdateWithoutExerciseInput>
+    create: XOR<topicCreateWithoutExerciseInput, topicUncheckedCreateWithoutExerciseInput>
+    where?: topicWhereInput
   }
 
-  export type lessonUpdateToOneWithWhereWithoutExerciseInput = {
-    where?: lessonWhereInput
-    data: XOR<lessonUpdateWithoutExerciseInput, lessonUncheckedUpdateWithoutExerciseInput>
+  export type topicUpdateToOneWithWhereWithoutExerciseInput = {
+    where?: topicWhereInput
+    data: XOR<topicUpdateWithoutExerciseInput, topicUncheckedUpdateWithoutExerciseInput>
   }
 
-  export type lessonUpdateWithoutExerciseInput = {
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Tittle?: StringFieldUpdateOperationsInput | string
-    Content?: StringFieldUpdateOperationsInput | string
-    topiclanguagedetail?: topiclanguagedetailUpdateOneRequiredWithoutLessonNestedInput
+  export type topicUpdateWithoutExerciseInput = {
+    Name?: StringFieldUpdateOperationsInput | string
   }
 
-  export type lessonUncheckedUpdateWithoutExerciseInput = {
-    LsID?: IntFieldUpdateOperationsInput | number
-    TLDID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Tittle?: StringFieldUpdateOperationsInput | string
-    Content?: StringFieldUpdateOperationsInput | string
+  export type topicUncheckedUpdateWithoutExerciseInput = {
+    TpID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
   }
 
   export type submissionUpsertWithWhereUniqueWithoutExerciseInput = {
@@ -13623,6 +11126,7 @@ export namespace Prisma {
     Code?: StringNullableFilter<"submission"> | string | null
     CreatedAt?: DateTimeNullableFilter<"submission"> | Date | string | null
     Result?: Enumsubmission_ResultNullableFilter<"submission"> | $Enums.submission_Result | null
+    isPublic?: BoolNullableFilter<"submission"> | boolean | null
   }
 
   export type testcaseUpsertWithWhereUniqueWithoutExerciseInput = {
@@ -13652,64 +11156,16 @@ export namespace Prisma {
     isHidden?: BoolNullableFilter<"testcase"> | boolean | null
   }
 
-  export type topiclanguagedetailCreateWithoutLanguageInput = {
-    lesson?: lessonCreateNestedManyWithoutTopiclanguagedetailInput
-    topic: topicCreateNestedOneWithoutTopiclanguagedetailInput
-  }
-
-  export type topiclanguagedetailUncheckedCreateWithoutLanguageInput = {
-    TLDID?: number
-    TpID: number
-    lesson?: lessonUncheckedCreateNestedManyWithoutTopiclanguagedetailInput
-  }
-
-  export type topiclanguagedetailCreateOrConnectWithoutLanguageInput = {
-    where: topiclanguagedetailWhereUniqueInput
-    create: XOR<topiclanguagedetailCreateWithoutLanguageInput, topiclanguagedetailUncheckedCreateWithoutLanguageInput>
-  }
-
-  export type topiclanguagedetailCreateManyLanguageInputEnvelope = {
-    data: topiclanguagedetailCreateManyLanguageInput | topiclanguagedetailCreateManyLanguageInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type topiclanguagedetailUpsertWithWhereUniqueWithoutLanguageInput = {
-    where: topiclanguagedetailWhereUniqueInput
-    update: XOR<topiclanguagedetailUpdateWithoutLanguageInput, topiclanguagedetailUncheckedUpdateWithoutLanguageInput>
-    create: XOR<topiclanguagedetailCreateWithoutLanguageInput, topiclanguagedetailUncheckedCreateWithoutLanguageInput>
-  }
-
-  export type topiclanguagedetailUpdateWithWhereUniqueWithoutLanguageInput = {
-    where: topiclanguagedetailWhereUniqueInput
-    data: XOR<topiclanguagedetailUpdateWithoutLanguageInput, topiclanguagedetailUncheckedUpdateWithoutLanguageInput>
-  }
-
-  export type topiclanguagedetailUpdateManyWithWhereWithoutLanguageInput = {
-    where: topiclanguagedetailScalarWhereInput
-    data: XOR<topiclanguagedetailUpdateManyMutationInput, topiclanguagedetailUncheckedUpdateManyWithoutLanguageInput>
-  }
-
-  export type topiclanguagedetailScalarWhereInput = {
-    AND?: topiclanguagedetailScalarWhereInput | topiclanguagedetailScalarWhereInput[]
-    OR?: topiclanguagedetailScalarWhereInput[]
-    NOT?: topiclanguagedetailScalarWhereInput | topiclanguagedetailScalarWhereInput[]
-    TLDID?: IntFilter<"topiclanguagedetail"> | number
-    TpID?: IntFilter<"topiclanguagedetail"> | number
-    LgID?: IntFilter<"topiclanguagedetail"> | number
-  }
-
   export type exerciseCreateWithoutSubmissionInput = {
-    OrderIndex: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
-    lession: lessonCreateNestedOneWithoutExerciseInput
+    topic: topicCreateNestedOneWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
 
   export type exerciseUncheckedCreateWithoutSubmissionInput = {
     EID?: number
-    LsID: number
-    OrderIndex: number
+    TpID: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
@@ -13722,20 +11178,24 @@ export namespace Prisma {
 
   export type userCreateWithoutSubmissionInput = {
     UID?: string
-    Username?: string | null
+    Username: string
     Email: string
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
   }
 
   export type userUncheckedCreateWithoutSubmissionInput = {
     UID?: string
-    Username?: string | null
+    Username: string
     Email: string
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
   }
 
   export type userCreateOrConnectWithoutSubmissionInput = {
@@ -13745,7 +11205,7 @@ export namespace Prisma {
 
   export type testcaseresultCreateWithoutSubmissionInput = {
     ActualOutput: string
-    Result?: $Enums.testcaseresult_Result | null
+    Result?: $Enums.testcaseresult_Result
     ExecutionTime?: number | null
     testcase: testcaseCreateNestedOneWithoutTestcaseresultInput
   }
@@ -13754,7 +11214,7 @@ export namespace Prisma {
     TCRID?: number
     TCID: number
     ActualOutput: string
-    Result?: $Enums.testcaseresult_Result | null
+    Result?: $Enums.testcaseresult_Result
     ExecutionTime?: number | null
   }
 
@@ -13780,17 +11240,15 @@ export namespace Prisma {
   }
 
   export type exerciseUpdateWithoutSubmissionInput = {
-    OrderIndex?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
-    lession?: lessonUpdateOneRequiredWithoutExerciseNestedInput
+    topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
 
   export type exerciseUncheckedUpdateWithoutSubmissionInput = {
     EID?: IntFieldUpdateOperationsInput | number
-    LsID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
+    TpID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
@@ -13809,20 +11267,24 @@ export namespace Prisma {
 
   export type userUpdateWithoutSubmissionInput = {
     UID?: StringFieldUpdateOperationsInput | string
-    Username?: NullableStringFieldUpdateOperationsInput | string | null
+    Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
   }
 
   export type userUncheckedUpdateWithoutSubmissionInput = {
     UID?: StringFieldUpdateOperationsInput | string
-    Username?: NullableStringFieldUpdateOperationsInput | string | null
+    Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
   }
 
   export type testcaseresultUpsertWithWhereUniqueWithoutSubmissionInput = {
@@ -13849,22 +11311,20 @@ export namespace Prisma {
     SID?: IntFilter<"testcaseresult"> | number
     TCID?: IntFilter<"testcaseresult"> | number
     ActualOutput?: StringFilter<"testcaseresult"> | string
-    Result?: Enumtestcaseresult_ResultNullableFilter<"testcaseresult"> | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFilter<"testcaseresult"> | $Enums.testcaseresult_Result
     ExecutionTime?: FloatNullableFilter<"testcaseresult"> | number | null
   }
 
   export type exerciseCreateWithoutTestcaseInput = {
-    OrderIndex: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
-    lession: lessonCreateNestedOneWithoutExerciseInput
+    topic: topicCreateNestedOneWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
   }
 
   export type exerciseUncheckedCreateWithoutTestcaseInput = {
     EID?: number
-    LsID: number
-    OrderIndex: number
+    TpID: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
@@ -13877,7 +11337,7 @@ export namespace Prisma {
 
   export type testcaseresultCreateWithoutTestcaseInput = {
     ActualOutput: string
-    Result?: $Enums.testcaseresult_Result | null
+    Result?: $Enums.testcaseresult_Result
     ExecutionTime?: number | null
     submission: submissionCreateNestedOneWithoutTestcaseresultInput
   }
@@ -13886,7 +11346,7 @@ export namespace Prisma {
     TCRID?: number
     SID: number
     ActualOutput: string
-    Result?: $Enums.testcaseresult_Result | null
+    Result?: $Enums.testcaseresult_Result
     ExecutionTime?: number | null
   }
 
@@ -13912,17 +11372,15 @@ export namespace Prisma {
   }
 
   export type exerciseUpdateWithoutTestcaseInput = {
-    OrderIndex?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
-    lession?: lessonUpdateOneRequiredWithoutExerciseNestedInput
+    topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
   }
 
   export type exerciseUncheckedUpdateWithoutTestcaseInput = {
     EID?: IntFieldUpdateOperationsInput | number
-    LsID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
+    TpID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
@@ -13948,6 +11406,7 @@ export namespace Prisma {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
     exercise: exerciseCreateNestedOneWithoutSubmissionInput
     user: userCreateNestedOneWithoutSubmissionInput
   }
@@ -13959,6 +11418,7 @@ export namespace Prisma {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
   }
 
   export type submissionCreateOrConnectWithoutTestcaseresultInput = {
@@ -14001,6 +11461,7 @@ export namespace Prisma {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
     exercise?: exerciseUpdateOneRequiredWithoutSubmissionNestedInput
     user?: userUpdateOneRequiredWithoutSubmissionNestedInput
   }
@@ -14012,6 +11473,7 @@ export namespace Prisma {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type testcaseUpsertWithoutTestcaseresultInput = {
@@ -14040,175 +11502,108 @@ export namespace Prisma {
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
-  export type topiclanguagedetailCreateWithoutTopicInput = {
-    lesson?: lessonCreateNestedManyWithoutTopiclanguagedetailInput
-    language: languageCreateNestedOneWithoutTopiclanguagedetailInput
+  export type exerciseCreateWithoutTopicInput = {
+    Content: string
+    Difficulty?: $Enums.exercise_Difficulty
+    submission?: submissionCreateNestedManyWithoutExerciseInput
+    testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
 
-  export type topiclanguagedetailUncheckedCreateWithoutTopicInput = {
-    TLDID?: number
-    LgID: number
-    lesson?: lessonUncheckedCreateNestedManyWithoutTopiclanguagedetailInput
+  export type exerciseUncheckedCreateWithoutTopicInput = {
+    EID?: number
+    Content: string
+    Difficulty?: $Enums.exercise_Difficulty
+    submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
+    testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
 
-  export type topiclanguagedetailCreateOrConnectWithoutTopicInput = {
-    where: topiclanguagedetailWhereUniqueInput
-    create: XOR<topiclanguagedetailCreateWithoutTopicInput, topiclanguagedetailUncheckedCreateWithoutTopicInput>
+  export type exerciseCreateOrConnectWithoutTopicInput = {
+    where: exerciseWhereUniqueInput
+    create: XOR<exerciseCreateWithoutTopicInput, exerciseUncheckedCreateWithoutTopicInput>
   }
 
-  export type topiclanguagedetailCreateManyTopicInputEnvelope = {
-    data: topiclanguagedetailCreateManyTopicInput | topiclanguagedetailCreateManyTopicInput[]
+  export type exerciseCreateManyTopicInputEnvelope = {
+    data: exerciseCreateManyTopicInput | exerciseCreateManyTopicInput[]
     skipDuplicates?: boolean
   }
 
-  export type topiclanguagedetailUpsertWithWhereUniqueWithoutTopicInput = {
-    where: topiclanguagedetailWhereUniqueInput
-    update: XOR<topiclanguagedetailUpdateWithoutTopicInput, topiclanguagedetailUncheckedUpdateWithoutTopicInput>
-    create: XOR<topiclanguagedetailCreateWithoutTopicInput, topiclanguagedetailUncheckedCreateWithoutTopicInput>
+  export type exerciseUpsertWithWhereUniqueWithoutTopicInput = {
+    where: exerciseWhereUniqueInput
+    update: XOR<exerciseUpdateWithoutTopicInput, exerciseUncheckedUpdateWithoutTopicInput>
+    create: XOR<exerciseCreateWithoutTopicInput, exerciseUncheckedCreateWithoutTopicInput>
   }
 
-  export type topiclanguagedetailUpdateWithWhereUniqueWithoutTopicInput = {
-    where: topiclanguagedetailWhereUniqueInput
-    data: XOR<topiclanguagedetailUpdateWithoutTopicInput, topiclanguagedetailUncheckedUpdateWithoutTopicInput>
+  export type exerciseUpdateWithWhereUniqueWithoutTopicInput = {
+    where: exerciseWhereUniqueInput
+    data: XOR<exerciseUpdateWithoutTopicInput, exerciseUncheckedUpdateWithoutTopicInput>
   }
 
-  export type topiclanguagedetailUpdateManyWithWhereWithoutTopicInput = {
-    where: topiclanguagedetailScalarWhereInput
-    data: XOR<topiclanguagedetailUpdateManyMutationInput, topiclanguagedetailUncheckedUpdateManyWithoutTopicInput>
+  export type exerciseUpdateManyWithWhereWithoutTopicInput = {
+    where: exerciseScalarWhereInput
+    data: XOR<exerciseUpdateManyMutationInput, exerciseUncheckedUpdateManyWithoutTopicInput>
   }
 
-  export type lessonCreateWithoutTopiclanguagedetailInput = {
-    OrderIndex: number
-    Tittle: string
-    Content: string
-    exercise?: exerciseCreateNestedManyWithoutLessionInput
+  export type exerciseScalarWhereInput = {
+    AND?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
+    OR?: exerciseScalarWhereInput[]
+    NOT?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
+    EID?: IntFilter<"exercise"> | number
+    TpID?: IntFilter<"exercise"> | number
+    Content?: StringFilter<"exercise"> | string
+    Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
   }
 
-  export type lessonUncheckedCreateWithoutTopiclanguagedetailInput = {
-    LsID?: number
-    OrderIndex: number
-    Tittle: string
-    Content: string
-    exercise?: exerciseUncheckedCreateNestedManyWithoutLessionInput
+  export type friendshipCreateWithoutUser_friendship_requesterTouserInput = {
+    status?: $Enums.friendship_status
+    CreatedAt?: Date | string | null
+    user_friendship_addresseeTouser: userCreateNestedOneWithoutFriendship_friendship_addresseeTouserInput
   }
 
-  export type lessonCreateOrConnectWithoutTopiclanguagedetailInput = {
-    where: lessonWhereUniqueInput
-    create: XOR<lessonCreateWithoutTopiclanguagedetailInput, lessonUncheckedCreateWithoutTopiclanguagedetailInput>
+  export type friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput = {
+    FID?: number
+    addressee: string
+    status?: $Enums.friendship_status
+    CreatedAt?: Date | string | null
   }
 
-  export type lessonCreateManyTopiclanguagedetailInputEnvelope = {
-    data: lessonCreateManyTopiclanguagedetailInput | lessonCreateManyTopiclanguagedetailInput[]
+  export type friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput = {
+    where: friendshipWhereUniqueInput
+    create: XOR<friendshipCreateWithoutUser_friendship_requesterTouserInput, friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput>
+  }
+
+  export type friendshipCreateManyUser_friendship_requesterTouserInputEnvelope = {
+    data: friendshipCreateManyUser_friendship_requesterTouserInput | friendshipCreateManyUser_friendship_requesterTouserInput[]
     skipDuplicates?: boolean
   }
 
-  export type topicCreateWithoutTopiclanguagedetailInput = {
-    Name: string
-    Description?: string | null
+  export type friendshipCreateWithoutUser_friendship_addresseeTouserInput = {
+    status?: $Enums.friendship_status
+    CreatedAt?: Date | string | null
+    user_friendship_requesterTouser: userCreateNestedOneWithoutFriendship_friendship_requesterTouserInput
   }
 
-  export type topicUncheckedCreateWithoutTopiclanguagedetailInput = {
-    TpID?: number
-    Name: string
-    Description?: string | null
+  export type friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput = {
+    FID?: number
+    requester: string
+    status?: $Enums.friendship_status
+    CreatedAt?: Date | string | null
   }
 
-  export type topicCreateOrConnectWithoutTopiclanguagedetailInput = {
-    where: topicWhereUniqueInput
-    create: XOR<topicCreateWithoutTopiclanguagedetailInput, topicUncheckedCreateWithoutTopiclanguagedetailInput>
+  export type friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput = {
+    where: friendshipWhereUniqueInput
+    create: XOR<friendshipCreateWithoutUser_friendship_addresseeTouserInput, friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput>
   }
 
-  export type languageCreateWithoutTopiclanguagedetailInput = {
-    Name: string
-    Logo?: string | null
-  }
-
-  export type languageUncheckedCreateWithoutTopiclanguagedetailInput = {
-    LgID?: number
-    Name: string
-    Logo?: string | null
-  }
-
-  export type languageCreateOrConnectWithoutTopiclanguagedetailInput = {
-    where: languageWhereUniqueInput
-    create: XOR<languageCreateWithoutTopiclanguagedetailInput, languageUncheckedCreateWithoutTopiclanguagedetailInput>
-  }
-
-  export type lessonUpsertWithWhereUniqueWithoutTopiclanguagedetailInput = {
-    where: lessonWhereUniqueInput
-    update: XOR<lessonUpdateWithoutTopiclanguagedetailInput, lessonUncheckedUpdateWithoutTopiclanguagedetailInput>
-    create: XOR<lessonCreateWithoutTopiclanguagedetailInput, lessonUncheckedCreateWithoutTopiclanguagedetailInput>
-  }
-
-  export type lessonUpdateWithWhereUniqueWithoutTopiclanguagedetailInput = {
-    where: lessonWhereUniqueInput
-    data: XOR<lessonUpdateWithoutTopiclanguagedetailInput, lessonUncheckedUpdateWithoutTopiclanguagedetailInput>
-  }
-
-  export type lessonUpdateManyWithWhereWithoutTopiclanguagedetailInput = {
-    where: lessonScalarWhereInput
-    data: XOR<lessonUpdateManyMutationInput, lessonUncheckedUpdateManyWithoutTopiclanguagedetailInput>
-  }
-
-  export type lessonScalarWhereInput = {
-    AND?: lessonScalarWhereInput | lessonScalarWhereInput[]
-    OR?: lessonScalarWhereInput[]
-    NOT?: lessonScalarWhereInput | lessonScalarWhereInput[]
-    LsID?: IntFilter<"lesson"> | number
-    TLDID?: IntFilter<"lesson"> | number
-    OrderIndex?: IntFilter<"lesson"> | number
-    Tittle?: StringFilter<"lesson"> | string
-    Content?: StringFilter<"lesson"> | string
-  }
-
-  export type topicUpsertWithoutTopiclanguagedetailInput = {
-    update: XOR<topicUpdateWithoutTopiclanguagedetailInput, topicUncheckedUpdateWithoutTopiclanguagedetailInput>
-    create: XOR<topicCreateWithoutTopiclanguagedetailInput, topicUncheckedCreateWithoutTopiclanguagedetailInput>
-    where?: topicWhereInput
-  }
-
-  export type topicUpdateToOneWithWhereWithoutTopiclanguagedetailInput = {
-    where?: topicWhereInput
-    data: XOR<topicUpdateWithoutTopiclanguagedetailInput, topicUncheckedUpdateWithoutTopiclanguagedetailInput>
-  }
-
-  export type topicUpdateWithoutTopiclanguagedetailInput = {
-    Name?: StringFieldUpdateOperationsInput | string
-    Description?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type topicUncheckedUpdateWithoutTopiclanguagedetailInput = {
-    TpID?: IntFieldUpdateOperationsInput | number
-    Name?: StringFieldUpdateOperationsInput | string
-    Description?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type languageUpsertWithoutTopiclanguagedetailInput = {
-    update: XOR<languageUpdateWithoutTopiclanguagedetailInput, languageUncheckedUpdateWithoutTopiclanguagedetailInput>
-    create: XOR<languageCreateWithoutTopiclanguagedetailInput, languageUncheckedCreateWithoutTopiclanguagedetailInput>
-    where?: languageWhereInput
-  }
-
-  export type languageUpdateToOneWithWhereWithoutTopiclanguagedetailInput = {
-    where?: languageWhereInput
-    data: XOR<languageUpdateWithoutTopiclanguagedetailInput, languageUncheckedUpdateWithoutTopiclanguagedetailInput>
-  }
-
-  export type languageUpdateWithoutTopiclanguagedetailInput = {
-    Name?: StringFieldUpdateOperationsInput | string
-    Logo?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type languageUncheckedUpdateWithoutTopiclanguagedetailInput = {
-    LgID?: IntFieldUpdateOperationsInput | number
-    Name?: StringFieldUpdateOperationsInput | string
-    Logo?: NullableStringFieldUpdateOperationsInput | string | null
+  export type friendshipCreateManyUser_friendship_addresseeTouserInputEnvelope = {
+    data: friendshipCreateManyUser_friendship_addresseeTouserInput | friendshipCreateManyUser_friendship_addresseeTouserInput[]
+    skipDuplicates?: boolean
   }
 
   export type submissionCreateWithoutUserInput = {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
     exercise: exerciseCreateNestedOneWithoutSubmissionInput
     testcaseresult?: testcaseresultCreateNestedManyWithoutSubmissionInput
   }
@@ -14219,6 +11614,7 @@ export namespace Prisma {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
     testcaseresult?: testcaseresultUncheckedCreateNestedManyWithoutSubmissionInput
   }
 
@@ -14230,6 +11626,49 @@ export namespace Prisma {
   export type submissionCreateManyUserInputEnvelope = {
     data: submissionCreateManyUserInput | submissionCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type friendshipUpsertWithWhereUniqueWithoutUser_friendship_requesterTouserInput = {
+    where: friendshipWhereUniqueInput
+    update: XOR<friendshipUpdateWithoutUser_friendship_requesterTouserInput, friendshipUncheckedUpdateWithoutUser_friendship_requesterTouserInput>
+    create: XOR<friendshipCreateWithoutUser_friendship_requesterTouserInput, friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput>
+  }
+
+  export type friendshipUpdateWithWhereUniqueWithoutUser_friendship_requesterTouserInput = {
+    where: friendshipWhereUniqueInput
+    data: XOR<friendshipUpdateWithoutUser_friendship_requesterTouserInput, friendshipUncheckedUpdateWithoutUser_friendship_requesterTouserInput>
+  }
+
+  export type friendshipUpdateManyWithWhereWithoutUser_friendship_requesterTouserInput = {
+    where: friendshipScalarWhereInput
+    data: XOR<friendshipUpdateManyMutationInput, friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserInput>
+  }
+
+  export type friendshipScalarWhereInput = {
+    AND?: friendshipScalarWhereInput | friendshipScalarWhereInput[]
+    OR?: friendshipScalarWhereInput[]
+    NOT?: friendshipScalarWhereInput | friendshipScalarWhereInput[]
+    FID?: IntFilter<"friendship"> | number
+    requester?: StringFilter<"friendship"> | string
+    addressee?: StringFilter<"friendship"> | string
+    status?: Enumfriendship_statusFilter<"friendship"> | $Enums.friendship_status
+    CreatedAt?: DateTimeNullableFilter<"friendship"> | Date | string | null
+  }
+
+  export type friendshipUpsertWithWhereUniqueWithoutUser_friendship_addresseeTouserInput = {
+    where: friendshipWhereUniqueInput
+    update: XOR<friendshipUpdateWithoutUser_friendship_addresseeTouserInput, friendshipUncheckedUpdateWithoutUser_friendship_addresseeTouserInput>
+    create: XOR<friendshipCreateWithoutUser_friendship_addresseeTouserInput, friendshipUncheckedCreateWithoutUser_friendship_addresseeTouserInput>
+  }
+
+  export type friendshipUpdateWithWhereUniqueWithoutUser_friendship_addresseeTouserInput = {
+    where: friendshipWhereUniqueInput
+    data: XOR<friendshipUpdateWithoutUser_friendship_addresseeTouserInput, friendshipUncheckedUpdateWithoutUser_friendship_addresseeTouserInput>
+  }
+
+  export type friendshipUpdateManyWithWhereWithoutUser_friendship_addresseeTouserInput = {
+    where: friendshipScalarWhereInput
+    data: XOR<friendshipUpdateManyMutationInput, friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserInput>
   }
 
   export type submissionUpsertWithWhereUniqueWithoutUserInput = {
@@ -14248,96 +11687,124 @@ export namespace Prisma {
     data: XOR<submissionUpdateManyMutationInput, submissionUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type exerciseCreateWithoutLessionInput = {
-    OrderIndex: number
-    Content: string
-    Difficulty?: $Enums.exercise_Difficulty
-    submission?: submissionCreateNestedManyWithoutExerciseInput
-    testcase?: testcaseCreateNestedManyWithoutExerciseInput
+  export type userCreateWithoutFriendship_friendship_requesterTouserInput = {
+    UID?: string
+    Username: string
+    Email: string
+    Password: string
+    Role?: $Enums.user_Role
+    CreatedAt?: Date | string | null
+    friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    submission?: submissionCreateNestedManyWithoutUserInput
   }
 
-  export type exerciseUncheckedCreateWithoutLessionInput = {
-    EID?: number
-    OrderIndex: number
-    Content: string
-    Difficulty?: $Enums.exercise_Difficulty
-    submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
-    testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
+  export type userUncheckedCreateWithoutFriendship_friendship_requesterTouserInput = {
+    UID?: string
+    Username: string
+    Email: string
+    Password: string
+    Role?: $Enums.user_Role
+    CreatedAt?: Date | string | null
+    friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type exerciseCreateOrConnectWithoutLessionInput = {
-    where: exerciseWhereUniqueInput
-    create: XOR<exerciseCreateWithoutLessionInput, exerciseUncheckedCreateWithoutLessionInput>
+  export type userCreateOrConnectWithoutFriendship_friendship_requesterTouserInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutFriendship_friendship_requesterTouserInput, userUncheckedCreateWithoutFriendship_friendship_requesterTouserInput>
   }
 
-  export type exerciseCreateManyLessionInputEnvelope = {
-    data: exerciseCreateManyLessionInput | exerciseCreateManyLessionInput[]
-    skipDuplicates?: boolean
+  export type userCreateWithoutFriendship_friendship_addresseeTouserInput = {
+    UID?: string
+    Username: string
+    Email: string
+    Password: string
+    Role?: $Enums.user_Role
+    CreatedAt?: Date | string | null
+    friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    submission?: submissionCreateNestedManyWithoutUserInput
   }
 
-  export type topiclanguagedetailCreateWithoutLessonInput = {
-    topic: topicCreateNestedOneWithoutTopiclanguagedetailInput
-    language: languageCreateNestedOneWithoutTopiclanguagedetailInput
+  export type userUncheckedCreateWithoutFriendship_friendship_addresseeTouserInput = {
+    UID?: string
+    Username: string
+    Email: string
+    Password: string
+    Role?: $Enums.user_Role
+    CreatedAt?: Date | string | null
+    friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type topiclanguagedetailUncheckedCreateWithoutLessonInput = {
-    TLDID?: number
-    TpID: number
-    LgID: number
+  export type userCreateOrConnectWithoutFriendship_friendship_addresseeTouserInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutFriendship_friendship_addresseeTouserInput, userUncheckedCreateWithoutFriendship_friendship_addresseeTouserInput>
   }
 
-  export type topiclanguagedetailCreateOrConnectWithoutLessonInput = {
-    where: topiclanguagedetailWhereUniqueInput
-    create: XOR<topiclanguagedetailCreateWithoutLessonInput, topiclanguagedetailUncheckedCreateWithoutLessonInput>
+  export type userUpsertWithoutFriendship_friendship_requesterTouserInput = {
+    update: XOR<userUpdateWithoutFriendship_friendship_requesterTouserInput, userUncheckedUpdateWithoutFriendship_friendship_requesterTouserInput>
+    create: XOR<userCreateWithoutFriendship_friendship_requesterTouserInput, userUncheckedCreateWithoutFriendship_friendship_requesterTouserInput>
+    where?: userWhereInput
   }
 
-  export type exerciseUpsertWithWhereUniqueWithoutLessionInput = {
-    where: exerciseWhereUniqueInput
-    update: XOR<exerciseUpdateWithoutLessionInput, exerciseUncheckedUpdateWithoutLessionInput>
-    create: XOR<exerciseCreateWithoutLessionInput, exerciseUncheckedCreateWithoutLessionInput>
+  export type userUpdateToOneWithWhereWithoutFriendship_friendship_requesterTouserInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutFriendship_friendship_requesterTouserInput, userUncheckedUpdateWithoutFriendship_friendship_requesterTouserInput>
   }
 
-  export type exerciseUpdateWithWhereUniqueWithoutLessionInput = {
-    where: exerciseWhereUniqueInput
-    data: XOR<exerciseUpdateWithoutLessionInput, exerciseUncheckedUpdateWithoutLessionInput>
+  export type userUpdateWithoutFriendship_friendship_requesterTouserInput = {
+    UID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    Password?: StringFieldUpdateOperationsInput | string
+    Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
-  export type exerciseUpdateManyWithWhereWithoutLessionInput = {
-    where: exerciseScalarWhereInput
-    data: XOR<exerciseUpdateManyMutationInput, exerciseUncheckedUpdateManyWithoutLessionInput>
+  export type userUncheckedUpdateWithoutFriendship_friendship_requesterTouserInput = {
+    UID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    Password?: StringFieldUpdateOperationsInput | string
+    Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type exerciseScalarWhereInput = {
-    AND?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
-    OR?: exerciseScalarWhereInput[]
-    NOT?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
-    EID?: IntFilter<"exercise"> | number
-    LsID?: IntFilter<"exercise"> | number
-    OrderIndex?: IntFilter<"exercise"> | number
-    Content?: StringFilter<"exercise"> | string
-    Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
+  export type userUpsertWithoutFriendship_friendship_addresseeTouserInput = {
+    update: XOR<userUpdateWithoutFriendship_friendship_addresseeTouserInput, userUncheckedUpdateWithoutFriendship_friendship_addresseeTouserInput>
+    create: XOR<userCreateWithoutFriendship_friendship_addresseeTouserInput, userUncheckedCreateWithoutFriendship_friendship_addresseeTouserInput>
+    where?: userWhereInput
   }
 
-  export type topiclanguagedetailUpsertWithoutLessonInput = {
-    update: XOR<topiclanguagedetailUpdateWithoutLessonInput, topiclanguagedetailUncheckedUpdateWithoutLessonInput>
-    create: XOR<topiclanguagedetailCreateWithoutLessonInput, topiclanguagedetailUncheckedCreateWithoutLessonInput>
-    where?: topiclanguagedetailWhereInput
+  export type userUpdateToOneWithWhereWithoutFriendship_friendship_addresseeTouserInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutFriendship_friendship_addresseeTouserInput, userUncheckedUpdateWithoutFriendship_friendship_addresseeTouserInput>
   }
 
-  export type topiclanguagedetailUpdateToOneWithWhereWithoutLessonInput = {
-    where?: topiclanguagedetailWhereInput
-    data: XOR<topiclanguagedetailUpdateWithoutLessonInput, topiclanguagedetailUncheckedUpdateWithoutLessonInput>
+  export type userUpdateWithoutFriendship_friendship_addresseeTouserInput = {
+    UID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    Password?: StringFieldUpdateOperationsInput | string
+    Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
-  export type topiclanguagedetailUpdateWithoutLessonInput = {
-    topic?: topicUpdateOneRequiredWithoutTopiclanguagedetailNestedInput
-    language?: languageUpdateOneRequiredWithoutTopiclanguagedetailNestedInput
-  }
-
-  export type topiclanguagedetailUncheckedUpdateWithoutLessonInput = {
-    TLDID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
-    LgID?: IntFieldUpdateOperationsInput | number
+  export type userUncheckedUpdateWithoutFriendship_friendship_addresseeTouserInput = {
+    UID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    Password?: StringFieldUpdateOperationsInput | string
+    Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type submissionCreateManyExerciseInput = {
@@ -14346,6 +11813,7 @@ export namespace Prisma {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
   }
 
   export type testcaseCreateManyExerciseInput = {
@@ -14359,6 +11827,7 @@ export namespace Prisma {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
     user?: userUpdateOneRequiredWithoutSubmissionNestedInput
     testcaseresult?: testcaseresultUpdateManyWithoutSubmissionNestedInput
   }
@@ -14369,6 +11838,7 @@ export namespace Prisma {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
     testcaseresult?: testcaseresultUncheckedUpdateManyWithoutSubmissionNestedInput
   }
 
@@ -14378,6 +11848,7 @@ export namespace Prisma {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type testcaseUpdateWithoutExerciseInput = {
@@ -14402,38 +11873,17 @@ export namespace Prisma {
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
-  export type topiclanguagedetailCreateManyLanguageInput = {
-    TLDID?: number
-    TpID: number
-  }
-
-  export type topiclanguagedetailUpdateWithoutLanguageInput = {
-    lesson?: lessonUpdateManyWithoutTopiclanguagedetailNestedInput
-    topic?: topicUpdateOneRequiredWithoutTopiclanguagedetailNestedInput
-  }
-
-  export type topiclanguagedetailUncheckedUpdateWithoutLanguageInput = {
-    TLDID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
-    lesson?: lessonUncheckedUpdateManyWithoutTopiclanguagedetailNestedInput
-  }
-
-  export type topiclanguagedetailUncheckedUpdateManyWithoutLanguageInput = {
-    TLDID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
-  }
-
   export type testcaseresultCreateManySubmissionInput = {
     TCRID?: number
     TCID: number
     ActualOutput: string
-    Result?: $Enums.testcaseresult_Result | null
+    Result?: $Enums.testcaseresult_Result
     ExecutionTime?: number | null
   }
 
   export type testcaseresultUpdateWithoutSubmissionInput = {
     ActualOutput?: StringFieldUpdateOperationsInput | string
-    Result?: NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
     testcase?: testcaseUpdateOneRequiredWithoutTestcaseresultNestedInput
   }
@@ -14442,7 +11892,7 @@ export namespace Prisma {
     TCRID?: IntFieldUpdateOperationsInput | number
     TCID?: IntFieldUpdateOperationsInput | number
     ActualOutput?: StringFieldUpdateOperationsInput | string
-    Result?: NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
@@ -14450,7 +11900,7 @@ export namespace Prisma {
     TCRID?: IntFieldUpdateOperationsInput | number
     TCID?: IntFieldUpdateOperationsInput | number
     ActualOutput?: StringFieldUpdateOperationsInput | string
-    Result?: NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
@@ -14458,13 +11908,13 @@ export namespace Prisma {
     TCRID?: number
     SID: number
     ActualOutput: string
-    Result?: $Enums.testcaseresult_Result | null
+    Result?: $Enums.testcaseresult_Result
     ExecutionTime?: number | null
   }
 
   export type testcaseresultUpdateWithoutTestcaseInput = {
     ActualOutput?: StringFieldUpdateOperationsInput | string
-    Result?: NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
     submission?: submissionUpdateOneRequiredWithoutTestcaseresultNestedInput
   }
@@ -14473,7 +11923,7 @@ export namespace Prisma {
     TCRID?: IntFieldUpdateOperationsInput | number
     SID?: IntFieldUpdateOperationsInput | number
     ActualOutput?: StringFieldUpdateOperationsInput | string
-    Result?: NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
@@ -14481,58 +11931,49 @@ export namespace Prisma {
     TCRID?: IntFieldUpdateOperationsInput | number
     SID?: IntFieldUpdateOperationsInput | number
     ActualOutput?: StringFieldUpdateOperationsInput | string
-    Result?: NullableEnumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result | null
+    Result?: Enumtestcaseresult_ResultFieldUpdateOperationsInput | $Enums.testcaseresult_Result
     ExecutionTime?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
-  export type topiclanguagedetailCreateManyTopicInput = {
-    TLDID?: number
-    LgID: number
-  }
-
-  export type topiclanguagedetailUpdateWithoutTopicInput = {
-    lesson?: lessonUpdateManyWithoutTopiclanguagedetailNestedInput
-    language?: languageUpdateOneRequiredWithoutTopiclanguagedetailNestedInput
-  }
-
-  export type topiclanguagedetailUncheckedUpdateWithoutTopicInput = {
-    TLDID?: IntFieldUpdateOperationsInput | number
-    LgID?: IntFieldUpdateOperationsInput | number
-    lesson?: lessonUncheckedUpdateManyWithoutTopiclanguagedetailNestedInput
-  }
-
-  export type topiclanguagedetailUncheckedUpdateManyWithoutTopicInput = {
-    TLDID?: IntFieldUpdateOperationsInput | number
-    LgID?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type lessonCreateManyTopiclanguagedetailInput = {
-    LsID?: number
-    OrderIndex: number
-    Tittle: string
+  export type exerciseCreateManyTopicInput = {
+    EID?: number
     Content: string
+    Difficulty?: $Enums.exercise_Difficulty
   }
 
-  export type lessonUpdateWithoutTopiclanguagedetailInput = {
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Tittle?: StringFieldUpdateOperationsInput | string
+  export type exerciseUpdateWithoutTopicInput = {
     Content?: StringFieldUpdateOperationsInput | string
-    exercise?: exerciseUpdateManyWithoutLessionNestedInput
+    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    submission?: submissionUpdateManyWithoutExerciseNestedInput
+    testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
 
-  export type lessonUncheckedUpdateWithoutTopiclanguagedetailInput = {
-    LsID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Tittle?: StringFieldUpdateOperationsInput | string
+  export type exerciseUncheckedUpdateWithoutTopicInput = {
+    EID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
-    exercise?: exerciseUncheckedUpdateManyWithoutLessionNestedInput
+    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
+    testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
 
-  export type lessonUncheckedUpdateManyWithoutTopiclanguagedetailInput = {
-    LsID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Tittle?: StringFieldUpdateOperationsInput | string
+  export type exerciseUncheckedUpdateManyWithoutTopicInput = {
+    EID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
+    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+  }
+
+  export type friendshipCreateManyUser_friendship_requesterTouserInput = {
+    FID?: number
+    addressee: string
+    status?: $Enums.friendship_status
+    CreatedAt?: Date | string | null
+  }
+
+  export type friendshipCreateManyUser_friendship_addresseeTouserInput = {
+    FID?: number
+    requester: string
+    status?: $Enums.friendship_status
+    CreatedAt?: Date | string | null
   }
 
   export type submissionCreateManyUserInput = {
@@ -14541,12 +11982,54 @@ export namespace Prisma {
     Code?: string | null
     CreatedAt?: Date | string | null
     Result?: $Enums.submission_Result | null
+    isPublic?: boolean | null
+  }
+
+  export type friendshipUpdateWithoutUser_friendship_requesterTouserInput = {
+    status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user_friendship_addresseeTouser?: userUpdateOneRequiredWithoutFriendship_friendship_addresseeTouserNestedInput
+  }
+
+  export type friendshipUncheckedUpdateWithoutUser_friendship_requesterTouserInput = {
+    FID?: IntFieldUpdateOperationsInput | number
+    addressee?: StringFieldUpdateOperationsInput | string
+    status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserInput = {
+    FID?: IntFieldUpdateOperationsInput | number
+    addressee?: StringFieldUpdateOperationsInput | string
+    status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type friendshipUpdateWithoutUser_friendship_addresseeTouserInput = {
+    status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user_friendship_requesterTouser?: userUpdateOneRequiredWithoutFriendship_friendship_requesterTouserNestedInput
+  }
+
+  export type friendshipUncheckedUpdateWithoutUser_friendship_addresseeTouserInput = {
+    FID?: IntFieldUpdateOperationsInput | number
+    requester?: StringFieldUpdateOperationsInput | string
+    status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserInput = {
+    FID?: IntFieldUpdateOperationsInput | number
+    requester?: StringFieldUpdateOperationsInput | string
+    status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type submissionUpdateWithoutUserInput = {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
     exercise?: exerciseUpdateOneRequiredWithoutSubmissionNestedInput
     testcaseresult?: testcaseresultUpdateManyWithoutSubmissionNestedInput
   }
@@ -14557,6 +12040,7 @@ export namespace Prisma {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
     testcaseresult?: testcaseresultUncheckedUpdateManyWithoutSubmissionNestedInput
   }
 
@@ -14566,37 +12050,7 @@ export namespace Prisma {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Result?: NullableEnumsubmission_ResultFieldUpdateOperationsInput | $Enums.submission_Result | null
-  }
-
-  export type exerciseCreateManyLessionInput = {
-    EID?: number
-    OrderIndex: number
-    Content: string
-    Difficulty?: $Enums.exercise_Difficulty
-  }
-
-  export type exerciseUpdateWithoutLessionInput = {
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Content?: StringFieldUpdateOperationsInput | string
-    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
-    submission?: submissionUpdateManyWithoutExerciseNestedInput
-    testcase?: testcaseUpdateManyWithoutExerciseNestedInput
-  }
-
-  export type exerciseUncheckedUpdateWithoutLessionInput = {
-    EID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Content?: StringFieldUpdateOperationsInput | string
-    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
-    submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
-    testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
-  }
-
-  export type exerciseUncheckedUpdateManyWithoutLessionInput = {
-    EID?: IntFieldUpdateOperationsInput | number
-    OrderIndex?: IntFieldUpdateOperationsInput | number
-    Content?: StringFieldUpdateOperationsInput | string
-    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    isPublic?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
 

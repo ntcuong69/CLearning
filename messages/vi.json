@@ -6,6 +6,7 @@
     "AuthPage": {
       "signin": "Đăng nhập",
       "signup": "Đăng ký",
+      "name": "Tên người dùng",
       "password": "Mật khẩu",
       "confirm_password": "Xác nhận mật khẩu",
       "forgot_password": "Quên mật khẩu?",

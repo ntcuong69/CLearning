@@ -18,8 +18,9 @@ export async function middleware(req: NextRequest) {
   const locale = getLocaleFromPath(pathname);
   const isAuthPage = pathname.includes("/auth");
   const isHomePage = pathname.includes("/home");
+  const isFriendPage = pathname.includes("/friends");
   const isProfilePage = pathname.includes("/profile");
-  const isProtectedRoute = isHomePage || isProfilePage;
+  const isProtectedRoute = isHomePage || isProfilePage || isFriendPage;
 
   if (isProtectedRoute && !token) {
     return NextResponse.redirect(
@@ -30,6 +31,12 @@ export async function middleware(req: NextRequest) {
   if (isAuthPage && token) {
     return NextResponse.redirect(
       new URL(locale ? `/${locale}/home` : "/home", req.url)
+    );
+  }
+
+  if (isAuthPage && token) {
+    return NextResponse.redirect(
+      new URL(locale ? `/${locale}/friends` : "/friends", req.url)
     );
   }
 
