@@ -20,10 +20,7 @@ interface ExerciseInfoPanelProps {
 
 export default function ExerciseInfoPanel({ exercise, testcases }: ExerciseInfoPanelProps) {
   return (
-    <Paper elevation={2} sx={{ flex: 1, p: 4, borderRadius: 0, minWidth: 0 }}>
-      <Typography variant="h5" fontWeight="bold" mb={2}>
-        Bài tập #{exercise.EID}
-      </Typography>
+    <Paper sx={{ flex: 1, p: 4, borderRadius: 0, minWidth: 0, backgroundColor: "inherit", boxShadow: "none" }}>
       <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
         {exercise.Content}
       </Typography>

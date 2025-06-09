@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Typography, Card, CardContent, Stack, Box, CircularProgress } from "@mui/material";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
@@ -62,8 +62,11 @@ function renderLectureComponent(tpID: number) {
 }
 export default function TopicDetailPage() {
   const { id } = useParams();
+  const router = useRouter();
   const [topic, setTopic] = useState<TopicDetail | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const currentId = parseInt(id as string, 10); // Chuyển đổi id thành số nguyên
 
   useEffect(() => {
     axios
@@ -84,17 +87,61 @@ export default function TopicDetailPage() {
 
   if (!topic) return <Typography>Topic not found.</Typography>;
 
+  const handlePreviousLecture = () => {
+    const previousId = currentId - 1;
+    if (previousId > 0) {
+      router.push(`/home/topic/${previousId}`);
+    }
+  };
+
+  const handleNextLecture = () => {
+    const nextId = currentId + 1;
+    router.push(`/home/topic/${nextId}`);
+  };
+
   return (
     <Box sx={{ minHeight: "100vh" }}>
       <NavBar />
       <Box sx={{ maxWidth: 900, mx: "auto", px: { xs: 2, sm: 6, md: 10 }, py: 6 }}>
-        {/* <Typography variant="h4" fontWeight="bold" mb={2}>
-          {topic.Name}
-        </Typography> */}
-        <Box mb={4}>
-          {renderLectureComponent(topic.TpID)}
+        <Box mb={4}>{renderLectureComponent(topic.TpID)}</Box>
+        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
+          <Box
+            component="button"
+            onClick={handlePreviousLecture}
+            disabled={currentId === 1} // Disable nếu là bài giảng đầu tiên
+            sx={{
+              px: 3,
+              py: 1,
+              bgcolor: currentId === 1 ? "#e0e0e0" : "#f3f4f6", // Màu nền khi disabled
+              color: currentId === 1 ? "#9e9e9e" : "#cc2b5e", // Màu chữ khi disabled
+              border: "1px solid #cc2b5e",
+              borderRadius: "4px"
+            }}
+          >
+            Bài giảng trước
+          </Box>
+          <Box
+            component="button"
+            onClick={handleNextLecture}
+            disabled={currentId === 11} // Disable nếu là bài giảng cuối cùng
+            sx={{
+              px: 3,
+              py: 1,
+              bgcolor: currentId === 11 ? "#e0e0e0" : "#f3f4f6", // Màu nền khi disabled
+              color: currentId === 11 ? "#9e9e9e" : "#cc2b5e", // Màu chữ khi disabled
+              border: "1px solid #cc2b5e",
+              borderRadius: "4px",
+              cursor: currentId === 11 ? "not-allowed" : "pointer", // Con trỏ khi disabled
+              "&:hover": {
+                bgcolor: currentId === 11 ? "#e0e0e0" : "#cc2b5e",
+                color: currentId === 11 ? "#9e9e9e" : "#fff",
+              },
+            }}
+          >
+            Bài giảng tiếp theo
+          </Box>
         </Box>
-        <Typography variant="h5" fontWeight="bold" mb={2}>
+        <Typography variant="h5" fontWeight="bold" mb={2} mt={6}>
           Exercises
         </Typography>
         <Stack direction="row" spacing={2} mb={2}>

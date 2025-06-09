@@ -121,7 +121,8 @@ exports.Prisma.ExerciseScalarFieldEnum = {
   EID: 'EID',
   TpID: 'TpID',
   Content: 'Content',
-  Difficulty: 'Difficulty'
+  Difficulty: 'Difficulty',
+  template: 'template'
 };
 
 exports.Prisma.SubmissionScalarFieldEnum = {
@@ -178,13 +179,14 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.exerciseOrderByRelevanceFieldEnum = {
-  Content: 'Content'
-};
-
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.exerciseOrderByRelevanceFieldEnum = {
+  Content: 'Content',
+  template: 'template'
 };
 
 exports.Prisma.submissionOrderByRelevanceFieldEnum = {

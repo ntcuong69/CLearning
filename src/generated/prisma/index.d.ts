@@ -1637,6 +1637,7 @@ export namespace Prisma {
     TpID: number | null
     Content: string | null
     Difficulty: $Enums.exercise_Difficulty | null
+    template: string | null
   }
 
   export type ExerciseMaxAggregateOutputType = {
@@ -1644,6 +1645,7 @@ export namespace Prisma {
     TpID: number | null
     Content: string | null
     Difficulty: $Enums.exercise_Difficulty | null
+    template: string | null
   }
 
   export type ExerciseCountAggregateOutputType = {
@@ -1651,6 +1653,7 @@ export namespace Prisma {
     TpID: number
     Content: number
     Difficulty: number
+    template: number
     _all: number
   }
 
@@ -1670,6 +1673,7 @@ export namespace Prisma {
     TpID?: true
     Content?: true
     Difficulty?: true
+    template?: true
   }
 
   export type ExerciseMaxAggregateInputType = {
@@ -1677,6 +1681,7 @@ export namespace Prisma {
     TpID?: true
     Content?: true
     Difficulty?: true
+    template?: true
   }
 
   export type ExerciseCountAggregateInputType = {
@@ -1684,6 +1689,7 @@ export namespace Prisma {
     TpID?: true
     Content?: true
     Difficulty?: true
+    template?: true
     _all?: true
   }
 
@@ -1778,6 +1784,7 @@ export namespace Prisma {
     TpID: number
     Content: string
     Difficulty: $Enums.exercise_Difficulty
+    template: string | null
     _count: ExerciseCountAggregateOutputType | null
     _avg: ExerciseAvgAggregateOutputType | null
     _sum: ExerciseSumAggregateOutputType | null
@@ -1804,6 +1811,7 @@ export namespace Prisma {
     TpID?: boolean
     Content?: boolean
     Difficulty?: boolean
+    template?: boolean
     topic?: boolean | topicDefaultArgs<ExtArgs>
     submission?: boolean | exercise$submissionArgs<ExtArgs>
     testcase?: boolean | exercise$testcaseArgs<ExtArgs>
@@ -1817,9 +1825,10 @@ export namespace Prisma {
     TpID?: boolean
     Content?: boolean
     Difficulty?: boolean
+    template?: boolean
   }
 
-  export type exerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"EID" | "TpID" | "Content" | "Difficulty", ExtArgs["result"]["exercise"]>
+  export type exerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"EID" | "TpID" | "Content" | "Difficulty" | "template", ExtArgs["result"]["exercise"]>
   export type exerciseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     topic?: boolean | topicDefaultArgs<ExtArgs>
     submission?: boolean | exercise$submissionArgs<ExtArgs>
@@ -1839,6 +1848,7 @@ export namespace Prisma {
       TpID: number
       Content: string
       Difficulty: $Enums.exercise_Difficulty
+      template: string | null
     }, ExtArgs["result"]["exercise"]>
     composites: {}
   }
@@ -2215,6 +2225,7 @@ export namespace Prisma {
     readonly TpID: FieldRef<"exercise", 'Int'>
     readonly Content: FieldRef<"exercise", 'String'>
     readonly Difficulty: FieldRef<"exercise", 'exercise_Difficulty'>
+    readonly template: FieldRef<"exercise", 'String'>
   }
     
 
@@ -8597,7 +8608,8 @@ export namespace Prisma {
     EID: 'EID',
     TpID: 'TpID',
     Content: 'Content',
-    Difficulty: 'Difficulty'
+    Difficulty: 'Difficulty',
+    template: 'template'
   };
 
   export type ExerciseScalarFieldEnum = (typeof ExerciseScalarFieldEnum)[keyof typeof ExerciseScalarFieldEnum]
@@ -8678,19 +8690,20 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-  export const exerciseOrderByRelevanceFieldEnum: {
-    Content: 'Content'
-  };
-
-  export type exerciseOrderByRelevanceFieldEnum = (typeof exerciseOrderByRelevanceFieldEnum)[keyof typeof exerciseOrderByRelevanceFieldEnum]
-
-
   export const NullsOrder: {
     first: 'first',
     last: 'last'
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const exerciseOrderByRelevanceFieldEnum: {
+    Content: 'Content',
+    template: 'template'
+  };
+
+  export type exerciseOrderByRelevanceFieldEnum = (typeof exerciseOrderByRelevanceFieldEnum)[keyof typeof exerciseOrderByRelevanceFieldEnum]
 
 
   export const submissionOrderByRelevanceFieldEnum: {
@@ -8827,6 +8840,7 @@ export namespace Prisma {
     TpID?: IntFilter<"exercise"> | number
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
+    template?: StringNullableFilter<"exercise"> | string | null
     topic?: XOR<TopicScalarRelationFilter, topicWhereInput>
     submission?: SubmissionListRelationFilter
     testcase?: TestcaseListRelationFilter
@@ -8837,6 +8851,7 @@ export namespace Prisma {
     TpID?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
+    template?: SortOrderInput | SortOrder
     topic?: topicOrderByWithRelationInput
     submission?: submissionOrderByRelationAggregateInput
     testcase?: testcaseOrderByRelationAggregateInput
@@ -8851,6 +8866,7 @@ export namespace Prisma {
     TpID?: IntFilter<"exercise"> | number
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
+    template?: StringNullableFilter<"exercise"> | string | null
     topic?: XOR<TopicScalarRelationFilter, topicWhereInput>
     submission?: SubmissionListRelationFilter
     testcase?: TestcaseListRelationFilter
@@ -8861,6 +8877,7 @@ export namespace Prisma {
     TpID?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
+    template?: SortOrderInput | SortOrder
     _count?: exerciseCountOrderByAggregateInput
     _avg?: exerciseAvgOrderByAggregateInput
     _max?: exerciseMaxOrderByAggregateInput
@@ -8876,6 +8893,7 @@ export namespace Prisma {
     TpID?: IntWithAggregatesFilter<"exercise"> | number
     Content?: StringWithAggregatesFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyWithAggregatesFilter<"exercise"> | $Enums.exercise_Difficulty
+    template?: StringNullableWithAggregatesFilter<"exercise"> | string | null
   }
 
   export type submissionWhereInput = {
@@ -9254,6 +9272,7 @@ export namespace Prisma {
   export type exerciseCreateInput = {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
     topic: topicCreateNestedOneWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
@@ -9264,6 +9283,7 @@ export namespace Prisma {
     TpID: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -9271,6 +9291,7 @@ export namespace Prisma {
   export type exerciseUpdateInput = {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
@@ -9281,6 +9302,7 @@ export namespace Prisma {
     TpID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -9290,11 +9312,13 @@ export namespace Prisma {
     TpID: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
   }
 
   export type exerciseUpdateManyMutationInput = {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type exerciseUncheckedUpdateManyInput = {
@@ -9302,6 +9326,7 @@ export namespace Prisma {
     TpID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type submissionCreateInput = {
@@ -9682,6 +9707,21 @@ export namespace Prisma {
     not?: NestedEnumexercise_DifficultyFilter<$PrismaModel> | $Enums.exercise_Difficulty
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type TopicScalarRelationFilter = {
     is?: topicWhereInput
     isNot?: topicWhereInput
@@ -9697,6 +9737,11 @@ export namespace Prisma {
     every?: testcaseWhereInput
     some?: testcaseWhereInput
     none?: testcaseWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type submissionOrderByRelationAggregateInput = {
@@ -9718,6 +9763,7 @@ export namespace Prisma {
     TpID?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
+    template?: SortOrder
   }
 
   export type exerciseAvgOrderByAggregateInput = {
@@ -9730,6 +9776,7 @@ export namespace Prisma {
     TpID?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
+    template?: SortOrder
   }
 
   export type exerciseMinOrderByAggregateInput = {
@@ -9737,6 +9784,7 @@ export namespace Prisma {
     TpID?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
+    template?: SortOrder
   }
 
   export type exerciseSumOrderByAggregateInput = {
@@ -9788,7 +9836,7 @@ export namespace Prisma {
     _max?: NestedEnumexercise_DifficultyFilter<$PrismaModel>
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
     notIn?: string[] | null
@@ -9800,7 +9848,10 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     search?: string
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -9840,11 +9891,6 @@ export namespace Prisma {
     every?: testcaseresultWhereInput
     some?: testcaseresultWhereInput
     none?: testcaseresultWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type testcaseresultOrderByRelationAggregateInput = {
@@ -9895,24 +9941,6 @@ export namespace Prisma {
   export type submissionSumOrderByAggregateInput = {
     SID?: SortOrder
     EID?: SortOrder
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -10289,6 +10317,10 @@ export namespace Prisma {
     set?: $Enums.exercise_Difficulty
   }
 
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
   export type topicUpdateOneRequiredWithoutExerciseNestedInput = {
     create?: XOR<topicCreateWithoutExerciseInput, topicUncheckedCreateWithoutExerciseInput>
     connectOrCreate?: topicCreateOrConnectWithoutExerciseInput
@@ -10385,10 +10417,6 @@ export namespace Prisma {
     connectOrCreate?: testcaseresultCreateOrConnectWithoutSubmissionInput | testcaseresultCreateOrConnectWithoutSubmissionInput[]
     createMany?: testcaseresultCreateManySubmissionInputEnvelope
     connect?: testcaseresultWhereUniqueInput | testcaseresultWhereUniqueInput[]
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -10780,6 +10808,21 @@ export namespace Prisma {
     not?: NestedEnumexercise_DifficultyFilter<$PrismaModel> | $Enums.exercise_Difficulty
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -10835,44 +10878,6 @@ export namespace Prisma {
     _max?: NestedEnumexercise_DifficultyFilter<$PrismaModel>
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | null
-    notIn?: Date[] | string[] | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type NestedEnumsubmission_ResultNullableFilter<$PrismaModel = never> = {
-    equals?: $Enums.submission_Result | Enumsubmission_ResultFieldRefInput<$PrismaModel> | null
-    in?: $Enums.submission_Result[] | null
-    notIn?: $Enums.submission_Result[] | null
-    not?: NestedEnumsubmission_ResultNullableFilter<$PrismaModel> | $Enums.submission_Result | null
-  }
-
-  export type NestedBoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -10900,6 +10905,29 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumsubmission_ResultNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.submission_Result | Enumsubmission_ResultFieldRefInput<$PrismaModel> | null
+    in?: $Enums.submission_Result[] | null
+    notIn?: $Enums.submission_Result[] | null
+    not?: NestedEnumsubmission_ResultNullableFilter<$PrismaModel> | $Enums.submission_Result | null
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -11159,6 +11187,7 @@ export namespace Prisma {
   export type exerciseCreateWithoutSubmissionInput = {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
     topic: topicCreateNestedOneWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -11168,6 +11197,7 @@ export namespace Prisma {
     TpID: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
 
@@ -11242,6 +11272,7 @@ export namespace Prisma {
   export type exerciseUpdateWithoutSubmissionInput = {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -11251,6 +11282,7 @@ export namespace Prisma {
     TpID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
 
@@ -11318,6 +11350,7 @@ export namespace Prisma {
   export type exerciseCreateWithoutTestcaseInput = {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
     topic: topicCreateNestedOneWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
   }
@@ -11327,6 +11360,7 @@ export namespace Prisma {
     TpID: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
   }
 
@@ -11374,6 +11408,7 @@ export namespace Prisma {
   export type exerciseUpdateWithoutTestcaseInput = {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
   }
@@ -11383,6 +11418,7 @@ export namespace Prisma {
     TpID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
   }
 
@@ -11505,6 +11541,7 @@ export namespace Prisma {
   export type exerciseCreateWithoutTopicInput = {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -11513,6 +11550,7 @@ export namespace Prisma {
     EID?: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -11551,6 +11589,7 @@ export namespace Prisma {
     TpID?: IntFilter<"exercise"> | number
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
+    template?: StringNullableFilter<"exercise"> | string | null
   }
 
   export type friendshipCreateWithoutUser_friendship_requesterTouserInput = {
@@ -11939,11 +11978,13 @@ export namespace Prisma {
     EID?: number
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
   }
 
   export type exerciseUpdateWithoutTopicInput = {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -11952,6 +11993,7 @@ export namespace Prisma {
     EID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -11960,6 +12002,7 @@ export namespace Prisma {
     EID?: IntFieldUpdateOperationsInput | number
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type friendshipCreateManyUser_friendship_requesterTouserInput = {

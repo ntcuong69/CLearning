@@ -13,6 +13,7 @@ model exercise {
   TpID       Int
   Content    String              @db.Text
   Difficulty exercise_Difficulty @default(Easy)
+  template   String?             @db.Text
   topic      topic               @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
   submission submission[]
   testcase   testcase[]

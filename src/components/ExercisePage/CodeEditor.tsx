@@ -9,7 +9,7 @@ interface CodeEditorProps {
 export default function CodeEditor({ code, setCode }: CodeEditorProps) {
   return (
     <Editor
-      height="80%"
+      height="100%"
       defaultLanguage="c"
       value={code}
       onChange={(value) => setCode(value ?? "")}
