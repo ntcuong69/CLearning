@@ -1,22 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 
-interface Submission {
-  SID: number;
-  Code: string;
-  CreatedAt: string;
-  Result: string;
-}
-
-interface TestcaseResult {
-  TCRID: number;
-  ActualOutput: string;
-  Result: string;
-  testcase: {
-    Input: string;
-    ExpectedOutput: string;
-  };
-}
+import { Submission, TestcaseResult } from "@/types/model";
 
 interface SubmissionsProps {
   eid: string;
@@ -24,7 +9,7 @@ interface SubmissionsProps {
 }
 
 export default function Submissions({ eid, onViewHistory }: SubmissionsProps) {
-  const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [submissions, setSubmissions] = useState<Submission[]>([]); // Sử dụng type Submission từ model.ts
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -75,7 +60,7 @@ export default function Submissions({ eid, onViewHistory }: SubmissionsProps) {
           {submissions.map((submission) => (
             <TableRow key={submission.SID}>
               <TableCell>{submission.Result}</TableCell>
-              <TableCell>{new Date(submission.CreatedAt).toLocaleString()}</TableCell>
+              <TableCell>{new Date(submission.CreatedAt || "").toLocaleString()}</TableCell>
               <TableCell>
                 <Button
                   variant="contained"

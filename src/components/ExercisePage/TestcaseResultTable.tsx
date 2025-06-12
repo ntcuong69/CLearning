@@ -1,22 +1,11 @@
 import React from "react";
 import { Box, Typography, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 
-interface Testcase {
-  Input: string;
-  ExpectedOutput: string;
-  isHidden: boolean;
-}
-
-interface ResultRow {
-  index: number;
-  expected: string;
-  actual: string;
-  result: string;
-}
+import { TestcaseResult, Testcase } from "@/types/model";
 
 interface TestcaseResultTableProps {
-  results: ResultRow[] | null;
-  testcases: Testcase[] | null;
+  results: TestcaseResult[] | null; // Sử dụng type TestcaseResult từ model.ts
+  testcases: Testcase[] | null; // Sử dụng type Testcase từ model.ts
 }
 
 export default function TestcaseResultTable({ results, testcases }: TestcaseResultTableProps) {
@@ -39,27 +28,31 @@ export default function TestcaseResultTable({ results, testcases }: TestcaseResu
         </TableHead>
         <TableBody>
           {results
-            .filter((_, idx) => testcases?.[idx]?.isHidden === false)
-            .map((row: ResultRow, idx: number) => (
-              <TableRow key={row.index}>
-                <TableCell>{row.index}</TableCell>
+            .filter((_, idx) => testcases?.[idx]?.isHidden === false) // Lọc các test case không bị ẩn
+            .map((result: TestcaseResult, idx: number) => (
+              <TableRow key={result.TCRID}>
+                <TableCell>{idx + 1}</TableCell>
                 <TableCell>
                   <pre>{testcases?.[idx].Input}</pre>
                 </TableCell>
                 <TableCell>
-                  <pre>{row.expected}</pre>
+                  <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                    {testcases?.[idx].ExpectedOutput}
+                  </pre>
                 </TableCell>
-                <TableCell sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-                  <pre>{row.actual}</pre>
+                <TableCell>
+                  <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                    {result.ActualOutput}
+                  </pre>
                 </TableCell>
                 <TableCell>
                   <span
                     style={{
-                      color: row.result === "Correct" ? "green" : row.result === "Wrong" ? "red" : "orange",
+                      color: result.Result === "Correct" ? "green" : result.Result === "Wrong" ? "red" : "orange",
                       fontWeight: "bold",
                     }}
                   >
-                    {row.result}
+                    {result.Result}
                   </span>
                 </TableCell>
               </TableRow>

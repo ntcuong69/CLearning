@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-interface Exercise {
-  EID: number;
-  Content: string;
-  Difficulty: string;
-}
+import { Exercise } from "@/types/model";
 
 export function useExercise(id: string, eid: string) {
   const [exercise, setExercise] = useState<Exercise | null>(null);

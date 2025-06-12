@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-interface Testcase {
-  TCID: number;
-  Input: string;
-  ExpectedOutput: string;
-  isHidden: boolean;
-}
+import { Testcase } from "@/types/model";
 
 export function useTestcases(eid: string) {
   const [testcases, setTestcases] = useState<Testcase[] | null>(null);

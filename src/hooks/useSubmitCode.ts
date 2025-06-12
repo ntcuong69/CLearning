@@ -1,20 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
 
-interface Testcase {
-  TCID: number;
-  Input: string;
-  ExpectedOutput: string;
-}
+// Import các types từ model.ts
+import { Testcase, TestcaseResult, TestcaseResultResult, SubmissionResult } from "@/types/model";
 
-interface ResultRow {
-  index: number;
-  expected: string;
-  actual: string;
-  result: string;
-}
-
-export function useSubmitCode(eid: string, code: string, setResults: (results: ResultRow[] | null) => void, setSubmissionResult: (result: string | null) => void) {
+export function useSubmitCode(
+  eid: string,
+  code: string,
+  setResults: (results: TestcaseResult[] | null) => void,
+  setSubmissionResult: (result: SubmissionResult | null) => void
+) {
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async () => {
@@ -47,17 +42,17 @@ export function useSubmitCode(eid: string, code: string, setResults: (results: R
         await sleep(100);
       }
 
-      const resultsData: ResultRow[] = await Promise.all(
+      const resultsData = await Promise.all(
         tcs.map(async (tc, idx) => {
           const runData = runResults[idx]?.data?.run || {};
           const expected = tc.ExpectedOutput.trim();
           const stderr = runData.stderr?.trim() || "";
           const actual = runData.output?.trim() || "";
 
-          let result = "Wrong";
-          if (runData.code !== 0 || stderr) result = "Error";
-          else if (actual === expected) result = "Correct";
-          else if (actual.includes(expected)) result = "Partial";
+          let result: TestcaseResultResult = TestcaseResultResult.Wrong;
+          if (runData.code !== 0 || stderr) result = TestcaseResultResult.Error;
+          else if (actual === expected) result = TestcaseResultResult.Correct;
+          else if (actual.includes(expected)) result = TestcaseResultResult.Partial;
 
           await axios.post(`/api/testcaseresult/create`, {
             SID,
@@ -67,18 +62,20 @@ export function useSubmitCode(eid: string, code: string, setResults: (results: R
           });
 
           return {
-            index: idx + 1,
-            expected,
-            actual: result === "Error" ? stderr || "Có lỗi xảy ra." : actual,
-            result,
+            TCRID: idx + 1, // Temporary ID for local use
+            SID,
+            TCID: tc.TCID,
+            ActualOutput: actual || stderr || "Error",
+            Result: result,
+            testcase: tc,
           };
         })
       );
 
       setResults(resultsData);
 
-      const allCorrect = resultsData.every((row) => row.result === "Correct");
-      const finalResult = allCorrect ? "Pass" : "Fail";
+      const allCorrect = resultsData.every((row) => row.Result === TestcaseResultResult.Correct);
+      const finalResult: SubmissionResult = allCorrect ? SubmissionResult.Pass : SubmissionResult.Fail;
       setSubmissionResult(finalResult);
 
       await axios.put(`/api/submissions/update`, {
@@ -88,7 +85,7 @@ export function useSubmitCode(eid: string, code: string, setResults: (results: R
     } catch (err) {
       console.error("Submit error:", err);
       setResults([]);
-      setSubmissionResult("Fail");
+      setSubmissionResult(SubmissionResult.Fail);
     }
 
     setSubmitting(false);
