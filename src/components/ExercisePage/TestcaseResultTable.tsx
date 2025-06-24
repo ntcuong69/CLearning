@@ -14,7 +14,7 @@ export default function TestcaseResultTable({ results, testcases }: TestcaseResu
   return (
     <Box mt={4}>
       <Typography variant="h6" mb={2}>
-        Kết quả Testcase
+        Testcase
       </Typography>
       <Table>
         <TableHead>

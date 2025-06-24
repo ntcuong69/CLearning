@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { Typography, Card, CardContent, Stack, Box, CircularProgress } from "@mui/material";
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/Header";
 import Link from "next/link";
 import Topic1 from "@/components/Lectures/topic1";
 import Topic2 from "@/components/Lectures/topic2";

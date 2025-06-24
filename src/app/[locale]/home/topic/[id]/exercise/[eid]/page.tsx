@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, CircularProgress, Typography, Button, Tabs, Tab, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Box, CircularProgress, Typography, Button, Tabs, Tab} from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";

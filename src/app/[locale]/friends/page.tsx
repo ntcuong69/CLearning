@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Box, Tabs, Tab, Paper, Button, Typography, Input, CircularProgress } from "@mui/material";
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/Header";
 import axios from "axios";
 
 interface Friend {

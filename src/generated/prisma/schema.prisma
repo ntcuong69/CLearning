@@ -9,14 +9,18 @@ datasource db {
 }
 
 model exercise {
-  EID        Int                 @id @default(autoincrement())
-  TpID       Int
-  Content    String              @db.Text
-  Difficulty exercise_Difficulty @default(Easy)
-  template   String?             @db.Text
-  topic      topic               @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
-  submission submission[]
-  testcase   testcase[]
+  EID          Int                 @id @default(autoincrement())
+  TpID         Int
+  Name         String              @db.VarChar(50)
+  Slug         String              @unique(map: "Slug") @db.VarChar(50)
+  Content      String              @db.Text
+  Difficulty   exercise_Difficulty @default(Easy)
+  template     String?             @db.Text
+  comment      comment[]
+  topic        topic               @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
+  exerciselike exerciselike[]
+  submission   submission[]
+  testcase     testcase[]
 
   @@index([TpID], map: "TpID")
 }
@@ -50,14 +54,13 @@ model testcase {
 }
 
 model testcaseresult {
-  TCRID         Int                   @id @default(autoincrement())
-  SID           Int
-  TCID          Int
-  ActualOutput  String                @db.Text
-  Result        testcaseresult_Result @default(Pending)
-  ExecutionTime Float?                @db.Float
-  submission    submission            @relation(fields: [SID], references: [SID], onDelete: NoAction, onUpdate: NoAction, map: "testcaseresult_ibfk_1")
-  testcase      testcase              @relation(fields: [TCID], references: [TCID], onDelete: NoAction, onUpdate: NoAction, map: "testcaseresult_ibfk_2")
+  TCRID        Int                   @id @default(autoincrement())
+  SID          Int
+  TCID         Int
+  ActualOutput String                @db.Text
+  Result       testcaseresult_Result @default(Pending)
+  submission   submission            @relation(fields: [SID], references: [SID], onDelete: NoAction, onUpdate: NoAction, map: "testcaseresult_ibfk_1")
+  testcase     testcase              @relation(fields: [TCID], references: [TCID], onDelete: NoAction, onUpdate: NoAction, map: "testcaseresult_ibfk_2")
 
   @@index([SID], map: "SID")
   @@index([TCID], map: "TCID")
@@ -66,19 +69,26 @@ model testcaseresult {
 model topic {
   TpID     Int        @id @default(autoincrement())
   Name     String     @db.VarChar(50)
+  Slug     String     @unique(map: "Slug") @db.VarChar(50)
   exercise exercise[]
 }
 
 model user {
-  UID                                   String       @id @default(dbgenerated("(uuid())")) @db.Char(36)
-  Username                              String       @db.VarChar(50)
-  Email                                 String       @unique(map: "Email") @db.VarChar(50)
-  Password                              String       @db.VarChar(255)
-  Role                                  user_Role    @default(User)
-  CreatedAt                             DateTime?    @default(now()) @db.Timestamp(0)
-  friendship_friendship_requesterTouser friendship[] @relation("friendship_requesterTouser")
-  friendship_friendship_addresseeTouser friendship[] @relation("friendship_addresseeTouser")
-  submission                            submission[]
+  UID                                      String         @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  Username                                 String         @db.VarChar(50)
+  Email                                    String         @unique(map: "Email") @db.VarChar(50)
+  isVerified                               Boolean?       @default(false)
+  Password                                 String         @db.VarChar(255)
+  Role                                     user_Role      @default(User)
+  CreatedAt                                DateTime?      @default(now()) @db.Timestamp(0)
+  comment                                  comment[]
+  commentlike                              commentlike[]
+  exerciselike                             exerciselike[]
+  friendship_friendship_requesterTouser    friendship[]   @relation("friendship_requesterTouser")
+  friendship_friendship_addresseeTouser    friendship[]   @relation("friendship_addresseeTouser")
+  notification_notification_UIDTouser      notification[] @relation("notification_UIDTouser")
+  notification_notification_FromUserTouser notification[] @relation("notification_FromUserTouser")
+  submission                               submission[]
 }
 
 model friendship {
@@ -92,6 +102,86 @@ model friendship {
 
   @@unique([requester, addressee], map: "requester")
   @@index([addressee], map: "addressee")
+}
+
+model chapter {
+  CID          Int      @id @default(autoincrement())
+  ChapterIndex Int
+  Name         String   @db.VarChar(50)
+  lesson       lesson[]
+}
+
+model comment {
+  CoID         Int            @id @default(autoincrement())
+  UID          String         @db.Char(36)
+  LID          Int?
+  EID          Int?
+  Content      String         @db.Text
+  ParentID     Int?
+  CreatedAt    DateTime?      @default(now()) @db.Timestamp(0)
+  user         user           @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "comment_ibfk_1")
+  lesson       lesson?        @relation(fields: [LID], references: [LID], onDelete: NoAction, onUpdate: NoAction, map: "comment_ibfk_2")
+  exercise     exercise?      @relation(fields: [EID], references: [EID], onDelete: NoAction, onUpdate: NoAction, map: "comment_ibfk_3")
+  commentlike  commentlike[]
+  notification notification[]
+
+  @@index([EID], map: "EID")
+  @@index([LID], map: "LID")
+  @@index([UID], map: "UID")
+}
+
+model commentlike {
+  CLID      Int       @id @default(autoincrement())
+  UID       String    @db.Char(36)
+  CoID      Int
+  CreatedAt DateTime? @default(now()) @db.Timestamp(0)
+  user      user      @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "commentlike_ibfk_1")
+  comment   comment   @relation(fields: [CoID], references: [CoID], onDelete: NoAction, onUpdate: NoAction, map: "commentlike_ibfk_2")
+
+  @@unique([UID, CoID], map: "UID")
+  @@index([CoID], map: "CoID")
+}
+
+model exerciselike {
+  ELID      Int       @id @default(autoincrement())
+  UID       String    @db.Char(36)
+  EID       Int
+  CreatedAt DateTime? @default(now()) @db.Timestamp(0)
+  user      user      @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "exerciselike_ibfk_1")
+  exercise  exercise  @relation(fields: [EID], references: [EID], onDelete: NoAction, onUpdate: NoAction, map: "exerciselike_ibfk_2")
+
+  @@unique([UID, EID], map: "UID")
+  @@index([EID], map: "EID")
+}
+
+model lesson {
+  LID         Int       @id @default(autoincrement())
+  CID         Int
+  LessonIndex Int
+  Title       String    @db.VarChar(100)
+  Slug        String    @unique(map: "Slug") @db.VarChar(50)
+  comment     comment[]
+  chapter     chapter   @relation(fields: [CID], references: [CID], onDelete: NoAction, onUpdate: NoAction, map: "lesson_ibfk_1")
+
+  @@index([CID], map: "CID")
+}
+
+model notification {
+  NID                              Int               @id @default(autoincrement())
+  UID                              String            @db.Char(36)
+  Type                             notification_Type
+  FromUser                         String            @db.Char(36)
+  Message                          String            @db.Text
+  CoID                             Int?
+  CreatedAt                        DateTime?         @default(now()) @db.Timestamp(0)
+  isRead                           Boolean?          @default(false)
+  user_notification_UIDTouser      user              @relation("notification_UIDTouser", fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "notification_ibfk_1")
+  user_notification_FromUserTouser user              @relation("notification_FromUserTouser", fields: [FromUser], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "notification_ibfk_2")
+  comment                          comment?          @relation(fields: [CoID], references: [CoID], onDelete: NoAction, onUpdate: NoAction, map: "notification_ibfk_3")
+
+  @@index([CoID], map: "CoID")
+  @@index([FromUser], map: "FromUser")
+  @@index([UID], map: "UID")
 }
 
 enum exercise_Difficulty {
@@ -122,4 +212,10 @@ enum testcaseresult_Result {
   Wrong
   Error
   Pending
+}
+
+enum notification_Type {
+  Comment
+  Friendship
+  Like
 }

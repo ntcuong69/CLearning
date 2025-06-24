@@ -120,6 +120,8 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.ExerciseScalarFieldEnum = {
   EID: 'EID',
   TpID: 'TpID',
+  Name: 'Name',
+  Slug: 'Slug',
   Content: 'Content',
   Difficulty: 'Difficulty',
   template: 'template'
@@ -148,19 +150,20 @@ exports.Prisma.TestcaseresultScalarFieldEnum = {
   SID: 'SID',
   TCID: 'TCID',
   ActualOutput: 'ActualOutput',
-  Result: 'Result',
-  ExecutionTime: 'ExecutionTime'
+  Result: 'Result'
 };
 
 exports.Prisma.TopicScalarFieldEnum = {
   TpID: 'TpID',
-  Name: 'Name'
+  Name: 'Name',
+  Slug: 'Slug'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
   UID: 'UID',
   Username: 'Username',
   Email: 'Email',
+  isVerified: 'isVerified',
   Password: 'Password',
   Role: 'Role',
   CreatedAt: 'CreatedAt'
@@ -174,6 +177,55 @@ exports.Prisma.FriendshipScalarFieldEnum = {
   CreatedAt: 'CreatedAt'
 };
 
+exports.Prisma.ChapterScalarFieldEnum = {
+  CID: 'CID',
+  ChapterIndex: 'ChapterIndex',
+  Name: 'Name'
+};
+
+exports.Prisma.CommentScalarFieldEnum = {
+  CoID: 'CoID',
+  UID: 'UID',
+  LID: 'LID',
+  EID: 'EID',
+  Content: 'Content',
+  ParentID: 'ParentID',
+  CreatedAt: 'CreatedAt'
+};
+
+exports.Prisma.CommentlikeScalarFieldEnum = {
+  CLID: 'CLID',
+  UID: 'UID',
+  CoID: 'CoID',
+  CreatedAt: 'CreatedAt'
+};
+
+exports.Prisma.ExerciselikeScalarFieldEnum = {
+  ELID: 'ELID',
+  UID: 'UID',
+  EID: 'EID',
+  CreatedAt: 'CreatedAt'
+};
+
+exports.Prisma.LessonScalarFieldEnum = {
+  LID: 'LID',
+  CID: 'CID',
+  LessonIndex: 'LessonIndex',
+  Title: 'Title',
+  Slug: 'Slug'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  NID: 'NID',
+  UID: 'UID',
+  Type: 'Type',
+  FromUser: 'FromUser',
+  Message: 'Message',
+  CoID: 'CoID',
+  CreatedAt: 'CreatedAt',
+  isRead: 'isRead'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -185,6 +237,8 @@ exports.Prisma.NullsOrder = {
 };
 
 exports.Prisma.exerciseOrderByRelevanceFieldEnum = {
+  Name: 'Name',
+  Slug: 'Slug',
   Content: 'Content',
   template: 'template'
 };
@@ -204,7 +258,8 @@ exports.Prisma.testcaseresultOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.topicOrderByRelevanceFieldEnum = {
-  Name: 'Name'
+  Name: 'Name',
+  Slug: 'Slug'
 };
 
 exports.Prisma.userOrderByRelevanceFieldEnum = {
@@ -217,6 +272,34 @@ exports.Prisma.userOrderByRelevanceFieldEnum = {
 exports.Prisma.friendshipOrderByRelevanceFieldEnum = {
   requester: 'requester',
   addressee: 'addressee'
+};
+
+exports.Prisma.chapterOrderByRelevanceFieldEnum = {
+  Name: 'Name'
+};
+
+exports.Prisma.commentOrderByRelevanceFieldEnum = {
+  UID: 'UID',
+  Content: 'Content'
+};
+
+exports.Prisma.commentlikeOrderByRelevanceFieldEnum = {
+  UID: 'UID'
+};
+
+exports.Prisma.exerciselikeOrderByRelevanceFieldEnum = {
+  UID: 'UID'
+};
+
+exports.Prisma.lessonOrderByRelevanceFieldEnum = {
+  Title: 'Title',
+  Slug: 'Slug'
+};
+
+exports.Prisma.notificationOrderByRelevanceFieldEnum = {
+  UID: 'UID',
+  FromUser: 'FromUser',
+  Message: 'Message'
 };
 exports.exercise_Difficulty = exports.$Enums.exercise_Difficulty = {
   Easy: 'Easy',
@@ -248,6 +331,12 @@ exports.friendship_status = exports.$Enums.friendship_status = {
   Accepted: 'Accepted'
 };
 
+exports.notification_Type = exports.$Enums.notification_Type = {
+  Comment: 'Comment',
+  Friendship: 'Friendship',
+  Like: 'Like'
+};
+
 exports.Prisma.ModelName = {
   exercise: 'exercise',
   submission: 'submission',
@@ -255,7 +344,13 @@ exports.Prisma.ModelName = {
   testcaseresult: 'testcaseresult',
   topic: 'topic',
   user: 'user',
-  friendship: 'friendship'
+  friendship: 'friendship',
+  chapter: 'chapter',
+  comment: 'comment',
+  commentlike: 'commentlike',
+  exerciselike: 'exerciselike',
+  lesson: 'lesson',
+  notification: 'notification'
 };
 
 /**

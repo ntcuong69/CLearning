@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Button, Card, CardContent, CircularProgress, Grid, List, Typography, Stack } from "@mui/material";
+import { Box, Card, CardContent, CircularProgress, Typography, Stack } from "@mui/material";
 import { useTranslations } from "next-intl";
-import { Box, Drawer, Avatar, Divider } from "@mui/material";
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/Header";
 import Link from "next/link";
+import Sidebar from "@/components/Sidebar";
 
 interface Topic {
   TpID: number;
@@ -40,50 +40,32 @@ export default function HomePage() {
     );
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh", pt: "70px" }}>
       <NavBar />
-      <Box sx={{ display: "flex", flexGrow: 1 }}>
-        {/* Main Content */}
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            px: { xs: 2, sm: 6, md: 10 },
-            py: 6,
-            maxWidth: 900,
-            mx: "auto",
-          }}
-        >
-          <Typography
-            variant="h5"
-            component="h2"
-            className="text-gray-800 dark:text-white font-semibold"
-            sx={{
-              fontSize: { xs: "1.25rem", sm: "1.5rem" },
-              mb: 2,
-            }}
-          >
-            {t2("welcome")}
-          </Typography>
-          <h1 className="text-2xl font-bold mb-4">{t2("topics_list")}</h1>
-          <Stack spacing={3}>
-            {topics.map((topic) => (
-              <Card
-                key={topic.TpID}
-                variant="outlined"
-                sx={{ borderRadius: 3, minHeight: "100px" }}
-              >
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    <Link href={`/home/topic/${topic.TpID}`}>
-                      {topic.Name}
-                    </Link>
-                  </Typography>
-                </CardContent>
-              </Card>
-            ))}
-          </Stack>
-        </Box>
+      <Sidebar />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          ml: { md: "290px" },
+          px: { xs: 2, sm: 6, md: 10 },
+          py: 6,
+          maxWidth: 900,
+          mx: "auto",
+        }}
+      >
+        <h1 className="text-2xl font-bold mb-4">{t2("topics_list")}</h1>
+        <Stack spacing={3}>
+          {topics.map((topic) => (
+            <Card key={topic.TpID} variant="outlined" sx={{ borderRadius: 3, minHeight: "100px" }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ mb: 1 }}>
+                  <Link href={`/home/topic/${topic.TpID}`}>{topic.Name}</Link>
+                </Typography>
+              </CardContent>
+            </Card>
+          ))}
+        </Stack>
       </Box>
     </Box>
   );
