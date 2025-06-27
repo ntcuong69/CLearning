@@ -9,20 +9,24 @@ datasource db {
 }
 
 model exercise {
-  EID          Int                 @id @default(autoincrement())
-  TpID         Int
-  Name         String              @db.VarChar(50)
-  Slug         String              @unique(map: "Slug") @db.VarChar(50)
-  Content      String              @db.Text
-  Difficulty   exercise_Difficulty @default(Easy)
-  template     String?             @db.Text
-  comment      comment[]
-  topic        topic               @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
-  exerciselike exerciselike[]
-  submission   submission[]
-  testcase     testcase[]
+  EID           Int                 @id @default(autoincrement())
+  TpID          Int?
+  SPIID         Int?
+  Name          String              @db.VarChar(50)
+  Slug          String              @unique(map: "Slug") @db.VarChar(50)
+  Content       String              @db.Text
+  Difficulty    exercise_Difficulty @default(Easy)
+  template      String?             @db.Text
+  status        exercise_status     @default(Unattempted)
+  comment       comment[]
+  topic         topic?              @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
+  studyplanitem studyplanitem?      @relation(fields: [SPIID], references: [SPIID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_2")
+  exerciselike  exerciselike[]
+  submission    submission[]
+  testcase      testcase[]
 
   @@index([TpID], map: "TpID")
+  @@index([SPIID], map: "SPIID")
 }
 
 model submission {
@@ -44,7 +48,7 @@ model submission {
 model testcase {
   TCID           Int              @id @default(autoincrement())
   EID            Int
-  Input          String           @db.Text
+  Input          String?          @db.Text
   ExpectedOutput String           @db.Text
   isHidden       Boolean?         @default(false)
   exercise       exercise         @relation(fields: [EID], references: [EID], onDelete: NoAction, onUpdate: NoAction, map: "testcase_ibfk_1")
@@ -184,6 +188,27 @@ model notification {
   @@index([UID], map: "UID")
 }
 
+model studyplan {
+  SPID          Int             @id @default(autoincrement())
+  Name          String          @db.VarChar(50)
+  Description   String          @db.Text
+  StartTime     DateTime?       @db.Timestamp(0)
+  EndTime       DateTime?       @db.Timestamp(0)
+  Icon          String?         @db.VarChar(100)
+  Slug          String?         @unique(map: "Slug") @db.VarChar(50)
+  studyplanitem studyplanitem[]
+}
+
+model studyplanitem {
+  SPIID     Int        @id @default(autoincrement())
+  SPID      Int
+  Name      String     @db.VarChar(50)
+  exercise  exercise[]
+  studyplan studyplan  @relation(fields: [SPID], references: [SPID], onDelete: NoAction, onUpdate: NoAction, map: "studyplanitem_ibfk_1")
+
+  @@index([SPID], map: "SPID")
+}
+
 enum exercise_Difficulty {
   Easy
   Medium
@@ -218,4 +243,9 @@ enum notification_Type {
   Comment
   Friendship
   Like
+}
+
+enum exercise_status {
+  Solved
+  Unattempted
 }

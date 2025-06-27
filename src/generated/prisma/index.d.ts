@@ -78,6 +78,16 @@ export type lesson = $Result.DefaultSelection<Prisma.$lessonPayload>
  * 
  */
 export type notification = $Result.DefaultSelection<Prisma.$notificationPayload>
+/**
+ * Model studyplan
+ * 
+ */
+export type studyplan = $Result.DefaultSelection<Prisma.$studyplanPayload>
+/**
+ * Model studyplanitem
+ * 
+ */
+export type studyplanitem = $Result.DefaultSelection<Prisma.$studyplanitemPayload>
 
 /**
  * Enums
@@ -136,6 +146,14 @@ export const notification_Type: {
 
 export type notification_Type = (typeof notification_Type)[keyof typeof notification_Type]
 
+
+export const exercise_status: {
+  Solved: 'Solved',
+  Unattempted: 'Unattempted'
+};
+
+export type exercise_status = (typeof exercise_status)[keyof typeof exercise_status]
+
 }
 
 export type exercise_Difficulty = $Enums.exercise_Difficulty
@@ -161,6 +179,10 @@ export const testcaseresult_Result: typeof $Enums.testcaseresult_Result
 export type notification_Type = $Enums.notification_Type
 
 export const notification_Type: typeof $Enums.notification_Type
+
+export type exercise_status = $Enums.exercise_status
+
+export const exercise_status: typeof $Enums.exercise_status
 
 /**
  * ##  Prisma Client ʲˢ
@@ -416,6 +438,26 @@ export class PrismaClient<
     * ```
     */
   get notification(): Prisma.notificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.studyplan`: Exposes CRUD operations for the **studyplan** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Studyplans
+    * const studyplans = await prisma.studyplan.findMany()
+    * ```
+    */
+  get studyplan(): Prisma.studyplanDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.studyplanitem`: Exposes CRUD operations for the **studyplanitem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Studyplanitems
+    * const studyplanitems = await prisma.studyplanitem.findMany()
+    * ```
+    */
+  get studyplanitem(): Prisma.studyplanitemDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -868,7 +910,9 @@ export namespace Prisma {
     commentlike: 'commentlike',
     exerciselike: 'exerciselike',
     lesson: 'lesson',
-    notification: 'notification'
+    notification: 'notification',
+    studyplan: 'studyplan',
+    studyplanitem: 'studyplanitem'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -887,7 +931,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "exercise" | "submission" | "testcase" | "testcaseresult" | "topic" | "user" | "friendship" | "chapter" | "comment" | "commentlike" | "exerciselike" | "lesson" | "notification"
+      modelProps: "exercise" | "submission" | "testcase" | "testcaseresult" | "topic" | "user" | "friendship" | "chapter" | "comment" | "commentlike" | "exerciselike" | "lesson" | "notification" | "studyplan" | "studyplanitem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1749,6 +1793,138 @@ export namespace Prisma {
           }
         }
       }
+      studyplan: {
+        payload: Prisma.$studyplanPayload<ExtArgs>
+        fields: Prisma.studyplanFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.studyplanFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.studyplanFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanPayload>
+          }
+          findFirst: {
+            args: Prisma.studyplanFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.studyplanFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanPayload>
+          }
+          findMany: {
+            args: Prisma.studyplanFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanPayload>[]
+          }
+          create: {
+            args: Prisma.studyplanCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanPayload>
+          }
+          createMany: {
+            args: Prisma.studyplanCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.studyplanDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanPayload>
+          }
+          update: {
+            args: Prisma.studyplanUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanPayload>
+          }
+          deleteMany: {
+            args: Prisma.studyplanDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.studyplanUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.studyplanUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanPayload>
+          }
+          aggregate: {
+            args: Prisma.StudyplanAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStudyplan>
+          }
+          groupBy: {
+            args: Prisma.studyplanGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StudyplanGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.studyplanCountArgs<ExtArgs>
+            result: $Utils.Optional<StudyplanCountAggregateOutputType> | number
+          }
+        }
+      }
+      studyplanitem: {
+        payload: Prisma.$studyplanitemPayload<ExtArgs>
+        fields: Prisma.studyplanitemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.studyplanitemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanitemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.studyplanitemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanitemPayload>
+          }
+          findFirst: {
+            args: Prisma.studyplanitemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanitemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.studyplanitemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanitemPayload>
+          }
+          findMany: {
+            args: Prisma.studyplanitemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanitemPayload>[]
+          }
+          create: {
+            args: Prisma.studyplanitemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanitemPayload>
+          }
+          createMany: {
+            args: Prisma.studyplanitemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.studyplanitemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanitemPayload>
+          }
+          update: {
+            args: Prisma.studyplanitemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanitemPayload>
+          }
+          deleteMany: {
+            args: Prisma.studyplanitemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.studyplanitemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.studyplanitemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanitemPayload>
+          }
+          aggregate: {
+            args: Prisma.StudyplanitemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStudyplanitem>
+          }
+          groupBy: {
+            args: Prisma.studyplanitemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StudyplanitemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.studyplanitemCountArgs<ExtArgs>
+            result: $Utils.Optional<StudyplanitemCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1846,6 +2022,8 @@ export namespace Prisma {
     exerciselike?: exerciselikeOmit
     lesson?: lessonOmit
     notification?: notificationOmit
+    studyplan?: studyplanOmit
+    studyplanitem?: studyplanitemOmit
   }
 
   /* Types for Logging */
@@ -2283,6 +2461,68 @@ export namespace Prisma {
 
 
   /**
+   * Count Type StudyplanCountOutputType
+   */
+
+  export type StudyplanCountOutputType = {
+    studyplanitem: number
+  }
+
+  export type StudyplanCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    studyplanitem?: boolean | StudyplanCountOutputTypeCountStudyplanitemArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * StudyplanCountOutputType without action
+   */
+  export type StudyplanCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudyplanCountOutputType
+     */
+    select?: StudyplanCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * StudyplanCountOutputType without action
+   */
+  export type StudyplanCountOutputTypeCountStudyplanitemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: studyplanitemWhereInput
+  }
+
+
+  /**
+   * Count Type StudyplanitemCountOutputType
+   */
+
+  export type StudyplanitemCountOutputType = {
+    exercise: number
+  }
+
+  export type StudyplanitemCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    exercise?: boolean | StudyplanitemCountOutputTypeCountExerciseArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * StudyplanitemCountOutputType without action
+   */
+  export type StudyplanitemCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StudyplanitemCountOutputType
+     */
+    select?: StudyplanitemCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * StudyplanitemCountOutputType without action
+   */
+  export type StudyplanitemCountOutputTypeCountExerciseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: exerciseWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -2301,41 +2541,49 @@ export namespace Prisma {
   export type ExerciseAvgAggregateOutputType = {
     EID: number | null
     TpID: number | null
+    SPIID: number | null
   }
 
   export type ExerciseSumAggregateOutputType = {
     EID: number | null
     TpID: number | null
+    SPIID: number | null
   }
 
   export type ExerciseMinAggregateOutputType = {
     EID: number | null
     TpID: number | null
+    SPIID: number | null
     Name: string | null
     Slug: string | null
     Content: string | null
     Difficulty: $Enums.exercise_Difficulty | null
     template: string | null
+    status: $Enums.exercise_status | null
   }
 
   export type ExerciseMaxAggregateOutputType = {
     EID: number | null
     TpID: number | null
+    SPIID: number | null
     Name: string | null
     Slug: string | null
     Content: string | null
     Difficulty: $Enums.exercise_Difficulty | null
     template: string | null
+    status: $Enums.exercise_status | null
   }
 
   export type ExerciseCountAggregateOutputType = {
     EID: number
     TpID: number
+    SPIID: number
     Name: number
     Slug: number
     Content: number
     Difficulty: number
     template: number
+    status: number
     _all: number
   }
 
@@ -2343,41 +2591,49 @@ export namespace Prisma {
   export type ExerciseAvgAggregateInputType = {
     EID?: true
     TpID?: true
+    SPIID?: true
   }
 
   export type ExerciseSumAggregateInputType = {
     EID?: true
     TpID?: true
+    SPIID?: true
   }
 
   export type ExerciseMinAggregateInputType = {
     EID?: true
     TpID?: true
+    SPIID?: true
     Name?: true
     Slug?: true
     Content?: true
     Difficulty?: true
     template?: true
+    status?: true
   }
 
   export type ExerciseMaxAggregateInputType = {
     EID?: true
     TpID?: true
+    SPIID?: true
     Name?: true
     Slug?: true
     Content?: true
     Difficulty?: true
     template?: true
+    status?: true
   }
 
   export type ExerciseCountAggregateInputType = {
     EID?: true
     TpID?: true
+    SPIID?: true
     Name?: true
     Slug?: true
     Content?: true
     Difficulty?: true
     template?: true
+    status?: true
     _all?: true
   }
 
@@ -2469,12 +2725,14 @@ export namespace Prisma {
 
   export type ExerciseGroupByOutputType = {
     EID: number
-    TpID: number
+    TpID: number | null
+    SPIID: number | null
     Name: string
     Slug: string
     Content: string
     Difficulty: $Enums.exercise_Difficulty
     template: string | null
+    status: $Enums.exercise_status
     _count: ExerciseCountAggregateOutputType | null
     _avg: ExerciseAvgAggregateOutputType | null
     _sum: ExerciseSumAggregateOutputType | null
@@ -2499,13 +2757,16 @@ export namespace Prisma {
   export type exerciseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     EID?: boolean
     TpID?: boolean
+    SPIID?: boolean
     Name?: boolean
     Slug?: boolean
     Content?: boolean
     Difficulty?: boolean
     template?: boolean
+    status?: boolean
     comment?: boolean | exercise$commentArgs<ExtArgs>
-    topic?: boolean | topicDefaultArgs<ExtArgs>
+    topic?: boolean | exercise$topicArgs<ExtArgs>
+    studyplanitem?: boolean | exercise$studyplanitemArgs<ExtArgs>
     exerciselike?: boolean | exercise$exerciselikeArgs<ExtArgs>
     submission?: boolean | exercise$submissionArgs<ExtArgs>
     testcase?: boolean | exercise$testcaseArgs<ExtArgs>
@@ -2517,17 +2778,20 @@ export namespace Prisma {
   export type exerciseSelectScalar = {
     EID?: boolean
     TpID?: boolean
+    SPIID?: boolean
     Name?: boolean
     Slug?: boolean
     Content?: boolean
     Difficulty?: boolean
     template?: boolean
+    status?: boolean
   }
 
-  export type exerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"EID" | "TpID" | "Name" | "Slug" | "Content" | "Difficulty" | "template", ExtArgs["result"]["exercise"]>
+  export type exerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"EID" | "TpID" | "SPIID" | "Name" | "Slug" | "Content" | "Difficulty" | "template" | "status", ExtArgs["result"]["exercise"]>
   export type exerciseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     comment?: boolean | exercise$commentArgs<ExtArgs>
-    topic?: boolean | topicDefaultArgs<ExtArgs>
+    topic?: boolean | exercise$topicArgs<ExtArgs>
+    studyplanitem?: boolean | exercise$studyplanitemArgs<ExtArgs>
     exerciselike?: boolean | exercise$exerciselikeArgs<ExtArgs>
     submission?: boolean | exercise$submissionArgs<ExtArgs>
     testcase?: boolean | exercise$testcaseArgs<ExtArgs>
@@ -2538,19 +2802,22 @@ export namespace Prisma {
     name: "exercise"
     objects: {
       comment: Prisma.$commentPayload<ExtArgs>[]
-      topic: Prisma.$topicPayload<ExtArgs>
+      topic: Prisma.$topicPayload<ExtArgs> | null
+      studyplanitem: Prisma.$studyplanitemPayload<ExtArgs> | null
       exerciselike: Prisma.$exerciselikePayload<ExtArgs>[]
       submission: Prisma.$submissionPayload<ExtArgs>[]
       testcase: Prisma.$testcasePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       EID: number
-      TpID: number
+      TpID: number | null
+      SPIID: number | null
       Name: string
       Slug: string
       Content: string
       Difficulty: $Enums.exercise_Difficulty
       template: string | null
+      status: $Enums.exercise_status
     }, ExtArgs["result"]["exercise"]>
     composites: {}
   }
@@ -2892,7 +3159,8 @@ export namespace Prisma {
   export interface Prisma__exerciseClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     comment<T extends exercise$commentArgs<ExtArgs> = {}>(args?: Subset<T, exercise$commentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$commentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    topic<T extends topicDefaultArgs<ExtArgs> = {}>(args?: Subset<T, topicDefaultArgs<ExtArgs>>): Prisma__topicClient<$Result.GetResult<Prisma.$topicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    topic<T extends exercise$topicArgs<ExtArgs> = {}>(args?: Subset<T, exercise$topicArgs<ExtArgs>>): Prisma__topicClient<$Result.GetResult<Prisma.$topicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    studyplanitem<T extends exercise$studyplanitemArgs<ExtArgs> = {}>(args?: Subset<T, exercise$studyplanitemArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     exerciselike<T extends exercise$exerciselikeArgs<ExtArgs> = {}>(args?: Subset<T, exercise$exerciselikeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exerciselikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     submission<T extends exercise$submissionArgs<ExtArgs> = {}>(args?: Subset<T, exercise$submissionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$submissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     testcase<T extends exercise$testcaseArgs<ExtArgs> = {}>(args?: Subset<T, exercise$testcaseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$testcasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2927,11 +3195,13 @@ export namespace Prisma {
   interface exerciseFieldRefs {
     readonly EID: FieldRef<"exercise", 'Int'>
     readonly TpID: FieldRef<"exercise", 'Int'>
+    readonly SPIID: FieldRef<"exercise", 'Int'>
     readonly Name: FieldRef<"exercise", 'String'>
     readonly Slug: FieldRef<"exercise", 'String'>
     readonly Content: FieldRef<"exercise", 'String'>
     readonly Difficulty: FieldRef<"exercise", 'exercise_Difficulty'>
     readonly template: FieldRef<"exercise", 'String'>
+    readonly status: FieldRef<"exercise", 'exercise_status'>
   }
     
 
@@ -3296,6 +3566,44 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+  /**
+   * exercise.topic
+   */
+  export type exercise$topicArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the topic
+     */
+    select?: topicSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the topic
+     */
+    omit?: topicOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: topicInclude<ExtArgs> | null
+    where?: topicWhereInput
+  }
+
+  /**
+   * exercise.studyplanitem
+   */
+  export type exercise$studyplanitemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    where?: studyplanitemWhereInput
   }
 
   /**
@@ -4584,7 +4892,7 @@ export namespace Prisma {
   export type TestcaseGroupByOutputType = {
     TCID: number
     EID: number
-    Input: string
+    Input: string | null
     ExpectedOutput: string
     isHidden: boolean | null
     _count: TestcaseCountAggregateOutputType | null
@@ -4645,7 +4953,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       TCID: number
       EID: number
-      Input: string
+      Input: string | null
       ExpectedOutput: string
       isHidden: boolean | null
     }, ExtArgs["result"]["testcase"]>
@@ -15512,6 +15820,1992 @@ export namespace Prisma {
 
 
   /**
+   * Model studyplan
+   */
+
+  export type AggregateStudyplan = {
+    _count: StudyplanCountAggregateOutputType | null
+    _avg: StudyplanAvgAggregateOutputType | null
+    _sum: StudyplanSumAggregateOutputType | null
+    _min: StudyplanMinAggregateOutputType | null
+    _max: StudyplanMaxAggregateOutputType | null
+  }
+
+  export type StudyplanAvgAggregateOutputType = {
+    SPID: number | null
+  }
+
+  export type StudyplanSumAggregateOutputType = {
+    SPID: number | null
+  }
+
+  export type StudyplanMinAggregateOutputType = {
+    SPID: number | null
+    Name: string | null
+    Description: string | null
+    StartTime: Date | null
+    EndTime: Date | null
+    Icon: string | null
+    Slug: string | null
+  }
+
+  export type StudyplanMaxAggregateOutputType = {
+    SPID: number | null
+    Name: string | null
+    Description: string | null
+    StartTime: Date | null
+    EndTime: Date | null
+    Icon: string | null
+    Slug: string | null
+  }
+
+  export type StudyplanCountAggregateOutputType = {
+    SPID: number
+    Name: number
+    Description: number
+    StartTime: number
+    EndTime: number
+    Icon: number
+    Slug: number
+    _all: number
+  }
+
+
+  export type StudyplanAvgAggregateInputType = {
+    SPID?: true
+  }
+
+  export type StudyplanSumAggregateInputType = {
+    SPID?: true
+  }
+
+  export type StudyplanMinAggregateInputType = {
+    SPID?: true
+    Name?: true
+    Description?: true
+    StartTime?: true
+    EndTime?: true
+    Icon?: true
+    Slug?: true
+  }
+
+  export type StudyplanMaxAggregateInputType = {
+    SPID?: true
+    Name?: true
+    Description?: true
+    StartTime?: true
+    EndTime?: true
+    Icon?: true
+    Slug?: true
+  }
+
+  export type StudyplanCountAggregateInputType = {
+    SPID?: true
+    Name?: true
+    Description?: true
+    StartTime?: true
+    EndTime?: true
+    Icon?: true
+    Slug?: true
+    _all?: true
+  }
+
+  export type StudyplanAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which studyplan to aggregate.
+     */
+    where?: studyplanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplans to fetch.
+     */
+    orderBy?: studyplanOrderByWithRelationInput | studyplanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: studyplanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned studyplans
+    **/
+    _count?: true | StudyplanCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StudyplanAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StudyplanSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StudyplanMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StudyplanMaxAggregateInputType
+  }
+
+  export type GetStudyplanAggregateType<T extends StudyplanAggregateArgs> = {
+        [P in keyof T & keyof AggregateStudyplan]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStudyplan[P]>
+      : GetScalarType<T[P], AggregateStudyplan[P]>
+  }
+
+
+
+
+  export type studyplanGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: studyplanWhereInput
+    orderBy?: studyplanOrderByWithAggregationInput | studyplanOrderByWithAggregationInput[]
+    by: StudyplanScalarFieldEnum[] | StudyplanScalarFieldEnum
+    having?: studyplanScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StudyplanCountAggregateInputType | true
+    _avg?: StudyplanAvgAggregateInputType
+    _sum?: StudyplanSumAggregateInputType
+    _min?: StudyplanMinAggregateInputType
+    _max?: StudyplanMaxAggregateInputType
+  }
+
+  export type StudyplanGroupByOutputType = {
+    SPID: number
+    Name: string
+    Description: string
+    StartTime: Date | null
+    EndTime: Date | null
+    Icon: string | null
+    Slug: string | null
+    _count: StudyplanCountAggregateOutputType | null
+    _avg: StudyplanAvgAggregateOutputType | null
+    _sum: StudyplanSumAggregateOutputType | null
+    _min: StudyplanMinAggregateOutputType | null
+    _max: StudyplanMaxAggregateOutputType | null
+  }
+
+  type GetStudyplanGroupByPayload<T extends studyplanGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StudyplanGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StudyplanGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StudyplanGroupByOutputType[P]>
+            : GetScalarType<T[P], StudyplanGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type studyplanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    SPID?: boolean
+    Name?: boolean
+    Description?: boolean
+    StartTime?: boolean
+    EndTime?: boolean
+    Icon?: boolean
+    Slug?: boolean
+    studyplanitem?: boolean | studyplan$studyplanitemArgs<ExtArgs>
+    _count?: boolean | StudyplanCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["studyplan"]>
+
+
+
+  export type studyplanSelectScalar = {
+    SPID?: boolean
+    Name?: boolean
+    Description?: boolean
+    StartTime?: boolean
+    EndTime?: boolean
+    Icon?: boolean
+    Slug?: boolean
+  }
+
+  export type studyplanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"SPID" | "Name" | "Description" | "StartTime" | "EndTime" | "Icon" | "Slug", ExtArgs["result"]["studyplan"]>
+  export type studyplanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    studyplanitem?: boolean | studyplan$studyplanitemArgs<ExtArgs>
+    _count?: boolean | StudyplanCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $studyplanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "studyplan"
+    objects: {
+      studyplanitem: Prisma.$studyplanitemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      SPID: number
+      Name: string
+      Description: string
+      StartTime: Date | null
+      EndTime: Date | null
+      Icon: string | null
+      Slug: string | null
+    }, ExtArgs["result"]["studyplan"]>
+    composites: {}
+  }
+
+  type studyplanGetPayload<S extends boolean | null | undefined | studyplanDefaultArgs> = $Result.GetResult<Prisma.$studyplanPayload, S>
+
+  type studyplanCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<studyplanFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StudyplanCountAggregateInputType | true
+    }
+
+  export interface studyplanDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['studyplan'], meta: { name: 'studyplan' } }
+    /**
+     * Find zero or one Studyplan that matches the filter.
+     * @param {studyplanFindUniqueArgs} args - Arguments to find a Studyplan
+     * @example
+     * // Get one Studyplan
+     * const studyplan = await prisma.studyplan.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends studyplanFindUniqueArgs>(args: SelectSubset<T, studyplanFindUniqueArgs<ExtArgs>>): Prisma__studyplanClient<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Studyplan that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {studyplanFindUniqueOrThrowArgs} args - Arguments to find a Studyplan
+     * @example
+     * // Get one Studyplan
+     * const studyplan = await prisma.studyplan.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends studyplanFindUniqueOrThrowArgs>(args: SelectSubset<T, studyplanFindUniqueOrThrowArgs<ExtArgs>>): Prisma__studyplanClient<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Studyplan that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanFindFirstArgs} args - Arguments to find a Studyplan
+     * @example
+     * // Get one Studyplan
+     * const studyplan = await prisma.studyplan.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends studyplanFindFirstArgs>(args?: SelectSubset<T, studyplanFindFirstArgs<ExtArgs>>): Prisma__studyplanClient<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Studyplan that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanFindFirstOrThrowArgs} args - Arguments to find a Studyplan
+     * @example
+     * // Get one Studyplan
+     * const studyplan = await prisma.studyplan.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends studyplanFindFirstOrThrowArgs>(args?: SelectSubset<T, studyplanFindFirstOrThrowArgs<ExtArgs>>): Prisma__studyplanClient<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Studyplans that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Studyplans
+     * const studyplans = await prisma.studyplan.findMany()
+     * 
+     * // Get first 10 Studyplans
+     * const studyplans = await prisma.studyplan.findMany({ take: 10 })
+     * 
+     * // Only select the `SPID`
+     * const studyplanWithSPIDOnly = await prisma.studyplan.findMany({ select: { SPID: true } })
+     * 
+     */
+    findMany<T extends studyplanFindManyArgs>(args?: SelectSubset<T, studyplanFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Studyplan.
+     * @param {studyplanCreateArgs} args - Arguments to create a Studyplan.
+     * @example
+     * // Create one Studyplan
+     * const Studyplan = await prisma.studyplan.create({
+     *   data: {
+     *     // ... data to create a Studyplan
+     *   }
+     * })
+     * 
+     */
+    create<T extends studyplanCreateArgs>(args: SelectSubset<T, studyplanCreateArgs<ExtArgs>>): Prisma__studyplanClient<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Studyplans.
+     * @param {studyplanCreateManyArgs} args - Arguments to create many Studyplans.
+     * @example
+     * // Create many Studyplans
+     * const studyplan = await prisma.studyplan.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends studyplanCreateManyArgs>(args?: SelectSubset<T, studyplanCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Studyplan.
+     * @param {studyplanDeleteArgs} args - Arguments to delete one Studyplan.
+     * @example
+     * // Delete one Studyplan
+     * const Studyplan = await prisma.studyplan.delete({
+     *   where: {
+     *     // ... filter to delete one Studyplan
+     *   }
+     * })
+     * 
+     */
+    delete<T extends studyplanDeleteArgs>(args: SelectSubset<T, studyplanDeleteArgs<ExtArgs>>): Prisma__studyplanClient<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Studyplan.
+     * @param {studyplanUpdateArgs} args - Arguments to update one Studyplan.
+     * @example
+     * // Update one Studyplan
+     * const studyplan = await prisma.studyplan.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends studyplanUpdateArgs>(args: SelectSubset<T, studyplanUpdateArgs<ExtArgs>>): Prisma__studyplanClient<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Studyplans.
+     * @param {studyplanDeleteManyArgs} args - Arguments to filter Studyplans to delete.
+     * @example
+     * // Delete a few Studyplans
+     * const { count } = await prisma.studyplan.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends studyplanDeleteManyArgs>(args?: SelectSubset<T, studyplanDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Studyplans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Studyplans
+     * const studyplan = await prisma.studyplan.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends studyplanUpdateManyArgs>(args: SelectSubset<T, studyplanUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Studyplan.
+     * @param {studyplanUpsertArgs} args - Arguments to update or create a Studyplan.
+     * @example
+     * // Update or create a Studyplan
+     * const studyplan = await prisma.studyplan.upsert({
+     *   create: {
+     *     // ... data to create a Studyplan
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Studyplan we want to update
+     *   }
+     * })
+     */
+    upsert<T extends studyplanUpsertArgs>(args: SelectSubset<T, studyplanUpsertArgs<ExtArgs>>): Prisma__studyplanClient<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Studyplans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanCountArgs} args - Arguments to filter Studyplans to count.
+     * @example
+     * // Count the number of Studyplans
+     * const count = await prisma.studyplan.count({
+     *   where: {
+     *     // ... the filter for the Studyplans we want to count
+     *   }
+     * })
+    **/
+    count<T extends studyplanCountArgs>(
+      args?: Subset<T, studyplanCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StudyplanCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Studyplan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudyplanAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StudyplanAggregateArgs>(args: Subset<T, StudyplanAggregateArgs>): Prisma.PrismaPromise<GetStudyplanAggregateType<T>>
+
+    /**
+     * Group by Studyplan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends studyplanGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: studyplanGroupByArgs['orderBy'] }
+        : { orderBy?: studyplanGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, studyplanGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStudyplanGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the studyplan model
+   */
+  readonly fields: studyplanFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for studyplan.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__studyplanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    studyplanitem<T extends studyplan$studyplanitemArgs<ExtArgs> = {}>(args?: Subset<T, studyplan$studyplanitemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the studyplan model
+   */
+  interface studyplanFieldRefs {
+    readonly SPID: FieldRef<"studyplan", 'Int'>
+    readonly Name: FieldRef<"studyplan", 'String'>
+    readonly Description: FieldRef<"studyplan", 'String'>
+    readonly StartTime: FieldRef<"studyplan", 'DateTime'>
+    readonly EndTime: FieldRef<"studyplan", 'DateTime'>
+    readonly Icon: FieldRef<"studyplan", 'String'>
+    readonly Slug: FieldRef<"studyplan", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * studyplan findUnique
+   */
+  export type studyplanFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplan
+     */
+    select?: studyplanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplan
+     */
+    omit?: studyplanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplan to fetch.
+     */
+    where: studyplanWhereUniqueInput
+  }
+
+  /**
+   * studyplan findUniqueOrThrow
+   */
+  export type studyplanFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplan
+     */
+    select?: studyplanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplan
+     */
+    omit?: studyplanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplan to fetch.
+     */
+    where: studyplanWhereUniqueInput
+  }
+
+  /**
+   * studyplan findFirst
+   */
+  export type studyplanFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplan
+     */
+    select?: studyplanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplan
+     */
+    omit?: studyplanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplan to fetch.
+     */
+    where?: studyplanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplans to fetch.
+     */
+    orderBy?: studyplanOrderByWithRelationInput | studyplanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for studyplans.
+     */
+    cursor?: studyplanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of studyplans.
+     */
+    distinct?: StudyplanScalarFieldEnum | StudyplanScalarFieldEnum[]
+  }
+
+  /**
+   * studyplan findFirstOrThrow
+   */
+  export type studyplanFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplan
+     */
+    select?: studyplanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplan
+     */
+    omit?: studyplanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplan to fetch.
+     */
+    where?: studyplanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplans to fetch.
+     */
+    orderBy?: studyplanOrderByWithRelationInput | studyplanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for studyplans.
+     */
+    cursor?: studyplanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of studyplans.
+     */
+    distinct?: StudyplanScalarFieldEnum | StudyplanScalarFieldEnum[]
+  }
+
+  /**
+   * studyplan findMany
+   */
+  export type studyplanFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplan
+     */
+    select?: studyplanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplan
+     */
+    omit?: studyplanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplans to fetch.
+     */
+    where?: studyplanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplans to fetch.
+     */
+    orderBy?: studyplanOrderByWithRelationInput | studyplanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing studyplans.
+     */
+    cursor?: studyplanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplans.
+     */
+    skip?: number
+    distinct?: StudyplanScalarFieldEnum | StudyplanScalarFieldEnum[]
+  }
+
+  /**
+   * studyplan create
+   */
+  export type studyplanCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplan
+     */
+    select?: studyplanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplan
+     */
+    omit?: studyplanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanInclude<ExtArgs> | null
+    /**
+     * The data needed to create a studyplan.
+     */
+    data: XOR<studyplanCreateInput, studyplanUncheckedCreateInput>
+  }
+
+  /**
+   * studyplan createMany
+   */
+  export type studyplanCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many studyplans.
+     */
+    data: studyplanCreateManyInput | studyplanCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * studyplan update
+   */
+  export type studyplanUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplan
+     */
+    select?: studyplanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplan
+     */
+    omit?: studyplanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanInclude<ExtArgs> | null
+    /**
+     * The data needed to update a studyplan.
+     */
+    data: XOR<studyplanUpdateInput, studyplanUncheckedUpdateInput>
+    /**
+     * Choose, which studyplan to update.
+     */
+    where: studyplanWhereUniqueInput
+  }
+
+  /**
+   * studyplan updateMany
+   */
+  export type studyplanUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update studyplans.
+     */
+    data: XOR<studyplanUpdateManyMutationInput, studyplanUncheckedUpdateManyInput>
+    /**
+     * Filter which studyplans to update
+     */
+    where?: studyplanWhereInput
+    /**
+     * Limit how many studyplans to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * studyplan upsert
+   */
+  export type studyplanUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplan
+     */
+    select?: studyplanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplan
+     */
+    omit?: studyplanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanInclude<ExtArgs> | null
+    /**
+     * The filter to search for the studyplan to update in case it exists.
+     */
+    where: studyplanWhereUniqueInput
+    /**
+     * In case the studyplan found by the `where` argument doesn't exist, create a new studyplan with this data.
+     */
+    create: XOR<studyplanCreateInput, studyplanUncheckedCreateInput>
+    /**
+     * In case the studyplan was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<studyplanUpdateInput, studyplanUncheckedUpdateInput>
+  }
+
+  /**
+   * studyplan delete
+   */
+  export type studyplanDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplan
+     */
+    select?: studyplanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplan
+     */
+    omit?: studyplanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanInclude<ExtArgs> | null
+    /**
+     * Filter which studyplan to delete.
+     */
+    where: studyplanWhereUniqueInput
+  }
+
+  /**
+   * studyplan deleteMany
+   */
+  export type studyplanDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which studyplans to delete
+     */
+    where?: studyplanWhereInput
+    /**
+     * Limit how many studyplans to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * studyplan.studyplanitem
+   */
+  export type studyplan$studyplanitemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    where?: studyplanitemWhereInput
+    orderBy?: studyplanitemOrderByWithRelationInput | studyplanitemOrderByWithRelationInput[]
+    cursor?: studyplanitemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudyplanitemScalarFieldEnum | StudyplanitemScalarFieldEnum[]
+  }
+
+  /**
+   * studyplan without action
+   */
+  export type studyplanDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplan
+     */
+    select?: studyplanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplan
+     */
+    omit?: studyplanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model studyplanitem
+   */
+
+  export type AggregateStudyplanitem = {
+    _count: StudyplanitemCountAggregateOutputType | null
+    _avg: StudyplanitemAvgAggregateOutputType | null
+    _sum: StudyplanitemSumAggregateOutputType | null
+    _min: StudyplanitemMinAggregateOutputType | null
+    _max: StudyplanitemMaxAggregateOutputType | null
+  }
+
+  export type StudyplanitemAvgAggregateOutputType = {
+    SPIID: number | null
+    SPID: number | null
+  }
+
+  export type StudyplanitemSumAggregateOutputType = {
+    SPIID: number | null
+    SPID: number | null
+  }
+
+  export type StudyplanitemMinAggregateOutputType = {
+    SPIID: number | null
+    SPID: number | null
+    Name: string | null
+  }
+
+  export type StudyplanitemMaxAggregateOutputType = {
+    SPIID: number | null
+    SPID: number | null
+    Name: string | null
+  }
+
+  export type StudyplanitemCountAggregateOutputType = {
+    SPIID: number
+    SPID: number
+    Name: number
+    _all: number
+  }
+
+
+  export type StudyplanitemAvgAggregateInputType = {
+    SPIID?: true
+    SPID?: true
+  }
+
+  export type StudyplanitemSumAggregateInputType = {
+    SPIID?: true
+    SPID?: true
+  }
+
+  export type StudyplanitemMinAggregateInputType = {
+    SPIID?: true
+    SPID?: true
+    Name?: true
+  }
+
+  export type StudyplanitemMaxAggregateInputType = {
+    SPIID?: true
+    SPID?: true
+    Name?: true
+  }
+
+  export type StudyplanitemCountAggregateInputType = {
+    SPIID?: true
+    SPID?: true
+    Name?: true
+    _all?: true
+  }
+
+  export type StudyplanitemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which studyplanitem to aggregate.
+     */
+    where?: studyplanitemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplanitems to fetch.
+     */
+    orderBy?: studyplanitemOrderByWithRelationInput | studyplanitemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: studyplanitemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplanitems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplanitems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned studyplanitems
+    **/
+    _count?: true | StudyplanitemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StudyplanitemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StudyplanitemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StudyplanitemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StudyplanitemMaxAggregateInputType
+  }
+
+  export type GetStudyplanitemAggregateType<T extends StudyplanitemAggregateArgs> = {
+        [P in keyof T & keyof AggregateStudyplanitem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStudyplanitem[P]>
+      : GetScalarType<T[P], AggregateStudyplanitem[P]>
+  }
+
+
+
+
+  export type studyplanitemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: studyplanitemWhereInput
+    orderBy?: studyplanitemOrderByWithAggregationInput | studyplanitemOrderByWithAggregationInput[]
+    by: StudyplanitemScalarFieldEnum[] | StudyplanitemScalarFieldEnum
+    having?: studyplanitemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StudyplanitemCountAggregateInputType | true
+    _avg?: StudyplanitemAvgAggregateInputType
+    _sum?: StudyplanitemSumAggregateInputType
+    _min?: StudyplanitemMinAggregateInputType
+    _max?: StudyplanitemMaxAggregateInputType
+  }
+
+  export type StudyplanitemGroupByOutputType = {
+    SPIID: number
+    SPID: number
+    Name: string
+    _count: StudyplanitemCountAggregateOutputType | null
+    _avg: StudyplanitemAvgAggregateOutputType | null
+    _sum: StudyplanitemSumAggregateOutputType | null
+    _min: StudyplanitemMinAggregateOutputType | null
+    _max: StudyplanitemMaxAggregateOutputType | null
+  }
+
+  type GetStudyplanitemGroupByPayload<T extends studyplanitemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StudyplanitemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StudyplanitemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StudyplanitemGroupByOutputType[P]>
+            : GetScalarType<T[P], StudyplanitemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type studyplanitemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    SPIID?: boolean
+    SPID?: boolean
+    Name?: boolean
+    exercise?: boolean | studyplanitem$exerciseArgs<ExtArgs>
+    studyplan?: boolean | studyplanDefaultArgs<ExtArgs>
+    _count?: boolean | StudyplanitemCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["studyplanitem"]>
+
+
+
+  export type studyplanitemSelectScalar = {
+    SPIID?: boolean
+    SPID?: boolean
+    Name?: boolean
+  }
+
+  export type studyplanitemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"SPIID" | "SPID" | "Name", ExtArgs["result"]["studyplanitem"]>
+  export type studyplanitemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    exercise?: boolean | studyplanitem$exerciseArgs<ExtArgs>
+    studyplan?: boolean | studyplanDefaultArgs<ExtArgs>
+    _count?: boolean | StudyplanitemCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $studyplanitemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "studyplanitem"
+    objects: {
+      exercise: Prisma.$exercisePayload<ExtArgs>[]
+      studyplan: Prisma.$studyplanPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      SPIID: number
+      SPID: number
+      Name: string
+    }, ExtArgs["result"]["studyplanitem"]>
+    composites: {}
+  }
+
+  type studyplanitemGetPayload<S extends boolean | null | undefined | studyplanitemDefaultArgs> = $Result.GetResult<Prisma.$studyplanitemPayload, S>
+
+  type studyplanitemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<studyplanitemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StudyplanitemCountAggregateInputType | true
+    }
+
+  export interface studyplanitemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['studyplanitem'], meta: { name: 'studyplanitem' } }
+    /**
+     * Find zero or one Studyplanitem that matches the filter.
+     * @param {studyplanitemFindUniqueArgs} args - Arguments to find a Studyplanitem
+     * @example
+     * // Get one Studyplanitem
+     * const studyplanitem = await prisma.studyplanitem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends studyplanitemFindUniqueArgs>(args: SelectSubset<T, studyplanitemFindUniqueArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Studyplanitem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {studyplanitemFindUniqueOrThrowArgs} args - Arguments to find a Studyplanitem
+     * @example
+     * // Get one Studyplanitem
+     * const studyplanitem = await prisma.studyplanitem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends studyplanitemFindUniqueOrThrowArgs>(args: SelectSubset<T, studyplanitemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Studyplanitem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanitemFindFirstArgs} args - Arguments to find a Studyplanitem
+     * @example
+     * // Get one Studyplanitem
+     * const studyplanitem = await prisma.studyplanitem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends studyplanitemFindFirstArgs>(args?: SelectSubset<T, studyplanitemFindFirstArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Studyplanitem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanitemFindFirstOrThrowArgs} args - Arguments to find a Studyplanitem
+     * @example
+     * // Get one Studyplanitem
+     * const studyplanitem = await prisma.studyplanitem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends studyplanitemFindFirstOrThrowArgs>(args?: SelectSubset<T, studyplanitemFindFirstOrThrowArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Studyplanitems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanitemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Studyplanitems
+     * const studyplanitems = await prisma.studyplanitem.findMany()
+     * 
+     * // Get first 10 Studyplanitems
+     * const studyplanitems = await prisma.studyplanitem.findMany({ take: 10 })
+     * 
+     * // Only select the `SPIID`
+     * const studyplanitemWithSPIIDOnly = await prisma.studyplanitem.findMany({ select: { SPIID: true } })
+     * 
+     */
+    findMany<T extends studyplanitemFindManyArgs>(args?: SelectSubset<T, studyplanitemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Studyplanitem.
+     * @param {studyplanitemCreateArgs} args - Arguments to create a Studyplanitem.
+     * @example
+     * // Create one Studyplanitem
+     * const Studyplanitem = await prisma.studyplanitem.create({
+     *   data: {
+     *     // ... data to create a Studyplanitem
+     *   }
+     * })
+     * 
+     */
+    create<T extends studyplanitemCreateArgs>(args: SelectSubset<T, studyplanitemCreateArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Studyplanitems.
+     * @param {studyplanitemCreateManyArgs} args - Arguments to create many Studyplanitems.
+     * @example
+     * // Create many Studyplanitems
+     * const studyplanitem = await prisma.studyplanitem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends studyplanitemCreateManyArgs>(args?: SelectSubset<T, studyplanitemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Studyplanitem.
+     * @param {studyplanitemDeleteArgs} args - Arguments to delete one Studyplanitem.
+     * @example
+     * // Delete one Studyplanitem
+     * const Studyplanitem = await prisma.studyplanitem.delete({
+     *   where: {
+     *     // ... filter to delete one Studyplanitem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends studyplanitemDeleteArgs>(args: SelectSubset<T, studyplanitemDeleteArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Studyplanitem.
+     * @param {studyplanitemUpdateArgs} args - Arguments to update one Studyplanitem.
+     * @example
+     * // Update one Studyplanitem
+     * const studyplanitem = await prisma.studyplanitem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends studyplanitemUpdateArgs>(args: SelectSubset<T, studyplanitemUpdateArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Studyplanitems.
+     * @param {studyplanitemDeleteManyArgs} args - Arguments to filter Studyplanitems to delete.
+     * @example
+     * // Delete a few Studyplanitems
+     * const { count } = await prisma.studyplanitem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends studyplanitemDeleteManyArgs>(args?: SelectSubset<T, studyplanitemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Studyplanitems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanitemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Studyplanitems
+     * const studyplanitem = await prisma.studyplanitem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends studyplanitemUpdateManyArgs>(args: SelectSubset<T, studyplanitemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Studyplanitem.
+     * @param {studyplanitemUpsertArgs} args - Arguments to update or create a Studyplanitem.
+     * @example
+     * // Update or create a Studyplanitem
+     * const studyplanitem = await prisma.studyplanitem.upsert({
+     *   create: {
+     *     // ... data to create a Studyplanitem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Studyplanitem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends studyplanitemUpsertArgs>(args: SelectSubset<T, studyplanitemUpsertArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Studyplanitems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanitemCountArgs} args - Arguments to filter Studyplanitems to count.
+     * @example
+     * // Count the number of Studyplanitems
+     * const count = await prisma.studyplanitem.count({
+     *   where: {
+     *     // ... the filter for the Studyplanitems we want to count
+     *   }
+     * })
+    **/
+    count<T extends studyplanitemCountArgs>(
+      args?: Subset<T, studyplanitemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StudyplanitemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Studyplanitem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudyplanitemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StudyplanitemAggregateArgs>(args: Subset<T, StudyplanitemAggregateArgs>): Prisma.PrismaPromise<GetStudyplanitemAggregateType<T>>
+
+    /**
+     * Group by Studyplanitem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanitemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends studyplanitemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: studyplanitemGroupByArgs['orderBy'] }
+        : { orderBy?: studyplanitemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, studyplanitemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStudyplanitemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the studyplanitem model
+   */
+  readonly fields: studyplanitemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for studyplanitem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__studyplanitemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    exercise<T extends studyplanitem$exerciseArgs<ExtArgs> = {}>(args?: Subset<T, studyplanitem$exerciseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    studyplan<T extends studyplanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, studyplanDefaultArgs<ExtArgs>>): Prisma__studyplanClient<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the studyplanitem model
+   */
+  interface studyplanitemFieldRefs {
+    readonly SPIID: FieldRef<"studyplanitem", 'Int'>
+    readonly SPID: FieldRef<"studyplanitem", 'Int'>
+    readonly Name: FieldRef<"studyplanitem", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * studyplanitem findUnique
+   */
+  export type studyplanitemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplanitem to fetch.
+     */
+    where: studyplanitemWhereUniqueInput
+  }
+
+  /**
+   * studyplanitem findUniqueOrThrow
+   */
+  export type studyplanitemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplanitem to fetch.
+     */
+    where: studyplanitemWhereUniqueInput
+  }
+
+  /**
+   * studyplanitem findFirst
+   */
+  export type studyplanitemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplanitem to fetch.
+     */
+    where?: studyplanitemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplanitems to fetch.
+     */
+    orderBy?: studyplanitemOrderByWithRelationInput | studyplanitemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for studyplanitems.
+     */
+    cursor?: studyplanitemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplanitems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplanitems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of studyplanitems.
+     */
+    distinct?: StudyplanitemScalarFieldEnum | StudyplanitemScalarFieldEnum[]
+  }
+
+  /**
+   * studyplanitem findFirstOrThrow
+   */
+  export type studyplanitemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplanitem to fetch.
+     */
+    where?: studyplanitemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplanitems to fetch.
+     */
+    orderBy?: studyplanitemOrderByWithRelationInput | studyplanitemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for studyplanitems.
+     */
+    cursor?: studyplanitemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplanitems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplanitems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of studyplanitems.
+     */
+    distinct?: StudyplanitemScalarFieldEnum | StudyplanitemScalarFieldEnum[]
+  }
+
+  /**
+   * studyplanitem findMany
+   */
+  export type studyplanitemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplanitems to fetch.
+     */
+    where?: studyplanitemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplanitems to fetch.
+     */
+    orderBy?: studyplanitemOrderByWithRelationInput | studyplanitemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing studyplanitems.
+     */
+    cursor?: studyplanitemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplanitems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplanitems.
+     */
+    skip?: number
+    distinct?: StudyplanitemScalarFieldEnum | StudyplanitemScalarFieldEnum[]
+  }
+
+  /**
+   * studyplanitem create
+   */
+  export type studyplanitemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a studyplanitem.
+     */
+    data: XOR<studyplanitemCreateInput, studyplanitemUncheckedCreateInput>
+  }
+
+  /**
+   * studyplanitem createMany
+   */
+  export type studyplanitemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many studyplanitems.
+     */
+    data: studyplanitemCreateManyInput | studyplanitemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * studyplanitem update
+   */
+  export type studyplanitemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a studyplanitem.
+     */
+    data: XOR<studyplanitemUpdateInput, studyplanitemUncheckedUpdateInput>
+    /**
+     * Choose, which studyplanitem to update.
+     */
+    where: studyplanitemWhereUniqueInput
+  }
+
+  /**
+   * studyplanitem updateMany
+   */
+  export type studyplanitemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update studyplanitems.
+     */
+    data: XOR<studyplanitemUpdateManyMutationInput, studyplanitemUncheckedUpdateManyInput>
+    /**
+     * Filter which studyplanitems to update
+     */
+    where?: studyplanitemWhereInput
+    /**
+     * Limit how many studyplanitems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * studyplanitem upsert
+   */
+  export type studyplanitemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the studyplanitem to update in case it exists.
+     */
+    where: studyplanitemWhereUniqueInput
+    /**
+     * In case the studyplanitem found by the `where` argument doesn't exist, create a new studyplanitem with this data.
+     */
+    create: XOR<studyplanitemCreateInput, studyplanitemUncheckedCreateInput>
+    /**
+     * In case the studyplanitem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<studyplanitemUpdateInput, studyplanitemUncheckedUpdateInput>
+  }
+
+  /**
+   * studyplanitem delete
+   */
+  export type studyplanitemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+    /**
+     * Filter which studyplanitem to delete.
+     */
+    where: studyplanitemWhereUniqueInput
+  }
+
+  /**
+   * studyplanitem deleteMany
+   */
+  export type studyplanitemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which studyplanitems to delete
+     */
+    where?: studyplanitemWhereInput
+    /**
+     * Limit how many studyplanitems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * studyplanitem.exercise
+   */
+  export type studyplanitem$exerciseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exercise
+     */
+    select?: exerciseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exercise
+     */
+    omit?: exerciseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseInclude<ExtArgs> | null
+    where?: exerciseWhereInput
+    orderBy?: exerciseOrderByWithRelationInput | exerciseOrderByWithRelationInput[]
+    cursor?: exerciseWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExerciseScalarFieldEnum | ExerciseScalarFieldEnum[]
+  }
+
+  /**
+   * studyplanitem without action
+   */
+  export type studyplanitemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanitem
+     */
+    select?: studyplanitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanitem
+     */
+    omit?: studyplanitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanitemInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -15528,11 +17822,13 @@ export namespace Prisma {
   export const ExerciseScalarFieldEnum: {
     EID: 'EID',
     TpID: 'TpID',
+    SPIID: 'SPIID',
     Name: 'Name',
     Slug: 'Slug',
     Content: 'Content',
     Difficulty: 'Difficulty',
-    template: 'template'
+    template: 'template',
+    status: 'status'
   };
 
   export type ExerciseScalarFieldEnum = (typeof ExerciseScalarFieldEnum)[keyof typeof ExerciseScalarFieldEnum]
@@ -15673,6 +17969,28 @@ export namespace Prisma {
   export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
+  export const StudyplanScalarFieldEnum: {
+    SPID: 'SPID',
+    Name: 'Name',
+    Description: 'Description',
+    StartTime: 'StartTime',
+    EndTime: 'EndTime',
+    Icon: 'Icon',
+    Slug: 'Slug'
+  };
+
+  export type StudyplanScalarFieldEnum = (typeof StudyplanScalarFieldEnum)[keyof typeof StudyplanScalarFieldEnum]
+
+
+  export const StudyplanitemScalarFieldEnum: {
+    SPIID: 'SPIID',
+    SPID: 'SPID',
+    Name: 'Name'
+  };
+
+  export type StudyplanitemScalarFieldEnum = (typeof StudyplanitemScalarFieldEnum)[keyof typeof StudyplanitemScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -15794,6 +18112,23 @@ export namespace Prisma {
   export type notificationOrderByRelevanceFieldEnum = (typeof notificationOrderByRelevanceFieldEnum)[keyof typeof notificationOrderByRelevanceFieldEnum]
 
 
+  export const studyplanOrderByRelevanceFieldEnum: {
+    Name: 'Name',
+    Description: 'Description',
+    Icon: 'Icon',
+    Slug: 'Slug'
+  };
+
+  export type studyplanOrderByRelevanceFieldEnum = (typeof studyplanOrderByRelevanceFieldEnum)[keyof typeof studyplanOrderByRelevanceFieldEnum]
+
+
+  export const studyplanitemOrderByRelevanceFieldEnum: {
+    Name: 'Name'
+  };
+
+  export type studyplanitemOrderByRelevanceFieldEnum = (typeof studyplanitemOrderByRelevanceFieldEnum)[keyof typeof studyplanitemOrderByRelevanceFieldEnum]
+
+
   /**
    * Field references
    */
@@ -15817,6 +18152,13 @@ export namespace Prisma {
    * Reference to a field of type 'exercise_Difficulty'
    */
   export type Enumexercise_DifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'exercise_Difficulty'>
+    
+
+
+  /**
+   * Reference to a field of type 'exercise_status'
+   */
+  export type Enumexercise_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'exercise_status'>
     
 
 
@@ -15884,14 +18226,17 @@ export namespace Prisma {
     OR?: exerciseWhereInput[]
     NOT?: exerciseWhereInput | exerciseWhereInput[]
     EID?: IntFilter<"exercise"> | number
-    TpID?: IntFilter<"exercise"> | number
+    TpID?: IntNullableFilter<"exercise"> | number | null
+    SPIID?: IntNullableFilter<"exercise"> | number | null
     Name?: StringFilter<"exercise"> | string
     Slug?: StringFilter<"exercise"> | string
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableFilter<"exercise"> | string | null
+    status?: Enumexercise_statusFilter<"exercise"> | $Enums.exercise_status
     comment?: CommentListRelationFilter
-    topic?: XOR<TopicScalarRelationFilter, topicWhereInput>
+    topic?: XOR<TopicNullableScalarRelationFilter, topicWhereInput> | null
+    studyplanitem?: XOR<StudyplanitemNullableScalarRelationFilter, studyplanitemWhereInput> | null
     exerciselike?: ExerciselikeListRelationFilter
     submission?: SubmissionListRelationFilter
     testcase?: TestcaseListRelationFilter
@@ -15899,14 +18244,17 @@ export namespace Prisma {
 
   export type exerciseOrderByWithRelationInput = {
     EID?: SortOrder
-    TpID?: SortOrder
+    TpID?: SortOrderInput | SortOrder
+    SPIID?: SortOrderInput | SortOrder
     Name?: SortOrder
     Slug?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrderInput | SortOrder
+    status?: SortOrder
     comment?: commentOrderByRelationAggregateInput
     topic?: topicOrderByWithRelationInput
+    studyplanitem?: studyplanitemOrderByWithRelationInput
     exerciselike?: exerciselikeOrderByRelationAggregateInput
     submission?: submissionOrderByRelationAggregateInput
     testcase?: testcaseOrderByRelationAggregateInput
@@ -15919,13 +18267,16 @@ export namespace Prisma {
     AND?: exerciseWhereInput | exerciseWhereInput[]
     OR?: exerciseWhereInput[]
     NOT?: exerciseWhereInput | exerciseWhereInput[]
-    TpID?: IntFilter<"exercise"> | number
+    TpID?: IntNullableFilter<"exercise"> | number | null
+    SPIID?: IntNullableFilter<"exercise"> | number | null
     Name?: StringFilter<"exercise"> | string
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableFilter<"exercise"> | string | null
+    status?: Enumexercise_statusFilter<"exercise"> | $Enums.exercise_status
     comment?: CommentListRelationFilter
-    topic?: XOR<TopicScalarRelationFilter, topicWhereInput>
+    topic?: XOR<TopicNullableScalarRelationFilter, topicWhereInput> | null
+    studyplanitem?: XOR<StudyplanitemNullableScalarRelationFilter, studyplanitemWhereInput> | null
     exerciselike?: ExerciselikeListRelationFilter
     submission?: SubmissionListRelationFilter
     testcase?: TestcaseListRelationFilter
@@ -15933,12 +18284,14 @@ export namespace Prisma {
 
   export type exerciseOrderByWithAggregationInput = {
     EID?: SortOrder
-    TpID?: SortOrder
+    TpID?: SortOrderInput | SortOrder
+    SPIID?: SortOrderInput | SortOrder
     Name?: SortOrder
     Slug?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrderInput | SortOrder
+    status?: SortOrder
     _count?: exerciseCountOrderByAggregateInput
     _avg?: exerciseAvgOrderByAggregateInput
     _max?: exerciseMaxOrderByAggregateInput
@@ -15951,12 +18304,14 @@ export namespace Prisma {
     OR?: exerciseScalarWhereWithAggregatesInput[]
     NOT?: exerciseScalarWhereWithAggregatesInput | exerciseScalarWhereWithAggregatesInput[]
     EID?: IntWithAggregatesFilter<"exercise"> | number
-    TpID?: IntWithAggregatesFilter<"exercise"> | number
+    TpID?: IntNullableWithAggregatesFilter<"exercise"> | number | null
+    SPIID?: IntNullableWithAggregatesFilter<"exercise"> | number | null
     Name?: StringWithAggregatesFilter<"exercise"> | string
     Slug?: StringWithAggregatesFilter<"exercise"> | string
     Content?: StringWithAggregatesFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyWithAggregatesFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableWithAggregatesFilter<"exercise"> | string | null
+    status?: Enumexercise_statusWithAggregatesFilter<"exercise"> | $Enums.exercise_status
   }
 
   export type submissionWhereInput = {
@@ -16039,7 +18394,7 @@ export namespace Prisma {
     NOT?: testcaseWhereInput | testcaseWhereInput[]
     TCID?: IntFilter<"testcase"> | number
     EID?: IntFilter<"testcase"> | number
-    Input?: StringFilter<"testcase"> | string
+    Input?: StringNullableFilter<"testcase"> | string | null
     ExpectedOutput?: StringFilter<"testcase"> | string
     isHidden?: BoolNullableFilter<"testcase"> | boolean | null
     exercise?: XOR<ExerciseScalarRelationFilter, exerciseWhereInput>
@@ -16049,7 +18404,7 @@ export namespace Prisma {
   export type testcaseOrderByWithRelationInput = {
     TCID?: SortOrder
     EID?: SortOrder
-    Input?: SortOrder
+    Input?: SortOrderInput | SortOrder
     ExpectedOutput?: SortOrder
     isHidden?: SortOrderInput | SortOrder
     exercise?: exerciseOrderByWithRelationInput
@@ -16063,7 +18418,7 @@ export namespace Prisma {
     OR?: testcaseWhereInput[]
     NOT?: testcaseWhereInput | testcaseWhereInput[]
     EID?: IntFilter<"testcase"> | number
-    Input?: StringFilter<"testcase"> | string
+    Input?: StringNullableFilter<"testcase"> | string | null
     ExpectedOutput?: StringFilter<"testcase"> | string
     isHidden?: BoolNullableFilter<"testcase"> | boolean | null
     exercise?: XOR<ExerciseScalarRelationFilter, exerciseWhereInput>
@@ -16073,7 +18428,7 @@ export namespace Prisma {
   export type testcaseOrderByWithAggregationInput = {
     TCID?: SortOrder
     EID?: SortOrder
-    Input?: SortOrder
+    Input?: SortOrderInput | SortOrder
     ExpectedOutput?: SortOrder
     isHidden?: SortOrderInput | SortOrder
     _count?: testcaseCountOrderByAggregateInput
@@ -16089,7 +18444,7 @@ export namespace Prisma {
     NOT?: testcaseScalarWhereWithAggregatesInput | testcaseScalarWhereWithAggregatesInput[]
     TCID?: IntWithAggregatesFilter<"testcase"> | number
     EID?: IntWithAggregatesFilter<"testcase"> | number
-    Input?: StringWithAggregatesFilter<"testcase"> | string
+    Input?: StringNullableWithAggregatesFilter<"testcase"> | string | null
     ExpectedOutput?: StringWithAggregatesFilter<"testcase"> | string
     isHidden?: BoolNullableWithAggregatesFilter<"testcase"> | boolean | null
   }
@@ -16734,14 +19089,135 @@ export namespace Prisma {
     isRead?: BoolNullableWithAggregatesFilter<"notification"> | boolean | null
   }
 
+  export type studyplanWhereInput = {
+    AND?: studyplanWhereInput | studyplanWhereInput[]
+    OR?: studyplanWhereInput[]
+    NOT?: studyplanWhereInput | studyplanWhereInput[]
+    SPID?: IntFilter<"studyplan"> | number
+    Name?: StringFilter<"studyplan"> | string
+    Description?: StringFilter<"studyplan"> | string
+    StartTime?: DateTimeNullableFilter<"studyplan"> | Date | string | null
+    EndTime?: DateTimeNullableFilter<"studyplan"> | Date | string | null
+    Icon?: StringNullableFilter<"studyplan"> | string | null
+    Slug?: StringNullableFilter<"studyplan"> | string | null
+    studyplanitem?: StudyplanitemListRelationFilter
+  }
+
+  export type studyplanOrderByWithRelationInput = {
+    SPID?: SortOrder
+    Name?: SortOrder
+    Description?: SortOrder
+    StartTime?: SortOrderInput | SortOrder
+    EndTime?: SortOrderInput | SortOrder
+    Icon?: SortOrderInput | SortOrder
+    Slug?: SortOrderInput | SortOrder
+    studyplanitem?: studyplanitemOrderByRelationAggregateInput
+    _relevance?: studyplanOrderByRelevanceInput
+  }
+
+  export type studyplanWhereUniqueInput = Prisma.AtLeast<{
+    SPID?: number
+    Slug?: string
+    AND?: studyplanWhereInput | studyplanWhereInput[]
+    OR?: studyplanWhereInput[]
+    NOT?: studyplanWhereInput | studyplanWhereInput[]
+    Name?: StringFilter<"studyplan"> | string
+    Description?: StringFilter<"studyplan"> | string
+    StartTime?: DateTimeNullableFilter<"studyplan"> | Date | string | null
+    EndTime?: DateTimeNullableFilter<"studyplan"> | Date | string | null
+    Icon?: StringNullableFilter<"studyplan"> | string | null
+    studyplanitem?: StudyplanitemListRelationFilter
+  }, "SPID" | "Slug">
+
+  export type studyplanOrderByWithAggregationInput = {
+    SPID?: SortOrder
+    Name?: SortOrder
+    Description?: SortOrder
+    StartTime?: SortOrderInput | SortOrder
+    EndTime?: SortOrderInput | SortOrder
+    Icon?: SortOrderInput | SortOrder
+    Slug?: SortOrderInput | SortOrder
+    _count?: studyplanCountOrderByAggregateInput
+    _avg?: studyplanAvgOrderByAggregateInput
+    _max?: studyplanMaxOrderByAggregateInput
+    _min?: studyplanMinOrderByAggregateInput
+    _sum?: studyplanSumOrderByAggregateInput
+  }
+
+  export type studyplanScalarWhereWithAggregatesInput = {
+    AND?: studyplanScalarWhereWithAggregatesInput | studyplanScalarWhereWithAggregatesInput[]
+    OR?: studyplanScalarWhereWithAggregatesInput[]
+    NOT?: studyplanScalarWhereWithAggregatesInput | studyplanScalarWhereWithAggregatesInput[]
+    SPID?: IntWithAggregatesFilter<"studyplan"> | number
+    Name?: StringWithAggregatesFilter<"studyplan"> | string
+    Description?: StringWithAggregatesFilter<"studyplan"> | string
+    StartTime?: DateTimeNullableWithAggregatesFilter<"studyplan"> | Date | string | null
+    EndTime?: DateTimeNullableWithAggregatesFilter<"studyplan"> | Date | string | null
+    Icon?: StringNullableWithAggregatesFilter<"studyplan"> | string | null
+    Slug?: StringNullableWithAggregatesFilter<"studyplan"> | string | null
+  }
+
+  export type studyplanitemWhereInput = {
+    AND?: studyplanitemWhereInput | studyplanitemWhereInput[]
+    OR?: studyplanitemWhereInput[]
+    NOT?: studyplanitemWhereInput | studyplanitemWhereInput[]
+    SPIID?: IntFilter<"studyplanitem"> | number
+    SPID?: IntFilter<"studyplanitem"> | number
+    Name?: StringFilter<"studyplanitem"> | string
+    exercise?: ExerciseListRelationFilter
+    studyplan?: XOR<StudyplanScalarRelationFilter, studyplanWhereInput>
+  }
+
+  export type studyplanitemOrderByWithRelationInput = {
+    SPIID?: SortOrder
+    SPID?: SortOrder
+    Name?: SortOrder
+    exercise?: exerciseOrderByRelationAggregateInput
+    studyplan?: studyplanOrderByWithRelationInput
+    _relevance?: studyplanitemOrderByRelevanceInput
+  }
+
+  export type studyplanitemWhereUniqueInput = Prisma.AtLeast<{
+    SPIID?: number
+    AND?: studyplanitemWhereInput | studyplanitemWhereInput[]
+    OR?: studyplanitemWhereInput[]
+    NOT?: studyplanitemWhereInput | studyplanitemWhereInput[]
+    SPID?: IntFilter<"studyplanitem"> | number
+    Name?: StringFilter<"studyplanitem"> | string
+    exercise?: ExerciseListRelationFilter
+    studyplan?: XOR<StudyplanScalarRelationFilter, studyplanWhereInput>
+  }, "SPIID">
+
+  export type studyplanitemOrderByWithAggregationInput = {
+    SPIID?: SortOrder
+    SPID?: SortOrder
+    Name?: SortOrder
+    _count?: studyplanitemCountOrderByAggregateInput
+    _avg?: studyplanitemAvgOrderByAggregateInput
+    _max?: studyplanitemMaxOrderByAggregateInput
+    _min?: studyplanitemMinOrderByAggregateInput
+    _sum?: studyplanitemSumOrderByAggregateInput
+  }
+
+  export type studyplanitemScalarWhereWithAggregatesInput = {
+    AND?: studyplanitemScalarWhereWithAggregatesInput | studyplanitemScalarWhereWithAggregatesInput[]
+    OR?: studyplanitemScalarWhereWithAggregatesInput[]
+    NOT?: studyplanitemScalarWhereWithAggregatesInput | studyplanitemScalarWhereWithAggregatesInput[]
+    SPIID?: IntWithAggregatesFilter<"studyplanitem"> | number
+    SPID?: IntWithAggregatesFilter<"studyplanitem"> | number
+    Name?: StringWithAggregatesFilter<"studyplanitem"> | string
+  }
+
   export type exerciseCreateInput = {
     Name: string
     Slug: string
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
-    topic: topicCreateNestedOneWithoutExerciseInput
+    topic?: topicCreateNestedOneWithoutExerciseInput
+    studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
@@ -16749,12 +19225,14 @@ export namespace Prisma {
 
   export type exerciseUncheckedCreateInput = {
     EID?: number
-    TpID: number
+    TpID?: number | null
+    SPIID?: number | null
     Name: string
     Slug: string
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
@@ -16767,8 +19245,10 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
-    topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
+    topic?: topicUpdateOneWithoutExerciseNestedInput
+    studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
@@ -16776,12 +19256,14 @@ export namespace Prisma {
 
   export type exerciseUncheckedUpdateInput = {
     EID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
+    TpID?: NullableIntFieldUpdateOperationsInput | number | null
+    SPIID?: NullableIntFieldUpdateOperationsInput | number | null
     Name?: StringFieldUpdateOperationsInput | string
     Slug?: StringFieldUpdateOperationsInput | string
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
@@ -16790,12 +19272,14 @@ export namespace Prisma {
 
   export type exerciseCreateManyInput = {
     EID?: number
-    TpID: number
+    TpID?: number | null
+    SPIID?: number | null
     Name: string
     Slug: string
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
   }
 
   export type exerciseUpdateManyMutationInput = {
@@ -16804,16 +19288,19 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
   }
 
   export type exerciseUncheckedUpdateManyInput = {
     EID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
+    TpID?: NullableIntFieldUpdateOperationsInput | number | null
+    SPIID?: NullableIntFieldUpdateOperationsInput | number | null
     Name?: StringFieldUpdateOperationsInput | string
     Slug?: StringFieldUpdateOperationsInput | string
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
   }
 
   export type submissionCreateInput = {
@@ -16886,7 +19373,7 @@ export namespace Prisma {
   }
 
   export type testcaseCreateInput = {
-    Input: string
+    Input?: string | null
     ExpectedOutput: string
     isHidden?: boolean | null
     exercise: exerciseCreateNestedOneWithoutTestcaseInput
@@ -16896,14 +19383,14 @@ export namespace Prisma {
   export type testcaseUncheckedCreateInput = {
     TCID?: number
     EID: number
-    Input: string
+    Input?: string | null
     ExpectedOutput: string
     isHidden?: boolean | null
     testcaseresult?: testcaseresultUncheckedCreateNestedManyWithoutTestcaseInput
   }
 
   export type testcaseUpdateInput = {
-    Input?: StringFieldUpdateOperationsInput | string
+    Input?: NullableStringFieldUpdateOperationsInput | string | null
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
     exercise?: exerciseUpdateOneRequiredWithoutTestcaseNestedInput
@@ -16913,7 +19400,7 @@ export namespace Prisma {
   export type testcaseUncheckedUpdateInput = {
     TCID?: IntFieldUpdateOperationsInput | number
     EID?: IntFieldUpdateOperationsInput | number
-    Input?: StringFieldUpdateOperationsInput | string
+    Input?: NullableStringFieldUpdateOperationsInput | string | null
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
     testcaseresult?: testcaseresultUncheckedUpdateManyWithoutTestcaseNestedInput
@@ -16922,13 +19409,13 @@ export namespace Prisma {
   export type testcaseCreateManyInput = {
     TCID?: number
     EID: number
-    Input: string
+    Input?: string | null
     ExpectedOutput: string
     isHidden?: boolean | null
   }
 
   export type testcaseUpdateManyMutationInput = {
-    Input?: StringFieldUpdateOperationsInput | string
+    Input?: NullableStringFieldUpdateOperationsInput | string | null
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
@@ -16936,7 +19423,7 @@ export namespace Prisma {
   export type testcaseUncheckedUpdateManyInput = {
     TCID?: IntFieldUpdateOperationsInput | number
     EID?: IntFieldUpdateOperationsInput | number
-    Input?: StringFieldUpdateOperationsInput | string
+    Input?: NullableStringFieldUpdateOperationsInput | string | null
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
@@ -17518,6 +20005,119 @@ export namespace Prisma {
     isRead?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
+  export type studyplanCreateInput = {
+    Name: string
+    Description: string
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+    Icon?: string | null
+    Slug?: string | null
+    studyplanitem?: studyplanitemCreateNestedManyWithoutStudyplanInput
+  }
+
+  export type studyplanUncheckedCreateInput = {
+    SPID?: number
+    Name: string
+    Description: string
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+    Icon?: string | null
+    Slug?: string | null
+    studyplanitem?: studyplanitemUncheckedCreateNestedManyWithoutStudyplanInput
+  }
+
+  export type studyplanUpdateInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: StringFieldUpdateOperationsInput | string
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Icon?: NullableStringFieldUpdateOperationsInput | string | null
+    Slug?: NullableStringFieldUpdateOperationsInput | string | null
+    studyplanitem?: studyplanitemUpdateManyWithoutStudyplanNestedInput
+  }
+
+  export type studyplanUncheckedUpdateInput = {
+    SPID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: StringFieldUpdateOperationsInput | string
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Icon?: NullableStringFieldUpdateOperationsInput | string | null
+    Slug?: NullableStringFieldUpdateOperationsInput | string | null
+    studyplanitem?: studyplanitemUncheckedUpdateManyWithoutStudyplanNestedInput
+  }
+
+  export type studyplanCreateManyInput = {
+    SPID?: number
+    Name: string
+    Description: string
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+    Icon?: string | null
+    Slug?: string | null
+  }
+
+  export type studyplanUpdateManyMutationInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: StringFieldUpdateOperationsInput | string
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Icon?: NullableStringFieldUpdateOperationsInput | string | null
+    Slug?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type studyplanUncheckedUpdateManyInput = {
+    SPID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: StringFieldUpdateOperationsInput | string
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Icon?: NullableStringFieldUpdateOperationsInput | string | null
+    Slug?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type studyplanitemCreateInput = {
+    Name: string
+    exercise?: exerciseCreateNestedManyWithoutStudyplanitemInput
+    studyplan: studyplanCreateNestedOneWithoutStudyplanitemInput
+  }
+
+  export type studyplanitemUncheckedCreateInput = {
+    SPIID?: number
+    SPID: number
+    Name: string
+    exercise?: exerciseUncheckedCreateNestedManyWithoutStudyplanitemInput
+  }
+
+  export type studyplanitemUpdateInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    exercise?: exerciseUpdateManyWithoutStudyplanitemNestedInput
+    studyplan?: studyplanUpdateOneRequiredWithoutStudyplanitemNestedInput
+  }
+
+  export type studyplanitemUncheckedUpdateInput = {
+    SPIID?: IntFieldUpdateOperationsInput | number
+    SPID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+    exercise?: exerciseUncheckedUpdateManyWithoutStudyplanitemNestedInput
+  }
+
+  export type studyplanitemCreateManyInput = {
+    SPIID?: number
+    SPID: number
+    Name: string
+  }
+
+  export type studyplanitemUpdateManyMutationInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type studyplanitemUncheckedUpdateManyInput = {
+    SPIID?: IntFieldUpdateOperationsInput | number
+    SPID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -17527,6 +20127,17 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -17566,15 +20177,27 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type Enumexercise_statusFilter<$PrismaModel = never> = {
+    equals?: $Enums.exercise_status | Enumexercise_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.exercise_status[]
+    notIn?: $Enums.exercise_status[]
+    not?: NestedEnumexercise_statusFilter<$PrismaModel> | $Enums.exercise_status
+  }
+
   export type CommentListRelationFilter = {
     every?: commentWhereInput
     some?: commentWhereInput
     none?: commentWhereInput
   }
 
-  export type TopicScalarRelationFilter = {
-    is?: topicWhereInput
-    isNot?: topicWhereInput
+  export type TopicNullableScalarRelationFilter = {
+    is?: topicWhereInput | null
+    isNot?: topicWhereInput | null
+  }
+
+  export type StudyplanitemNullableScalarRelationFilter = {
+    is?: studyplanitemWhereInput | null
+    isNot?: studyplanitemWhereInput | null
   }
 
   export type ExerciselikeListRelationFilter = {
@@ -17625,41 +20248,49 @@ export namespace Prisma {
   export type exerciseCountOrderByAggregateInput = {
     EID?: SortOrder
     TpID?: SortOrder
+    SPIID?: SortOrder
     Name?: SortOrder
     Slug?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrder
+    status?: SortOrder
   }
 
   export type exerciseAvgOrderByAggregateInput = {
     EID?: SortOrder
     TpID?: SortOrder
+    SPIID?: SortOrder
   }
 
   export type exerciseMaxOrderByAggregateInput = {
     EID?: SortOrder
     TpID?: SortOrder
+    SPIID?: SortOrder
     Name?: SortOrder
     Slug?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrder
+    status?: SortOrder
   }
 
   export type exerciseMinOrderByAggregateInput = {
     EID?: SortOrder
     TpID?: SortOrder
+    SPIID?: SortOrder
     Name?: SortOrder
     Slug?: SortOrder
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrder
+    status?: SortOrder
   }
 
   export type exerciseSumOrderByAggregateInput = {
     EID?: SortOrder
     TpID?: SortOrder
+    SPIID?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -17676,6 +20307,22 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -17722,6 +20369,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type Enumexercise_statusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.exercise_status | Enumexercise_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.exercise_status[]
+    notIn?: $Enums.exercise_status[]
+    not?: NestedEnumexercise_statusWithAggregatesFilter<$PrismaModel> | $Enums.exercise_status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumexercise_statusFilter<$PrismaModel>
+    _max?: NestedEnumexercise_statusFilter<$PrismaModel>
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -18183,17 +20840,6 @@ export namespace Prisma {
     ChapterIndex?: SortOrder
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
   export type LessonNullableScalarRelationFilter = {
     is?: lessonWhereInput | null
     isNot?: lessonWhereInput | null
@@ -18252,22 +20898,6 @@ export namespace Prisma {
     LID?: SortOrder
     EID?: SortOrder
     ParentID?: SortOrder
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type CommentScalarRelationFilter = {
@@ -18477,6 +21107,99 @@ export namespace Prisma {
     _max?: NestedEnumnotification_TypeFilter<$PrismaModel>
   }
 
+  export type StudyplanitemListRelationFilter = {
+    every?: studyplanitemWhereInput
+    some?: studyplanitemWhereInput
+    none?: studyplanitemWhereInput
+  }
+
+  export type studyplanitemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type studyplanOrderByRelevanceInput = {
+    fields: studyplanOrderByRelevanceFieldEnum | studyplanOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type studyplanCountOrderByAggregateInput = {
+    SPID?: SortOrder
+    Name?: SortOrder
+    Description?: SortOrder
+    StartTime?: SortOrder
+    EndTime?: SortOrder
+    Icon?: SortOrder
+    Slug?: SortOrder
+  }
+
+  export type studyplanAvgOrderByAggregateInput = {
+    SPID?: SortOrder
+  }
+
+  export type studyplanMaxOrderByAggregateInput = {
+    SPID?: SortOrder
+    Name?: SortOrder
+    Description?: SortOrder
+    StartTime?: SortOrder
+    EndTime?: SortOrder
+    Icon?: SortOrder
+    Slug?: SortOrder
+  }
+
+  export type studyplanMinOrderByAggregateInput = {
+    SPID?: SortOrder
+    Name?: SortOrder
+    Description?: SortOrder
+    StartTime?: SortOrder
+    EndTime?: SortOrder
+    Icon?: SortOrder
+    Slug?: SortOrder
+  }
+
+  export type studyplanSumOrderByAggregateInput = {
+    SPID?: SortOrder
+  }
+
+  export type StudyplanScalarRelationFilter = {
+    is?: studyplanWhereInput
+    isNot?: studyplanWhereInput
+  }
+
+  export type studyplanitemOrderByRelevanceInput = {
+    fields: studyplanitemOrderByRelevanceFieldEnum | studyplanitemOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type studyplanitemCountOrderByAggregateInput = {
+    SPIID?: SortOrder
+    SPID?: SortOrder
+    Name?: SortOrder
+  }
+
+  export type studyplanitemAvgOrderByAggregateInput = {
+    SPIID?: SortOrder
+    SPID?: SortOrder
+  }
+
+  export type studyplanitemMaxOrderByAggregateInput = {
+    SPIID?: SortOrder
+    SPID?: SortOrder
+    Name?: SortOrder
+  }
+
+  export type studyplanitemMinOrderByAggregateInput = {
+    SPIID?: SortOrder
+    SPID?: SortOrder
+    Name?: SortOrder
+  }
+
+  export type studyplanitemSumOrderByAggregateInput = {
+    SPIID?: SortOrder
+    SPID?: SortOrder
+  }
+
   export type commentCreateNestedManyWithoutExerciseInput = {
     create?: XOR<commentCreateWithoutExerciseInput, commentUncheckedCreateWithoutExerciseInput> | commentCreateWithoutExerciseInput[] | commentUncheckedCreateWithoutExerciseInput[]
     connectOrCreate?: commentCreateOrConnectWithoutExerciseInput | commentCreateOrConnectWithoutExerciseInput[]
@@ -18488,6 +21211,12 @@ export namespace Prisma {
     create?: XOR<topicCreateWithoutExerciseInput, topicUncheckedCreateWithoutExerciseInput>
     connectOrCreate?: topicCreateOrConnectWithoutExerciseInput
     connect?: topicWhereUniqueInput
+  }
+
+  export type studyplanitemCreateNestedOneWithoutExerciseInput = {
+    create?: XOR<studyplanitemCreateWithoutExerciseInput, studyplanitemUncheckedCreateWithoutExerciseInput>
+    connectOrCreate?: studyplanitemCreateOrConnectWithoutExerciseInput
+    connect?: studyplanitemWhereUniqueInput
   }
 
   export type exerciselikeCreateNestedManyWithoutExerciseInput = {
@@ -18551,6 +21280,10 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type Enumexercise_statusFieldUpdateOperationsInput = {
+    set?: $Enums.exercise_status
+  }
+
   export type commentUpdateManyWithoutExerciseNestedInput = {
     create?: XOR<commentCreateWithoutExerciseInput, commentUncheckedCreateWithoutExerciseInput> | commentCreateWithoutExerciseInput[] | commentUncheckedCreateWithoutExerciseInput[]
     connectOrCreate?: commentCreateOrConnectWithoutExerciseInput | commentCreateOrConnectWithoutExerciseInput[]
@@ -18565,12 +21298,24 @@ export namespace Prisma {
     deleteMany?: commentScalarWhereInput | commentScalarWhereInput[]
   }
 
-  export type topicUpdateOneRequiredWithoutExerciseNestedInput = {
+  export type topicUpdateOneWithoutExerciseNestedInput = {
     create?: XOR<topicCreateWithoutExerciseInput, topicUncheckedCreateWithoutExerciseInput>
     connectOrCreate?: topicCreateOrConnectWithoutExerciseInput
     upsert?: topicUpsertWithoutExerciseInput
+    disconnect?: topicWhereInput | boolean
+    delete?: topicWhereInput | boolean
     connect?: topicWhereUniqueInput
     update?: XOR<XOR<topicUpdateToOneWithWhereWithoutExerciseInput, topicUpdateWithoutExerciseInput>, topicUncheckedUpdateWithoutExerciseInput>
+  }
+
+  export type studyplanitemUpdateOneWithoutExerciseNestedInput = {
+    create?: XOR<studyplanitemCreateWithoutExerciseInput, studyplanitemUncheckedCreateWithoutExerciseInput>
+    connectOrCreate?: studyplanitemCreateOrConnectWithoutExerciseInput
+    upsert?: studyplanitemUpsertWithoutExerciseInput
+    disconnect?: studyplanitemWhereInput | boolean
+    delete?: studyplanitemWhereInput | boolean
+    connect?: studyplanitemWhereUniqueInput
+    update?: XOR<XOR<studyplanitemUpdateToOneWithWhereWithoutExerciseInput, studyplanitemUpdateWithoutExerciseInput>, studyplanitemUncheckedUpdateWithoutExerciseInput>
   }
 
   export type exerciselikeUpdateManyWithoutExerciseNestedInput = {
@@ -18617,6 +21362,14 @@ export namespace Prisma {
 
   export type IntFieldUpdateOperationsInput = {
     set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
@@ -19351,14 +22104,6 @@ export namespace Prisma {
     connect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type userUpdateOneRequiredWithoutCommentNestedInput = {
     create?: XOR<userCreateWithoutCommentInput, userUncheckedCreateWithoutCommentInput>
     connectOrCreate?: userCreateOrConnectWithoutCommentInput
@@ -19603,6 +22348,104 @@ export namespace Prisma {
     update?: XOR<XOR<commentUpdateToOneWithWhereWithoutNotificationInput, commentUpdateWithoutNotificationInput>, commentUncheckedUpdateWithoutNotificationInput>
   }
 
+  export type studyplanitemCreateNestedManyWithoutStudyplanInput = {
+    create?: XOR<studyplanitemCreateWithoutStudyplanInput, studyplanitemUncheckedCreateWithoutStudyplanInput> | studyplanitemCreateWithoutStudyplanInput[] | studyplanitemUncheckedCreateWithoutStudyplanInput[]
+    connectOrCreate?: studyplanitemCreateOrConnectWithoutStudyplanInput | studyplanitemCreateOrConnectWithoutStudyplanInput[]
+    createMany?: studyplanitemCreateManyStudyplanInputEnvelope
+    connect?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+  }
+
+  export type studyplanitemUncheckedCreateNestedManyWithoutStudyplanInput = {
+    create?: XOR<studyplanitemCreateWithoutStudyplanInput, studyplanitemUncheckedCreateWithoutStudyplanInput> | studyplanitemCreateWithoutStudyplanInput[] | studyplanitemUncheckedCreateWithoutStudyplanInput[]
+    connectOrCreate?: studyplanitemCreateOrConnectWithoutStudyplanInput | studyplanitemCreateOrConnectWithoutStudyplanInput[]
+    createMany?: studyplanitemCreateManyStudyplanInputEnvelope
+    connect?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+  }
+
+  export type studyplanitemUpdateManyWithoutStudyplanNestedInput = {
+    create?: XOR<studyplanitemCreateWithoutStudyplanInput, studyplanitemUncheckedCreateWithoutStudyplanInput> | studyplanitemCreateWithoutStudyplanInput[] | studyplanitemUncheckedCreateWithoutStudyplanInput[]
+    connectOrCreate?: studyplanitemCreateOrConnectWithoutStudyplanInput | studyplanitemCreateOrConnectWithoutStudyplanInput[]
+    upsert?: studyplanitemUpsertWithWhereUniqueWithoutStudyplanInput | studyplanitemUpsertWithWhereUniqueWithoutStudyplanInput[]
+    createMany?: studyplanitemCreateManyStudyplanInputEnvelope
+    set?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+    disconnect?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+    delete?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+    connect?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+    update?: studyplanitemUpdateWithWhereUniqueWithoutStudyplanInput | studyplanitemUpdateWithWhereUniqueWithoutStudyplanInput[]
+    updateMany?: studyplanitemUpdateManyWithWhereWithoutStudyplanInput | studyplanitemUpdateManyWithWhereWithoutStudyplanInput[]
+    deleteMany?: studyplanitemScalarWhereInput | studyplanitemScalarWhereInput[]
+  }
+
+  export type studyplanitemUncheckedUpdateManyWithoutStudyplanNestedInput = {
+    create?: XOR<studyplanitemCreateWithoutStudyplanInput, studyplanitemUncheckedCreateWithoutStudyplanInput> | studyplanitemCreateWithoutStudyplanInput[] | studyplanitemUncheckedCreateWithoutStudyplanInput[]
+    connectOrCreate?: studyplanitemCreateOrConnectWithoutStudyplanInput | studyplanitemCreateOrConnectWithoutStudyplanInput[]
+    upsert?: studyplanitemUpsertWithWhereUniqueWithoutStudyplanInput | studyplanitemUpsertWithWhereUniqueWithoutStudyplanInput[]
+    createMany?: studyplanitemCreateManyStudyplanInputEnvelope
+    set?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+    disconnect?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+    delete?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+    connect?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+    update?: studyplanitemUpdateWithWhereUniqueWithoutStudyplanInput | studyplanitemUpdateWithWhereUniqueWithoutStudyplanInput[]
+    updateMany?: studyplanitemUpdateManyWithWhereWithoutStudyplanInput | studyplanitemUpdateManyWithWhereWithoutStudyplanInput[]
+    deleteMany?: studyplanitemScalarWhereInput | studyplanitemScalarWhereInput[]
+  }
+
+  export type exerciseCreateNestedManyWithoutStudyplanitemInput = {
+    create?: XOR<exerciseCreateWithoutStudyplanitemInput, exerciseUncheckedCreateWithoutStudyplanitemInput> | exerciseCreateWithoutStudyplanitemInput[] | exerciseUncheckedCreateWithoutStudyplanitemInput[]
+    connectOrCreate?: exerciseCreateOrConnectWithoutStudyplanitemInput | exerciseCreateOrConnectWithoutStudyplanitemInput[]
+    createMany?: exerciseCreateManyStudyplanitemInputEnvelope
+    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+  }
+
+  export type studyplanCreateNestedOneWithoutStudyplanitemInput = {
+    create?: XOR<studyplanCreateWithoutStudyplanitemInput, studyplanUncheckedCreateWithoutStudyplanitemInput>
+    connectOrCreate?: studyplanCreateOrConnectWithoutStudyplanitemInput
+    connect?: studyplanWhereUniqueInput
+  }
+
+  export type exerciseUncheckedCreateNestedManyWithoutStudyplanitemInput = {
+    create?: XOR<exerciseCreateWithoutStudyplanitemInput, exerciseUncheckedCreateWithoutStudyplanitemInput> | exerciseCreateWithoutStudyplanitemInput[] | exerciseUncheckedCreateWithoutStudyplanitemInput[]
+    connectOrCreate?: exerciseCreateOrConnectWithoutStudyplanitemInput | exerciseCreateOrConnectWithoutStudyplanitemInput[]
+    createMany?: exerciseCreateManyStudyplanitemInputEnvelope
+    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+  }
+
+  export type exerciseUpdateManyWithoutStudyplanitemNestedInput = {
+    create?: XOR<exerciseCreateWithoutStudyplanitemInput, exerciseUncheckedCreateWithoutStudyplanitemInput> | exerciseCreateWithoutStudyplanitemInput[] | exerciseUncheckedCreateWithoutStudyplanitemInput[]
+    connectOrCreate?: exerciseCreateOrConnectWithoutStudyplanitemInput | exerciseCreateOrConnectWithoutStudyplanitemInput[]
+    upsert?: exerciseUpsertWithWhereUniqueWithoutStudyplanitemInput | exerciseUpsertWithWhereUniqueWithoutStudyplanitemInput[]
+    createMany?: exerciseCreateManyStudyplanitemInputEnvelope
+    set?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    disconnect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    delete?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    update?: exerciseUpdateWithWhereUniqueWithoutStudyplanitemInput | exerciseUpdateWithWhereUniqueWithoutStudyplanitemInput[]
+    updateMany?: exerciseUpdateManyWithWhereWithoutStudyplanitemInput | exerciseUpdateManyWithWhereWithoutStudyplanitemInput[]
+    deleteMany?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
+  }
+
+  export type studyplanUpdateOneRequiredWithoutStudyplanitemNestedInput = {
+    create?: XOR<studyplanCreateWithoutStudyplanitemInput, studyplanUncheckedCreateWithoutStudyplanitemInput>
+    connectOrCreate?: studyplanCreateOrConnectWithoutStudyplanitemInput
+    upsert?: studyplanUpsertWithoutStudyplanitemInput
+    connect?: studyplanWhereUniqueInput
+    update?: XOR<XOR<studyplanUpdateToOneWithWhereWithoutStudyplanitemInput, studyplanUpdateWithoutStudyplanitemInput>, studyplanUncheckedUpdateWithoutStudyplanitemInput>
+  }
+
+  export type exerciseUncheckedUpdateManyWithoutStudyplanitemNestedInput = {
+    create?: XOR<exerciseCreateWithoutStudyplanitemInput, exerciseUncheckedCreateWithoutStudyplanitemInput> | exerciseCreateWithoutStudyplanitemInput[] | exerciseUncheckedCreateWithoutStudyplanitemInput[]
+    connectOrCreate?: exerciseCreateOrConnectWithoutStudyplanitemInput | exerciseCreateOrConnectWithoutStudyplanitemInput[]
+    upsert?: exerciseUpsertWithWhereUniqueWithoutStudyplanitemInput | exerciseUpsertWithWhereUniqueWithoutStudyplanitemInput[]
+    createMany?: exerciseCreateManyStudyplanitemInputEnvelope
+    set?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    disconnect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    delete?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    connect?: exerciseWhereUniqueInput | exerciseWhereUniqueInput[]
+    update?: exerciseUpdateWithWhereUniqueWithoutStudyplanitemInput | exerciseUpdateWithWhereUniqueWithoutStudyplanitemInput[]
+    updateMany?: exerciseUpdateManyWithWhereWithoutStudyplanitemInput | exerciseUpdateManyWithWhereWithoutStudyplanitemInput[]
+    deleteMany?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -19612,6 +22455,17 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -19651,6 +22505,13 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedEnumexercise_statusFilter<$PrismaModel = never> = {
+    equals?: $Enums.exercise_status | Enumexercise_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.exercise_status[]
+    notIn?: $Enums.exercise_status[]
+    not?: NestedEnumexercise_statusFilter<$PrismaModel> | $Enums.exercise_status
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -19676,6 +22537,33 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -19724,15 +22612,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  export type NestedEnumexercise_statusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.exercise_status | Enumexercise_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.exercise_status[]
+    notIn?: $Enums.exercise_status[]
+    not?: NestedEnumexercise_statusWithAggregatesFilter<$PrismaModel> | $Enums.exercise_status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumexercise_statusFilter<$PrismaModel>
+    _max?: NestedEnumexercise_statusFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -19841,33 +22728,6 @@ export namespace Prisma {
     _max?: NestedEnumfriendship_statusFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | null
-    notIn?: number[] | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
   export type NestedEnumnotification_TypeFilter<$PrismaModel = never> = {
     equals?: $Enums.notification_Type | Enumnotification_TypeFieldRefInput<$PrismaModel>
     in?: $Enums.notification_Type[]
@@ -19932,6 +22792,22 @@ export namespace Prisma {
     create: XOR<topicCreateWithoutExerciseInput, topicUncheckedCreateWithoutExerciseInput>
   }
 
+  export type studyplanitemCreateWithoutExerciseInput = {
+    Name: string
+    studyplan: studyplanCreateNestedOneWithoutStudyplanitemInput
+  }
+
+  export type studyplanitemUncheckedCreateWithoutExerciseInput = {
+    SPIID?: number
+    SPID: number
+    Name: string
+  }
+
+  export type studyplanitemCreateOrConnectWithoutExerciseInput = {
+    where: studyplanitemWhereUniqueInput
+    create: XOR<studyplanitemCreateWithoutExerciseInput, studyplanitemUncheckedCreateWithoutExerciseInput>
+  }
+
   export type exerciselikeCreateWithoutExerciseInput = {
     CreatedAt?: Date | string | null
     user: userCreateNestedOneWithoutExerciselikeInput
@@ -19983,7 +22859,7 @@ export namespace Prisma {
   }
 
   export type testcaseCreateWithoutExerciseInput = {
-    Input: string
+    Input?: string | null
     ExpectedOutput: string
     isHidden?: boolean | null
     testcaseresult?: testcaseresultCreateNestedManyWithoutTestcaseInput
@@ -19991,7 +22867,7 @@ export namespace Prisma {
 
   export type testcaseUncheckedCreateWithoutExerciseInput = {
     TCID?: number
-    Input: string
+    Input?: string | null
     ExpectedOutput: string
     isHidden?: boolean | null
     testcaseresult?: testcaseresultUncheckedCreateNestedManyWithoutTestcaseInput
@@ -20056,6 +22932,28 @@ export namespace Prisma {
     TpID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
     Slug?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type studyplanitemUpsertWithoutExerciseInput = {
+    update: XOR<studyplanitemUpdateWithoutExerciseInput, studyplanitemUncheckedUpdateWithoutExerciseInput>
+    create: XOR<studyplanitemCreateWithoutExerciseInput, studyplanitemUncheckedCreateWithoutExerciseInput>
+    where?: studyplanitemWhereInput
+  }
+
+  export type studyplanitemUpdateToOneWithWhereWithoutExerciseInput = {
+    where?: studyplanitemWhereInput
+    data: XOR<studyplanitemUpdateWithoutExerciseInput, studyplanitemUncheckedUpdateWithoutExerciseInput>
+  }
+
+  export type studyplanitemUpdateWithoutExerciseInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    studyplan?: studyplanUpdateOneRequiredWithoutStudyplanitemNestedInput
+  }
+
+  export type studyplanitemUncheckedUpdateWithoutExerciseInput = {
+    SPIID?: IntFieldUpdateOperationsInput | number
+    SPID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
   }
 
   export type exerciselikeUpsertWithWhereUniqueWithoutExerciseInput = {
@@ -20135,7 +23033,7 @@ export namespace Prisma {
     NOT?: testcaseScalarWhereInput | testcaseScalarWhereInput[]
     TCID?: IntFilter<"testcase"> | number
     EID?: IntFilter<"testcase"> | number
-    Input?: StringFilter<"testcase"> | string
+    Input?: StringNullableFilter<"testcase"> | string | null
     ExpectedOutput?: StringFilter<"testcase"> | string
     isHidden?: BoolNullableFilter<"testcase"> | boolean | null
   }
@@ -20146,20 +23044,24 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
-    topic: topicCreateNestedOneWithoutExerciseInput
+    topic?: topicCreateNestedOneWithoutExerciseInput
+    studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
 
   export type exerciseUncheckedCreateWithoutSubmissionInput = {
     EID?: number
-    TpID: number
+    TpID?: number | null
+    SPIID?: number | null
     Name: string
     Slug: string
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
@@ -20249,20 +23151,24 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
-    topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
+    topic?: topicUpdateOneWithoutExerciseNestedInput
+    studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
 
   export type exerciseUncheckedUpdateWithoutSubmissionInput = {
     EID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
+    TpID?: NullableIntFieldUpdateOperationsInput | number | null
+    SPIID?: NullableIntFieldUpdateOperationsInput | number | null
     Name?: StringFieldUpdateOperationsInput | string
     Slug?: StringFieldUpdateOperationsInput | string
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
@@ -20346,20 +23252,24 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
-    topic: topicCreateNestedOneWithoutExerciseInput
+    topic?: topicCreateNestedOneWithoutExerciseInput
+    studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
   }
 
   export type exerciseUncheckedCreateWithoutTestcaseInput = {
     EID?: number
-    TpID: number
+    TpID?: number | null
+    SPIID?: number | null
     Name: string
     Slug: string
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
@@ -20410,20 +23320,24 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
-    topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
+    topic?: topicUpdateOneWithoutExerciseNestedInput
+    studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
   }
 
   export type exerciseUncheckedUpdateWithoutTestcaseInput = {
     EID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
+    TpID?: NullableIntFieldUpdateOperationsInput | number | null
+    SPIID?: NullableIntFieldUpdateOperationsInput | number | null
     Name?: StringFieldUpdateOperationsInput | string
     Slug?: StringFieldUpdateOperationsInput | string
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
@@ -20470,7 +23384,7 @@ export namespace Prisma {
   }
 
   export type testcaseCreateWithoutTestcaseresultInput = {
-    Input: string
+    Input?: string | null
     ExpectedOutput: string
     isHidden?: boolean | null
     exercise: exerciseCreateNestedOneWithoutTestcaseInput
@@ -20479,7 +23393,7 @@ export namespace Prisma {
   export type testcaseUncheckedCreateWithoutTestcaseresultInput = {
     TCID?: number
     EID: number
-    Input: string
+    Input?: string | null
     ExpectedOutput: string
     isHidden?: boolean | null
   }
@@ -20531,7 +23445,7 @@ export namespace Prisma {
   }
 
   export type testcaseUpdateWithoutTestcaseresultInput = {
-    Input?: StringFieldUpdateOperationsInput | string
+    Input?: NullableStringFieldUpdateOperationsInput | string | null
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
     exercise?: exerciseUpdateOneRequiredWithoutTestcaseNestedInput
@@ -20540,7 +23454,7 @@ export namespace Prisma {
   export type testcaseUncheckedUpdateWithoutTestcaseresultInput = {
     TCID?: IntFieldUpdateOperationsInput | number
     EID?: IntFieldUpdateOperationsInput | number
-    Input?: StringFieldUpdateOperationsInput | string
+    Input?: NullableStringFieldUpdateOperationsInput | string | null
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
@@ -20551,7 +23465,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
+    studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
@@ -20559,11 +23475,13 @@ export namespace Prisma {
 
   export type exerciseUncheckedCreateWithoutTopicInput = {
     EID?: number
+    SPIID?: number | null
     Name: string
     Slug: string
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
@@ -20601,12 +23519,14 @@ export namespace Prisma {
     OR?: exerciseScalarWhereInput[]
     NOT?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
     EID?: IntFilter<"exercise"> | number
-    TpID?: IntFilter<"exercise"> | number
+    TpID?: IntNullableFilter<"exercise"> | number | null
+    SPIID?: IntNullableFilter<"exercise"> | number | null
     Name?: StringFilter<"exercise"> | string
     Slug?: StringFilter<"exercise"> | string
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableFilter<"exercise"> | string | null
+    status?: Enumexercise_statusFilter<"exercise"> | $Enums.exercise_status
   }
 
   export type commentCreateWithoutUserInput = {
@@ -21263,7 +24183,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    topic: topicCreateNestedOneWithoutExerciseInput
+    status?: $Enums.exercise_status
+    topic?: topicCreateNestedOneWithoutExerciseInput
+    studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
@@ -21271,12 +24193,14 @@ export namespace Prisma {
 
   export type exerciseUncheckedCreateWithoutCommentInput = {
     EID?: number
-    TpID: number
+    TpID?: number | null
+    SPIID?: number | null
     Name: string
     Slug: string
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
@@ -21425,7 +24349,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
+    topic?: topicUpdateOneWithoutExerciseNestedInput
+    studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
@@ -21433,12 +24359,14 @@ export namespace Prisma {
 
   export type exerciseUncheckedUpdateWithoutCommentInput = {
     EID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
+    TpID?: NullableIntFieldUpdateOperationsInput | number | null
+    SPIID?: NullableIntFieldUpdateOperationsInput | number | null
     Name?: StringFieldUpdateOperationsInput | string
     Slug?: StringFieldUpdateOperationsInput | string
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
@@ -21663,20 +24591,24 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
-    topic: topicCreateNestedOneWithoutExerciseInput
+    topic?: topicCreateNestedOneWithoutExerciseInput
+    studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
 
   export type exerciseUncheckedCreateWithoutExerciselikeInput = {
     EID?: number
-    TpID: number
+    TpID?: number | null
+    SPIID?: number | null
     Name: string
     Slug: string
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
@@ -21749,20 +24681,24 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
-    topic?: topicUpdateOneRequiredWithoutExerciseNestedInput
+    topic?: topicUpdateOneWithoutExerciseNestedInput
+    studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
 
   export type exerciseUncheckedUpdateWithoutExerciselikeInput = {
     EID?: IntFieldUpdateOperationsInput | number
-    TpID?: IntFieldUpdateOperationsInput | number
+    TpID?: NullableIntFieldUpdateOperationsInput | number | null
+    SPIID?: NullableIntFieldUpdateOperationsInput | number | null
     Name?: StringFieldUpdateOperationsInput | string
     Slug?: StringFieldUpdateOperationsInput | string
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
@@ -22079,6 +25015,161 @@ export namespace Prisma {
     commentlike?: commentlikeUncheckedUpdateManyWithoutCommentNestedInput
   }
 
+  export type studyplanitemCreateWithoutStudyplanInput = {
+    Name: string
+    exercise?: exerciseCreateNestedManyWithoutStudyplanitemInput
+  }
+
+  export type studyplanitemUncheckedCreateWithoutStudyplanInput = {
+    SPIID?: number
+    Name: string
+    exercise?: exerciseUncheckedCreateNestedManyWithoutStudyplanitemInput
+  }
+
+  export type studyplanitemCreateOrConnectWithoutStudyplanInput = {
+    where: studyplanitemWhereUniqueInput
+    create: XOR<studyplanitemCreateWithoutStudyplanInput, studyplanitemUncheckedCreateWithoutStudyplanInput>
+  }
+
+  export type studyplanitemCreateManyStudyplanInputEnvelope = {
+    data: studyplanitemCreateManyStudyplanInput | studyplanitemCreateManyStudyplanInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type studyplanitemUpsertWithWhereUniqueWithoutStudyplanInput = {
+    where: studyplanitemWhereUniqueInput
+    update: XOR<studyplanitemUpdateWithoutStudyplanInput, studyplanitemUncheckedUpdateWithoutStudyplanInput>
+    create: XOR<studyplanitemCreateWithoutStudyplanInput, studyplanitemUncheckedCreateWithoutStudyplanInput>
+  }
+
+  export type studyplanitemUpdateWithWhereUniqueWithoutStudyplanInput = {
+    where: studyplanitemWhereUniqueInput
+    data: XOR<studyplanitemUpdateWithoutStudyplanInput, studyplanitemUncheckedUpdateWithoutStudyplanInput>
+  }
+
+  export type studyplanitemUpdateManyWithWhereWithoutStudyplanInput = {
+    where: studyplanitemScalarWhereInput
+    data: XOR<studyplanitemUpdateManyMutationInput, studyplanitemUncheckedUpdateManyWithoutStudyplanInput>
+  }
+
+  export type studyplanitemScalarWhereInput = {
+    AND?: studyplanitemScalarWhereInput | studyplanitemScalarWhereInput[]
+    OR?: studyplanitemScalarWhereInput[]
+    NOT?: studyplanitemScalarWhereInput | studyplanitemScalarWhereInput[]
+    SPIID?: IntFilter<"studyplanitem"> | number
+    SPID?: IntFilter<"studyplanitem"> | number
+    Name?: StringFilter<"studyplanitem"> | string
+  }
+
+  export type exerciseCreateWithoutStudyplanitemInput = {
+    Name: string
+    Slug: string
+    Content: string
+    Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
+    status?: $Enums.exercise_status
+    comment?: commentCreateNestedManyWithoutExerciseInput
+    topic?: topicCreateNestedOneWithoutExerciseInput
+    exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
+    submission?: submissionCreateNestedManyWithoutExerciseInput
+    testcase?: testcaseCreateNestedManyWithoutExerciseInput
+  }
+
+  export type exerciseUncheckedCreateWithoutStudyplanitemInput = {
+    EID?: number
+    TpID?: number | null
+    Name: string
+    Slug: string
+    Content: string
+    Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
+    status?: $Enums.exercise_status
+    comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
+    exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
+    submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
+    testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
+  }
+
+  export type exerciseCreateOrConnectWithoutStudyplanitemInput = {
+    where: exerciseWhereUniqueInput
+    create: XOR<exerciseCreateWithoutStudyplanitemInput, exerciseUncheckedCreateWithoutStudyplanitemInput>
+  }
+
+  export type exerciseCreateManyStudyplanitemInputEnvelope = {
+    data: exerciseCreateManyStudyplanitemInput | exerciseCreateManyStudyplanitemInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type studyplanCreateWithoutStudyplanitemInput = {
+    Name: string
+    Description: string
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+    Icon?: string | null
+    Slug?: string | null
+  }
+
+  export type studyplanUncheckedCreateWithoutStudyplanitemInput = {
+    SPID?: number
+    Name: string
+    Description: string
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+    Icon?: string | null
+    Slug?: string | null
+  }
+
+  export type studyplanCreateOrConnectWithoutStudyplanitemInput = {
+    where: studyplanWhereUniqueInput
+    create: XOR<studyplanCreateWithoutStudyplanitemInput, studyplanUncheckedCreateWithoutStudyplanitemInput>
+  }
+
+  export type exerciseUpsertWithWhereUniqueWithoutStudyplanitemInput = {
+    where: exerciseWhereUniqueInput
+    update: XOR<exerciseUpdateWithoutStudyplanitemInput, exerciseUncheckedUpdateWithoutStudyplanitemInput>
+    create: XOR<exerciseCreateWithoutStudyplanitemInput, exerciseUncheckedCreateWithoutStudyplanitemInput>
+  }
+
+  export type exerciseUpdateWithWhereUniqueWithoutStudyplanitemInput = {
+    where: exerciseWhereUniqueInput
+    data: XOR<exerciseUpdateWithoutStudyplanitemInput, exerciseUncheckedUpdateWithoutStudyplanitemInput>
+  }
+
+  export type exerciseUpdateManyWithWhereWithoutStudyplanitemInput = {
+    where: exerciseScalarWhereInput
+    data: XOR<exerciseUpdateManyMutationInput, exerciseUncheckedUpdateManyWithoutStudyplanitemInput>
+  }
+
+  export type studyplanUpsertWithoutStudyplanitemInput = {
+    update: XOR<studyplanUpdateWithoutStudyplanitemInput, studyplanUncheckedUpdateWithoutStudyplanitemInput>
+    create: XOR<studyplanCreateWithoutStudyplanitemInput, studyplanUncheckedCreateWithoutStudyplanitemInput>
+    where?: studyplanWhereInput
+  }
+
+  export type studyplanUpdateToOneWithWhereWithoutStudyplanitemInput = {
+    where?: studyplanWhereInput
+    data: XOR<studyplanUpdateWithoutStudyplanitemInput, studyplanUncheckedUpdateWithoutStudyplanitemInput>
+  }
+
+  export type studyplanUpdateWithoutStudyplanitemInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: StringFieldUpdateOperationsInput | string
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Icon?: NullableStringFieldUpdateOperationsInput | string | null
+    Slug?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type studyplanUncheckedUpdateWithoutStudyplanitemInput = {
+    SPID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: StringFieldUpdateOperationsInput | string
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Icon?: NullableStringFieldUpdateOperationsInput | string | null
+    Slug?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type commentCreateManyExerciseInput = {
     CoID?: number
     UID: string
@@ -22105,7 +25196,7 @@ export namespace Prisma {
 
   export type testcaseCreateManyExerciseInput = {
     TCID?: number
-    Input: string
+    Input?: string | null
     ExpectedOutput: string
     isHidden?: boolean | null
   }
@@ -22186,7 +25277,7 @@ export namespace Prisma {
   }
 
   export type testcaseUpdateWithoutExerciseInput = {
-    Input?: StringFieldUpdateOperationsInput | string
+    Input?: NullableStringFieldUpdateOperationsInput | string | null
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
     testcaseresult?: testcaseresultUpdateManyWithoutTestcaseNestedInput
@@ -22194,7 +25285,7 @@ export namespace Prisma {
 
   export type testcaseUncheckedUpdateWithoutExerciseInput = {
     TCID?: IntFieldUpdateOperationsInput | number
-    Input?: StringFieldUpdateOperationsInput | string
+    Input?: NullableStringFieldUpdateOperationsInput | string | null
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
     testcaseresult?: testcaseresultUncheckedUpdateManyWithoutTestcaseNestedInput
@@ -22202,7 +25293,7 @@ export namespace Prisma {
 
   export type testcaseUncheckedUpdateManyWithoutExerciseInput = {
     TCID?: IntFieldUpdateOperationsInput | number
-    Input?: StringFieldUpdateOperationsInput | string
+    Input?: NullableStringFieldUpdateOperationsInput | string | null
     ExpectedOutput?: StringFieldUpdateOperationsInput | string
     isHidden?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
@@ -22263,11 +25354,13 @@ export namespace Prisma {
 
   export type exerciseCreateManyTopicInput = {
     EID?: number
+    SPIID?: number | null
     Name: string
     Slug: string
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    status?: $Enums.exercise_status
   }
 
   export type exerciseUpdateWithoutTopicInput = {
@@ -22276,7 +25369,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
+    studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
@@ -22284,11 +25379,13 @@ export namespace Prisma {
 
   export type exerciseUncheckedUpdateWithoutTopicInput = {
     EID?: IntFieldUpdateOperationsInput | number
+    SPIID?: NullableIntFieldUpdateOperationsInput | number | null
     Name?: StringFieldUpdateOperationsInput | string
     Slug?: StringFieldUpdateOperationsInput | string
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
@@ -22297,11 +25394,13 @@ export namespace Prisma {
 
   export type exerciseUncheckedUpdateManyWithoutTopicInput = {
     EID?: IntFieldUpdateOperationsInput | number
+    SPIID?: NullableIntFieldUpdateOperationsInput | number | null
     Name?: StringFieldUpdateOperationsInput | string
     Slug?: StringFieldUpdateOperationsInput | string
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
   }
 
   export type commentCreateManyUserInput = {
@@ -22686,6 +25785,78 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type studyplanitemCreateManyStudyplanInput = {
+    SPIID?: number
+    Name: string
+  }
+
+  export type studyplanitemUpdateWithoutStudyplanInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    exercise?: exerciseUpdateManyWithoutStudyplanitemNestedInput
+  }
+
+  export type studyplanitemUncheckedUpdateWithoutStudyplanInput = {
+    SPIID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+    exercise?: exerciseUncheckedUpdateManyWithoutStudyplanitemNestedInput
+  }
+
+  export type studyplanitemUncheckedUpdateManyWithoutStudyplanInput = {
+    SPIID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type exerciseCreateManyStudyplanitemInput = {
+    EID?: number
+    TpID?: number | null
+    Name: string
+    Slug: string
+    Content: string
+    Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
+    status?: $Enums.exercise_status
+  }
+
+  export type exerciseUpdateWithoutStudyplanitemInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Slug?: StringFieldUpdateOperationsInput | string
+    Content?: StringFieldUpdateOperationsInput | string
+    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
+    comment?: commentUpdateManyWithoutExerciseNestedInput
+    topic?: topicUpdateOneWithoutExerciseNestedInput
+    exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
+    submission?: submissionUpdateManyWithoutExerciseNestedInput
+    testcase?: testcaseUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type exerciseUncheckedUpdateWithoutStudyplanitemInput = {
+    EID?: IntFieldUpdateOperationsInput | number
+    TpID?: NullableIntFieldUpdateOperationsInput | number | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Slug?: StringFieldUpdateOperationsInput | string
+    Content?: StringFieldUpdateOperationsInput | string
+    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
+    comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
+    submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
+    testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type exerciseUncheckedUpdateManyWithoutStudyplanitemInput = {
+    EID?: IntFieldUpdateOperationsInput | number
+    TpID?: NullableIntFieldUpdateOperationsInput | number | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Slug?: StringFieldUpdateOperationsInput | string
+    Content?: StringFieldUpdateOperationsInput | string
+    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
   }
 
 

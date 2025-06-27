@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Switch, Box } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import { DarkMode, LightMode } from "@mui/icons-material";
 
 export default function ThemeToggleSwitch() {
@@ -17,32 +17,50 @@ export default function ThemeToggleSwitch() {
 
   const isDark = resolvedTheme === "dark";
 
+  const handleToggle = () => {
+    setTheme(isDark ? "light" : "dark");
+  };
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        gap: 1,
-        px: 1.5,
-        py: 0.5,
-        borderRadius: 10,
-        backgroundColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-        transition: "all 0.3s ease",
-        width: "fit-content",
-      }}
-    >
-      {isDark ? <DarkMode sx={{ color: "#90caf9", transition: "0.3s" }} /> : <LightMode sx={{ color: "#fbc02d", transition: "0.3s" }} />}
-      <Switch
-        checked={isDark}
-        onChange={() => setTheme(isDark ? "light" : "dark")}
-        color="default"
+    <Tooltip title={isDark ? "Chuyển sang chế độ sáng" : "Chuyển sang chế độ tối"} arrow>
+      <IconButton
+        onClick={handleToggle}
         sx={{
-          "& .MuiSwitch-thumb": {
-            backgroundColor: isDark ? "#fff" : "#000",
+          width: 44,
+          height: 44,
+          borderColor: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)',
+          color: isDark ? '#ffffff' : '#666',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&:hover': {
+            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.08)',
+            transform: 'translateY(-2px)',
+            boxShadow: isDark 
+              ? '0 8px 25px rgba(255, 255, 255, 0.15)' 
+              : '0 8px 25px rgba(0, 0, 0, 0.15)',
           },
+          '&:active': {
+            transform: 'translateY(0px)',
+          }
         }}
-      />
-    </Box>
+      >
+        {isDark ? (
+          <LightMode 
+            sx={{ 
+              fontSize: 20,
+              transition: 'all 0.3s ease',
+              color: '#fbc02d',
+            }} 
+          />
+        ) : (
+          <DarkMode 
+            sx={{ 
+              fontSize: 20,
+              transition: 'all 0.3s ease',
+              color: '#666',
+            }} 
+          />
+        )}
+      </IconButton>
+    </Tooltip>
   );
 }

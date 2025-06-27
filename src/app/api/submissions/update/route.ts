@@ -15,7 +15,18 @@ export async function PUT(req: Request) {
       data: { Result },
     });
 
-    return NextResponse.json({ message: "Submission result updated successfully" }, { status: 200 });
+    // Lấy submission để biết EID
+    const submission = await prisma.submission.findUnique({ where: { SID } });
+    if (submission) {
+      await prisma.exercise.update({
+        where: { EID: submission.EID },
+        data: {
+          status: Result === "Pass" ? "Solved" : "Unattempted",
+        },
+      });
+    }
+
+    return NextResponse.json({ message: "Submission result and exercise status updated successfully" }, { status: 200 });
   } catch (error) {
     console.error("Error updating submission result:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

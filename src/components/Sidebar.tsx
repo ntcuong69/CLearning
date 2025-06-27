@@ -19,6 +19,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import SchoolIcon from "@mui/icons-material/School";
 import CodeIcon from "@mui/icons-material/Code";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import PersonIcon from "@mui/icons-material/Person";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -30,8 +31,14 @@ const menuItems = [
     description: "Tổng quan học tập"
   },
   { 
+    text: "Lộ trình học", 
+    icon: <SchoolIcon />, 
+    href: "/studyplan",
+    description: "Lộ trình học tập"
+  },
+  { 
     text: "Bài tập", 
-    icon: <FitnessCenterIcon />, 
+    icon: <CodeIcon />, 
     href: "/exercises",
     description: "Thực hành lập trình"
   },
@@ -69,22 +76,19 @@ export default function Sidebar() {
     <Box
       sx={{
         width: 280,
-        bgcolor: "#f5f6fa",
-        borderRight: "1px solid #e0e0e0",
+        bgcolor: "#ffffff",
+        borderRight: "1px solid #e8e8e8",
         display: "flex",
         flexDirection: "column",
         position: "fixed",
-        top: 70,
-        left: 10,
-        height: "calc(100vh - 86px)",
-        bottom: 10,
-        borderRadius: 2,
+        top: 69,
+        left: 0,
+        height: "calc(100vh - 80px)",
         zIndex: 1200,
-        boxShadow: "2px 0 8px rgba(0,0,0,0.1)",
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+        overflow: "hidden",
       }}
     >
-      {/* Header Section đã chuyển lên Header.tsx */}
-
       {/* Navigation Menu */}
       <Box sx={{ flex: 1, overflow: "auto", py: 2 }}>
         <List sx={{ px: 2 }}>
@@ -94,38 +98,53 @@ export default function Sidebar() {
               title={item.description}
               placement="right"
               arrow
+              sx={{
+                "& .MuiTooltip-tooltip": {
+                  bgcolor: "#1a1a1a",
+                  color: "#ffffff",
+                  fontSize: "0.75rem",
+                  fontWeight: 500,
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)"
+                }
+              }}
             >
               <ListItemButton
                 component={Link}
                 href={item.href}
                 selected={normalizedPathname === item.href}
                 sx={{
-                  borderRadius: 2,
+                  borderRadius: "12px",
                   mb: 0.5,
-                  color: "#555",
+                  color: "#666",
                   "& .MuiListItemIcon-root": {
-                    color: normalizedPathname === item.href ? "#cc2b5e" : "#666",
-                    minWidth: 40,
+                    color: normalizedPathname === item.href ? "#1a1a1a" : "#999",
+                    minWidth: 44,
+                    fontSize: "1.25rem",
                   },
                   "& .MuiListItemText-primary": {
-                    fontWeight: normalizedPathname === item.href ? 600 : 500,
-                    fontSize: "1.05rem",
+                    fontWeight: normalizedPathname === item.href ? 700 : 600,
+                    fontSize: "0.9rem",
+                    color: normalizedPathname === item.href ? "#1a1a1a" : "#666",
                   },
                   "&.Mui-selected": {
-                    backgroundColor: "rgba(204, 43, 94, 0.1)",
-                    color: "#cc2b5e",
+                    backgroundColor: "#f8f8f8",
+                    color: "#1a1a1a",
+                    border: "1px solid #e0e0e0",
                     "&:hover": {
-                      backgroundColor: "rgba(204, 43, 94, 0.15)",
+                      backgroundColor: "#f0f0f0",
                     },
                   },
                   "&:hover": {
-                    backgroundColor: "rgba(0, 0, 0, 0.04)",
+                    backgroundColor: "#fafafa",
                     color: "#333",
+                    transform: "translateX(4px)",
                   },
-                  transition: "all 0.2s ease",
+                  transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                  position: "relative",
                 }}
               >
-                <ListItemIcon sx={{ fontSize: "1.2rem" }}>
+                <ListItemIcon>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText primary={item.text} />
@@ -145,17 +164,46 @@ export default function Sidebar() {
           display: "flex", 
           alignItems: "center", 
           gap: 2,
-          p: 2,
+          p: 2.5,
           bgcolor: "#ffffff",
-          borderRadius: 2,
-          border: "1px solid #e0e0e0"
+          borderRadius: "12px",
+          border: "1px solid #e8e8e8",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.04)"
         }}>
-          <SchoolIcon sx={{ color: "#cc2b5e", fontSize: 20 }} />
-          <Box>
-            <Typography variant="caption" sx={{ color: "#666", display: "block" }}>
-              Học tập liên tục
+          <Box sx={{ 
+            width: 40, 
+            height: 40, 
+            borderRadius: "10px",
+            bgcolor: "#1a1a1a",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}>
+            <SchoolIcon sx={{ color: "#ffffff", fontSize: 20 }} />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                color: "#999", 
+                display: "block",
+                fontSize: "0.7rem",
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.5px",
+                mb: 0.5
+              }}
+            >
+              Chuỗi học tập
             </Typography>
-            <Typography variant="body2" sx={{ fontWeight: 600, color: "#333" }}>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                fontWeight: 700, 
+                color: "#1a1a1a",
+                fontSize: "0.9rem"
+              }}
+            >
               {Math.floor(Math.random() * 7) + 1} ngày liên tiếp
             </Typography>
           </Box>

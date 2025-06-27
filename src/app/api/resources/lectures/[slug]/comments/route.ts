@@ -6,6 +6,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function GET(req: NextRequest, context: { params: Promise<{ slug: string }> }) {
   try {
+    const session = await getServerSession(authOptions);
     const { slug } = await context.params;
     const lesson = await prisma.lesson.findUnique({
       where: { Slug: slug },
@@ -32,7 +33,21 @@ export async function GET(req: NextRequest, context: { params: Promise<{ slug: s
       },
       orderBy: { CreatedAt: "asc" },
     });
-    return NextResponse.json({ comments });
+    const commentsWithLike = await Promise.all(
+      comments.map(async (c) => ({
+        ...c,
+        likeCount: await prisma.commentlike.count({ where: { CoID: c.CoID } }),
+      }))
+    );
+    let likedComments: Record<number, boolean> = {};
+    if (session?.user?.uid && comments.length > 0) {
+      const liked = await prisma.commentlike.findMany({
+        where: { UID: session.user.uid, CoID: { in: comments.map(c => c.CoID) } },
+        select: { CoID: true }
+      });
+      liked.forEach(like => { likedComments[like.CoID] = true; });
+    }
+    return NextResponse.json({ comments: commentsWithLike, likedComments });
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch comments" }, { status: 500 });
   }

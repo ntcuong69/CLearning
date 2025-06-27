@@ -29,14 +29,23 @@ import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { signOut } from "next-auth/react";
+import LocaleSwitcher from "./LocaleSwitcher";
+import ThemeToggleButton from "./ThemeToggleButton";
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 // Styled search input
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
-  borderRadius: 20,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  borderRadius: 24,
+  backgroundColor: '#ffffff',
+  border: '1px solid #e8e8e8',
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    border: '1px solid #d0d0d0',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+  },
+  '&:focus-within': {
+    border: '1px solid #1a1a1a',
+    boxShadow: '0 0 0 3px rgba(26, 26, 26, 0.1)',
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
@@ -45,7 +54,7 @@ const Search = styled('div')(({ theme }) => ({
     marginLeft: theme.spacing(3),
     width: 'auto',
   },
-  border: '1px solid #e0e0e0',
+  transition: 'all 0.2s ease',
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -56,18 +65,24 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: '#666',
+  color: '#999',
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
+  color: '#333',
   '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: theme.spacing(1.5, 1, 1.5, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
+    fontSize: '0.9rem',
+    fontWeight: 500,
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '24ch',
+    },
+    '&::placeholder': {
+      color: '#999',
+      opacity: 1,
     },
   },
 }));
@@ -122,44 +137,35 @@ export default function NavBar() {
       color="default"
       elevation={0}
       sx={{
-        backgroundColor: '#f5f6fa',
-        borderBottom: '1px solid #e0e0e0',
-        backdropFilter: 'blur(10px)',
+        backgroundColor: '#ffffff',
+        borderBottom: '1px solid #f0f0f0',
+        backdropFilter: 'blur(20px)',
         width: '100vw',
         left: 0,
         top: 0,
         zIndex: 1300,
         boxSizing: 'border-box',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
       }}
     >
       <Toolbar sx={{
         display: "flex",
         justifyContent: "space-between",
         minHeight: 70,
-        px: 3,
+        px: 4,
         width: '100%',
         maxWidth: '100vw',
         boxSizing: 'border-box',
       }}>
-        {/* Left Section - Logo, Tên web và Navigation */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
-          {/* Logo và tên web */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <img src="/code-logo.png" alt="Code Forge" style={{ width: 40, height: 40 }} />
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 700,
-                background: 'linear-gradient(45deg, #cc2b5e, #753a88)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                display: { xs: 'none', sm: 'block' },
-                cursor: 'pointer',
-              }}
-              onClick={() => router.push('/home')}
-            >
+        {/* Left Section - Logo và Tên web */}
+        <Box className="flex items-center gap-3 mr-8">
+        <img src="/code-logo.png" alt="Code Forge" className="w-15 h-15" />
+          <Box>
+            <Typography variant="h6" className="font-bold text-gray-900 text-lg leading-tight">
               Code Forge
+            </Typography>
+            <Typography variant="caption" className="text-gray-500 text-xs">
+              Lập trình C căn bản
             </Typography>
           </Box>
         </Box>
@@ -167,7 +173,7 @@ export default function NavBar() {
         {/* Center Section - Search */}
         <Search>
           <SearchIconWrapper>
-            <SearchIcon />
+            <SearchIcon sx={{ fontSize: 20 }} />
           </SearchIconWrapper>
           <StyledInputBase
             placeholder="Tìm kiếm bài tập, tài liệu..."
@@ -175,33 +181,65 @@ export default function NavBar() {
           />
         </Search>
 
-        {/* Right Section - Notifications and User Profile */}
+        {/* Right Section - Theme Toggle, Locale Switcher, Notifications and User Profile */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          {/* Theme Toggle Button */}
+          <ThemeToggleButton />
+
+          {/* Locale Switcher */}
+          <LocaleSwitcher />
+
           {/* Notifications */}
-          <Tooltip title="Thông báo">
+          <Tooltip title="Thông báo" arrow>
             <IconButton 
               size="large"
               sx={{ 
                 color: "#666",
-                "&:hover": { backgroundColor: "rgba(204, 43, 94, 0.1)" }
+                backgroundColor: '#fafafa',
+                width: 44,
+                height: 44,
+                borderRadius: '12px',
+                border: '1px solid #f0f0f0',
+                "&:hover": { 
+                  backgroundColor: "#f0f0f0",
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                },
+                transition: 'all 0.2s ease',
               }}
             >
-              <Badge badgeContent={notificationCount} color="error">
-                <NotificationsIcon />
+              <Badge 
+                badgeContent={notificationCount} 
+                color="error"
+                sx={{
+                  '& .MuiBadge-badge': {
+                    backgroundColor: '#1a1a1a',
+                    color: '#ffffff',
+                    fontWeight: 700,
+                    fontSize: '0.7rem',
+                    minWidth: 18,
+                    height: 18,
+                  }
+                }}
+              >
+                <NotificationsIcon sx={{ fontSize: 20 }} />
               </Badge>
             </IconButton>
           </Tooltip>
 
           {/* User Profile */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Chip
               label={`Level ${Math.floor(Math.random() * 10) + 1}`}
               size="small"
               sx={{
-                backgroundColor: "rgba(204, 43, 94, 0.1)",
-                color: "#cc2b5e",
-                fontWeight: 600,
-                fontSize: "0.75rem"
+                backgroundColor: "rgba(26, 26, 26, 0.1)",
+                color: "#1a1a1a",
+                fontWeight: 700,
+                fontSize: "0.75rem",
+                height: 24,
+                borderRadius: '12px',
+                border: '1px solid rgba(26, 26, 26, 0.2)',
               }}
             />
             
@@ -209,20 +247,30 @@ export default function NavBar() {
               sx={{ 
                 display: "flex", 
                 alignItems: "center", 
-                gap: 1,
+                gap: 1.5,
                 cursor: "pointer",
-                p: 1,
-                borderRadius: 2,
-                "&:hover": { backgroundColor: "rgba(0, 0, 0, 0.04)" }
+                p: 1.5,
+                borderRadius: '16px',
+                border: '1px solid #f0f0f0',
+                backgroundColor: '#fafafa',
+                transition: 'all 0.2s ease',
+                "&:hover": { 
+                  backgroundColor: "#f0f0f0",
+                  transform: 'translateY(-1px)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                }
               }} 
               onClick={handleAvatarClick}
             >
               <Avatar 
                 sx={{ 
-                  width: 36, 
-                  height: 36,
-                  border: "2px solid #e0e0e0",
-                  bgcolor: username ? "#cc2b5e" : "#666"
+                  width: 40, 
+                  height: 40,
+                  border: "3px solid #ffffff",
+                  bgcolor: username ? "#1a1a1a" : "#666",
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                  fontSize: '1rem',
+                  fontWeight: 700,
                 }}
               >
                 {avatar ? (
@@ -230,9 +278,10 @@ export default function NavBar() {
                     src={avatar}
                     alt={username}
                     style={{
-                      width: 36,
-                      height: 36,
+                      width: 40,
+                      height: 40,
                       objectFit: "cover",
+                      borderRadius: '50%',
                     }}
                   />
                 ) : username ? (
@@ -243,15 +292,37 @@ export default function NavBar() {
               </Avatar>
               
               <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                <Typography variant="body2" sx={{ fontWeight: 600, color: "#333" }}>
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    fontWeight: 700, 
+                    color: "#1a1a1a",
+                    fontSize: '0.9rem',
+                    lineHeight: 1.2,
+                  }}
+                >
                   {username || "Chưa đăng nhập"}
                 </Typography>
-                <Typography variant="caption" sx={{ color: "#666" }}>
+                <Typography 
+                  variant="caption" 
+                  sx={{ 
+                    color: "#666",
+                    fontSize: '0.75rem',
+                    fontWeight: 500,
+                  }}
+                >
                   {username ? "Student" : "Guest"}
                 </Typography>
               </Box>
               
-              <KeyboardArrowDownIcon sx={{ color: "#666", fontSize: 20 }} />
+              <KeyboardArrowDownIcon 
+                sx={{ 
+                  color: "#666", 
+                  fontSize: 18,
+                  transition: 'transform 0.2s ease',
+                  transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+                }} 
+              />
             </Box>
           </Box>
 
@@ -260,29 +331,72 @@ export default function NavBar() {
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
+            disableScrollLock
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             transformOrigin={{ vertical: "top", horizontal: "right" }}
             PaperProps={{
               sx: {
                 mt: 1,
-                minWidth: 200,
-                boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
-                borderRadius: 2,
+                minWidth: 170,
+                boxShadow: "0 8px 24px rgba(0,0,0,0.10)",
+                borderRadius: '10px',
+                border: '1px solid #f0f0f0',
+                overflow: 'hidden',
               }
             }}
           >
-            <MenuItem onClick={handleProfile} sx={{ py: 1.5 }}>
-              <AccountCircleIcon sx={{ mr: 2, color: "#666" }} />
-              <Typography>Trang cá nhân</Typography>
+            <MenuItem 
+              onClick={handleProfile} 
+              sx={{ 
+                py: 1.2,
+                px: 1.5,
+                borderRadius: '8px',
+                transition: 'background 0.15s',
+                '&:hover': {
+                  backgroundColor: '#e3f0ff',
+                }
+              }}
+            >
+              <AccountCircleIcon sx={{ mr: 2, color: "#666", fontSize: 20 }} />
+              <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                Trang cá nhân
+              </Typography>
             </MenuItem>
-            <MenuItem onClick={handleSettings} sx={{ py: 1.5 }}>
-              <SettingsIcon sx={{ mr: 2, color: "#666" }} />
-              <Typography>Cài đặt</Typography>
+            <MenuItem 
+              onClick={handleSettings} 
+              sx={{ 
+                py: 1.2,
+                px: 1.5,
+                borderRadius: '8px',
+                transition: 'background 0.15s',
+                '&:hover': {
+                  backgroundColor: '#e3f0ff',
+                }
+              }}
+            >
+              <SettingsIcon sx={{ mr: 2, color: "#666", fontSize: 20 }} />
+              <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                Cài đặt
+              </Typography>
             </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleLogout} sx={{ py: 1.5, color: "#d32f2f" }}>
-              <LogoutIcon sx={{ mr: 2 }} />
-              <Typography>Đăng xuất</Typography>
+            <Divider sx={{ my: 1 }} />
+            <MenuItem 
+              onClick={handleLogout} 
+              sx={{ 
+                py: 1.2,
+                px: 1.5,
+                color: "#d32f2f",
+                borderRadius: '8px',
+                transition: 'background 0.15s',
+                '&:hover': {
+                  backgroundColor: '#ffeaea',
+                }
+              }}
+            >
+              <LogoutIcon sx={{ mr: 2, fontSize: 20 }} />
+              <Typography sx={{ fontWeight: 600, fontSize: '0.9rem' }}>
+                Đăng xuất
+              </Typography>
             </MenuItem>
           </Menu>
         </Box>

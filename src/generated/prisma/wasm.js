@@ -120,11 +120,13 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.ExerciseScalarFieldEnum = {
   EID: 'EID',
   TpID: 'TpID',
+  SPIID: 'SPIID',
   Name: 'Name',
   Slug: 'Slug',
   Content: 'Content',
   Difficulty: 'Difficulty',
-  template: 'template'
+  template: 'template',
+  status: 'status'
 };
 
 exports.Prisma.SubmissionScalarFieldEnum = {
@@ -226,6 +228,22 @@ exports.Prisma.NotificationScalarFieldEnum = {
   isRead: 'isRead'
 };
 
+exports.Prisma.StudyplanScalarFieldEnum = {
+  SPID: 'SPID',
+  Name: 'Name',
+  Description: 'Description',
+  StartTime: 'StartTime',
+  EndTime: 'EndTime',
+  Icon: 'Icon',
+  Slug: 'Slug'
+};
+
+exports.Prisma.StudyplanitemScalarFieldEnum = {
+  SPIID: 'SPIID',
+  SPID: 'SPID',
+  Name: 'Name'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -301,10 +319,26 @@ exports.Prisma.notificationOrderByRelevanceFieldEnum = {
   FromUser: 'FromUser',
   Message: 'Message'
 };
+
+exports.Prisma.studyplanOrderByRelevanceFieldEnum = {
+  Name: 'Name',
+  Description: 'Description',
+  Icon: 'Icon',
+  Slug: 'Slug'
+};
+
+exports.Prisma.studyplanitemOrderByRelevanceFieldEnum = {
+  Name: 'Name'
+};
 exports.exercise_Difficulty = exports.$Enums.exercise_Difficulty = {
   Easy: 'Easy',
   Medium: 'Medium',
   Hard: 'Hard'
+};
+
+exports.exercise_status = exports.$Enums.exercise_status = {
+  Solved: 'Solved',
+  Unattempted: 'Unattempted'
 };
 
 exports.submission_Result = exports.$Enums.submission_Result = {
@@ -350,7 +384,9 @@ exports.Prisma.ModelName = {
   commentlike: 'commentlike',
   exerciselike: 'exerciselike',
   lesson: 'lesson',
-  notification: 'notification'
+  notification: 'notification',
+  studyplan: 'studyplan',
+  studyplanitem: 'studyplanitem'
 };
 
 /**

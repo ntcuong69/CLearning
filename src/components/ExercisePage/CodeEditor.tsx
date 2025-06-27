@@ -39,7 +39,7 @@ export default function CodeEditor({ code, setCode }: CodeEditorProps) {
       defaultLanguage="c"
       value={code}
       onChange={(value) => setCode(value ?? "")}
-      theme="vs-dark"
+      theme="vs-light"
       onMount={handleMount}
       options={{
         fontSize: 14,
@@ -50,13 +50,11 @@ export default function CodeEditor({ code, setCode }: CodeEditorProps) {
         lineNumbers: "on",
         tabSize: 2,
         automaticLayout: true,
-        renderLineHighlight: "all",
-        overviewRulerBorder: false,
+        renderLineHighlight: "none",
         padding: {
           top: 16,
           bottom: 16,
         },
-        cursorSmoothCaretAnimation: "on",
         cursorBlinking: "phase",
         formatOnType: true,
         formatOnPaste: true,

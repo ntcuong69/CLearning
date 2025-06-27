@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ eid: string }> }
+  context: { params: Promise<{ slug: string }> }
 ) {
-  const { eid } = await context.params;
+  const { slug } = await context.params;
   try {
     const exercise = await prisma.exercise.findFirst({
       where: {
-        EID: Number(eid),
+        Slug: slug,
       },
       select: {
         EID: true,
@@ -17,6 +17,9 @@ export async function GET(
         Content: true,
         Difficulty: true,
         template: true,
+        Name: true,
+        status: true,
+        Slug: true,
       },
     });
 
@@ -28,4 +31,4 @@ export async function GET(
   } catch (e) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
-}
+} 

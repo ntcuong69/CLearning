@@ -1,14 +1,10 @@
 import { useState } from "react";
-import axios from "axios";
-
-// Import các types từ model.ts
-import { Testcase, TestcaseResult, TestcaseResultResult, SubmissionResult } from "@/types/model";
 
 export function useSubmitCode(
-  eid: string,
+  slug: string,
   code: string,
-  setResults: (results: TestcaseResult[] | null) => void,
-  setSubmissionResult: (result: SubmissionResult | null) => void
+  setResults: (results: any[] | null, finalResult?: string) => void,
+  setSubmissionResult: (result: any) => void
 ) {
   const [submitting, setSubmitting] = useState(false);
 
@@ -18,52 +14,77 @@ export function useSubmitCode(
     setSubmissionResult(null);
 
     try {
-      const submissionRes = await axios.post(`/api/submissions/create`, { eid: parseInt(eid, 10), code });
-      const SID = submissionRes.data.submission.SID;
+      // Lấy thông tin bài tập để lấy EID từ slug
+      const exRes = await fetch(`/api/exercise/${slug}`);
+      if (!exRes.ok) throw new Error("Không tìm thấy bài tập");
+      const exData = await exRes.json();
+      const exercise = exData.exercise;
+      const eid = exercise.EID;
 
-      const tcRes = await axios.get(`/api/testcases/by-exercise/${eid}`);
-      const tcs: Testcase[] = tcRes.data.testcases;
+      // Tạo submission mới để lấy SID
+      const subRes = await fetch('/api/submissions/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, eid }),
+      });
+      const subData = await subRes.json();
+      const SID = subData.submission?.SID;
 
+      // Lấy testcases
+      const tcRes = await fetch(`/api/testcases/by-exercise/${eid}`);
+      const tcData = await tcRes.json();
+      const tcs = tcData.testcases;
+
+      // Gửi code lên PistonAPI cho từng testcase
       const runResults: (any | null)[] = [];
       const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
       for (let tc of tcs) {
         try {
-          const res = await axios.post("https://emkc.org/api/v2/piston/execute", {
-            language: "c",
-            version: "10.2.0",
-            files: [{ name: "main.c", content: code }],
-            stdin: tc.Input,
+          const pistonRes = await fetch("https://emkc.org/api/v2/piston/execute", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              language: "c",
+              version: "10.2.0",
+              files: [{ name: "main.c", content: code }],
+              stdin: tc.Input,
+            }),
           });
-          runResults.push(res);
+          const pistonData = await pistonRes.json();
+          runResults.push(pistonData);
         } catch {
           runResults.push(null);
         }
         await sleep(100);
       }
 
+      // Xử lý kết quả
       const resultsData = await Promise.all(
-        tcs.map(async (tc, idx) => {
-          const runData = runResults[idx]?.data?.run || {};
-          const expected = tc.ExpectedOutput.trim();
-          const stderr = runData.stderr?.trim() || "";
-          const actual = runData.output?.trim() || "";
+        tcs.map(async (tc: any, idx: number) => {
+          const runData = runResults[idx]?.run || {};
+          const expected = (tc.ExpectedOutput || "").trim();
+          const stderr = (runData.stderr || "").trim();
+          const actual = (runData.output || "").trim();
 
-          let result: TestcaseResultResult = TestcaseResultResult.Wrong;
-          if (runData.code !== 0 || stderr) result = TestcaseResultResult.Error;
-          else if (actual === expected) result = TestcaseResultResult.Correct;
-          else if (actual.includes(expected)) result = TestcaseResultResult.Partial;
+          let result = "Wrong";
+          if (runData.code !== 0 || stderr) result = "Error";
+          else if (actual === expected) result = "Correct";
+          else if (actual.includes(expected)) result = "Partial";
 
-          await axios.post(`/api/testcaseresult/create`, {
-            SID,
-            TCID: tc.TCID,
-            ActualOutput: actual || stderr || "Error",
-            Result: result,
+          // Gửi kết quả testcase lên server với đúng SID
+          await fetch(`/api/testcaseresult/create`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              SID,
+              TCID: tc.TCID,
+              ActualOutput: actual || stderr || "Error",
+              Result: result,
+            }),
           });
 
           return {
             TCRID: idx + 1, // Temporary ID for local use
-            SID,
             TCID: tc.TCID,
             ActualOutput: actual || stderr || "Error",
             Result: result,
@@ -72,20 +93,23 @@ export function useSubmitCode(
         })
       );
 
-      setResults(resultsData);
+      const allCorrect = resultsData.every((row) => row.Result === "Correct");
+      const finalResult = allCorrect ? "Pass" : "Fail";
+      setResults(resultsData, finalResult);
 
-      const allCorrect = resultsData.every((row) => row.Result === TestcaseResultResult.Correct);
-      const finalResult: SubmissionResult = allCorrect ? SubmissionResult.Pass : SubmissionResult.Fail;
-      setSubmissionResult(finalResult);
-
-      await axios.put(`/api/submissions/update`, {
-        SID,
-        Result: finalResult,
+      // Nếu cần cập nhật submission kết quả tổng thể thì fetch PUT ở đây
+      await fetch(`/api/submissions/update`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          SID,
+          Result: finalResult,
+        }),
       });
     } catch (err) {
       console.error("Submit error:", err);
       setResults([]);
-      setSubmissionResult(SubmissionResult.Fail);
+      setSubmissionResult("Fail");
     }
 
     setSubmitting(false);

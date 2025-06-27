@@ -77,6 +77,7 @@ interface CommentData {
   ParentID?: number | null;
   CreatedAt?: string;
   user?: UserInfo;
+  likeCount?: number;
 }
 interface LessonData {
   LID: number;
@@ -100,6 +101,7 @@ function useComments(currentLesson: LessonData | undefined) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentUID, setCurrentUID] = useState<string | null>(null);
+  const [likedComments, setLikedComments] = useState<{ [coid: number]: boolean }>({});
 
   useEffect(() => {
     if (!currentLesson) return;
@@ -107,7 +109,10 @@ function useComments(currentLesson: LessonData | undefined) {
     setComments([]);
     fetch(`/api/resources/lectures/${currentLesson.Slug}/comments`)
       .then((res) => res.json())
-      .then((data) => setComments(data.comments || []))
+      .then((data) => {
+        setComments(data.comments || []);
+        if (data.likedComments) setLikedComments(data.likedComments);
+      })
       .catch(() => setComments([]))
       .finally(() => setLoading(false));
   }, [currentLesson?.Slug]);
@@ -120,7 +125,20 @@ function useComments(currentLesson: LessonData | undefined) {
       });
   }, []);
 
-  return { comments, setComments, loading, error, setError, currentUID };
+  // Like/unlike logic
+  const handleLike = async (coid: number) => {
+    if (!currentUID) return;
+    const alreadyLiked = likedComments[coid];
+    // Optimistic update
+    setLikedComments((prev) => ({ ...prev, [coid]: !alreadyLiked }));
+    setComments((prev) => prev.map(c => c.CoID === coid ? { ...c, likeCount: (c.likeCount || 0) + (alreadyLiked ? -1 : 1) } : c));
+    try {
+      const res = await fetch(`/api/comments/${coid}/like`, { method: "POST" });
+      // Optionally, re-fetch or handle error
+    } catch {}
+  };
+
+  return { comments, setComments, loading, error, setError, currentUID, likedComments, handleLike };
 }
 
 // 2. Form nhập bình luận
@@ -205,7 +223,9 @@ function CommentItem({
   onSendReply,
   onCancelReply,
   children,
-}: CommentItemProps) {
+  likedComments,
+  handleLike,
+}: CommentItemProps & { likedComments?: { [coid: number]: boolean }, handleLike?: (coid: number) => void }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOwner = currentUID && comment.UID === currentUID;
   return (
@@ -262,8 +282,9 @@ function CommentItem({
         </Typography>
       )}
       <Box sx={{ display: "flex", gap: 1, alignItems: "center", mt: 0.5 }}>
-        <Tooltip title="Thích">
-          <IconButton size="small">
+        <Tooltip title={likedComments && handleLike ? (likedComments[comment.CoID] ? "Bỏ thích" : "Thích") : "Thích"}>
+          <IconButton size="small" onClick={handleLike ? () => handleLike(comment.CoID) : undefined} color={likedComments && likedComments[comment.CoID] ? "primary" : "default"}>
+            <Typography variant="caption" sx={{ mr: 0.5 }}>{comment.likeCount || 0}</Typography>
             <ThumbUpAltOutlinedIcon fontSize="small" />
           </IconButton>
         </Tooltip>
@@ -326,6 +347,8 @@ interface CommentListProps {
   setReplyValue: (v: string) => void;
   onSendReply: (id: number) => void;
   onCancelReply: () => void;
+  likedComments?: { [coid: number]: boolean };
+  handleLike?: (coid: number) => void;
 }
 function CommentList({
   comments,
@@ -343,6 +366,8 @@ function CommentList({
   setReplyValue,
   onSendReply,
   onCancelReply,
+  likedComments,
+  handleLike,
 }: CommentListProps) {
   return (
     <List sx={{ p: 0 }}>
@@ -358,14 +383,16 @@ function CommentList({
             onReply={() => onReply(c.CoID)}
             isEditing={editingId === c.CoID}
             editValue={editValue}
-            setEditValue={setEditValue}
+            setEditValue={(v) => setEditValue(v)}
             onSaveEdit={() => onSaveEdit(c.CoID)}
             onCancelEdit={onCancelEdit}
             isReplying={replyingTo === c.CoID}
             replyValue={replyValue}
-            setReplyValue={setReplyValue}
+            setReplyValue={(v) => setReplyValue(v)}
             onSendReply={() => onSendReply(c.CoID)}
             onCancelReply={onCancelReply}
+            likedComments={likedComments}
+            handleLike={handleLike}
           >
             {/* Phản hồi (cấp 2 và cấp 3+) */}
             {getAllReplies(comments, c.CoID).length > 0 && (
@@ -380,14 +407,16 @@ function CommentList({
                     onReply={() => onReply(r.CoID)}
                     isEditing={editingId === r.CoID}
                     editValue={editValue}
-                    setEditValue={setEditValue}
+                    setEditValue={(v) => setEditValue(v)}
                     onSaveEdit={() => onSaveEdit(r.CoID)}
                     onCancelEdit={onCancelEdit}
                     isReplying={replyingTo === r.CoID}
                     replyValue={replyValue}
-                    setReplyValue={setReplyValue}
+                    setReplyValue={(v) => setReplyValue(v)}
                     onSendReply={() => onSendReply(r.CoID)}
                     onCancelReply={onCancelReply}
+                    likedComments={likedComments}
+                    handleLike={handleLike}
                   />
                 ))}
               </Box>
@@ -425,6 +454,8 @@ interface CommentDialogProps {
   handleDeleteComment: (id: number) => void;
   deleteDialogId: number | null;
   setDeleteDialogId: (id: number | null) => void;
+  likedComments: { [coid: number]: boolean };
+  handleLike: (coid: number) => void;
 }
 function CommentDialog(props: CommentDialogProps) {
   const {
@@ -453,53 +484,137 @@ function CommentDialog(props: CommentDialogProps) {
     handleDeleteComment,
     deleteDialogId,
     setDeleteDialogId,
+    likedComments,
+    handleLike,
   } = props;
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle sx={{ fontWeight: 700, color: "#753a88" }}>Tất cả bình luận</DialogTitle>
-      <DialogContent dividers sx={{ bgcolor: "#f5f6fa", maxHeight: "80vh", minWidth: { xs: 320, sm: 600, md: 800 } }}>
-        <CommentForm
-          onSubmit={handlePostComment}
-          value={commentInput}
-          setValue={setCommentInput}
-          disabled={notLoggedIn}
-          loading={posting}
-          error={postError}
-        />
-        {loading ? (
-          <Typography variant="body2">Đang tải bình luận...</Typography>
-        ) : !currentLesson ? (
-          <Typography variant="body2">Chọn một bài học để xem bình luận.</Typography>
-        ) : comments.length === 0 ? (
-          <Typography variant="body2">Chưa có bình luận nào cho bài học này.</Typography>
-        ) : (
-          <CommentList
-            comments={comments}
-            currentUID={currentUID}
-            onEdit={(id, content) => {
-              setEditingId(id);
-              setEditInput(content);
-            }}
-            onDelete={(id) => setDeleteDialogId(id)}
-            onReply={(id) => setReplyingTo(replyingTo === id ? null : id)}
-            editingId={editingId}
-            editValue={editInput}
-            setEditValue={setEditInput}
-            onSaveEdit={handleEditComment}
-            onCancelEdit={() => setEditingId(null)}
-            replyingTo={replyingTo}
-            replyValue={replyInput}
-            setReplyValue={setReplyInput}
-            onSendReply={handleReply}
-            onCancelReply={() => setReplyingTo(null)}
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="md"
+      disableScrollLock={false}
+      PaperProps={{
+        sx: {
+          bgcolor: '#fff',
+          borderRadius: 4,
+          boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+          p: 0,
+        },
+      }}
+    >
+      <DialogTitle
+        sx={{
+          fontWeight: "bold",
+          color: '#111',
+          textAlign: 'center',
+          fontSize: 24,
+          letterSpacing: 0.5,
+          borderBottom: '1px solid #eee',
+          bgcolor: '#fff',
+          py: 2,
+        }}
+      >
+        Tất cả bình luận
+      </DialogTitle>
+      <DialogContent
+        dividers={false}
+        sx={{
+          bgcolor: '#fafbfc',
+          maxHeight: '80vh',
+          minWidth: { xs: 320, sm: 600, md: 800 },
+          p: { xs: 1, sm: 3, md: 4 },
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3,
+          scrollbarWidth: 'thin',
+          '&::-webkit-scrollbar': { width: 6, background: '#f3f3f3' },
+          '&::-webkit-scrollbar-thumb': { background: '#e0e0e0', borderRadius: 3 },
+        }}
+      >
+        <Box
+          sx={{
+            bgcolor: '#fff',
+            borderRadius: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+            p: { xs: 1.5, sm: 2 },
+            mb: 2,
+          }}
+        >
+          <CommentForm
+            onSubmit={handlePostComment}
+            value={commentInput}
+            setValue={setCommentInput}
+            disabled={notLoggedIn}
+            loading={posting}
+            error={postError}
           />
-        )}
+        </Box>
+        <Box
+          sx={{
+            bgcolor: '#fff',
+            borderRadius: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+            p: { xs: 1.5, sm: 2 },
+            minHeight: 200,
+            maxHeight: '55vh',
+            overflowY: 'auto',
+            scrollbarWidth: 'thin',
+            '&::-webkit-scrollbar': { width: 6, background: '#f3f3f3' },
+            '&::-webkit-scrollbar-thumb': { background: '#e0e0e0', borderRadius: 3 },
+          }}
+        >
+          {loading ? (
+            <Typography variant="body2" color="#888" textAlign="center">Đang tải bình luận...</Typography>
+          ) : !currentLesson ? (
+            <Typography variant="body2" color="#888" textAlign="center">Chọn một bài học để xem bình luận.</Typography>
+          ) : comments.length === 0 ? (
+            <Typography variant="body2" color="#888" textAlign="center">Chưa có bình luận nào cho bài học này.</Typography>
+          ) : (
+            <CommentList
+              comments={comments}
+              currentUID={currentUID}
+              onEdit={(id, content) => {
+                setEditingId(id);
+                setEditInput(content);
+              }}
+              onDelete={(id) => setDeleteDialogId(id)}
+              onReply={(id) => setReplyingTo(replyingTo === id ? null : id)}
+              editingId={editingId}
+              editValue={editInput}
+              setEditValue={(v) => setEditInput(v)}
+              onSaveEdit={(id) => handleEditComment(id)}
+              onCancelEdit={() => setEditingId(null)}
+              replyingTo={replyingTo}
+              replyValue={replyInput}
+              setReplyValue={(v) => setReplyInput(v)}
+              onSendReply={(id) => handleReply(id)}
+              onCancelReply={() => setReplyingTo(null)}
+              likedComments={likedComments}
+              handleLike={handleLike}
+            />
+          )}
+        </Box>
         {/* Dialog xác nhận xóa */}
-        <Dialog open={!!deleteDialogId} onClose={() => setDeleteDialogId(null)}>
-          <DialogTitle>Bạn có chắc muốn xóa bình luận này?</DialogTitle>
-          <DialogActions>
-            <Button onClick={() => setDeleteDialogId(null)}>Hủy</Button>
-            <Button color="error" onClick={() => deleteDialogId && handleDeleteComment(deleteDialogId)}>
+        <Dialog
+          open={!!deleteDialogId}
+          onClose={() => setDeleteDialogId(null)}
+          disableScrollLock={true}
+          PaperProps={{
+            sx: {
+              bgcolor: '#fff',
+              borderRadius: 3,
+              boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+              p: 0,
+            },
+          }}
+        >
+          <DialogTitle sx={{ fontWeight: 700, color: '#111', textAlign: 'center', fontSize: 20, borderBottom: '1px solid #eee', bgcolor: '#fff', py: 2 }}>
+            Bạn có chắc muốn xóa bình luận này?
+          </DialogTitle>
+          <DialogActions sx={{ bgcolor: '#fafbfc', borderBottomLeftRadius: 3, borderBottomRightRadius: 3, p: 2, justifyContent: 'center' }}>
+            <Button onClick={() => setDeleteDialogId(null)} sx={{ color: '#111', borderColor: '#bbb' }} variant="outlined">Hủy</Button>
+            <Button color="error" variant="contained" onClick={() => deleteDialogId && handleDeleteComment(deleteDialogId)} sx={{ ml: 2, fontWeight: 600 }}>
               Xóa
             </Button>
           </DialogActions>
@@ -565,6 +680,8 @@ const LessonPage = () => {
     error: commentsError,
     setError: setCommentsError,
     currentUID,
+    likedComments,
+    handleLike,
   } = useComments(currentLesson);
 
   // Gửi bình luận mới
@@ -641,10 +758,17 @@ const LessonPage = () => {
   // Xóa bình luận
   const handleDeleteComment = async (CoID: number) => {
     try {
+      // Lấy tất cả CoID cần xóa (bao gồm cả chính nó và các con)
+      const allToDelete = [CoID, ...getAllChildIds(comments, CoID)];
+      // Gọi API xóa like cho từng comment trước khi xóa comment
+      await Promise.all(
+        allToDelete.map(async (id) => {
+          await fetch(`/api/comments/${id}/like`, { method: "DELETE" });
+        })
+      );
+      // Xóa comment
       const res = await fetch(`/api/comments/${CoID}/delete`, { method: "DELETE" });
       if (res.ok) {
-        // Lấy tất cả CoID cần xóa (bao gồm cả chính nó và các con)
-        const allToDelete = [CoID, ...getAllChildIds(comments, CoID)];
         setComments((prev) => prev.filter((c) => !allToDelete.includes(c.CoID)));
       }
       setDeleteDialogId(null);
@@ -747,7 +871,7 @@ const LessonPage = () => {
           p: 2,
           position: "fixed",
           top: 70,
-          left: 10,
+          left: 0,
           height: "calc(100vh - 75px)",
           m: 0,
           overflowY: "auto",
@@ -897,6 +1021,7 @@ const LessonPage = () => {
         <Button variant="outlined" onClick={() => setOpenCommentsDialog(true)}>
           Xem tất cả bình luận
         </Button>
+        {/* Hiển thị danh sách bình luận rút gọn ở sidebar phải */}
       </Paper>
 
       {/* Dialog hiển thị tất cả bình luận */}
@@ -926,6 +1051,8 @@ const LessonPage = () => {
         handleDeleteComment={handleDeleteComment}
         deleteDialogId={deleteDialogId}
         setDeleteDialogId={setDeleteDialogId}
+        likedComments={likedComments}
+        handleLike={handleLike}
       />
     </Box>
   );
