@@ -28,15 +28,40 @@ export async function DELETE(req: NextRequest, context: { params: { CoID: string
     if (comment.UID !== session.user.uid) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
+    
     // Lấy tất cả comment con (mọi cấp)
     const childIds = await getAllChildCommentIds(Number(CoID));
-    // Xóa tất cả comment con trước, rồi xóa comment cha
+    const allCommentIds = [Number(CoID), ...childIds];
+    
+    // Xóa theo thứ tự để tránh lỗi foreign key constraint:
+    // 1. Xóa commentlike trước
+    // 2. Xóa notification liên quan
+    // 3. Xóa comment con
+    // 4. Xóa comment cha
+    
+    // Xóa tất cả like của các comment này
+    await prisma.commentlike.deleteMany({
+      where: { CoID: { in: allCommentIds } }
+    });
+    
+    // Xóa tất cả notification liên quan đến các comment này
+    await prisma.notification.deleteMany({
+      where: { CoID: { in: allCommentIds } }
+    });
+    
+    // Xóa tất cả comment con trước
     if (childIds.length > 0) {
-      await prisma.comment.deleteMany({ where: { CoID: { in: childIds } } });
+      await prisma.comment.deleteMany({ 
+        where: { CoID: { in: childIds } } 
+      });
     }
+    
+    // Cuối cùng xóa comment cha
     await prisma.comment.delete({ where: { CoID: Number(CoID) } });
+    
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error("Delete comment error:", error);
     return NextResponse.json({ error: "Failed to delete comment" }, { status: 500 });
   }
 } 

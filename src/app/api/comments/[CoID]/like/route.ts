@@ -56,7 +56,7 @@ export async function POST(req: NextRequest, context: { params: { CoID: string }
 // Xóa tất cả like của một bình luận (dùng khi xóa comment)
 export async function DELETE(req: NextRequest, context: { params: { CoID: string } }) {
   const { params } = context;
-  const CoID = Number(params.CoID);
+  const CoID = Number((await params).CoID);
   if (!CoID) return NextResponse.json({ error: 'Invalid comment ID' }, { status: 400 });
   await prisma.commentlike.deleteMany({ where: { CoID } });
   return NextResponse.json({ success: true });

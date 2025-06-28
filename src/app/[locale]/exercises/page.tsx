@@ -14,6 +14,7 @@ const ExercisesPage = () => {
   const [topics, setTopics] = useState<any[]>([]);
   const [problems, setProblems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [submissionsMap, setSubmissionsMap] = useState<Record<string, any[]>>({});
 
   useEffect(() => {
     setLoading(true);
@@ -21,9 +22,29 @@ const ExercisesPage = () => {
       axios.get('/api/topics/list'),
       axios.get('/api/exercise/list')
     ])
-      .then(([topicsRes, exercisesRes]) => {
-        setTopics(topicsRes.data.topics || []);
-        setProblems(exercisesRes.data.exercises || []);
+      .then(async ([topicsRes, exercisesRes]) => {
+        const fetchedTopics = topicsRes.data.topics || [];
+        const allTopic = { TpID: 'all', Name: 'Tất cả' };
+        setTopics([allTopic, ...fetchedTopics]);
+        const exercises = exercisesRes.data.exercises || [];
+        setProblems(exercises);
+        // Gọi API submissions cho từng bài
+        const submissionsResults = await Promise.all(
+          exercises.map(async (ex: any) => {
+            try {
+              const res = await axios.get(`/api/submissions/by-exercise/${ex.EID}`);
+              return { eid: ex.EID, submissions: res.data.submissions || [] };
+            } catch {
+              return { eid: ex.EID, submissions: [] };
+            }
+          })
+        );
+        // Tạo map eid -> submissions
+        const map: Record<string, any[]> = {};
+        submissionsResults.forEach(({ eid, submissions }) => {
+          map[eid] = submissions;
+        });
+        setSubmissionsMap(map);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -57,34 +78,45 @@ const ExercisesPage = () => {
             Chủ đề
           </Typography>
           <Box className="flex flex-wrap gap-3">
-            {topics.map((topic) => (
-              <Chip
-                key={topic.TpID}
-                label={
-                  <Box className="flex items-center gap-2">
-                    <span>{topic.Name}</span>
-                    <Box className="bg-white bg-opacity-50 rounded-full px-2 py-0.5">
-                      <Typography variant="caption" className="font-semibold">
-                        {topic.TpID === 'all'
-                          ? problems.length
-                          : problems.filter((p) => p.TpID === Number(topic.TpID || topic.id)).length}
-                      </Typography>
+            {topics.map((topic) => {
+              // Đếm số bài đã giải và tổng số bài cho từng chủ đề
+              let solvedCount = 0;
+              let totalCount = 0;
+              if (topic.TpID === 'all') {
+                totalCount = problems.length;
+                solvedCount = problems.filter((p) => p.status === 'Solved').length;
+              } else {
+                const topicProblems = problems.filter((p) => p.TpID === Number(topic.TpID || topic.id));
+                totalCount = topicProblems.length;
+                solvedCount = topicProblems.filter((p) => p.status === 'Solved').length;
+              }
+              return (
+                <Chip
+                  key={topic.TpID}
+                  label={
+                    <Box className="flex items-center gap-2">
+                      <span>{topic.Name}</span>
+                      <Box className="bg-white bg-opacity-50 rounded-full px-2 py-0.5">
+                        <Typography variant="caption" className="font-semibold">
+                          {`${solvedCount}/${totalCount}`}
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                }
-                onClick={() => setSelectedTopic(String(topic.TpID))}
-                className={`${(topic.TpID) === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'} cursor-pointer transition-all duration-200 hover:shadow-md ${
-                  selectedTopic === String(topic.TpID) ? "ring-2 ring-blue-500 ring-opacity-50" : ""
-                }`}
-                sx={{
-                  height: "auto",
-                  padding: "8px 4px",
-                  "& .MuiChip-label": {
-                    padding: "4px 8px",
-                  },
-                }}
-              />
-            ))}
+                  }
+                  onClick={() => setSelectedTopic(String(topic.TpID))}
+                  className={`${(topic.TpID) === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'} cursor-pointer transition-all duration-200 hover:shadow-md ${
+                    selectedTopic === String(topic.TpID) ? "ring-2 ring-blue-500 ring-opacity-50" : ""
+                  }`}
+                  sx={{
+                    height: "auto",
+                    padding: "8px 4px",
+                    "& .MuiChip-label": {
+                      padding: "4px 8px",
+                    },
+                  }}
+                />
+              );
+            })}
           </Box>
         </Box>
         {/* Danh sách bài tập */}
@@ -96,7 +128,7 @@ const ExercisesPage = () => {
                   <TableCell className="font-semibold text-gray-900">Trạng thái</TableCell>
                   <TableCell className="font-semibold text-gray-900">Tên bài tập</TableCell>
                   <TableCell className="font-semibold text-gray-900">Độ khó</TableCell>
-                  <TableCell className="font-semibold text-gray-900">Tỷ lệ AC</TableCell>
+                  <TableCell className="font-semibold text-gray-900">Tỷ lệ Pass</TableCell>
                   <TableCell className="font-semibold text-gray-900">Hành động</TableCell>
                 </TableRow>
               </TableHead>
@@ -129,17 +161,38 @@ const ExercisesPage = () => {
                       </Box>
                     </TableCell>
                     <TableCell>
-                      <Typography variant="body2" className={`font-medium ${problem.difficulty === 'Easy' ? 'text-green-500' : problem.difficulty === 'Medium' ? 'text-yellow-500' : 'text-red-500'}`}>
-                        {problem.difficulty}
+                      <Typography
+                        variant="body2"
+                        className={`font-medium ${
+                          (problem.Difficulty || '') === 'Easy'
+                            ? 'text-green-500'
+                            : (problem.Difficulty || '') === 'Medium'
+                            ? 'text-yellow-500'
+                            : (problem.Difficulty || '') === 'Hard'
+                            ? 'text-red-500'
+                            : ''
+                        }`}
+                      >
+                        {problem.Difficulty}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Box className="flex items-center gap-2">
                         <Typography variant="body2" className="font-medium text-gray-900">
-                          {(Math.random() * 40 + 40).toFixed(1)}%
+                          {(() => {
+                            const submissions = submissionsMap[problem.EID] || [];
+                            const total = submissions.length;
+                            const pass = submissions.filter((s) => s.Result === 'Pass').length;
+                            return total > 0 ? `${((pass / total) * 100).toFixed(1)}%` : '0.0%';
+                          })()}
                         </Typography>
                         <Box className="w-16 bg-gray-200 rounded-full h-1.5">
-                          <Box className="bg-green-500 h-1.5 rounded-full" style={{ width: `${(Math.random() * 40 + 40).toFixed(1)}%` }} />
+                          <Box className="bg-green-500 h-1.5 rounded-full" style={{ width: `${(() => {
+                            const submissions = submissionsMap[problem.EID] || [];
+                            const total = submissions.length;
+                            const pass = submissions.filter((s) => s.Result === 'Pass').length;
+                            return total > 0 ? (pass / total) * 100 : 0;
+                          })()}%` }} />
                         </Box>
                       </Box>
                     </TableCell>

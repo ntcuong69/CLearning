@@ -1,20 +1,24 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Box, Button, Typography, Paper, Table, TableHead, TableRow, Tabs, Tab, TableCell, TableBody, CircularProgress, Alert } from "@mui/material";
-import { TaskAlt } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Tabs,
+  Tab,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
 import { useSubmitCode } from "@/hooks/useSubmitCode";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
-import ErrorIcon from "@mui/icons-material/Error";
-import InfoIcon from "@mui/icons-material/Info";
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter/dist/esm";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import Chip from "@mui/material/Chip";
 import CodeEditor from "@/components/ExercisePage/CodeEditor";
+import ExerciseDescription from "@/components/ExercisePage/ExerciseDescription";
+import ExerciseHelp from "@/components/ExercisePage/ExerciseHelp";
+import SubmissionHistory from "@/components/ExercisePage/SubmissionHistory";
+import CommentSection from "@/components/ExercisePage/CommentSection";
+import TestcaseResults from "@/components/ExercisePage/TestcaseResults";
+import ReviewSubmission from "@/components/ExercisePage/ReviewSubmission";
 
 export default function ExerciseDetailPage() {
   const { slug } = useParams();
@@ -30,6 +34,20 @@ export default function ExerciseDetailPage() {
   const [reviewSubmission, setReviewSubmission] = useState<any | null>(null);
   const [reviewResults, setReviewResults] = useState<any[] | null>(null);
   const [submissions, setSubmissions] = useState<any[]>([]);
+  // ======================
+  // State cho hệ thống bình luận
+  // ======================
+  const [comments, setComments] = useState<any[]>([]); // Danh sách tất cả bình luận (bao gồm cả reply)
+  const [commentInput, setCommentInput] = useState<string>(""); // Nội dung nhập bình luận hoặc phản hồi
+  const [posting, setPosting] = useState<boolean>(false); // Trạng thái gửi bình luận
+  const [postError, setPostError] = useState<string>(""); // Lỗi khi gửi bình luận
+  const [notLoggedIn, setNotLoggedIn] = useState<boolean>(false); // Trạng thái chưa đăng nhập
+  const [editingId, setEditingId] = useState<number | null>(null); // ID bình luận đang chỉnh sửa
+  const [editInput, setEditInput] = useState<string>(""); // Nội dung chỉnh sửa bình luận
+  const [deleteDialogId, setDeleteDialogId] = useState<number | null>(null); // ID bình luận đang xác nhận xóa
+  const [sortType, setSortType] = useState<"newest" | "mostLiked">("newest"); // Kiểu sắp xếp bình luận
+  const [currentUID, setCurrentUID] = useState<string | null>(null); // UID user hiện tại
+  const [likedComments, setLikedComments] = useState<{ [coid: number]: boolean }>({}); // Map các bình luận đã like
 
   const { handleSubmit, submitting } = useSubmitCode(
     String(slug || ""),
@@ -93,6 +111,19 @@ export default function ExerciseDetailPage() {
         const tcRes = await fetch(`/api/testcases/by-exercise/${data.exercise.EID}`);
         const tcData = await tcRes.json();
         setTestcases(tcData.testcases || []);
+        // Lấy comments của bài tập
+        const commentRes = await fetch(`/api/exercise/${slug}/comments`);
+        if (commentRes.ok) {
+          const commentData = await commentRes.json();
+          setComments(commentData.comments || []);
+          if (commentData.likedComments) setLikedComments(commentData.likedComments);
+        }
+        // Lấy thông tin user hiện tại
+        const userRes = await fetch("/api/me");
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          if (userData.user?.UID) setCurrentUID(userData.user.UID);
+        }
       } catch (e: any) {
         setError(e.message || "Lỗi tải dữ liệu");
       } finally {
@@ -101,6 +132,89 @@ export default function ExerciseDetailPage() {
     }
     if (slug) fetchData();
   }, [slug]);
+
+  // Gửi bình luận mới
+  const handlePostComment = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!commentInput.trim() || !exercise) return;
+    
+    setPosting(true);
+    setPostError("");
+    setNotLoggedIn(false);
+    try {
+      const res = await fetch(`/api/exercise/${exercise.Slug}/comments`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ Content: commentInput }),
+      });
+      const data = await res.json();
+      if (res.status === 401) {
+        setNotLoggedIn(true);
+        setPostError("Bạn cần đăng nhập để bình luận");
+      } else if (res.ok && data.comment) {
+        setComments((prev) => [data.comment, ...prev]);
+        setCommentInput("");
+      } else {
+        setPostError(data.error || "Gửi bình luận thất bại");
+      }
+    } catch (err) {
+      setPostError("Gửi bình luận thất bại");
+    }
+    setPosting(false);
+  };
+
+  // Chỉnh sửa bình luận
+  const handleEditComment = async (CoID: number) => {
+    if (!editInput.trim()) return;
+    try {
+      const res = await fetch(`/api/comments/${CoID}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ Content: editInput }),
+      });
+      const data = await res.json();
+      if (res.ok && data.comment) {
+        setComments((prev) => prev.map((c) => (c.CoID === CoID ? { ...c, Content: data.comment.Content } : c)));
+        setEditingId(null);
+      }
+    } catch {}
+  };
+
+  // Xóa bình luận
+  const handleDeleteComment = async (CoID: number) => {
+    try {
+      const res = await fetch(`/api/comments/${CoID}/delete`, { method: "DELETE" });
+      
+      if (res.ok) {
+        // Xóa bình luận khỏi state
+        setComments((prev) => prev.filter((c) => c.CoID !== CoID));
+        
+        // Xóa khỏi likedComments state
+        setLikedComments((prev) => {
+          const newLikedComments = { ...prev };
+          delete newLikedComments[CoID];
+          return newLikedComments;
+        });
+      } else {
+        const errorData = await res.json();
+        alert("Không thể xóa bình luận: " + (errorData.error || "Lỗi không xác định"));
+      }
+      setDeleteDialogId(null);
+    } catch (error) {
+      alert("Lỗi khi xóa bình luận");
+    }
+  };
+
+  // Like/unlike comment
+  const handleLike = async (coid: number) => {
+    if (!currentUID) return;
+    const alreadyLiked = likedComments[coid];
+    setLikedComments((prev) => ({ ...prev, [coid]: !alreadyLiked }));
+    setComments((prev) => prev.map((c) => (c.CoID === coid ? { ...c, likeCount: (c.likeCount || 0) + (alreadyLiked ? -1 : 1) } : c)));
+    try {
+      const res = await fetch(`/api/comments/${coid}/like`, { method: "POST" });
+    } catch {}
+  };
 
   // Hàm xem lại submission
   const handleViewHistory = async (submission: any) => {
@@ -134,7 +248,7 @@ export default function ExerciseDetailPage() {
     <Box sx={{ display: "flex", height: "calc(100vh - 70px)", pt: 2, px: 2, gap: 1 }}>
       {/* Left: Tabs panel */}
       <ResizableBox
-        width={400}
+        width={420}
         height={Infinity}
         axis="x"
         resizeHandles={["e"]}
@@ -193,7 +307,6 @@ export default function ExerciseDetailPage() {
               fontWeight: leftTab === 0 ? 700 : 500,
               color: leftTab === 0 ? "#232b38" : "#6b7280",
               borderRadius: 2,
-              mx: 0.5,
               transition: "all 0.2s",
             }}
           />
@@ -205,7 +318,6 @@ export default function ExerciseDetailPage() {
               fontWeight: leftTab === 1 ? 700 : 500,
               color: leftTab === 1 ? "#232b38" : "#6b7280",
               borderRadius: 2,
-              mx: 0.5,
               transition: "all 0.2s",
             }}
           />
@@ -217,138 +329,48 @@ export default function ExerciseDetailPage() {
               fontWeight: leftTab === 2 ? 700 : 500,
               color: leftTab === 2 ? "#232b38" : "#6b7280",
               borderRadius: 2,
-              mx: 0.5,
+              transition: "all 0.2s",
+            }}
+          />
+          <Tab
+            label="Bình luận"
+            sx={{
+              textTransform: "capitalize",
+              minHeight: 36,
+              fontWeight: leftTab === 3 ? 700 : 500,
+              color: leftTab === 3 ? "#232b38" : "#6b7280",
+              borderRadius: 2,
               transition: "all 0.2s",
             }}
           />
         </Tabs>
         <Box sx={{ flex: 1, p: 3, overflow: "auto" }}>
-          {leftTab === 0 && (
-            <>
-              <Typography
-                variant="h6"
-                fontWeight={700}
-                mb={1}
-                sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 }}
-              >
-                {exercise.Name}
-                {exercise.status === "Solved" && (
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, ml: 2 }}>
-                    <span style={{ color: "#2e7d32", fontSize: 14, fontWeight: 700 }}>Solved</span>
-                    <TaskAlt fontSize="small" sx={{ color: "#2e7d32" }} />
-                  </Box>
-                )}
-              </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                {exercise.Difficulty === "Easy" && (
-                  <Box
-                    sx={{
-                      px: 1,
-                      border: "2px solid #43a047",
-                      color: "#388e3c",
-                      bgcolor: "#e8f5e9",
-                      fontSize: 14,
-                      borderRadius: 5,
-                      display: "inline-block",
-                    }}
-                  >
-                    Easy
-                  </Box>
-                )}
-                {exercise.Difficulty === "Medium" && (
-                  <Box
-                    sx={{
-                      px: 1,
-                      border: "2px solid #fb8c00",
-                      color: "#ef6c00",
-                      bgcolor: "#fff3e0",
-                      fontSize: 14,
-                      borderRadius: 5,
-                      display: "inline-block",
-                    }}
-                  >
-                    Medium
-                  </Box>
-                )}
-                {exercise.Difficulty === "Hard" && (
-                  <Box
-                    sx={{
-                      px: 1,
-                      border: "2px solid #e53935",
-                      color: "#b71c1c",
-                      bgcolor: "#ffebee",
-                      fontSize: 14,
-                      borderRadius: 5,
-                      display: "inline-block",
-                    }}
-                  >
-                    Hard
-                  </Box>
-                )}
-              </Box>
-              <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-                {exercise.Content}
-              </Typography>
-              {testcases.length > 0 && (
-                <Box mt={4}>
-                  {testcases
-                    .filter((tc: any) => !tc.isHidden)
-                    .slice(0, 2)
-                    .map((tc: any, idx: number) => (
-                      <Paper key={tc.TCID} sx={{ mb: 2, borderRadius: 2, boxShadow: "0 1px 4px rgba(0,0,0,0.07)", p: 1 }}>
-                        <Box sx={{ fontWeight: 700, fontSize: 16, px: 1, pt: 1 }}>Ví dụ {idx + 1}:</Box>
-                        <Box sx={{ bgcolor: "#f8f9fa", borderRadius: 2, px: 1, py: 1, m: 1}}>
-                          <div style={{ fontWeight: 700, marginBottom: 2 }}>
-                            <span style={{ fontWeight: 700 }}>Input:</span> <span style={{ fontWeight: 350 }}>{tc.Input}</span>
-                          </div>
-                          <div style={{ fontWeight: 700 }}>
-                            <span style={{ fontWeight: 700 }}>Output:</span> <span style={{ fontWeight: 350 }}>{tc.ExpectedOutput}</span>
-                          </div>
-                        </Box>
-                      </Paper>
-                    ))}
-                </Box>
-              )}
-            </>
-          )}
-          {leftTab === 1 && (
-            <Box>
-              <Typography variant="h6">Trợ giúp</Typography>
-              <Typography>Hãy hỏi AI hoặc xem hướng dẫn để giải quyết lỗi.</Typography>
-            </Box>
-          )}
-          {leftTab === 2 && (
-            <Box>
-              <Typography variant="h6" mb={2} fontWeight={700} color="#232b38">
-                Lịch sử nộp bài
-              </Typography>
-              <Table size="small" sx={{ background: "#fff", borderRadius: 3, boxShadow: "0 2px 8px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-                <TableHead sx={{ background: "#f3f6fa" }}>
-                  <TableRow>
-                    <TableCell>Kết quả</TableCell>
-                    <TableCell>Ngày nộp</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {submissions.map((s: any) => (
-                    <TableRow key={s.SID} hover sx={{ transition: "background 0.2s", cursor: "pointer" }} onClick={() => handleViewHistory(s)}>
-                      <TableCell>
-                        {s.Result === "Pass" ? (
-                          <span style={{ color: "#2e7d32", fontWeight: 700 }}>Pass</span>
-                        ) : s.Result === "Fail" ? (
-                          <span style={{ color: "#d32f2f", fontWeight: 700 }}>Fail</span>
-                        ) : (
-                          <span style={{ color: "#6b7280", fontWeight: 700 }}>{s.Result}</span>
-                        )}
-                      </TableCell>
-                      <TableCell sx={{ color: "#555", fontSize: 14 }}>{s.CreatedAt ? new Date(s.CreatedAt).toLocaleString() : ""}</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
+          {leftTab === 0 && <ExerciseDescription exercise={exercise} testcases={testcases} />}
+          {leftTab === 1 && <ExerciseHelp />}
+          {leftTab === 2 && <SubmissionHistory submissions={submissions} onViewHistory={handleViewHistory} />}
+          {leftTab === 3 && (
+            <CommentSection
+              comments={comments}
+              sortType={sortType}
+              setSortType={setSortType}
+              commentInput={commentInput}
+              setCommentInput={setCommentInput}
+              posting={posting}
+              postError={postError}
+              notLoggedIn={notLoggedIn}
+              editingId={editingId}
+              editInput={editInput}
+              setEditInput={setEditInput}
+              deleteDialogId={deleteDialogId}
+              currentUID={currentUID}
+              likedComments={likedComments}
+              onPostComment={handlePostComment}
+              onEditComment={handleEditComment}
+              onDeleteComment={handleDeleteComment}
+              onLike={handleLike}
+              onSetEditingId={setEditingId}
+              onSetDeleteDialogId={setDeleteDialogId}
+            />
           )}
         </Box>
       </ResizableBox>
@@ -459,159 +481,8 @@ export default function ExerciseDetailPage() {
             </Box>
           </ResizableBox>
         )}
-        {rightTab === 0 && (
-          <Paper sx={{ flex: 1, p: 2, borderRadius: 2, minHeight: 120, overflow: "auto" }}>
-            <Typography variant="subtitle1" fontWeight={700} mb={1}>
-              Kết quả Testcase
-            </Typography>
-            {!results && <Typography color="text.secondary">Nộp bài để xem kết quả test case.</Typography>}
-            {results && (
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>STT</TableCell>
-                    <TableCell>Input</TableCell>
-                    <TableCell>Output mong đợi</TableCell>
-                    <TableCell>Output thực tế</TableCell>
-                    <TableCell>Kết quả</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {results.map((r: any, idx: number) => {
-                    const tc = testcases.find((t: any) => t.TCID === r.TCID);
-                    if (!tc || tc.isHidden) return null;
-                    return (
-                      <TableRow key={r.TCID}>
-                        <TableCell>{idx + 1}</TableCell>
-                        <TableCell>
-                          <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-all", margin: 0 }}>{tc.Input}</pre>
-                        </TableCell>
-                        <TableCell>
-                          <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-all", margin: 0 }}>{tc.ExpectedOutput}</pre>
-                        </TableCell>
-                        <TableCell>
-                          <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-all", margin: 0 }}>{r.ActualOutput}</pre>
-                        </TableCell>
-                        <TableCell>
-                          {r.Result === "Correct" && (
-                            <Box sx={{ display: "flex", alignItems: "center", color: "green", fontWeight: 700 }}>
-                              <CheckCircleIcon fontSize="small" sx={{ mr: 1 }} /> Correct
-                            </Box>
-                          )}
-                          {r.Result === "Wrong" && (
-                            <Box sx={{ display: "flex", alignItems: "center", color: "red", fontWeight: 700 }}>
-                              <CancelIcon fontSize="small" sx={{ mr: 1 }} /> Wrong
-                            </Box>
-                          )}
-                          {r.Result === "Error" && (
-                            <Box sx={{ display: "flex", alignItems: "center", color: "orange", fontWeight: 700 }}>
-                              <ErrorIcon fontSize="small" sx={{ mr: 1 }} /> Error
-                            </Box>
-                          )}
-                          {r.Result === "Partial" && (
-                            <Box sx={{ display: "flex", alignItems: "center", color: "#1976d2", fontWeight: 700 }}>
-                              <InfoIcon fontSize="small" sx={{ mr: 1 }} /> Partial
-                            </Box>
-                          )}
-                          {r.Result === "Pending" && (
-                            <Box sx={{ display: "flex", alignItems: "center", color: "gray", fontWeight: 700 }}>
-                              <HourglassEmptyIcon fontSize="small" sx={{ mr: 1 }} /> Pending
-                            </Box>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            )}
-          </Paper>
-        )}
-        {rightTab === 1 && reviewSubmission && (
-          <Box sx={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
-            <Paper sx={{ p: 2, mb: 2, borderRadius: 0, background: "#f8fafc" }}>
-              <Typography variant="subtitle1" fontWeight={700} mb={1}>
-                Code đã nộp
-              </Typography>
-              <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 2 }}>
-                <Chip
-                  label={reviewSubmission.Result === "Pass" ? "Đạt" : reviewSubmission.Result === "Fail" ? "Chưa đạt" : reviewSubmission.Result}
-                  color={reviewSubmission.Result === "Pass" ? "success" : reviewSubmission.Result === "Fail" ? "error" : "default"}
-                  sx={{ fontWeight: 700, fontSize: 15, px: 2, borderRadius: 2, height: 32 }}
-                />
-              </Box>
-              <SyntaxHighlighter language="c" customStyle={{ borderRadius: 8, fontSize: 15, padding: 16 }}>
-                {reviewSubmission.Code || ""}
-              </SyntaxHighlighter>
-            </Paper>
-            <Paper sx={{ flex: 1, p: 2, borderRadius: 2, minHeight: 120, overflow: "auto" }}>
-              <Typography variant="subtitle1" fontWeight={700} mb={1}>
-                Kết quả Testcase
-              </Typography>
-              {!reviewResults && <Typography color="text.secondary">Không có kết quả test case.</Typography>}
-              {reviewResults && (
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>STT</TableCell>
-                      <TableCell>Input</TableCell>
-                      <TableCell>Output mong đợi</TableCell>
-                      <TableCell>Output thực tế</TableCell>
-                      <TableCell>Kết quả</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {reviewResults.map((r: any, idx: number) => {
-                      const tc = testcases.find((t: any) => t.TCID === r.TCID);
-                      if (!tc || tc.isHidden) return null;
-                      return (
-                        <TableRow key={r.TCID}>
-                          <TableCell>{idx + 1}</TableCell>
-                          <TableCell>
-                            <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-all", margin: 0 }}>{tc.Input}</pre>
-                          </TableCell>
-                          <TableCell>
-                            <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-all", margin: 0 }}>{tc.ExpectedOutput}</pre>
-                          </TableCell>
-                          <TableCell>
-                            <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{r.ActualOutput}</pre>
-                          </TableCell>
-                          <TableCell>
-                            {r.Result === "Correct" && (
-                              <Box sx={{ display: "flex", alignItems: "center", color: "green", fontWeight: 700 }}>
-                                <CheckCircleIcon fontSize="small" sx={{ mr: 1 }} /> Correct
-                              </Box>
-                            )}
-                            {r.Result === "Wrong" && (
-                              <Box sx={{ display: "flex", alignItems: "center", color: "red", fontWeight: 700 }}>
-                                <CancelIcon fontSize="small" sx={{ mr: 1 }} /> Wrong
-                              </Box>
-                            )}
-                            {r.Result === "Error" && (
-                              <Box sx={{ display: "flex", alignItems: "center", color: "orange", fontWeight: 700 }}>
-                                <ErrorIcon fontSize="small" sx={{ mr: 1 }} /> Error
-                              </Box>
-                            )}
-                            {r.Result === "Partial" && (
-                              <Box sx={{ display: "flex", alignItems: "center", color: "#1976d2", fontWeight: 700 }}>
-                                <InfoIcon fontSize="small" sx={{ mr: 1 }} /> Partial
-                              </Box>
-                            )}
-                            {r.Result === "Pending" && (
-                              <Box sx={{ display: "flex", alignItems: "center", color: "gray", fontWeight: 700 }}>
-                                <HourglassEmptyIcon fontSize="small" sx={{ mr: 1 }} /> Pending
-                              </Box>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              )}
-            </Paper>
-          </Box>
-        )}
+        {rightTab === 0 && <TestcaseResults results={results} testcases={testcases} />}
+        {rightTab === 1 && <ReviewSubmission reviewSubmission={reviewSubmission} reviewResults={reviewResults} testcases={testcases} />}
       </Box>
     </Box>
   );
