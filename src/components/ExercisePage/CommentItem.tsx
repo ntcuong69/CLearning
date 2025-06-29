@@ -14,20 +14,6 @@ import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { formatDistanceToNow } from "date-fns";
 
-interface CommentItemProps {
-  comment: any;
-  onEdit: () => void;
-  onDelete: () => void;
-  isEditing: boolean;
-  editValue: string;
-  setEditValue: (value: string) => void;
-  onSaveEdit: () => void;
-  onCancelEdit: () => void;
-  likedComments: { [coid: number]: boolean };
-  handleLike?: (coid: number) => void;
-  currentUID: string | null;
-}
-
 export default function CommentItem({
   comment,
   onEdit,
@@ -40,7 +26,7 @@ export default function CommentItem({
   likedComments,
   handleLike,
   currentUID,
-}: CommentItemProps) {
+}: any) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOwner = currentUID && comment.UID?.toString() === currentUID.toString();
 

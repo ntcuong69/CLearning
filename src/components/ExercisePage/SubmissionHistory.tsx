@@ -1,12 +1,7 @@
 import React from "react";
 import { Box, Typography, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 
-interface SubmissionHistoryProps {
-  submissions: any[];
-  onViewHistory: (submission: any) => void;
-}
-
-export default function SubmissionHistory({ submissions, onViewHistory }: SubmissionHistoryProps) {
+export default function SubmissionHistory({ submissions, onViewHistory }: any) {
   return (
     <Box>
       <Typography variant="h6" mb={2} fontWeight={700} color="#232b38">

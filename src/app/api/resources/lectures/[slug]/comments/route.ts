@@ -22,7 +22,6 @@ export async function GET(req: NextRequest, context: { params: Promise<{ slug: s
         UID: true,
         LID: true,
         Content: true,
-        ParentID: true,
         CreatedAt: true,
         user: {
           select: {
@@ -78,14 +77,12 @@ export async function POST(req: NextRequest, context: { params: Promise<{ slug: 
         UID: session.user.uid,
         LID: lesson.LID,
         Content,
-        ParentID: ParentID ?? null,
       },
       select: {
         CoID: true,
         UID: true,
         LID: true,
         Content: true,
-        ParentID: true,
         CreatedAt: true,
         user: {
           select: {

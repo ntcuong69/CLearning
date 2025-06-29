@@ -121,7 +121,6 @@ model comment {
   LID          Int?
   EID          Int?
   Content      String         @db.Text
-  ParentID     Int?
   CreatedAt    DateTime?      @default(now()) @db.Timestamp(0)
   user         user           @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "comment_ibfk_1")
   lesson       lesson?        @relation(fields: [LID], references: [LID], onDelete: NoAction, onUpdate: NoAction, map: "comment_ibfk_2")

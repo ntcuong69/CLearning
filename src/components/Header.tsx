@@ -137,7 +137,7 @@ export default function NavBar() {
       color="default"
       elevation={0}
       sx={{
-        backgroundColor: '#ffffff',
+        backgroundColor: 'rgba(255,255,255,0.8)',
         borderBottom: '1px solid #f0f0f0',
         backdropFilter: 'blur(20px)',
         width: '100vw',
@@ -158,14 +158,18 @@ export default function NavBar() {
         boxSizing: 'border-box',
       }}>
         {/* Left Section - Logo và Tên web */}
-        <Box className="flex items-center gap-3 mr-8">
+        <Box 
+          className="flex items-center mr-8" 
+          sx={{ 
+            cursor: 'pointer',
+            transition: 'all 0.2s ease',
+          }}
+          onClick={() => router.push('/home')}
+        >
         <img src="/code-logo.png" alt="Code Forge" className="w-15 h-15" />
           <Box>
             <Typography variant="h6" className="font-bold text-gray-900 text-lg leading-tight">
-              Code Forge
-            </Typography>
-            <Typography variant="caption" className="text-gray-500 text-xs">
-              Lập trình C căn bản
+              CodeForge
             </Typography>
           </Box>
         </Box>

@@ -191,7 +191,6 @@ exports.Prisma.CommentScalarFieldEnum = {
   LID: 'LID',
   EID: 'EID',
   Content: 'Content',
-  ParentID: 'ParentID',
   CreatedAt: 'CreatedAt'
 };
 

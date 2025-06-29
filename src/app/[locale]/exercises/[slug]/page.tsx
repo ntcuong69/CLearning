@@ -19,6 +19,7 @@ import SubmissionHistory from "@/components/ExercisePage/SubmissionHistory";
 import CommentSection from "@/components/ExercisePage/CommentSection";
 import TestcaseResults from "@/components/ExercisePage/TestcaseResults";
 import ReviewSubmission from "@/components/ExercisePage/ReviewSubmission";
+import ExerciseHeader from "@/components/ExercisePage/ExerciseHeader";
 
 export default function ExerciseDetailPage() {
   const { slug } = useParams();
@@ -48,6 +49,7 @@ export default function ExerciseDetailPage() {
   const [sortType, setSortType] = useState<"newest" | "mostLiked">("newest"); // Kiểu sắp xếp bình luận
   const [currentUID, setCurrentUID] = useState<string | null>(null); // UID user hiện tại
   const [likedComments, setLikedComments] = useState<{ [coid: number]: boolean }>({}); // Map các bình luận đã like
+  const [menuOpen, setMenuOpen] = useState(false); // Trạng thái menu sidebar
 
   const { handleSubmit, submitting } = useSubmitCode(
     String(slug || ""),
@@ -230,6 +232,22 @@ export default function ExerciseDetailPage() {
     }
   };
 
+  // Hàm xử lý menu toggle
+  const handleMenuToggle = (open: boolean) => {
+    setMenuOpen(open);
+  };
+
+  // Hàm xử lý điều hướng bài tập (placeholder)
+  const handlePreviousExercise = () => {
+    // TODO: Implement navigation to previous exercise
+    console.log("Navigate to previous exercise");
+  };
+
+  const handleNextExercise = () => {
+    // TODO: Implement navigation to next exercise
+    console.log("Navigate to next exercise");
+  };
+
   if (loading)
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
@@ -245,244 +263,250 @@ export default function ExerciseDetailPage() {
   if (!exercise) return null;
 
   return (
-    <Box sx={{ display: "flex", height: "calc(100vh - 70px)", pt: 2, px: 2, gap: 1 }}>
-      {/* Left: Tabs panel */}
-      <ResizableBox
-        width={420}
-        height={Infinity}
-        axis="x"
-        resizeHandles={["e"]}
-        minConstraints={[260, Infinity]}
-        maxConstraints={[600, Infinity]}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          borderRight: "1px solid #e5e7eb",
-          background: "linear-gradient(135deg, #f8fafc 0%, #e3e9f7 100%)",
-          borderRadius: 16,
-          padding: 0,
-          boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
-          overflowY: "auto",
-          overflowX: "hidden",
-          position: "relative",
-        }}
-      >
-        {/* Custom drag handle for left panel */}
-        <div
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+      <ExerciseHeader
+        exerciseTitle={exercise.Title}
+        onMenuToggle={handleMenuToggle}
+        onPreviousExercise={handlePreviousExercise}
+        onNextExercise={handleNextExercise}
+        onSubmit={handleSubmit}
+        submitting={submitting}
+        hasPrevious={true} // TODO: Implement logic to check if previous exercise exists
+        hasNext={true} // TODO: Implement logic to check if next exercise exists
+        currentExerciseSlug={exercise.Slug}
+        topicId={exercise.TpID}
+      />
+      <Box sx={{ display: "flex", height: "calc(100vh - 64px)", py: 1, px: 2, gap: 1 }}>
+        {/* Left: Tabs panel */}
+        <ResizableBox
+          width={420}
+          height={Infinity}
+          axis="x"
+          resizeHandles={["e"]}
+          minConstraints={[260, Infinity]}
+          maxConstraints={[600, Infinity]}
           style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            width: 12,
-            height: "100%",
-            background: "#e0e7ef",
-            borderRadius: 6,
-            cursor: "col-resize",
-            zIndex: 10,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "0 0 4px #b0b0b0",
-            pointerEvents: "none",
-          }}
-        >
-          <div style={{ width: 4, height: 40, background: "#90caf9", borderRadius: 2 }} />
-        </div>
-        <Tabs
-          value={leftTab}
-          onChange={(_, v) => setLeftTab(v)}
-          variant="fullWidth"
-          sx={{
-            minHeight: 36,
+            flexDirection: "column",
             background: "#f8fafc",
-            borderRadius: 2,
-            ".MuiTabs-indicator": { display: "none" },
+            borderRadius: 16,
+            padding: 0,
+            boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+            overflowY: "auto",
+            overflowX: "hidden",
+            position: "relative",
           }}
         >
-          <Tab
-            label="Mô tả"
-            sx={{
-              textTransform: "capitalize",
-              minHeight: 36,
-              fontWeight: leftTab === 0 ? 700 : 500,
-              color: leftTab === 0 ? "#232b38" : "#6b7280",
-              borderRadius: 2,
-              transition: "all 0.2s",
+          {/* Custom drag handle for left panel */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              width: 12,
+              height: "100%",
+              background: "#f8fafc",
+              borderRadius: 6,
+              cursor: "col-resize",
+              zIndex: 10,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              pointerEvents: "none",
             }}
-          />
-          <Tab
-            label="Trợ giúp"
+          >
+            <div style={{ width: 4, height: 40, background: "#90caf9", borderRadius: 2 }} />
+          </div>
+          <Tabs
+            value={leftTab}
+            onChange={(_, v) => setLeftTab(v)}
+            variant="fullWidth"
             sx={{
-              textTransform: "capitalize",
               minHeight: 36,
-              fontWeight: leftTab === 1 ? 700 : 500,
-              color: leftTab === 1 ? "#232b38" : "#6b7280",
+              background: "#f8fafc",
               borderRadius: 2,
-              transition: "all 0.2s",
+              ".MuiTabs-indicator": { display: "none" },
             }}
-          />
-          <Tab
-            label="Lịch sử"
-            sx={{
-              textTransform: "capitalize",
-              minHeight: 36,
-              fontWeight: leftTab === 2 ? 700 : 500,
-              color: leftTab === 2 ? "#232b38" : "#6b7280",
-              borderRadius: 2,
-              transition: "all 0.2s",
-            }}
-          />
-          <Tab
-            label="Bình luận"
-            sx={{
-              textTransform: "capitalize",
-              minHeight: 36,
-              fontWeight: leftTab === 3 ? 700 : 500,
-              color: leftTab === 3 ? "#232b38" : "#6b7280",
-              borderRadius: 2,
-              transition: "all 0.2s",
-            }}
-          />
-        </Tabs>
-        <Box sx={{ flex: 1, p: 3, overflow: "auto" }}>
-          {leftTab === 0 && <ExerciseDescription exercise={exercise} testcases={testcases} />}
-          {leftTab === 1 && <ExerciseHelp />}
-          {leftTab === 2 && <SubmissionHistory submissions={submissions} onViewHistory={handleViewHistory} />}
-          {leftTab === 3 && (
-            <CommentSection
-              comments={comments}
-              sortType={sortType}
-              setSortType={setSortType}
-              commentInput={commentInput}
-              setCommentInput={setCommentInput}
-              posting={posting}
-              postError={postError}
-              notLoggedIn={notLoggedIn}
-              editingId={editingId}
-              editInput={editInput}
-              setEditInput={setEditInput}
-              deleteDialogId={deleteDialogId}
-              currentUID={currentUID}
-              likedComments={likedComments}
-              onPostComment={handlePostComment}
-              onEditComment={handleEditComment}
-              onDeleteComment={handleDeleteComment}
-              onLike={handleLike}
-              onSetEditingId={setEditingId}
-              onSetDeleteDialogId={setDeleteDialogId}
-            />
-          )}
-        </Box>
-      </ResizableBox>
-      {/* Right: Code editor + Testcase results + Review tab */}
-      <Box sx={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
-        <Tabs
-          value={rightTab}
-          onChange={(_, v) => setRightTab(v)}
-          sx={{
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-            boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-            minHeight: 36,
-            background: "#f8fafc",
-            ".MuiTabs-indicator": { display: "none" },
-          }}
-        >
-          <Tab
-            label="Code"
-            sx={{
-              textTransform: "capitalize",
-              minHeight: 36,
-              fontWeight: rightTab === 0 ? 700 : 500,
-              color: rightTab === 0 ? "#232b38" : "#6b7280",
-              borderRadius: 2,
-              mx: 0.5,
-              transition: "all 0.2s",
-            }}
-          />
-          {reviewSubmission && (
+          >
             <Tab
-              label={
-                <Box sx={{ display: "flex", alignItems: "center", textTransform: "capitalize" }}>
-                  Xem lại
-                  <Box
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setReviewSubmission(null);
-                      setReviewResults(null);
-                      setRightTab(0);
-                    }}
-                    sx={{ ml: 1, cursor: "pointer", fontWeight: 700 }}
-                  >
-                    ×
-                  </Box>
-                </Box>
-              }
+              label="Mô tả"
               sx={{
                 textTransform: "capitalize",
                 minHeight: 36,
-                fontWeight: rightTab === 1 ? 700 : 500,
-                bgcolor: rightTab === 1 ? "#e3e9f7" : "transparent",
-                color: rightTab === 1 ? "#232b38" : "#6b7280",
+                fontWeight: leftTab === 0 ? 700 : 500,
+                color: leftTab === 0 ? "#232b38" : "#6b7280",
+                borderRadius: 2,
+                transition: "all 0.2s",
+              }}
+            />
+            <Tab
+              label="Trợ giúp"
+              sx={{
+                textTransform: "capitalize",
+                minHeight: 36,
+                fontWeight: leftTab === 1 ? 700 : 500,
+                color: leftTab === 1 ? "#232b38" : "#6b7280",
+                borderRadius: 2,
+                transition: "all 0.2s",
+              }}
+            />
+            <Tab
+              label="Lịch sử"
+              sx={{
+                textTransform: "capitalize",
+                minHeight: 36,
+                fontWeight: leftTab === 2 ? 700 : 500,
+                color: leftTab === 2 ? "#232b38" : "#6b7280",
+                borderRadius: 2,
+                transition: "all 0.2s",
+              }}
+            />
+            <Tab
+              label="Bình luận"
+              sx={{
+                textTransform: "capitalize",
+                minHeight: 36,
+                fontWeight: leftTab === 3 ? 700 : 500,
+                color: leftTab === 3 ? "#232b38" : "#6b7280",
+                borderRadius: 2,
+                transition: "all 0.2s",
+              }}
+            />
+          </Tabs>
+          <Box sx={{ flex: 1, p: 3, overflow: "auto" }}>
+            {leftTab === 0 && <ExerciseDescription exercise={exercise} testcases={testcases} />}
+            {leftTab === 1 && <ExerciseHelp />}
+            {leftTab === 2 && <SubmissionHistory submissions={submissions} onViewHistory={handleViewHistory} />}
+            {leftTab === 3 && (
+              <CommentSection
+                comments={comments}
+                sortType={sortType}
+                setSortType={setSortType}
+                commentInput={commentInput}
+                setCommentInput={setCommentInput}
+                posting={posting}
+                postError={postError}
+                notLoggedIn={notLoggedIn}
+                editingId={editingId}
+                editInput={editInput}
+                setEditInput={setEditInput}
+                deleteDialogId={deleteDialogId}
+                currentUID={currentUID}
+                likedComments={likedComments}
+                onPostComment={handlePostComment}
+                onEditComment={handleEditComment}
+                onDeleteComment={handleDeleteComment}
+                onLike={handleLike}
+                onSetEditingId={setEditingId}
+                onSetDeleteDialogId={setDeleteDialogId}
+              />
+            )}
+          </Box>
+        </ResizableBox>
+        {/* Right: Code editor + Testcase results + Review tab */}
+        <Box sx={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
+          <Tabs
+            value={rightTab}
+            onChange={(_, v) => setRightTab(v)}
+            sx={{
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+              minHeight: 36,
+              background: "#f8fafc",
+              ".MuiTabs-indicator": { display: "none" },
+            }}
+          >
+            <Tab
+              label="Code"
+              sx={{
+                textTransform: "capitalize",
+                minHeight: 36,
+                fontWeight: rightTab === 0 ? 700 : 500,
+                color: rightTab === 0 ? "#232b38" : "#6b7280",
                 borderRadius: 2,
                 mx: 0.5,
                 transition: "all 0.2s",
               }}
             />
-          )}
-        </Tabs>
-        {rightTab === 0 && (
-          <ResizableBox
-            width={Infinity}
-            height={340}
-            axis="y"
-            resizeHandles={["s"]}
-            minConstraints={[Infinity, 180]}
-            maxConstraints={[Infinity, 600]}
-            style={{
-              background: "#fff",
-              borderBottomLeftRadius: 10,
-              borderBottomRightRadius: 10,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-              marginBottom: 8,
-              display: "flex",
-              flexDirection: "column",
-              overflow: "hidden",
-              position: "relative",
-            }}
-          >
-            {/* Custom drag handle for code editor */}
-            <div
+            {reviewSubmission && (
+              <Tab
+                label={
+                  <Box sx={{ display: "flex", alignItems: "center", textTransform: "capitalize" }}>
+                    Xem lại
+                    <Box
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setReviewSubmission(null);
+                        setReviewResults(null);
+                        setRightTab(0);
+                      }}
+                      sx={{ ml: 1, cursor: "pointer", fontWeight: 700 }}
+                    >
+                      ×
+                    </Box>
+                  </Box>
+                }
+                sx={{
+                  textTransform: "capitalize",
+                  minHeight: 36,
+                  fontWeight: rightTab === 1 ? 700 : 500,
+                  bgcolor: rightTab === 1 ? "#e3e9f7" : "transparent",
+                  color: rightTab === 1 ? "#232b38" : "#6b7280",
+                  borderRadius: 2,
+                  mx: 0.5,
+                  transition: "all 0.2s",
+                }}
+              />
+            )}
+          </Tabs>
+          {rightTab === 0 && (
+            <ResizableBox
+              width={Infinity}
+              height={340}
+              axis="y"
+              resizeHandles={["s"]}
+              minConstraints={[Infinity, 180]}
+              maxConstraints={[Infinity, 600]}
               style={{
-                position: "absolute",
-                left: 0,
-                bottom: 0,
-                width: "100%",
-                height: 12,
-                borderRadius: 6,
-                cursor: "row-resize",
-                zIndex: 10,
+                background: "#fff",
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
+                boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                marginBottom: 8,
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 0 4px #b0b0b0",
-                pointerEvents: "none",
+                flexDirection: "column",
+                overflow: "hidden",
+                position: "relative",
               }}
             >
-              <div style={{ height: 4, width: 40, background: "#90caf9", borderRadius: 2 }} />
-            </div>
-            <Box sx={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
-              <CodeEditor code={code} setCode={setCode} />
-            </Box>
-            <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end", background: "transparent" }}>
-              <Button variant="contained" color="primary" onClick={handleSubmit} disabled={submitting} sx={{ minWidth: 120, fontWeight: 700 }}>
-                {submitting ? "Đang nộp..." : "Nộp bài"}
-              </Button>
-            </Box>
-          </ResizableBox>
-        )}
-        {rightTab === 0 && <TestcaseResults results={results} testcases={testcases} />}
-        {rightTab === 1 && <ReviewSubmission reviewSubmission={reviewSubmission} reviewResults={reviewResults} testcases={testcases} />}
+              {/* Custom drag handle for code editor */}
+              <div
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  bottom: 0,
+                  width: "100%",
+                  height: 12,
+                  borderRadius: 6,
+                  cursor: "row-resize",
+                  zIndex: 10,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  pointerEvents: "none",
+                }}
+              >
+                <div style={{ height: 4, width: 40, background: "#90caf9", borderRadius: 2 }} />
+              </div>
+              <Box sx={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+                <CodeEditor code={code} setCode={setCode} />
+              </Box>
+            </ResizableBox>
+          )}
+          {rightTab === 0 && <TestcaseResults results={results} testcases={testcases} />}
+          {rightTab === 1 && <ReviewSubmission reviewSubmission={reviewSubmission} reviewResults={reviewResults} testcases={testcases} />}
+        </Box>
       </Box>
     </Box>
   );

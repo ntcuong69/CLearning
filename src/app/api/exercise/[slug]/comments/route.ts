@@ -113,7 +113,6 @@ export async function POST(req: Request, context: { params: { slug: string } }) 
         UID: session.user.uid,
         EID: exercise.EID, // Sử dụng EID thay vì LID
         Content: Content.trim(),
-        ParentID: ParentID || null,
       },
       include: {
         user: {

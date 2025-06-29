@@ -10786,14 +10786,12 @@ export namespace Prisma {
     CoID: number | null
     LID: number | null
     EID: number | null
-    ParentID: number | null
   }
 
   export type CommentSumAggregateOutputType = {
     CoID: number | null
     LID: number | null
     EID: number | null
-    ParentID: number | null
   }
 
   export type CommentMinAggregateOutputType = {
@@ -10802,7 +10800,6 @@ export namespace Prisma {
     LID: number | null
     EID: number | null
     Content: string | null
-    ParentID: number | null
     CreatedAt: Date | null
   }
 
@@ -10812,7 +10809,6 @@ export namespace Prisma {
     LID: number | null
     EID: number | null
     Content: string | null
-    ParentID: number | null
     CreatedAt: Date | null
   }
 
@@ -10822,7 +10818,6 @@ export namespace Prisma {
     LID: number
     EID: number
     Content: number
-    ParentID: number
     CreatedAt: number
     _all: number
   }
@@ -10832,14 +10827,12 @@ export namespace Prisma {
     CoID?: true
     LID?: true
     EID?: true
-    ParentID?: true
   }
 
   export type CommentSumAggregateInputType = {
     CoID?: true
     LID?: true
     EID?: true
-    ParentID?: true
   }
 
   export type CommentMinAggregateInputType = {
@@ -10848,7 +10841,6 @@ export namespace Prisma {
     LID?: true
     EID?: true
     Content?: true
-    ParentID?: true
     CreatedAt?: true
   }
 
@@ -10858,7 +10850,6 @@ export namespace Prisma {
     LID?: true
     EID?: true
     Content?: true
-    ParentID?: true
     CreatedAt?: true
   }
 
@@ -10868,7 +10859,6 @@ export namespace Prisma {
     LID?: true
     EID?: true
     Content?: true
-    ParentID?: true
     CreatedAt?: true
     _all?: true
   }
@@ -10965,7 +10955,6 @@ export namespace Prisma {
     LID: number | null
     EID: number | null
     Content: string
-    ParentID: number | null
     CreatedAt: Date | null
     _count: CommentCountAggregateOutputType | null
     _avg: CommentAvgAggregateOutputType | null
@@ -10994,7 +10983,6 @@ export namespace Prisma {
     LID?: boolean
     EID?: boolean
     Content?: boolean
-    ParentID?: boolean
     CreatedAt?: boolean
     user?: boolean | userDefaultArgs<ExtArgs>
     lesson?: boolean | comment$lessonArgs<ExtArgs>
@@ -11012,11 +11000,10 @@ export namespace Prisma {
     LID?: boolean
     EID?: boolean
     Content?: boolean
-    ParentID?: boolean
     CreatedAt?: boolean
   }
 
-  export type commentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"CoID" | "UID" | "LID" | "EID" | "Content" | "ParentID" | "CreatedAt", ExtArgs["result"]["comment"]>
+  export type commentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"CoID" | "UID" | "LID" | "EID" | "Content" | "CreatedAt", ExtArgs["result"]["comment"]>
   export type commentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | userDefaultArgs<ExtArgs>
     lesson?: boolean | comment$lessonArgs<ExtArgs>
@@ -11041,7 +11028,6 @@ export namespace Prisma {
       LID: number | null
       EID: number | null
       Content: string
-      ParentID: number | null
       CreatedAt: Date | null
     }, ExtArgs["result"]["comment"]>
     composites: {}
@@ -11422,7 +11408,6 @@ export namespace Prisma {
     readonly LID: FieldRef<"comment", 'Int'>
     readonly EID: FieldRef<"comment", 'Int'>
     readonly Content: FieldRef<"comment", 'String'>
-    readonly ParentID: FieldRef<"comment", 'Int'>
     readonly CreatedAt: FieldRef<"comment", 'DateTime'>
   }
     
@@ -17917,7 +17902,6 @@ export namespace Prisma {
     LID: 'LID',
     EID: 'EID',
     Content: 'Content',
-    ParentID: 'ParentID',
     CreatedAt: 'CreatedAt'
   };
 
@@ -18764,7 +18748,6 @@ export namespace Prisma {
     LID?: IntNullableFilter<"comment"> | number | null
     EID?: IntNullableFilter<"comment"> | number | null
     Content?: StringFilter<"comment"> | string
-    ParentID?: IntNullableFilter<"comment"> | number | null
     CreatedAt?: DateTimeNullableFilter<"comment"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, userWhereInput>
     lesson?: XOR<LessonNullableScalarRelationFilter, lessonWhereInput> | null
@@ -18779,7 +18762,6 @@ export namespace Prisma {
     LID?: SortOrderInput | SortOrder
     EID?: SortOrderInput | SortOrder
     Content?: SortOrder
-    ParentID?: SortOrderInput | SortOrder
     CreatedAt?: SortOrderInput | SortOrder
     user?: userOrderByWithRelationInput
     lesson?: lessonOrderByWithRelationInput
@@ -18798,7 +18780,6 @@ export namespace Prisma {
     LID?: IntNullableFilter<"comment"> | number | null
     EID?: IntNullableFilter<"comment"> | number | null
     Content?: StringFilter<"comment"> | string
-    ParentID?: IntNullableFilter<"comment"> | number | null
     CreatedAt?: DateTimeNullableFilter<"comment"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, userWhereInput>
     lesson?: XOR<LessonNullableScalarRelationFilter, lessonWhereInput> | null
@@ -18813,7 +18794,6 @@ export namespace Prisma {
     LID?: SortOrderInput | SortOrder
     EID?: SortOrderInput | SortOrder
     Content?: SortOrder
-    ParentID?: SortOrderInput | SortOrder
     CreatedAt?: SortOrderInput | SortOrder
     _count?: commentCountOrderByAggregateInput
     _avg?: commentAvgOrderByAggregateInput
@@ -18831,7 +18811,6 @@ export namespace Prisma {
     LID?: IntNullableWithAggregatesFilter<"comment"> | number | null
     EID?: IntNullableWithAggregatesFilter<"comment"> | number | null
     Content?: StringWithAggregatesFilter<"comment"> | string
-    ParentID?: IntNullableWithAggregatesFilter<"comment"> | number | null
     CreatedAt?: DateTimeNullableWithAggregatesFilter<"comment"> | Date | string | null
   }
 
@@ -19720,7 +19699,6 @@ export namespace Prisma {
 
   export type commentCreateInput = {
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     user: userCreateNestedOneWithoutCommentInput
     lesson?: lessonCreateNestedOneWithoutCommentInput
@@ -19735,7 +19713,6 @@ export namespace Prisma {
     LID?: number | null
     EID?: number | null
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutCommentInput
     notification?: notificationUncheckedCreateNestedManyWithoutCommentInput
@@ -19743,7 +19720,6 @@ export namespace Prisma {
 
   export type commentUpdateInput = {
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: userUpdateOneRequiredWithoutCommentNestedInput
     lesson?: lessonUpdateOneWithoutCommentNestedInput
@@ -19758,7 +19734,6 @@ export namespace Prisma {
     LID?: NullableIntFieldUpdateOperationsInput | number | null
     EID?: NullableIntFieldUpdateOperationsInput | number | null
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentlike?: commentlikeUncheckedUpdateManyWithoutCommentNestedInput
     notification?: notificationUncheckedUpdateManyWithoutCommentNestedInput
@@ -19770,13 +19745,11 @@ export namespace Prisma {
     LID?: number | null
     EID?: number | null
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
   }
 
   export type commentUpdateManyMutationInput = {
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -19786,7 +19759,6 @@ export namespace Prisma {
     LID?: NullableIntFieldUpdateOperationsInput | number | null
     EID?: NullableIntFieldUpdateOperationsInput | number | null
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -20862,7 +20834,6 @@ export namespace Prisma {
     LID?: SortOrder
     EID?: SortOrder
     Content?: SortOrder
-    ParentID?: SortOrder
     CreatedAt?: SortOrder
   }
 
@@ -20870,7 +20841,6 @@ export namespace Prisma {
     CoID?: SortOrder
     LID?: SortOrder
     EID?: SortOrder
-    ParentID?: SortOrder
   }
 
   export type commentMaxOrderByAggregateInput = {
@@ -20879,7 +20849,6 @@ export namespace Prisma {
     LID?: SortOrder
     EID?: SortOrder
     Content?: SortOrder
-    ParentID?: SortOrder
     CreatedAt?: SortOrder
   }
 
@@ -20889,7 +20858,6 @@ export namespace Prisma {
     LID?: SortOrder
     EID?: SortOrder
     Content?: SortOrder
-    ParentID?: SortOrder
     CreatedAt?: SortOrder
   }
 
@@ -20897,7 +20865,6 @@ export namespace Prisma {
     CoID?: SortOrder
     LID?: SortOrder
     EID?: SortOrder
-    ParentID?: SortOrder
   }
 
   export type CommentScalarRelationFilter = {
@@ -22747,7 +22714,6 @@ export namespace Prisma {
 
   export type commentCreateWithoutExerciseInput = {
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     user: userCreateNestedOneWithoutCommentInput
     lesson?: lessonCreateNestedOneWithoutCommentInput
@@ -22760,7 +22726,6 @@ export namespace Prisma {
     UID: string
     LID?: number | null
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutCommentInput
     notification?: notificationUncheckedCreateNestedManyWithoutCommentInput
@@ -22908,7 +22873,6 @@ export namespace Prisma {
     LID?: IntNullableFilter<"comment"> | number | null
     EID?: IntNullableFilter<"comment"> | number | null
     Content?: StringFilter<"comment"> | string
-    ParentID?: IntNullableFilter<"comment"> | number | null
     CreatedAt?: DateTimeNullableFilter<"comment"> | Date | string | null
   }
 
@@ -23531,7 +23495,6 @@ export namespace Prisma {
 
   export type commentCreateWithoutUserInput = {
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     lesson?: lessonCreateNestedOneWithoutCommentInput
     exercise?: exerciseCreateNestedOneWithoutCommentInput
@@ -23544,7 +23507,6 @@ export namespace Prisma {
     LID?: number | null
     EID?: number | null
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutCommentInput
     notification?: notificationUncheckedCreateNestedManyWithoutCommentInput
@@ -24445,7 +24407,6 @@ export namespace Prisma {
 
   export type commentCreateWithoutCommentlikeInput = {
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     user: userCreateNestedOneWithoutCommentInput
     lesson?: lessonCreateNestedOneWithoutCommentInput
@@ -24459,7 +24420,6 @@ export namespace Prisma {
     LID?: number | null
     EID?: number | null
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     notification?: notificationUncheckedCreateNestedManyWithoutCommentInput
   }
@@ -24527,7 +24487,6 @@ export namespace Prisma {
 
   export type commentUpdateWithoutCommentlikeInput = {
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: userUpdateOneRequiredWithoutCommentNestedInput
     lesson?: lessonUpdateOneWithoutCommentNestedInput
@@ -24541,7 +24500,6 @@ export namespace Prisma {
     LID?: NullableIntFieldUpdateOperationsInput | number | null
     EID?: NullableIntFieldUpdateOperationsInput | number | null
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notification?: notificationUncheckedUpdateManyWithoutCommentNestedInput
   }
@@ -24706,7 +24664,6 @@ export namespace Prisma {
 
   export type commentCreateWithoutLessonInput = {
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     user: userCreateNestedOneWithoutCommentInput
     exercise?: exerciseCreateNestedOneWithoutCommentInput
@@ -24719,7 +24676,6 @@ export namespace Prisma {
     UID: string
     EID?: number | null
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutCommentInput
     notification?: notificationUncheckedCreateNestedManyWithoutCommentInput
@@ -24869,7 +24825,6 @@ export namespace Prisma {
 
   export type commentCreateWithoutNotificationInput = {
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     user: userCreateNestedOneWithoutCommentInput
     lesson?: lessonCreateNestedOneWithoutCommentInput
@@ -24883,7 +24838,6 @@ export namespace Prisma {
     LID?: number | null
     EID?: number | null
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutCommentInput
   }
@@ -24996,7 +24950,6 @@ export namespace Prisma {
 
   export type commentUpdateWithoutNotificationInput = {
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: userUpdateOneRequiredWithoutCommentNestedInput
     lesson?: lessonUpdateOneWithoutCommentNestedInput
@@ -25010,7 +24963,6 @@ export namespace Prisma {
     LID?: NullableIntFieldUpdateOperationsInput | number | null
     EID?: NullableIntFieldUpdateOperationsInput | number | null
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentlike?: commentlikeUncheckedUpdateManyWithoutCommentNestedInput
   }
@@ -25175,7 +25127,6 @@ export namespace Prisma {
     UID: string
     LID?: number | null
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
   }
 
@@ -25203,7 +25154,6 @@ export namespace Prisma {
 
   export type commentUpdateWithoutExerciseInput = {
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: userUpdateOneRequiredWithoutCommentNestedInput
     lesson?: lessonUpdateOneWithoutCommentNestedInput
@@ -25216,7 +25166,6 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     LID?: NullableIntFieldUpdateOperationsInput | number | null
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentlike?: commentlikeUncheckedUpdateManyWithoutCommentNestedInput
     notification?: notificationUncheckedUpdateManyWithoutCommentNestedInput
@@ -25227,7 +25176,6 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     LID?: NullableIntFieldUpdateOperationsInput | number | null
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -25408,7 +25356,6 @@ export namespace Prisma {
     LID?: number | null
     EID?: number | null
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
   }
 
@@ -25469,7 +25416,6 @@ export namespace Prisma {
 
   export type commentUpdateWithoutUserInput = {
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lesson?: lessonUpdateOneWithoutCommentNestedInput
     exercise?: exerciseUpdateOneWithoutCommentNestedInput
@@ -25482,7 +25428,6 @@ export namespace Prisma {
     LID?: NullableIntFieldUpdateOperationsInput | number | null
     EID?: NullableIntFieldUpdateOperationsInput | number | null
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentlike?: commentlikeUncheckedUpdateManyWithoutCommentNestedInput
     notification?: notificationUncheckedUpdateManyWithoutCommentNestedInput
@@ -25493,7 +25438,6 @@ export namespace Prisma {
     LID?: NullableIntFieldUpdateOperationsInput | number | null
     EID?: NullableIntFieldUpdateOperationsInput | number | null
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -25753,13 +25697,11 @@ export namespace Prisma {
     UID: string
     EID?: number | null
     Content: string
-    ParentID?: number | null
     CreatedAt?: Date | string | null
   }
 
   export type commentUpdateWithoutLessonInput = {
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: userUpdateOneRequiredWithoutCommentNestedInput
     exercise?: exerciseUpdateOneWithoutCommentNestedInput
@@ -25772,7 +25714,6 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     EID?: NullableIntFieldUpdateOperationsInput | number | null
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentlike?: commentlikeUncheckedUpdateManyWithoutCommentNestedInput
     notification?: notificationUncheckedUpdateManyWithoutCommentNestedInput
@@ -25783,7 +25724,6 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     EID?: NullableIntFieldUpdateOperationsInput | number | null
     Content?: StringFieldUpdateOperationsInput | string
-    ParentID?: NullableIntFieldUpdateOperationsInput | number | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 

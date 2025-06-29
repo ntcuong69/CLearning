@@ -18,13 +18,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import InfoIcon from "@mui/icons-material/Info";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
-interface ReviewSubmissionProps {
-  reviewSubmission: any;
-  reviewResults: any[] | null;
-  testcases: any[];
-}
-
-export default function ReviewSubmission({ reviewSubmission, reviewResults, testcases }: ReviewSubmissionProps) {
+export default function ReviewSubmission({ reviewSubmission, reviewResults, testcases }: any) {
   if (!reviewSubmission) return null;
 
   return (

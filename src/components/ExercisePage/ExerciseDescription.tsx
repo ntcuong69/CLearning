@@ -2,12 +2,7 @@ import React from "react";
 import { Box, Typography, Paper } from "@mui/material";
 import { TaskAlt } from "@mui/icons-material";
 
-interface ExerciseDescriptionProps {
-  exercise: any;
-  testcases: any[];
-}
-
-export default function ExerciseDescription({ exercise, testcases }: ExerciseDescriptionProps) {
+export default function ExerciseDescription({ exercise, testcases }: any) {
   return (
     <>
       <Typography

@@ -15,12 +15,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import InfoIcon from "@mui/icons-material/Info";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
-interface TestcaseResultsProps {
-  results: any[] | null;
-  testcases: any[];
-}
-
-export default function TestcaseResults({ results, testcases }: TestcaseResultsProps) {
+export default function TestcaseResults({ results, testcases }: any) {
   return (
     <Paper sx={{ flex: 1, p: 2, borderRadius: 2, minHeight: 120, overflow: "auto" }}>
       <Typography variant="subtitle1" fontWeight={700} mb={1}>

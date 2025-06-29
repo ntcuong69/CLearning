@@ -58,12 +58,11 @@ export default function CommentSection({
   onSetEditingId,
   onSetDeleteDialogId,
 }: CommentSectionProps) {
-  // Sort bình luận cha (ParentID == null)
+  // Sort bình luận theo thời gian hoặc số lượt thích
   const sortedComments = useMemo(() => {
-    const topLevel = comments.filter((c) => !c.ParentID);
     if (sortType === "mostLiked") {
       return [
-        ...topLevel.sort((a, b) => {
+        ...comments.sort((a, b) => {
           const likeA = a.likeCount || 0;
           const likeB = b.likeCount || 0;
           if (likeB !== likeA) return likeB - likeA;
@@ -71,7 +70,7 @@ export default function CommentSection({
         }),
       ];
     } else {
-      return [...topLevel.sort((a, b) => new Date(b.CreatedAt || 0).getTime() - new Date(a.CreatedAt || 0).getTime())];
+      return [...comments.sort((a, b) => new Date(b.CreatedAt || 0).getTime() - new Date(a.CreatedAt || 0).getTime())];
     }
   }, [comments, sortType]);
 
