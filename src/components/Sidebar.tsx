@@ -67,12 +67,12 @@ export default function Sidebar() {
     <Box
       sx={{
         width: 280,
-        bgcolor: "#FFFFFF",
+        bgcolor: "#F7F9FA",
         borderRight: "1px solid #E1F0FF",
         display: "flex",
         flexDirection: "column",
         position: "fixed",
-        top: 69,
+        top: 65,
         left: 0,
         height: "calc(100vh - 80px)",
         zIndex: 1200,
@@ -116,7 +116,7 @@ export default function Sidebar() {
                   "& .MuiListItemText-primary": {
                     fontWeight: normalizedPathname === item.href ? 600 : 400,
                     fontSize: "0.9rem",
-                    color: normalizedPathname === item.href ? "#1A202C" : "#4A5568",
+                    color: normalizedPathname === item.href ? "#1A202C" : "#000000",
                   },
                   "&.Mui-selected": {
                     backgroundColor: "#E8F4FF",

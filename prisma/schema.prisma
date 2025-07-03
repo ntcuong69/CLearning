@@ -9,21 +9,21 @@ datasource db {
 }
 
 model exercise {
-  EID           Int                 @id @default(autoincrement())
-  TpID          Int?
-  SPIID         Int?
-  Name          String              @db.VarChar(50)
-  Slug          String              @unique(map: "Slug") @db.VarChar(50)
-  Content       String              @db.Text
-  Difficulty    exercise_Difficulty @default(Easy)
-  template      String?             @db.Text
-  status        exercise_status     @default(Unattempted)
-  comment       comment[]
-  topic         topic?              @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
-  studyplanitem studyplanitem?      @relation(fields: [SPIID], references: [SPIID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_2")
-  exerciselike  exerciselike[]
-  submission    submission[]
-  testcase      testcase[]
+  EID              Int                 @id @default(autoincrement())
+  TpID             Int?
+  SPIID            Int?
+  Name             String              @db.VarChar(50)
+  Slug             String              @unique(map: "Slug") @db.VarChar(50)
+  Content          String              @db.Text
+  Difficulty       exercise_Difficulty @default(Easy)
+  template         String?             @db.Text
+  comment          comment[]
+  topic            topic?              @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
+  studyplanitem    studyplanitem?      @relation(fields: [SPIID], references: [SPIID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_2")
+  exerciselike     exerciselike[]
+  exerciseprogress exerciseprogress[]
+  submission       submission[]
+  testcase         testcase[]
 
   @@index([TpID], map: "TpID")
   @@index([SPIID], map: "SPIID")
@@ -78,20 +78,21 @@ model topic {
 }
 
 model user {
-  UID                                      String         @id @default(dbgenerated("(uuid())")) @db.Char(36)
-  Username                                 String         @db.VarChar(50)
-  Email                                    String         @unique(map: "Email") @db.VarChar(50)
-  isVerified                               Boolean?       @default(false)
-  Password                                 String         @db.VarChar(255)
-  Role                                     user_Role      @default(User)
-  CreatedAt                                DateTime?      @default(now()) @db.Timestamp(0)
+  UID                                      String             @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  Username                                 String             @db.VarChar(50)
+  Email                                    String             @unique(map: "Email") @db.VarChar(50)
+  isVerified                               Boolean?           @default(false)
+  Password                                 String             @db.VarChar(255)
+  Role                                     user_Role          @default(User)
+  CreatedAt                                DateTime?          @default(now()) @db.Timestamp(0)
   comment                                  comment[]
   commentlike                              commentlike[]
   exerciselike                             exerciselike[]
-  friendship_friendship_requesterTouser    friendship[]   @relation("friendship_requesterTouser")
-  friendship_friendship_addresseeTouser    friendship[]   @relation("friendship_addresseeTouser")
-  notification_notification_UIDTouser      notification[] @relation("notification_UIDTouser")
-  notification_notification_FromUserTouser notification[] @relation("notification_FromUserTouser")
+  exerciseprogress                         exerciseprogress[]
+  friendship_friendship_requesterTouser    friendship[]       @relation("friendship_requesterTouser")
+  friendship_friendship_addresseeTouser    friendship[]       @relation("friendship_addresseeTouser")
+  notification_notification_UIDTouser      notification[]     @relation("notification_UIDTouser")
+  notification_notification_FromUserTouser notification[]     @relation("notification_FromUserTouser")
   submission                               submission[]
 }
 
@@ -208,6 +209,19 @@ model studyplanitem {
   @@index([SPID], map: "SPID")
 }
 
+model exerciseprogress {
+  ID        Int                      @id @default(autoincrement())
+  UID       String                   @db.Char(36)
+  EID       Int
+  Status    exerciseprogress_Status?
+  UpdatedAt DateTime?                @default(now()) @db.DateTime(0)
+  user      user                     @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "exerciseprogress_ibfk_1")
+  exercise  exercise                 @relation(fields: [EID], references: [EID], onDelete: NoAction, onUpdate: NoAction, map: "exerciseprogress_ibfk_2")
+
+  @@unique([UID, EID], map: "unique_user_exercise")
+  @@index([EID], map: "EID")
+}
+
 enum exercise_Difficulty {
   Easy
   Medium
@@ -244,7 +258,7 @@ enum notification_Type {
   Like
 }
 
-enum exercise_status {
+enum exerciseprogress_Status {
+  Attempting
   Solved
-  Unattempted
 }

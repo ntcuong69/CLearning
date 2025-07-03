@@ -30,6 +30,10 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import SchoolIcon from '@mui/icons-material/School';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import StarIcon from '@mui/icons-material/Star';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
+import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
 import axios from 'axios';
 
 interface User {
@@ -38,18 +42,28 @@ interface User {
   Email: string;
   Role: string;
   CreatedAt: string;
+  isVerified?: boolean;
 }
 
 const ProfilePage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [verifyLoading, setVerifyLoading] = useState(false);
+  const [verifyMsg, setVerifyMsg] = useState<string | null>(null);
 
   useEffect(() => {
     axios
       .get('/api/me')
       .then((res) => {
         setUser(res.data.user);
+        setEditName(res.data.user.Username);
+        setEditEmail(res.data.user.Email);
         setLoading(false);
       })
       .catch((err) => {
@@ -71,9 +85,8 @@ const ProfilePage = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', minHeight: '100vh', pt: '70px', justifyContent: 'center', alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', minHeight: '100vh', pt: '70px', justifyContent: 'center', alignItems: 'center'}}>
         <NavBar />
-        <Sidebar />
         <CircularProgress size={60} sx={{ color: '#cc2b5e' }} />
       </Box>
     );
@@ -81,18 +94,19 @@ const ProfilePage = () => {
 
   if (error || !user) {
     return (
-      <Box sx={{ display: 'flex', minHeight: '100vh', pt: '70px' }}>
+      <Box sx={{ display: 'flex', minHeight: '100vh', pt: '70px', justifyContent: 'center', alignItems: 'center'}}>
         <NavBar />
-        <Sidebar />
         <Box
           component="main"
           sx={{
             flexGrow: 1,
-            ml: { md: '280px' },
-            px: { xs: 2, sm: 6, md: 10 },
-            py: 6,
-            maxWidth: 1200,
+            width: '100%',
+            maxWidth: 900,
             mx: 'auto',
+            px: { xs: 2, sm: 4, md: 6 },
+            py: 6,
+            borderRadius: 4,
+            boxShadow: { xs: 'none', md: '0 4px 32px rgba(0,0,0,0.07)' },
           }}
         >
           <Typography variant="h5" color="error" sx={{ textAlign: 'center', mt: 4 }}>
@@ -104,18 +118,17 @@ const ProfilePage = () => {
   }
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', pt: '70px' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh', pt: '70px', justifyContent: 'center', alignItems: 'center' }}>
       <NavBar />
-      <Sidebar />
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          ml: { md: '280px' },
-          px: { xs: 2, sm: 6, md: 10 },
-          py: 6,
+          width: '100%',
           maxWidth: 1200,
           mx: 'auto',
+          px: { xs: 2, sm: 4, md: 6 },
+          py: 6,
         }}
       >
         {/* Header Section */}
@@ -164,7 +177,7 @@ const ProfilePage = () => {
                     backdropFilter: 'blur(10px)',
                   }}
                 >
-                  {user.Username.charAt(0).toUpperCase()}
+                  <AccountCircleIcon sx={{ fontSize: 100, color: 'white', opacity: 0.9 }} />
                 </Avatar>
                 <Typography variant="h5" fontWeight={600} sx={{ mb: 1 }}>
                   {user.Username}
@@ -188,23 +201,67 @@ const ProfilePage = () => {
                   Quản lý tài khoản
                 </Typography>
                 <Stack spacing={2}>
-                  <Button
-                    variant="outlined"
-                    startIcon={<EditIcon />}
-                    fullWidth
-                    sx={{
-                      borderRadius: 2,
-                      py: 1.5,
-                      borderColor: '#cc2b5e',
-                      color: '#cc2b5e',
-                      '&:hover': {
-                        borderColor: '#753a88',
-                        bgcolor: 'rgba(204, 43, 94, 0.05)',
+                  {!editMode ? (
+                    <Button
+                      variant="outlined"
+                      startIcon={<EditIcon />}
+                      fullWidth
+                      sx={{
+                        borderRadius: 2,
+                        py: 1.5,
+                        borderColor: '#cc2b5e',
+                        color: '#cc2b5e',
+                        '&:hover': {
+                          borderColor: '#753a88',
+                          bgcolor: 'rgba(204, 43, 94, 0.05)',
+                        }
+                      }}
+                      onClick={() => setEditMode(true)}
+                    >
+                      Cập nhật thông tin
+                    </Button>
+                  ) : (
+                    <Box component="form" onSubmit={async (e) => {
+                      e.preventDefault();
+                      setSaving(true);
+                      setSaveError(null);
+                      try {
+                        const res = await axios.put('/api/me', { Username: editName, Email: editEmail });
+                        setUser((prev) => prev ? { ...prev, Username: editName, Email: editEmail } : prev);
+                        setEditMode(false);
+                      } catch (err: any) {
+                        setSaveError(err?.response?.data?.error || 'Cập nhật thất bại');
                       }
-                    }}
-                  >
-                    Cập nhật thông tin
-                  </Button>
+                      setSaving(false);
+                    }} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      <Typography variant="subtitle1" fontWeight={600}>Cập nhật thông tin</Typography>
+                      <input
+                        type="text"
+                        value={editName}
+                        onChange={e => setEditName(e.target.value)}
+                        placeholder="Tên người dùng"
+                        style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc', fontSize: 16 }}
+                        required
+                      />
+                      <input
+                        type="email"
+                        value={editEmail}
+                        onChange={e => setEditEmail(e.target.value)}
+                        placeholder="Email"
+                        style={{ padding: 10, borderRadius: 6, border: '1px solid #ccc', fontSize: 16 }}
+                        required
+                      />
+                      {saveError && <Typography color="error">{saveError}</Typography>}
+                      <Box sx={{ display: 'flex', gap: 2 }}>
+                        <Button type="submit" variant="contained" color="primary" disabled={saving} sx={{ minWidth: 100 }}>
+                          {saving ? 'Đang lưu...' : 'Lưu'}
+                        </Button>
+                        <Button variant="outlined" color="secondary" onClick={() => setEditMode(false)} sx={{ minWidth: 100 }}>
+                          Hủy
+                        </Button>
+                      </Box>
+                    </Box>
+                  )}
                   <Button
                     variant="outlined"
                     startIcon={<LockIcon />}
@@ -252,32 +309,84 @@ const ProfilePage = () => {
                 <Typography variant="h6" fontWeight={600} sx={{ mb: 3, color: '#333' }}>
                   Thông tin cá nhân
                 </Typography>
-                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 3 }}>
-                  <Box sx={{ width: { xs: '100%', sm: '50%' } }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: '#f8f9fa', borderRadius: 2 }}>
-                      <EmailIcon sx={{ color: '#cc2b5e', fontSize: 24 }} />
-                      <Box>
-                        <Typography variant="caption" color="text.secondary">Email</Typography>
-                        <Typography variant="body2" fontWeight={500}>{user.Email}</Typography>
-                      </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: '#f8f9fa', borderRadius: 2 }}>
+                    <BadgeIcon sx={{ color: '#f093fb', fontSize: 24 }} />
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="caption" color="text.secondary">ID người dùng (UID)</Typography>
+                      <Typography variant="body2" fontWeight={500} fontFamily="monospace">{user.UID}</Typography>
                     </Box>
                   </Box>
-                  <Box sx={{ width: { xs: '100%', sm: '50%' } }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: '#f8f9fa', borderRadius: 2 }}>
-                      <CalendarTodayIcon sx={{ color: '#667eea', fontSize: 24 }} />
-                      <Box>
-                        <Typography variant="caption" color="text.secondary">Ngày tham gia</Typography>
-                        <Typography variant="body2" fontWeight={500}>{formatDate(user.CreatedAt)}</Typography>
-                      </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: '#f8f9fa', borderRadius: 2 }}>
+                    <PersonIcon sx={{ color: '#753a88', fontSize: 24 }} />
+                    <Box>
+                      <Typography variant="caption" color="text.secondary">Tên người dùng</Typography>
+                      <Typography variant="body2" fontWeight={500}>{user.Username}</Typography>
                     </Box>
                   </Box>
-                  <Box sx={{ width: '100%' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: '#f8f9fa', borderRadius: 2 }}>
-                      <BadgeIcon sx={{ color: '#f093fb', fontSize: 24 }} />
-                      <Box sx={{ flex: 1 }}>
-                        <Typography variant="caption" color="text.secondary">ID người dùng</Typography>
-                        <Typography variant="body2" fontWeight={500} fontFamily="monospace">{user.UID}</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: '#f8f9fa', borderRadius: 2 }}>
+                    <EmailIcon sx={{ color: '#cc2b5e', fontSize: 24 }} />
+                    <Box>
+                      <Typography variant="caption" color="text.secondary">Email</Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        {editMode ? (
+                          <input
+                            type="email"
+                            value={editEmail}
+                            onChange={e => setEditEmail(e.target.value)}
+                            style={{ padding: 8, borderRadius: 6, border: '1px solid #ccc', fontSize: 16, minWidth: 180 }}
+                            required
+                          />
+                        ) : (
+                          <Typography variant="body2" fontWeight={500} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            {user.Email}
+                            {user.isVerified !== undefined && (
+                              <Chip
+                                component="span"
+                                label={user.isVerified ? 'Đã xác thực' : 'Chưa xác thực'}
+                                size="small"
+                                icon={user.isVerified ? <CheckCircleIcon sx={{ color: '#00796b' }} /> : <ErrorIcon sx={{ color: '#ef6c00' }} />}
+                                sx={{ ml: 1, bgcolor: user.isVerified ? '#e0f7fa' : '#fff3e0', color: user.isVerified ? '#00796b' : '#ef6c00', fontWeight: 600 }}
+                              />
+                            )}
+                            {!user.isVerified && (
+                              <Button
+                                size="small"
+                                variant="outlined"
+                                color="primary"
+                                startIcon={<MarkEmailUnreadIcon />}
+                                sx={{ ml: 1, minWidth: 0, fontSize: 13, py: 0.5, px: 1.5 }}
+                                disabled={verifyLoading}
+                                onClick={async () => {
+                                  setVerifyLoading(true);
+                                  setVerifyMsg(null);
+                                  try {
+                                    const res = await axios.post('/api/me/verify');
+                                    setVerifyMsg('Đã gửi email xác thực. Vui lòng kiểm tra hộp thư.');
+                                  } catch (err: any) {
+                                    setVerifyMsg(err?.response?.data?.error || 'Gửi email xác thực thất bại');
+                                  }
+                                  setVerifyLoading(false);
+                                }}
+                              >
+                                Xác thực
+                              </Button>
+                            )}
+                          </Typography>
+                        )}
                       </Box>
+                      {verifyMsg && (
+                        <Typography variant="body2" color={verifyMsg.includes('thất bại') ? 'error' : 'success.main'} sx={{ mt: 0.5 }}>
+                          {verifyMsg}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: '#f8f9fa', borderRadius: 2 }}>
+                    <CalendarTodayIcon sx={{ color: '#667eea', fontSize: 24 }} />
+                    <Box>
+                      <Typography variant="caption" color="text.secondary">Ngày tham gia</Typography>
+                      <Typography variant="body2" fontWeight={500}>{formatDate(user.CreatedAt)}</Typography>
                     </Box>
                   </Box>
                 </Box>

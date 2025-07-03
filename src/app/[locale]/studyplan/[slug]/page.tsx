@@ -5,20 +5,18 @@ import NavBar from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import { Box, Typography, Card, CardContent, List, ListItem, ListItemText, Divider, CircularProgress, Alert, Avatar, IconButton, Paper } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { useSubmission } from '@/hooks/useSubmission';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 
 const ExerciseListItem = ({ ex, spiid }: { ex: any, spiid: number }) => {
-  const { submissionResult } = useSubmission(String(ex.EID));
-  const solved = submissionResult === 'Pass';
+  const solved = ex.status === 'Solved';
   let difficultyColor = '#43a047';
   if (ex.Difficulty === 'Medium') difficultyColor = '#ffa726';
   if (ex.Difficulty === 'Hard') difficultyColor = '#e53935';
   return (
     <ListItem
       sx={{ pl: 2, cursor: 'pointer', '&:hover': { bgcolor: '#f5f5f5' } }}
-      onClick={() => window.location.href = `/exercises/${ex.EID}`}
+      onClick={() => window.location.href = `/exercises/${ex.Slug}`}
       secondaryAction={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box

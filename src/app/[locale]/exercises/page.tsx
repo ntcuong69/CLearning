@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import NavBar from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import ExerciseStatusBadge from "@/components/ExercisePage/ExerciseStatusBadge";
 import {
   Box,
   Typography,
@@ -21,6 +22,7 @@ import {
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import PendingIcon from "@mui/icons-material/Pending";
 import axios from "axios";
 
 const ExercisesPage = () => {
@@ -28,19 +30,19 @@ const ExercisesPage = () => {
   const [topics, setTopics] = useState<any[]>([]);
   const [problems, setProblems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [submissionsMap, setSubmissionsMap] = useState<Record<string, any[]>>({});
 
   // Lazy loading states
   const [displayedProblems, setDisplayedProblems] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [initialLoadCount] = useState(50);
-  const [loadMoreCount] = useState(20);
+  const initialLoadCount = 50;
+  const loadMoreCount = 20;
 
   // Ref cho intersection observer
-  const observerRef = useRef<IntersectionObserver | null>(null);
   const loadingRef = useRef<HTMLDivElement>(null);
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -51,37 +53,20 @@ const ExercisesPage = () => {
         setTopics([allTopic, ...fetchedTopics]);
         const exercises = exercisesRes.data.exercises || [];
         setProblems(exercises);
-
-        // Gọi API submissions cho từng bài
-        const submissionsResults = await Promise.all(
-          exercises.map(async (ex: any) => {
-            try {
-              const res = await axios.get(`/api/submissions/by-exercise/${ex.EID}`);
-              return { eid: ex.EID, submissions: res.data.submissions || [] };
-            } catch {
-              return { eid: ex.EID, submissions: [] };
-            }
-          })
-        );
-        // Tạo map eid -> submissions
-        const map: Record<string, any[]> = {};
-        submissionsResults.forEach(({ eid, submissions }) => {
-          map[eid] = submissions;
-        });
-        setSubmissionsMap(map);
       })
       .finally(() => setLoading(false));
   }, []);
 
-  // Lọc bài tập theo chủ đề
-  const filteredProblems = selectedTopic === "all" ? problems : problems.filter((p) => p.TpID === Number(selectedTopic));
+  // Lọc bài tập theo chủ đề và từ khóa tìm kiếm
+  const filteredProblems = (selectedTopic === "all" ? problems : problems.filter((p) => p.TpID === Number(selectedTopic)))
+    .filter((p) => p.Name.toLowerCase().includes(searchTerm.toLowerCase()));
 
-  // Cập nhật displayedProblems khi selectedTopic thay đổi
+  // Cập nhật displayedProblems khi selectedTopic, problems, initialLoadCount hoặc searchTerm thay đổi
   useEffect(() => {
     setCurrentPage(1);
     setDisplayedProblems(filteredProblems.slice(0, initialLoadCount));
     setHasMore(filteredProblems.length > initialLoadCount);
-  }, [selectedTopic, problems, initialLoadCount]);
+  }, [selectedTopic, problems, initialLoadCount, searchTerm]);
 
   // Load more function
   const loadMore = useCallback(() => {
@@ -116,14 +101,28 @@ const ExercisesPage = () => {
       observer.observe(loadingRef.current);
     }
 
-    observerRef.current = observer;
-
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
+      if (observer) {
+        observer.disconnect();
       }
     };
   }, [loadMore, hasMore, loadingMore]);
+
+  // Hàm đếm số bài tập theo trạng thái
+  const getStatusCounts = (problems: any[]) =>
+    problems.reduce(
+      (acc, p) => {
+        const status = p.status || 'Unattempted';
+        if (status === 'Solved') acc.solved++;
+        else if (status === 'Attempting') acc.attempting++;
+        else acc.unattempted++;
+        return acc;
+      },
+      { solved: 0, attempting: 0, unattempted: 0 }
+    );
+
+  // Tính trước statusCounts để dùng lại
+  const statusCounts = getStatusCounts(problems);
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", pt: "70px" }}>
@@ -140,27 +139,22 @@ const ExercisesPage = () => {
           mx: "auto",
         }}
       >
-        <Typography variant="h4" fontWeight={700} sx={{ mb: 4 }}>
-          Danh sách bài tập
-        </Typography>
+        
         {/* Thanh chọn chủ đề */}
         <Box className="mb-6">
-          <Typography variant="h6" className="font-semibold text-gray-900 mb-4">
-            Chủ đề
-          </Typography>
           <Box className="flex flex-wrap gap-3">
             {topics.map((topic) => {
-              // Đếm số bài đã giải và tổng số bài cho từng chủ đề
-              let solvedCount = 0;
-              let totalCount = 0;
+              // Đếm số bài theo trạng thái cho từng chủ đề
+              let topicProblems = [];
               if (topic.TpID === "all") {
-                totalCount = problems.length;
-                solvedCount = problems.filter((p) => p.status === "Solved").length;
+                topicProblems = problems;
               } else {
-                const topicProblems = problems.filter((p) => p.TpID === Number(topic.TpID || topic.id));
-                totalCount = topicProblems.length;
-                solvedCount = topicProblems.filter((p) => p.status === "Solved").length;
+                topicProblems = problems.filter((p) => p.TpID === Number(topic.TpID || topic.id));
               }
+              
+              const statusCounts = getStatusCounts(topicProblems);
+              const totalCount = topicProblems.length;
+              
               return (
                 <Chip
                   key={topic.TpID}
@@ -169,7 +163,7 @@ const ExercisesPage = () => {
                       <span>{topic.Name}</span>
                       <Box className="bg-white bg-opacity-50 rounded-full px-2 py-0.5">
                         <Typography variant="caption" className="font-semibold">
-                          {`${solvedCount}/${totalCount}`}
+                          {`${statusCounts.solved}/${totalCount}`}
                         </Typography>
                       </Box>
                     </Box>
@@ -193,6 +187,30 @@ const ExercisesPage = () => {
           </Box>
         </Box>
 
+        {/* Thống kê tổng quan */}
+        {selectedTopic === "all" && (
+          <Box sx={{ mb: 4, p: 3, bgcolor: "#f8f9fa", borderRadius: 2, display: "flex", gap: 4, flexWrap: "wrap" }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <CheckCircleIcon sx={{ color: "#4CAF50", fontSize: 20 }} />
+              <Typography variant="body2">
+                Đã giải: <strong>{statusCounts.solved}</strong>
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <PendingIcon sx={{ color: "#FF9800", fontSize: 20 }} />
+              <Typography variant="body2">
+                Đang làm: <strong>{statusCounts.attempting}</strong>
+              </Typography>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <RadioButtonUncheckedIcon sx={{ color: "#bdbdbd", fontSize: 20 }} />
+              <Typography variant="body2">
+                Chưa làm: <strong>{statusCounts.unattempted}</strong>
+              </Typography>
+            </Box>
+          </Box>
+        )}
+
         {/* Thống kê hiển thị */}
         <Box sx={{ mb: 3, display: "flex", alignItems: "center", gap: 2 }}>
           <Typography variant="body2" color="text.secondary">
@@ -205,6 +223,26 @@ const ExercisesPage = () => {
           )}
         </Box>
 
+        {/* Thanh tìm kiếm tên bài tập */}
+        <Box sx={{ mb: 3, mt: 1 }}>
+          <input
+            type="text"
+            placeholder="Tìm kiếm tên bài tập..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '10px 14px',
+              borderRadius: 8,
+              border: '1px solid #d1d5db',
+              fontSize: 16,
+              outline: 'none',
+              boxSizing: 'border-box',
+              marginBottom: 4,
+            }}
+          />
+        </Box>
+
         {/* Danh sách bài tập */}
         <Card className="border border-gray-200 shadow-lg">
           <TableContainer component={Paper} className="rounded-xl">
@@ -214,83 +252,65 @@ const ExercisesPage = () => {
                   <TableCell className="font-semibold text-gray-900">Trạng thái</TableCell>
                   <TableCell className="font-semibold text-gray-900">Tên bài tập</TableCell>
                   <TableCell className="font-semibold text-gray-900">Độ khó</TableCell>
-                  <TableCell className="font-semibold text-gray-900">Tỷ lệ Pass</TableCell>
                   <TableCell className="font-semibold text-gray-900">Hành động</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {displayedProblems.map((problem) => (
-                  <TableRow key={problem.EID} className="hover:bg-gray-50 transition-colors duration-150 cursor-pointer">
-                    <TableCell>
-                      <Tooltip title={problem.status === "Solved" ? "Đã giải" : "Chưa làm"}>
-                        {problem.status === "Solved" ? (
-                          <CheckCircleIcon fontSize="small" sx={{ color: "#4CAF50" }} />
-                        ) : (
-                          <RadioButtonUncheckedIcon fontSize="small" sx={{ color: "#bdbdbd" }} />
-                        )}
-                      </Tooltip>
-                    </TableCell>
-                    <TableCell>
-                      <Box>
-                        <Typography variant="body2" className="font-medium text-gray-900 hover:text-blue-600 cursor-pointer">
-                          {problem.Name}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body2"
-                        className={`font-medium ${
-                          (problem.Difficulty || "") === "Easy"
-                            ? "text-green-500"
-                            : (problem.Difficulty || "") === "Medium"
-                            ? "text-yellow-500"
-                            : (problem.Difficulty || "") === "Hard"
-                            ? "text-red-500"
-                            : ""
-                        }`}
-                      >
-                        {problem.Difficulty}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Box className="flex items-center gap-2">
-                        <Typography variant="body2" className="font-medium text-gray-900">
-                          {(() => {
-                            const submissions = submissionsMap[problem.EID] || [];
-                            const total = submissions.length;
-                            const pass = submissions.filter((s) => s.Result === "Pass").length;
-                            return total > 0 ? `${((pass / total) * 100).toFixed(1)}%` : "0.0%";
-                          })()}
-                        </Typography>
-                        <Box className="w-16 bg-gray-200 rounded-full h-1.5">
-                          <Box
-                            className="bg-green-500 h-1.5 rounded-full"
-                            style={{
-                              width: `${(() => {
-                                const submissions = submissionsMap[problem.EID] || [];
-                                const total = submissions.length;
-                                const pass = submissions.filter((s) => s.Result === "Pass").length;
-                                return total > 0 ? (pass / total) * 100 : 0;
-                              })()}%`,
-                            }}
-                          />
+                {displayedProblems.map((problem) => {
+                  return (
+                    <TableRow key={problem.EID} className="hover:bg-gray-50 transition-colors duration-150 cursor-pointer">
+                      <TableCell>
+                        <ExerciseStatusBadge status={problem.status || 'Unattempted'} />
+                      </TableCell>
+                      <TableCell>
+                        <Box>
+                          <Typography 
+                            variant="body2" 
+                            className="font-medium text-gray-900 hover:text-blue-600 cursor-pointer"
+                          >
+                            {problem.Name}
+                          </Typography>
                         </Box>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        href={`/exercises/${problem.Slug}`}
-                        size="small"
-                        variant="contained"
-                        startIcon={<PlayArrowIcon />}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        Giải bài
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body2"
+                          className={`font-medium ${
+                            (problem.Difficulty || "") === "Easy"
+                              ? "text-green-500"
+                              : (problem.Difficulty || "") === "Medium"
+                              ? "text-yellow-500"
+                              : (problem.Difficulty || "") === "Hard"
+                              ? "text-red-500"
+                              : ""
+                          }`}
+                        >
+                          {problem.Difficulty === 'Easy' ? 'Dễ' : problem.Difficulty === 'Medium' ? 'Vừa' : problem.Difficulty === 'Hard' ? 'Khó' : problem.Difficulty}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          href={`/exercises/${problem.Slug}`}
+                          size="small"
+                          variant="contained"
+                          startIcon={<PlayArrowIcon />}
+                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                          sx={{
+                            bgcolor: problem.status === 'Solved' ? "#4CAF50" : 
+                                    problem.status === 'Attempting' ? "#FF9800" : "#3b82f6",
+                            "&:hover": {
+                              bgcolor: problem.status === 'Solved' ? "#388E3C" : 
+                                      problem.status === 'Attempting' ? "#F57C00" : "#2563eb",
+                            }
+                          }}
+                        >
+                          {problem.status === 'Solved' ? 'Xem lại' : 
+                           problem.status === 'Attempting' ? 'Tiếp tục' : 'Giải bài'}
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>

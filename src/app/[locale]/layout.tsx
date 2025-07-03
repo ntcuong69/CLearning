@@ -15,7 +15,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 
   return (
     <html lang={locale}>
-      <body className="bg-[#EFF8FF] dark:bg-[#171823] dark:text-[#FFFFFF]">
+      <body className="bg-[#EDF1F5] dark:bg-[#171823] dark:text-[#FFFFFF]">
         <ClientOnly>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <NextIntlClientProvider>

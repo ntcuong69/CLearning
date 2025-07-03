@@ -1,8 +1,52 @@
-import React from "react";
-import { Box, Typography, Paper } from "@mui/material";
-import { TaskAlt } from "@mui/icons-material";
+import React, { useState, useEffect } from "react";
+import { Box, Typography, Paper, IconButton, Tooltip } from "@mui/material";
+import { TaskAlt, Favorite, FavoriteBorder, Pending } from "@mui/icons-material";
+import ExerciseStatusBadge from "./ExerciseStatusBadge";
 
-export default function ExerciseDescription({ exercise, testcases }: any) {
+export default function ExerciseDescription({ exercise, testcases, onExerciseUpdate }: any) {
+  const [isLiked, setIsLiked] = useState(exercise.isLiked || false);
+  const [likeCount, setLikeCount] = useState(exercise.likeCount || 0);
+  const [isLiking, setIsLiking] = useState(false);
+
+  // Đồng bộ state khi exercise prop thay đổi
+  useEffect(() => {
+    setIsLiked(exercise.isLiked || false);
+    setLikeCount(exercise.likeCount || 0);
+  }, [exercise.isLiked, exercise.likeCount]);
+
+  /**
+   * Xử lý like/unlike exercise
+   */
+  const handleLike = async () => {
+    if (isLiking) return;
+    
+    setIsLiking(true);
+    try {
+      const res = await fetch(`/api/exercise/${exercise.Slug}/like`, {
+        method: "POST",
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        setIsLiked(data.liked);
+        setLikeCount(data.likeCount);
+        
+        // Cập nhật exercise state nếu có callback
+        if (onExerciseUpdate) {
+          onExerciseUpdate({
+            ...exercise,
+            isLiked: data.liked,
+            likeCount: data.likeCount,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error liking exercise:", error);
+    } finally {
+      setIsLiking(false);
+    }
+  };
+
   return (
     <>
       <Typography
@@ -12,14 +56,16 @@ export default function ExerciseDescription({ exercise, testcases }: any) {
         sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 }}
       >
         {exercise.Name}
-        {exercise.status === "Solved" && (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, ml: 2 }}>
-            <span style={{ color: "#2e7d32", fontSize: 14, fontWeight: 700 }}>Solved</span>
-            <TaskAlt fontSize="small" sx={{ color: "#2e7d32" }} />
-          </Box>
-        )}
+        <ExerciseStatusBadge 
+          status={exercise.status || 'Unattempted'} 
+          showIcon={true} 
+          showText={true} 
+          size="small"
+        />
       </Typography>
-      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+      
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: 2 }}>
+        {/* Difficulty Badge */}
         {exercise.Difficulty === "Easy" && (
           <Box
             sx={{
@@ -32,7 +78,7 @@ export default function ExerciseDescription({ exercise, testcases }: any) {
               display: "inline-block",
             }}
           >
-            Easy
+            Dễ
           </Box>
         )}
         {exercise.Difficulty === "Medium" && (
@@ -47,7 +93,7 @@ export default function ExerciseDescription({ exercise, testcases }: any) {
               display: "inline-block",
             }}
           >
-            Medium
+            Vừa
           </Box>
         )}
         {exercise.Difficulty === "Hard" && (
@@ -62,13 +108,46 @@ export default function ExerciseDescription({ exercise, testcases }: any) {
               display: "inline-block",
             }}
           >
-            Hard
+            Khó
           </Box>
         )}
+
+        {/* Like Button */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0 }}>
+          <Tooltip title={isLiked ? "Hủy thích" : "Thích bài tập"}>
+            <IconButton
+              onClick={handleLike}
+              disabled={isLiking}
+              sx={{
+                color: isLiked ? "#e91e63" : "#9e9e9e",
+                "&:hover": {
+                  color: isLiked ? "#c2185b" : "#e91e63",
+                  transform: "scale(1.1)",
+                },
+                transition: "all 0.2s ease",
+              }}
+            >
+              {isLiked ? <Favorite /> : <FavoriteBorder />}
+            </IconButton>
+          </Tooltip>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "#666",
+              fontWeight: 500,
+              minWidth: "20px",
+              textAlign: "center",
+            }}
+          >
+            {likeCount}
+          </Typography>
+        </Box>
       </Box>
+      
       <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
         {exercise.Content}
       </Typography>
+      
       {testcases.length > 0 && (
         <Box mt={4}>
           {testcases

@@ -22,6 +22,7 @@ export async function GET(req: NextRequest) {
         Email: true,
         Role: true,
         CreatedAt: true,
+        isVerified: true,
       }
     });
     
@@ -37,6 +38,40 @@ export async function GET(req: NextRequest) {
     
   } catch (error) {
     console.error("Error fetching user data:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
+    if (!token.uid) {
+      return NextResponse.json({ error: "Invalid user data" }, { status: 401 });
+    }
+    const body = await req.json();
+    const { Username, Email } = body;
+    if (!Username || !Email) {
+      return NextResponse.json({ error: "Username và Email là bắt buộc" }, { status: 400 });
+    }
+    // Có thể thêm validate email hợp lệ ở đây nếu muốn
+    const updated = await prisma.user.update({
+      where: { UID: token.uid.toString() },
+      data: { Username, Email },
+      select: {
+        UID: true,
+        Username: true,
+        Email: true,
+        Role: true,
+        CreatedAt: true,
+        isVerified: true,
+      }
+    });
+    return NextResponse.json({ user: updated });
+  } catch (error) {
+    console.error("Error updating user data:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

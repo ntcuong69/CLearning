@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
-import { useSubmitCode } from "@/hooks/useSubmitCode";
 import CodeEditor from "@/components/ExercisePage/CodeEditor";
 import ExerciseDescription from "@/components/ExercisePage/ExerciseDescription";
 import ExerciseHelp from "@/components/ExercisePage/ExerciseHelp";
@@ -49,30 +48,6 @@ export default function ExerciseDetailPage() {
   const [sortType, setSortType] = useState<"newest" | "mostLiked">("newest"); // Kiểu sắp xếp bình luận
   const [currentUID, setCurrentUID] = useState<string | null>(null); // UID user hiện tại
   const [likedComments, setLikedComments] = useState<{ [coid: number]: boolean }>({}); // Map các bình luận đã like
-  const [menuOpen, setMenuOpen] = useState(false); // Trạng thái menu sidebar
-
-  const { handleSubmit, submitting } = useSubmitCode(
-    String(slug || ""),
-    code,
-    async (results: any[] | null, finalResult?: string) => {
-      setResults(results);
-      // Sau khi submit xong, cập nhật lại danh sách submissions
-      if (exercise) {
-        const subRes = await fetch(`/api/submissions/by-exercise/${exercise.EID}`);
-        if (subRes.ok) {
-          const subData = await subRes.json();
-          setSubmissions(subData.submissions || []);
-        }
-        // Cập nhật trạng thái exercise nếu pass hoặc fail
-        if (finalResult === "Pass") {
-          setExercise({ ...exercise, status: "Solved" });
-        } else if (finalResult === "Fail") {
-          setExercise({ ...exercise, status: "" });
-        }
-      }
-    },
-    setSubmissionResult
-  );
 
   useEffect(() => {
     async function fetchData() {
@@ -232,22 +207,6 @@ export default function ExerciseDetailPage() {
     }
   };
 
-  // Hàm xử lý menu toggle
-  const handleMenuToggle = (open: boolean) => {
-    setMenuOpen(open);
-  };
-
-  // Hàm xử lý điều hướng bài tập (placeholder)
-  const handlePreviousExercise = () => {
-    // TODO: Implement navigation to previous exercise
-    console.log("Navigate to previous exercise");
-  };
-
-  const handleNextExercise = () => {
-    // TODO: Implement navigation to next exercise
-    console.log("Navigate to next exercise");
-  };
-
   if (loading)
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
@@ -266,15 +225,15 @@ export default function ExerciseDetailPage() {
     <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <ExerciseHeader
         exerciseTitle={exercise.Title}
-        onMenuToggle={handleMenuToggle}
-        onPreviousExercise={handlePreviousExercise}
-        onNextExercise={handleNextExercise}
-        onSubmit={handleSubmit}
-        submitting={submitting}
-        hasPrevious={true} // TODO: Implement logic to check if previous exercise exists
-        hasNext={true} // TODO: Implement logic to check if next exercise exists
         currentExerciseSlug={exercise.Slug}
         topicId={exercise.TpID}
+        code={code}
+        setCode={setCode}
+        exercise={exercise}
+        setExercise={setExercise}
+        setResults={setResults}
+        setSubmissionResult={setSubmissionResult}
+        setSubmissions={setSubmissions}
       />
       <Box sx={{ display: "flex", height: "calc(100vh - 64px)", py: 1, px: 2, gap: 1 }}>
         {/* Left: Tabs panel */}
@@ -374,7 +333,7 @@ export default function ExerciseDetailPage() {
             />
           </Tabs>
           <Box sx={{ flex: 1, p: 3, overflow: "auto" }}>
-            {leftTab === 0 && <ExerciseDescription exercise={exercise} testcases={testcases} />}
+            {leftTab === 0 && <ExerciseDescription exercise={exercise} testcases={testcases} onExerciseUpdate={setExercise} />}
             {leftTab === 1 && <ExerciseHelp />}
             {leftTab === 2 && <SubmissionHistory submissions={submissions} onViewHistory={handleViewHistory} />}
             {leftTab === 3 && (

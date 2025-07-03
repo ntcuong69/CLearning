@@ -9,6 +9,8 @@ import {
   TableCell,
   TableBody,
   Chip,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter/dist/esm";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -17,6 +19,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import ErrorIcon from "@mui/icons-material/Error";
 import InfoIcon from "@mui/icons-material/Info";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 export default function ReviewSubmission({ reviewSubmission, reviewResults, testcases }: any) {
   if (!reviewSubmission) return null;
@@ -39,19 +42,60 @@ export default function ReviewSubmission({ reviewSubmission, reviewResults, test
         </SyntaxHighlighter>
       </Paper>
       <Paper sx={{ flex: 1, p: 2, borderRadius: 2, minHeight: 120, overflow: "auto" }}>
-        <Typography variant="subtitle1" fontWeight={700} mb={1}>
-          Kết quả Testcase
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+          <Typography variant="subtitle1" fontWeight={700}>
+            Kết quả Testcase
+          </Typography>
+          <Tooltip
+            title={
+              <Box>
+                <Typography variant="body2" sx={{ mb: 0.5 }}>
+                  Mỗi bài tập bao gồm nhiều test case, trong đó có cả test case hiển thị (được công khai) và test case ẩn (không hiển thị).
+                </Typography>
+                <Typography variant="body2">
+                  Để được tính là hoàn thành bài, bạn cần vượt qua toàn bộ các test case.
+                </Typography>
+              </Box>
+            }
+            arrow
+            placement="right"
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  maxWidth: "600px",
+                  wordWrap: "break-word",
+                  backgroundColor: "rgba(97, 97, 97, 0.92)",
+                  color: "white",
+                  padding: "12px 16px",
+                }
+              }
+            }}
+          >
+            <IconButton
+              size="small"
+              sx={{
+                ml: 1,
+                color: "#6b7280",
+                "&:hover": {
+                  color: "#374151",
+                  backgroundColor: "#f3f4f6",
+                },
+              }}
+            >
+              <HelpOutlineIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
         {!reviewResults && <Typography color="text.secondary">Không có kết quả test case.</Typography>}
         {reviewResults && (
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell>STT</TableCell>
-                <TableCell>Input</TableCell>
-                <TableCell>Output mong đợi</TableCell>
-                <TableCell>Output thực tế</TableCell>
-                <TableCell>Kết quả</TableCell>
+                <TableCell width="10%">STT</TableCell>
+                <TableCell width="20%">Input</TableCell>
+                <TableCell width="30%">Output mong đợi</TableCell>
+                <TableCell width="30%">Output thực tế</TableCell>
+                <TableCell width="10%">Kết quả</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

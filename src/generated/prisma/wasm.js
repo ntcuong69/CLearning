@@ -125,8 +125,7 @@ exports.Prisma.ExerciseScalarFieldEnum = {
   Slug: 'Slug',
   Content: 'Content',
   Difficulty: 'Difficulty',
-  template: 'template',
-  status: 'status'
+  template: 'template'
 };
 
 exports.Prisma.SubmissionScalarFieldEnum = {
@@ -243,6 +242,14 @@ exports.Prisma.StudyplanitemScalarFieldEnum = {
   Name: 'Name'
 };
 
+exports.Prisma.ExerciseprogressScalarFieldEnum = {
+  ID: 'ID',
+  UID: 'UID',
+  EID: 'EID',
+  Status: 'Status',
+  UpdatedAt: 'UpdatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -329,15 +336,14 @@ exports.Prisma.studyplanOrderByRelevanceFieldEnum = {
 exports.Prisma.studyplanitemOrderByRelevanceFieldEnum = {
   Name: 'Name'
 };
+
+exports.Prisma.exerciseprogressOrderByRelevanceFieldEnum = {
+  UID: 'UID'
+};
 exports.exercise_Difficulty = exports.$Enums.exercise_Difficulty = {
   Easy: 'Easy',
   Medium: 'Medium',
   Hard: 'Hard'
-};
-
-exports.exercise_status = exports.$Enums.exercise_status = {
-  Solved: 'Solved',
-  Unattempted: 'Unattempted'
 };
 
 exports.submission_Result = exports.$Enums.submission_Result = {
@@ -370,6 +376,11 @@ exports.notification_Type = exports.$Enums.notification_Type = {
   Like: 'Like'
 };
 
+exports.exerciseprogress_Status = exports.$Enums.exerciseprogress_Status = {
+  Attempting: 'Attempting',
+  Solved: 'Solved'
+};
+
 exports.Prisma.ModelName = {
   exercise: 'exercise',
   submission: 'submission',
@@ -385,7 +396,8 @@ exports.Prisma.ModelName = {
   lesson: 'lesson',
   notification: 'notification',
   studyplan: 'studyplan',
-  studyplanitem: 'studyplanitem'
+  studyplanitem: 'studyplanitem',
+  exerciseprogress: 'exerciseprogress'
 };
 
 /**

@@ -69,9 +69,8 @@ export function useSubmitCode(
           let result = "Wrong";
           if (runData.code !== 0 || stderr) result = "Error";
           else if (actual === expected) result = "Correct";
-          else if (actual.includes(expected)) result = "Partial";
 
-          // Gửi kết quả testcase lên server với đúng SID
+          // Gửi kết quả testcase lên server
           await fetch(`/api/testcaseresult/create`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -97,7 +96,7 @@ export function useSubmitCode(
       const finalResult = allCorrect ? "Pass" : "Fail";
       setResults(resultsData, finalResult);
 
-      // Nếu cần cập nhật submission kết quả tổng thể thì fetch PUT ở đây
+      //cập nhật submission kết quả tổng thể
       await fetch(`/api/submissions/update`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

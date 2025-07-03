@@ -88,6 +88,11 @@ export type studyplan = $Result.DefaultSelection<Prisma.$studyplanPayload>
  * 
  */
 export type studyplanitem = $Result.DefaultSelection<Prisma.$studyplanitemPayload>
+/**
+ * Model exerciseprogress
+ * 
+ */
+export type exerciseprogress = $Result.DefaultSelection<Prisma.$exerciseprogressPayload>
 
 /**
  * Enums
@@ -147,12 +152,12 @@ export const notification_Type: {
 export type notification_Type = (typeof notification_Type)[keyof typeof notification_Type]
 
 
-export const exercise_status: {
-  Solved: 'Solved',
-  Unattempted: 'Unattempted'
+export const exerciseprogress_Status: {
+  Attempting: 'Attempting',
+  Solved: 'Solved'
 };
 
-export type exercise_status = (typeof exercise_status)[keyof typeof exercise_status]
+export type exerciseprogress_Status = (typeof exerciseprogress_Status)[keyof typeof exerciseprogress_Status]
 
 }
 
@@ -180,9 +185,9 @@ export type notification_Type = $Enums.notification_Type
 
 export const notification_Type: typeof $Enums.notification_Type
 
-export type exercise_status = $Enums.exercise_status
+export type exerciseprogress_Status = $Enums.exerciseprogress_Status
 
-export const exercise_status: typeof $Enums.exercise_status
+export const exerciseprogress_Status: typeof $Enums.exerciseprogress_Status
 
 /**
  * ##  Prisma Client ʲˢ
@@ -458,6 +463,16 @@ export class PrismaClient<
     * ```
     */
   get studyplanitem(): Prisma.studyplanitemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.exerciseprogress`: Exposes CRUD operations for the **exerciseprogress** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Exerciseprogresses
+    * const exerciseprogresses = await prisma.exerciseprogress.findMany()
+    * ```
+    */
+  get exerciseprogress(): Prisma.exerciseprogressDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -912,7 +927,8 @@ export namespace Prisma {
     lesson: 'lesson',
     notification: 'notification',
     studyplan: 'studyplan',
-    studyplanitem: 'studyplanitem'
+    studyplanitem: 'studyplanitem',
+    exerciseprogress: 'exerciseprogress'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -931,7 +947,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "exercise" | "submission" | "testcase" | "testcaseresult" | "topic" | "user" | "friendship" | "chapter" | "comment" | "commentlike" | "exerciselike" | "lesson" | "notification" | "studyplan" | "studyplanitem"
+      modelProps: "exercise" | "submission" | "testcase" | "testcaseresult" | "topic" | "user" | "friendship" | "chapter" | "comment" | "commentlike" | "exerciselike" | "lesson" | "notification" | "studyplan" | "studyplanitem" | "exerciseprogress"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1925,6 +1941,72 @@ export namespace Prisma {
           }
         }
       }
+      exerciseprogress: {
+        payload: Prisma.$exerciseprogressPayload<ExtArgs>
+        fields: Prisma.exerciseprogressFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.exerciseprogressFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$exerciseprogressPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.exerciseprogressFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$exerciseprogressPayload>
+          }
+          findFirst: {
+            args: Prisma.exerciseprogressFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$exerciseprogressPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.exerciseprogressFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$exerciseprogressPayload>
+          }
+          findMany: {
+            args: Prisma.exerciseprogressFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$exerciseprogressPayload>[]
+          }
+          create: {
+            args: Prisma.exerciseprogressCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$exerciseprogressPayload>
+          }
+          createMany: {
+            args: Prisma.exerciseprogressCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.exerciseprogressDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$exerciseprogressPayload>
+          }
+          update: {
+            args: Prisma.exerciseprogressUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$exerciseprogressPayload>
+          }
+          deleteMany: {
+            args: Prisma.exerciseprogressDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.exerciseprogressUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.exerciseprogressUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$exerciseprogressPayload>
+          }
+          aggregate: {
+            args: Prisma.ExerciseprogressAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateExerciseprogress>
+          }
+          groupBy: {
+            args: Prisma.exerciseprogressGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ExerciseprogressGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.exerciseprogressCountArgs<ExtArgs>
+            result: $Utils.Optional<ExerciseprogressCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2024,6 +2106,7 @@ export namespace Prisma {
     notification?: notificationOmit
     studyplan?: studyplanOmit
     studyplanitem?: studyplanitemOmit
+    exerciseprogress?: exerciseprogressOmit
   }
 
   /* Types for Logging */
@@ -2120,6 +2203,7 @@ export namespace Prisma {
   export type ExerciseCountOutputType = {
     comment: number
     exerciselike: number
+    exerciseprogress: number
     submission: number
     testcase: number
   }
@@ -2127,6 +2211,7 @@ export namespace Prisma {
   export type ExerciseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     comment?: boolean | ExerciseCountOutputTypeCountCommentArgs
     exerciselike?: boolean | ExerciseCountOutputTypeCountExerciselikeArgs
+    exerciseprogress?: boolean | ExerciseCountOutputTypeCountExerciseprogressArgs
     submission?: boolean | ExerciseCountOutputTypeCountSubmissionArgs
     testcase?: boolean | ExerciseCountOutputTypeCountTestcaseArgs
   }
@@ -2154,6 +2239,13 @@ export namespace Prisma {
    */
   export type ExerciseCountOutputTypeCountExerciselikeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: exerciselikeWhereInput
+  }
+
+  /**
+   * ExerciseCountOutputType without action
+   */
+  export type ExerciseCountOutputTypeCountExerciseprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: exerciseprogressWhereInput
   }
 
   /**
@@ -2272,6 +2364,7 @@ export namespace Prisma {
     comment: number
     commentlike: number
     exerciselike: number
+    exerciseprogress: number
     friendship_friendship_requesterTouser: number
     friendship_friendship_addresseeTouser: number
     notification_notification_UIDTouser: number
@@ -2283,6 +2376,7 @@ export namespace Prisma {
     comment?: boolean | UserCountOutputTypeCountCommentArgs
     commentlike?: boolean | UserCountOutputTypeCountCommentlikeArgs
     exerciselike?: boolean | UserCountOutputTypeCountExerciselikeArgs
+    exerciseprogress?: boolean | UserCountOutputTypeCountExerciseprogressArgs
     friendship_friendship_requesterTouser?: boolean | UserCountOutputTypeCountFriendship_friendship_requesterTouserArgs
     friendship_friendship_addresseeTouser?: boolean | UserCountOutputTypeCountFriendship_friendship_addresseeTouserArgs
     notification_notification_UIDTouser?: boolean | UserCountOutputTypeCountNotification_notification_UIDTouserArgs
@@ -2320,6 +2414,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountExerciselikeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: exerciselikeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountExerciseprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: exerciseprogressWhereInput
   }
 
   /**
@@ -2559,7 +2660,6 @@ export namespace Prisma {
     Content: string | null
     Difficulty: $Enums.exercise_Difficulty | null
     template: string | null
-    status: $Enums.exercise_status | null
   }
 
   export type ExerciseMaxAggregateOutputType = {
@@ -2571,7 +2671,6 @@ export namespace Prisma {
     Content: string | null
     Difficulty: $Enums.exercise_Difficulty | null
     template: string | null
-    status: $Enums.exercise_status | null
   }
 
   export type ExerciseCountAggregateOutputType = {
@@ -2583,7 +2682,6 @@ export namespace Prisma {
     Content: number
     Difficulty: number
     template: number
-    status: number
     _all: number
   }
 
@@ -2609,7 +2707,6 @@ export namespace Prisma {
     Content?: true
     Difficulty?: true
     template?: true
-    status?: true
   }
 
   export type ExerciseMaxAggregateInputType = {
@@ -2621,7 +2718,6 @@ export namespace Prisma {
     Content?: true
     Difficulty?: true
     template?: true
-    status?: true
   }
 
   export type ExerciseCountAggregateInputType = {
@@ -2633,7 +2729,6 @@ export namespace Prisma {
     Content?: true
     Difficulty?: true
     template?: true
-    status?: true
     _all?: true
   }
 
@@ -2732,7 +2827,6 @@ export namespace Prisma {
     Content: string
     Difficulty: $Enums.exercise_Difficulty
     template: string | null
-    status: $Enums.exercise_status
     _count: ExerciseCountAggregateOutputType | null
     _avg: ExerciseAvgAggregateOutputType | null
     _sum: ExerciseSumAggregateOutputType | null
@@ -2763,11 +2857,11 @@ export namespace Prisma {
     Content?: boolean
     Difficulty?: boolean
     template?: boolean
-    status?: boolean
     comment?: boolean | exercise$commentArgs<ExtArgs>
     topic?: boolean | exercise$topicArgs<ExtArgs>
     studyplanitem?: boolean | exercise$studyplanitemArgs<ExtArgs>
     exerciselike?: boolean | exercise$exerciselikeArgs<ExtArgs>
+    exerciseprogress?: boolean | exercise$exerciseprogressArgs<ExtArgs>
     submission?: boolean | exercise$submissionArgs<ExtArgs>
     testcase?: boolean | exercise$testcaseArgs<ExtArgs>
     _count?: boolean | ExerciseCountOutputTypeDefaultArgs<ExtArgs>
@@ -2784,15 +2878,15 @@ export namespace Prisma {
     Content?: boolean
     Difficulty?: boolean
     template?: boolean
-    status?: boolean
   }
 
-  export type exerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"EID" | "TpID" | "SPIID" | "Name" | "Slug" | "Content" | "Difficulty" | "template" | "status", ExtArgs["result"]["exercise"]>
+  export type exerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"EID" | "TpID" | "SPIID" | "Name" | "Slug" | "Content" | "Difficulty" | "template", ExtArgs["result"]["exercise"]>
   export type exerciseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     comment?: boolean | exercise$commentArgs<ExtArgs>
     topic?: boolean | exercise$topicArgs<ExtArgs>
     studyplanitem?: boolean | exercise$studyplanitemArgs<ExtArgs>
     exerciselike?: boolean | exercise$exerciselikeArgs<ExtArgs>
+    exerciseprogress?: boolean | exercise$exerciseprogressArgs<ExtArgs>
     submission?: boolean | exercise$submissionArgs<ExtArgs>
     testcase?: boolean | exercise$testcaseArgs<ExtArgs>
     _count?: boolean | ExerciseCountOutputTypeDefaultArgs<ExtArgs>
@@ -2805,6 +2899,7 @@ export namespace Prisma {
       topic: Prisma.$topicPayload<ExtArgs> | null
       studyplanitem: Prisma.$studyplanitemPayload<ExtArgs> | null
       exerciselike: Prisma.$exerciselikePayload<ExtArgs>[]
+      exerciseprogress: Prisma.$exerciseprogressPayload<ExtArgs>[]
       submission: Prisma.$submissionPayload<ExtArgs>[]
       testcase: Prisma.$testcasePayload<ExtArgs>[]
     }
@@ -2817,7 +2912,6 @@ export namespace Prisma {
       Content: string
       Difficulty: $Enums.exercise_Difficulty
       template: string | null
-      status: $Enums.exercise_status
     }, ExtArgs["result"]["exercise"]>
     composites: {}
   }
@@ -3162,6 +3256,7 @@ export namespace Prisma {
     topic<T extends exercise$topicArgs<ExtArgs> = {}>(args?: Subset<T, exercise$topicArgs<ExtArgs>>): Prisma__topicClient<$Result.GetResult<Prisma.$topicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     studyplanitem<T extends exercise$studyplanitemArgs<ExtArgs> = {}>(args?: Subset<T, exercise$studyplanitemArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     exerciselike<T extends exercise$exerciselikeArgs<ExtArgs> = {}>(args?: Subset<T, exercise$exerciselikeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exerciselikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exerciseprogress<T extends exercise$exerciseprogressArgs<ExtArgs> = {}>(args?: Subset<T, exercise$exerciseprogressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     submission<T extends exercise$submissionArgs<ExtArgs> = {}>(args?: Subset<T, exercise$submissionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$submissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     testcase<T extends exercise$testcaseArgs<ExtArgs> = {}>(args?: Subset<T, exercise$testcaseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$testcasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -3201,7 +3296,6 @@ export namespace Prisma {
     readonly Content: FieldRef<"exercise", 'String'>
     readonly Difficulty: FieldRef<"exercise", 'exercise_Difficulty'>
     readonly template: FieldRef<"exercise", 'String'>
-    readonly status: FieldRef<"exercise", 'exercise_status'>
   }
     
 
@@ -3628,6 +3722,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ExerciselikeScalarFieldEnum | ExerciselikeScalarFieldEnum[]
+  }
+
+  /**
+   * exercise.exerciseprogress
+   */
+  export type exercise$exerciseprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    where?: exerciseprogressWhereInput
+    orderBy?: exerciseprogressOrderByWithRelationInput | exerciseprogressOrderByWithRelationInput[]
+    cursor?: exerciseprogressWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExerciseprogressScalarFieldEnum | ExerciseprogressScalarFieldEnum[]
   }
 
   /**
@@ -7842,6 +7960,7 @@ export namespace Prisma {
     comment?: boolean | user$commentArgs<ExtArgs>
     commentlike?: boolean | user$commentlikeArgs<ExtArgs>
     exerciselike?: boolean | user$exerciselikeArgs<ExtArgs>
+    exerciseprogress?: boolean | user$exerciseprogressArgs<ExtArgs>
     friendship_friendship_requesterTouser?: boolean | user$friendship_friendship_requesterTouserArgs<ExtArgs>
     friendship_friendship_addresseeTouser?: boolean | user$friendship_friendship_addresseeTouserArgs<ExtArgs>
     notification_notification_UIDTouser?: boolean | user$notification_notification_UIDTouserArgs<ExtArgs>
@@ -7867,6 +7986,7 @@ export namespace Prisma {
     comment?: boolean | user$commentArgs<ExtArgs>
     commentlike?: boolean | user$commentlikeArgs<ExtArgs>
     exerciselike?: boolean | user$exerciselikeArgs<ExtArgs>
+    exerciseprogress?: boolean | user$exerciseprogressArgs<ExtArgs>
     friendship_friendship_requesterTouser?: boolean | user$friendship_friendship_requesterTouserArgs<ExtArgs>
     friendship_friendship_addresseeTouser?: boolean | user$friendship_friendship_addresseeTouserArgs<ExtArgs>
     notification_notification_UIDTouser?: boolean | user$notification_notification_UIDTouserArgs<ExtArgs>
@@ -7881,6 +8001,7 @@ export namespace Prisma {
       comment: Prisma.$commentPayload<ExtArgs>[]
       commentlike: Prisma.$commentlikePayload<ExtArgs>[]
       exerciselike: Prisma.$exerciselikePayload<ExtArgs>[]
+      exerciseprogress: Prisma.$exerciseprogressPayload<ExtArgs>[]
       friendship_friendship_requesterTouser: Prisma.$friendshipPayload<ExtArgs>[]
       friendship_friendship_addresseeTouser: Prisma.$friendshipPayload<ExtArgs>[]
       notification_notification_UIDTouser: Prisma.$notificationPayload<ExtArgs>[]
@@ -8238,6 +8359,7 @@ export namespace Prisma {
     comment<T extends user$commentArgs<ExtArgs> = {}>(args?: Subset<T, user$commentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$commentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     commentlike<T extends user$commentlikeArgs<ExtArgs> = {}>(args?: Subset<T, user$commentlikeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$commentlikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     exerciselike<T extends user$exerciselikeArgs<ExtArgs> = {}>(args?: Subset<T, user$exerciselikeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exerciselikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    exerciseprogress<T extends user$exerciseprogressArgs<ExtArgs> = {}>(args?: Subset<T, user$exerciseprogressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     friendship_friendship_requesterTouser<T extends user$friendship_friendship_requesterTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$friendship_friendship_requesterTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     friendship_friendship_addresseeTouser<T extends user$friendship_friendship_addresseeTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$friendship_friendship_addresseeTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notification_notification_UIDTouser<T extends user$notification_notification_UIDTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$notification_notification_UIDTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8691,6 +8813,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ExerciselikeScalarFieldEnum | ExerciselikeScalarFieldEnum[]
+  }
+
+  /**
+   * user.exerciseprogress
+   */
+  export type user$exerciseprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    where?: exerciseprogressWhereInput
+    orderBy?: exerciseprogressOrderByWithRelationInput | exerciseprogressOrderByWithRelationInput[]
+    cursor?: exerciseprogressWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ExerciseprogressScalarFieldEnum | ExerciseprogressScalarFieldEnum[]
   }
 
   /**
@@ -17791,6 +17937,977 @@ export namespace Prisma {
 
 
   /**
+   * Model exerciseprogress
+   */
+
+  export type AggregateExerciseprogress = {
+    _count: ExerciseprogressCountAggregateOutputType | null
+    _avg: ExerciseprogressAvgAggregateOutputType | null
+    _sum: ExerciseprogressSumAggregateOutputType | null
+    _min: ExerciseprogressMinAggregateOutputType | null
+    _max: ExerciseprogressMaxAggregateOutputType | null
+  }
+
+  export type ExerciseprogressAvgAggregateOutputType = {
+    ID: number | null
+    EID: number | null
+  }
+
+  export type ExerciseprogressSumAggregateOutputType = {
+    ID: number | null
+    EID: number | null
+  }
+
+  export type ExerciseprogressMinAggregateOutputType = {
+    ID: number | null
+    UID: string | null
+    EID: number | null
+    Status: $Enums.exerciseprogress_Status | null
+    UpdatedAt: Date | null
+  }
+
+  export type ExerciseprogressMaxAggregateOutputType = {
+    ID: number | null
+    UID: string | null
+    EID: number | null
+    Status: $Enums.exerciseprogress_Status | null
+    UpdatedAt: Date | null
+  }
+
+  export type ExerciseprogressCountAggregateOutputType = {
+    ID: number
+    UID: number
+    EID: number
+    Status: number
+    UpdatedAt: number
+    _all: number
+  }
+
+
+  export type ExerciseprogressAvgAggregateInputType = {
+    ID?: true
+    EID?: true
+  }
+
+  export type ExerciseprogressSumAggregateInputType = {
+    ID?: true
+    EID?: true
+  }
+
+  export type ExerciseprogressMinAggregateInputType = {
+    ID?: true
+    UID?: true
+    EID?: true
+    Status?: true
+    UpdatedAt?: true
+  }
+
+  export type ExerciseprogressMaxAggregateInputType = {
+    ID?: true
+    UID?: true
+    EID?: true
+    Status?: true
+    UpdatedAt?: true
+  }
+
+  export type ExerciseprogressCountAggregateInputType = {
+    ID?: true
+    UID?: true
+    EID?: true
+    Status?: true
+    UpdatedAt?: true
+    _all?: true
+  }
+
+  export type ExerciseprogressAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which exerciseprogress to aggregate.
+     */
+    where?: exerciseprogressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of exerciseprogresses to fetch.
+     */
+    orderBy?: exerciseprogressOrderByWithRelationInput | exerciseprogressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: exerciseprogressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` exerciseprogresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` exerciseprogresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned exerciseprogresses
+    **/
+    _count?: true | ExerciseprogressCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ExerciseprogressAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ExerciseprogressSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ExerciseprogressMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ExerciseprogressMaxAggregateInputType
+  }
+
+  export type GetExerciseprogressAggregateType<T extends ExerciseprogressAggregateArgs> = {
+        [P in keyof T & keyof AggregateExerciseprogress]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateExerciseprogress[P]>
+      : GetScalarType<T[P], AggregateExerciseprogress[P]>
+  }
+
+
+
+
+  export type exerciseprogressGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: exerciseprogressWhereInput
+    orderBy?: exerciseprogressOrderByWithAggregationInput | exerciseprogressOrderByWithAggregationInput[]
+    by: ExerciseprogressScalarFieldEnum[] | ExerciseprogressScalarFieldEnum
+    having?: exerciseprogressScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ExerciseprogressCountAggregateInputType | true
+    _avg?: ExerciseprogressAvgAggregateInputType
+    _sum?: ExerciseprogressSumAggregateInputType
+    _min?: ExerciseprogressMinAggregateInputType
+    _max?: ExerciseprogressMaxAggregateInputType
+  }
+
+  export type ExerciseprogressGroupByOutputType = {
+    ID: number
+    UID: string
+    EID: number
+    Status: $Enums.exerciseprogress_Status | null
+    UpdatedAt: Date | null
+    _count: ExerciseprogressCountAggregateOutputType | null
+    _avg: ExerciseprogressAvgAggregateOutputType | null
+    _sum: ExerciseprogressSumAggregateOutputType | null
+    _min: ExerciseprogressMinAggregateOutputType | null
+    _max: ExerciseprogressMaxAggregateOutputType | null
+  }
+
+  type GetExerciseprogressGroupByPayload<T extends exerciseprogressGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ExerciseprogressGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ExerciseprogressGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ExerciseprogressGroupByOutputType[P]>
+            : GetScalarType<T[P], ExerciseprogressGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type exerciseprogressSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    ID?: boolean
+    UID?: boolean
+    EID?: boolean
+    Status?: boolean
+    UpdatedAt?: boolean
+    user?: boolean | userDefaultArgs<ExtArgs>
+    exercise?: boolean | exerciseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["exerciseprogress"]>
+
+
+
+  export type exerciseprogressSelectScalar = {
+    ID?: boolean
+    UID?: boolean
+    EID?: boolean
+    Status?: boolean
+    UpdatedAt?: boolean
+  }
+
+  export type exerciseprogressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"ID" | "UID" | "EID" | "Status" | "UpdatedAt", ExtArgs["result"]["exerciseprogress"]>
+  export type exerciseprogressInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | userDefaultArgs<ExtArgs>
+    exercise?: boolean | exerciseDefaultArgs<ExtArgs>
+  }
+
+  export type $exerciseprogressPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "exerciseprogress"
+    objects: {
+      user: Prisma.$userPayload<ExtArgs>
+      exercise: Prisma.$exercisePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      ID: number
+      UID: string
+      EID: number
+      Status: $Enums.exerciseprogress_Status | null
+      UpdatedAt: Date | null
+    }, ExtArgs["result"]["exerciseprogress"]>
+    composites: {}
+  }
+
+  type exerciseprogressGetPayload<S extends boolean | null | undefined | exerciseprogressDefaultArgs> = $Result.GetResult<Prisma.$exerciseprogressPayload, S>
+
+  type exerciseprogressCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<exerciseprogressFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ExerciseprogressCountAggregateInputType | true
+    }
+
+  export interface exerciseprogressDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['exerciseprogress'], meta: { name: 'exerciseprogress' } }
+    /**
+     * Find zero or one Exerciseprogress that matches the filter.
+     * @param {exerciseprogressFindUniqueArgs} args - Arguments to find a Exerciseprogress
+     * @example
+     * // Get one Exerciseprogress
+     * const exerciseprogress = await prisma.exerciseprogress.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends exerciseprogressFindUniqueArgs>(args: SelectSubset<T, exerciseprogressFindUniqueArgs<ExtArgs>>): Prisma__exerciseprogressClient<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Exerciseprogress that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {exerciseprogressFindUniqueOrThrowArgs} args - Arguments to find a Exerciseprogress
+     * @example
+     * // Get one Exerciseprogress
+     * const exerciseprogress = await prisma.exerciseprogress.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends exerciseprogressFindUniqueOrThrowArgs>(args: SelectSubset<T, exerciseprogressFindUniqueOrThrowArgs<ExtArgs>>): Prisma__exerciseprogressClient<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Exerciseprogress that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {exerciseprogressFindFirstArgs} args - Arguments to find a Exerciseprogress
+     * @example
+     * // Get one Exerciseprogress
+     * const exerciseprogress = await prisma.exerciseprogress.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends exerciseprogressFindFirstArgs>(args?: SelectSubset<T, exerciseprogressFindFirstArgs<ExtArgs>>): Prisma__exerciseprogressClient<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Exerciseprogress that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {exerciseprogressFindFirstOrThrowArgs} args - Arguments to find a Exerciseprogress
+     * @example
+     * // Get one Exerciseprogress
+     * const exerciseprogress = await prisma.exerciseprogress.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends exerciseprogressFindFirstOrThrowArgs>(args?: SelectSubset<T, exerciseprogressFindFirstOrThrowArgs<ExtArgs>>): Prisma__exerciseprogressClient<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Exerciseprogresses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {exerciseprogressFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Exerciseprogresses
+     * const exerciseprogresses = await prisma.exerciseprogress.findMany()
+     * 
+     * // Get first 10 Exerciseprogresses
+     * const exerciseprogresses = await prisma.exerciseprogress.findMany({ take: 10 })
+     * 
+     * // Only select the `ID`
+     * const exerciseprogressWithIDOnly = await prisma.exerciseprogress.findMany({ select: { ID: true } })
+     * 
+     */
+    findMany<T extends exerciseprogressFindManyArgs>(args?: SelectSubset<T, exerciseprogressFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Exerciseprogress.
+     * @param {exerciseprogressCreateArgs} args - Arguments to create a Exerciseprogress.
+     * @example
+     * // Create one Exerciseprogress
+     * const Exerciseprogress = await prisma.exerciseprogress.create({
+     *   data: {
+     *     // ... data to create a Exerciseprogress
+     *   }
+     * })
+     * 
+     */
+    create<T extends exerciseprogressCreateArgs>(args: SelectSubset<T, exerciseprogressCreateArgs<ExtArgs>>): Prisma__exerciseprogressClient<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Exerciseprogresses.
+     * @param {exerciseprogressCreateManyArgs} args - Arguments to create many Exerciseprogresses.
+     * @example
+     * // Create many Exerciseprogresses
+     * const exerciseprogress = await prisma.exerciseprogress.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends exerciseprogressCreateManyArgs>(args?: SelectSubset<T, exerciseprogressCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Exerciseprogress.
+     * @param {exerciseprogressDeleteArgs} args - Arguments to delete one Exerciseprogress.
+     * @example
+     * // Delete one Exerciseprogress
+     * const Exerciseprogress = await prisma.exerciseprogress.delete({
+     *   where: {
+     *     // ... filter to delete one Exerciseprogress
+     *   }
+     * })
+     * 
+     */
+    delete<T extends exerciseprogressDeleteArgs>(args: SelectSubset<T, exerciseprogressDeleteArgs<ExtArgs>>): Prisma__exerciseprogressClient<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Exerciseprogress.
+     * @param {exerciseprogressUpdateArgs} args - Arguments to update one Exerciseprogress.
+     * @example
+     * // Update one Exerciseprogress
+     * const exerciseprogress = await prisma.exerciseprogress.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends exerciseprogressUpdateArgs>(args: SelectSubset<T, exerciseprogressUpdateArgs<ExtArgs>>): Prisma__exerciseprogressClient<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Exerciseprogresses.
+     * @param {exerciseprogressDeleteManyArgs} args - Arguments to filter Exerciseprogresses to delete.
+     * @example
+     * // Delete a few Exerciseprogresses
+     * const { count } = await prisma.exerciseprogress.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends exerciseprogressDeleteManyArgs>(args?: SelectSubset<T, exerciseprogressDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Exerciseprogresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {exerciseprogressUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Exerciseprogresses
+     * const exerciseprogress = await prisma.exerciseprogress.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends exerciseprogressUpdateManyArgs>(args: SelectSubset<T, exerciseprogressUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Exerciseprogress.
+     * @param {exerciseprogressUpsertArgs} args - Arguments to update or create a Exerciseprogress.
+     * @example
+     * // Update or create a Exerciseprogress
+     * const exerciseprogress = await prisma.exerciseprogress.upsert({
+     *   create: {
+     *     // ... data to create a Exerciseprogress
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Exerciseprogress we want to update
+     *   }
+     * })
+     */
+    upsert<T extends exerciseprogressUpsertArgs>(args: SelectSubset<T, exerciseprogressUpsertArgs<ExtArgs>>): Prisma__exerciseprogressClient<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Exerciseprogresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {exerciseprogressCountArgs} args - Arguments to filter Exerciseprogresses to count.
+     * @example
+     * // Count the number of Exerciseprogresses
+     * const count = await prisma.exerciseprogress.count({
+     *   where: {
+     *     // ... the filter for the Exerciseprogresses we want to count
+     *   }
+     * })
+    **/
+    count<T extends exerciseprogressCountArgs>(
+      args?: Subset<T, exerciseprogressCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ExerciseprogressCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Exerciseprogress.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExerciseprogressAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ExerciseprogressAggregateArgs>(args: Subset<T, ExerciseprogressAggregateArgs>): Prisma.PrismaPromise<GetExerciseprogressAggregateType<T>>
+
+    /**
+     * Group by Exerciseprogress.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {exerciseprogressGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends exerciseprogressGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: exerciseprogressGroupByArgs['orderBy'] }
+        : { orderBy?: exerciseprogressGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, exerciseprogressGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetExerciseprogressGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the exerciseprogress model
+   */
+  readonly fields: exerciseprogressFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for exerciseprogress.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__exerciseprogressClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    exercise<T extends exerciseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, exerciseDefaultArgs<ExtArgs>>): Prisma__exerciseClient<$Result.GetResult<Prisma.$exercisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the exerciseprogress model
+   */
+  interface exerciseprogressFieldRefs {
+    readonly ID: FieldRef<"exerciseprogress", 'Int'>
+    readonly UID: FieldRef<"exerciseprogress", 'String'>
+    readonly EID: FieldRef<"exerciseprogress", 'Int'>
+    readonly Status: FieldRef<"exerciseprogress", 'exerciseprogress_Status'>
+    readonly UpdatedAt: FieldRef<"exerciseprogress", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * exerciseprogress findUnique
+   */
+  export type exerciseprogressFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    /**
+     * Filter, which exerciseprogress to fetch.
+     */
+    where: exerciseprogressWhereUniqueInput
+  }
+
+  /**
+   * exerciseprogress findUniqueOrThrow
+   */
+  export type exerciseprogressFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    /**
+     * Filter, which exerciseprogress to fetch.
+     */
+    where: exerciseprogressWhereUniqueInput
+  }
+
+  /**
+   * exerciseprogress findFirst
+   */
+  export type exerciseprogressFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    /**
+     * Filter, which exerciseprogress to fetch.
+     */
+    where?: exerciseprogressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of exerciseprogresses to fetch.
+     */
+    orderBy?: exerciseprogressOrderByWithRelationInput | exerciseprogressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for exerciseprogresses.
+     */
+    cursor?: exerciseprogressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` exerciseprogresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` exerciseprogresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of exerciseprogresses.
+     */
+    distinct?: ExerciseprogressScalarFieldEnum | ExerciseprogressScalarFieldEnum[]
+  }
+
+  /**
+   * exerciseprogress findFirstOrThrow
+   */
+  export type exerciseprogressFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    /**
+     * Filter, which exerciseprogress to fetch.
+     */
+    where?: exerciseprogressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of exerciseprogresses to fetch.
+     */
+    orderBy?: exerciseprogressOrderByWithRelationInput | exerciseprogressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for exerciseprogresses.
+     */
+    cursor?: exerciseprogressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` exerciseprogresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` exerciseprogresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of exerciseprogresses.
+     */
+    distinct?: ExerciseprogressScalarFieldEnum | ExerciseprogressScalarFieldEnum[]
+  }
+
+  /**
+   * exerciseprogress findMany
+   */
+  export type exerciseprogressFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    /**
+     * Filter, which exerciseprogresses to fetch.
+     */
+    where?: exerciseprogressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of exerciseprogresses to fetch.
+     */
+    orderBy?: exerciseprogressOrderByWithRelationInput | exerciseprogressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing exerciseprogresses.
+     */
+    cursor?: exerciseprogressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` exerciseprogresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` exerciseprogresses.
+     */
+    skip?: number
+    distinct?: ExerciseprogressScalarFieldEnum | ExerciseprogressScalarFieldEnum[]
+  }
+
+  /**
+   * exerciseprogress create
+   */
+  export type exerciseprogressCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    /**
+     * The data needed to create a exerciseprogress.
+     */
+    data: XOR<exerciseprogressCreateInput, exerciseprogressUncheckedCreateInput>
+  }
+
+  /**
+   * exerciseprogress createMany
+   */
+  export type exerciseprogressCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many exerciseprogresses.
+     */
+    data: exerciseprogressCreateManyInput | exerciseprogressCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * exerciseprogress update
+   */
+  export type exerciseprogressUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    /**
+     * The data needed to update a exerciseprogress.
+     */
+    data: XOR<exerciseprogressUpdateInput, exerciseprogressUncheckedUpdateInput>
+    /**
+     * Choose, which exerciseprogress to update.
+     */
+    where: exerciseprogressWhereUniqueInput
+  }
+
+  /**
+   * exerciseprogress updateMany
+   */
+  export type exerciseprogressUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update exerciseprogresses.
+     */
+    data: XOR<exerciseprogressUpdateManyMutationInput, exerciseprogressUncheckedUpdateManyInput>
+    /**
+     * Filter which exerciseprogresses to update
+     */
+    where?: exerciseprogressWhereInput
+    /**
+     * Limit how many exerciseprogresses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * exerciseprogress upsert
+   */
+  export type exerciseprogressUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    /**
+     * The filter to search for the exerciseprogress to update in case it exists.
+     */
+    where: exerciseprogressWhereUniqueInput
+    /**
+     * In case the exerciseprogress found by the `where` argument doesn't exist, create a new exerciseprogress with this data.
+     */
+    create: XOR<exerciseprogressCreateInput, exerciseprogressUncheckedCreateInput>
+    /**
+     * In case the exerciseprogress was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<exerciseprogressUpdateInput, exerciseprogressUncheckedUpdateInput>
+  }
+
+  /**
+   * exerciseprogress delete
+   */
+  export type exerciseprogressDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+    /**
+     * Filter which exerciseprogress to delete.
+     */
+    where: exerciseprogressWhereUniqueInput
+  }
+
+  /**
+   * exerciseprogress deleteMany
+   */
+  export type exerciseprogressDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which exerciseprogresses to delete
+     */
+    where?: exerciseprogressWhereInput
+    /**
+     * Limit how many exerciseprogresses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * exerciseprogress without action
+   */
+  export type exerciseprogressDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the exerciseprogress
+     */
+    select?: exerciseprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the exerciseprogress
+     */
+    omit?: exerciseprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: exerciseprogressInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -17812,8 +18929,7 @@ export namespace Prisma {
     Slug: 'Slug',
     Content: 'Content',
     Difficulty: 'Difficulty',
-    template: 'template',
-    status: 'status'
+    template: 'template'
   };
 
   export type ExerciseScalarFieldEnum = (typeof ExerciseScalarFieldEnum)[keyof typeof ExerciseScalarFieldEnum]
@@ -17975,6 +19091,17 @@ export namespace Prisma {
   export type StudyplanitemScalarFieldEnum = (typeof StudyplanitemScalarFieldEnum)[keyof typeof StudyplanitemScalarFieldEnum]
 
 
+  export const ExerciseprogressScalarFieldEnum: {
+    ID: 'ID',
+    UID: 'UID',
+    EID: 'EID',
+    Status: 'Status',
+    UpdatedAt: 'UpdatedAt'
+  };
+
+  export type ExerciseprogressScalarFieldEnum = (typeof ExerciseprogressScalarFieldEnum)[keyof typeof ExerciseprogressScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -18113,6 +19240,13 @@ export namespace Prisma {
   export type studyplanitemOrderByRelevanceFieldEnum = (typeof studyplanitemOrderByRelevanceFieldEnum)[keyof typeof studyplanitemOrderByRelevanceFieldEnum]
 
 
+  export const exerciseprogressOrderByRelevanceFieldEnum: {
+    UID: 'UID'
+  };
+
+  export type exerciseprogressOrderByRelevanceFieldEnum = (typeof exerciseprogressOrderByRelevanceFieldEnum)[keyof typeof exerciseprogressOrderByRelevanceFieldEnum]
+
+
   /**
    * Field references
    */
@@ -18136,13 +19270,6 @@ export namespace Prisma {
    * Reference to a field of type 'exercise_Difficulty'
    */
   export type Enumexercise_DifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'exercise_Difficulty'>
-    
-
-
-  /**
-   * Reference to a field of type 'exercise_status'
-   */
-  export type Enumexercise_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'exercise_status'>
     
 
 
@@ -18196,6 +19323,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'exerciseprogress_Status'
+   */
+  export type Enumexerciseprogress_StatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'exerciseprogress_Status'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -18217,11 +19351,11 @@ export namespace Prisma {
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableFilter<"exercise"> | string | null
-    status?: Enumexercise_statusFilter<"exercise"> | $Enums.exercise_status
     comment?: CommentListRelationFilter
     topic?: XOR<TopicNullableScalarRelationFilter, topicWhereInput> | null
     studyplanitem?: XOR<StudyplanitemNullableScalarRelationFilter, studyplanitemWhereInput> | null
     exerciselike?: ExerciselikeListRelationFilter
+    exerciseprogress?: ExerciseprogressListRelationFilter
     submission?: SubmissionListRelationFilter
     testcase?: TestcaseListRelationFilter
   }
@@ -18235,11 +19369,11 @@ export namespace Prisma {
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrderInput | SortOrder
-    status?: SortOrder
     comment?: commentOrderByRelationAggregateInput
     topic?: topicOrderByWithRelationInput
     studyplanitem?: studyplanitemOrderByWithRelationInput
     exerciselike?: exerciselikeOrderByRelationAggregateInput
+    exerciseprogress?: exerciseprogressOrderByRelationAggregateInput
     submission?: submissionOrderByRelationAggregateInput
     testcase?: testcaseOrderByRelationAggregateInput
     _relevance?: exerciseOrderByRelevanceInput
@@ -18257,11 +19391,11 @@ export namespace Prisma {
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableFilter<"exercise"> | string | null
-    status?: Enumexercise_statusFilter<"exercise"> | $Enums.exercise_status
     comment?: CommentListRelationFilter
     topic?: XOR<TopicNullableScalarRelationFilter, topicWhereInput> | null
     studyplanitem?: XOR<StudyplanitemNullableScalarRelationFilter, studyplanitemWhereInput> | null
     exerciselike?: ExerciselikeListRelationFilter
+    exerciseprogress?: ExerciseprogressListRelationFilter
     submission?: SubmissionListRelationFilter
     testcase?: TestcaseListRelationFilter
   }, "EID" | "Slug">
@@ -18275,7 +19409,6 @@ export namespace Prisma {
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrderInput | SortOrder
-    status?: SortOrder
     _count?: exerciseCountOrderByAggregateInput
     _avg?: exerciseAvgOrderByAggregateInput
     _max?: exerciseMaxOrderByAggregateInput
@@ -18295,7 +19428,6 @@ export namespace Prisma {
     Content?: StringWithAggregatesFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyWithAggregatesFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableWithAggregatesFilter<"exercise"> | string | null
-    status?: Enumexercise_statusWithAggregatesFilter<"exercise"> | $Enums.exercise_status
   }
 
   export type submissionWhereInput = {
@@ -18556,6 +19688,7 @@ export namespace Prisma {
     comment?: CommentListRelationFilter
     commentlike?: CommentlikeListRelationFilter
     exerciselike?: ExerciselikeListRelationFilter
+    exerciseprogress?: ExerciseprogressListRelationFilter
     friendship_friendship_requesterTouser?: FriendshipListRelationFilter
     friendship_friendship_addresseeTouser?: FriendshipListRelationFilter
     notification_notification_UIDTouser?: NotificationListRelationFilter
@@ -18574,6 +19707,7 @@ export namespace Prisma {
     comment?: commentOrderByRelationAggregateInput
     commentlike?: commentlikeOrderByRelationAggregateInput
     exerciselike?: exerciselikeOrderByRelationAggregateInput
+    exerciseprogress?: exerciseprogressOrderByRelationAggregateInput
     friendship_friendship_requesterTouser?: friendshipOrderByRelationAggregateInput
     friendship_friendship_addresseeTouser?: friendshipOrderByRelationAggregateInput
     notification_notification_UIDTouser?: notificationOrderByRelationAggregateInput
@@ -18596,6 +19730,7 @@ export namespace Prisma {
     comment?: CommentListRelationFilter
     commentlike?: CommentlikeListRelationFilter
     exerciselike?: ExerciselikeListRelationFilter
+    exerciseprogress?: ExerciseprogressListRelationFilter
     friendship_friendship_requesterTouser?: FriendshipListRelationFilter
     friendship_friendship_addresseeTouser?: FriendshipListRelationFilter
     notification_notification_UIDTouser?: NotificationListRelationFilter
@@ -19187,17 +20322,79 @@ export namespace Prisma {
     Name?: StringWithAggregatesFilter<"studyplanitem"> | string
   }
 
+  export type exerciseprogressWhereInput = {
+    AND?: exerciseprogressWhereInput | exerciseprogressWhereInput[]
+    OR?: exerciseprogressWhereInput[]
+    NOT?: exerciseprogressWhereInput | exerciseprogressWhereInput[]
+    ID?: IntFilter<"exerciseprogress"> | number
+    UID?: StringFilter<"exerciseprogress"> | string
+    EID?: IntFilter<"exerciseprogress"> | number
+    Status?: Enumexerciseprogress_StatusNullableFilter<"exerciseprogress"> | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: DateTimeNullableFilter<"exerciseprogress"> | Date | string | null
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+    exercise?: XOR<ExerciseScalarRelationFilter, exerciseWhereInput>
+  }
+
+  export type exerciseprogressOrderByWithRelationInput = {
+    ID?: SortOrder
+    UID?: SortOrder
+    EID?: SortOrder
+    Status?: SortOrderInput | SortOrder
+    UpdatedAt?: SortOrderInput | SortOrder
+    user?: userOrderByWithRelationInput
+    exercise?: exerciseOrderByWithRelationInput
+    _relevance?: exerciseprogressOrderByRelevanceInput
+  }
+
+  export type exerciseprogressWhereUniqueInput = Prisma.AtLeast<{
+    ID?: number
+    UID_EID?: exerciseprogressUIDEIDCompoundUniqueInput
+    AND?: exerciseprogressWhereInput | exerciseprogressWhereInput[]
+    OR?: exerciseprogressWhereInput[]
+    NOT?: exerciseprogressWhereInput | exerciseprogressWhereInput[]
+    UID?: StringFilter<"exerciseprogress"> | string
+    EID?: IntFilter<"exerciseprogress"> | number
+    Status?: Enumexerciseprogress_StatusNullableFilter<"exerciseprogress"> | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: DateTimeNullableFilter<"exerciseprogress"> | Date | string | null
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+    exercise?: XOR<ExerciseScalarRelationFilter, exerciseWhereInput>
+  }, "ID" | "UID_EID">
+
+  export type exerciseprogressOrderByWithAggregationInput = {
+    ID?: SortOrder
+    UID?: SortOrder
+    EID?: SortOrder
+    Status?: SortOrderInput | SortOrder
+    UpdatedAt?: SortOrderInput | SortOrder
+    _count?: exerciseprogressCountOrderByAggregateInput
+    _avg?: exerciseprogressAvgOrderByAggregateInput
+    _max?: exerciseprogressMaxOrderByAggregateInput
+    _min?: exerciseprogressMinOrderByAggregateInput
+    _sum?: exerciseprogressSumOrderByAggregateInput
+  }
+
+  export type exerciseprogressScalarWhereWithAggregatesInput = {
+    AND?: exerciseprogressScalarWhereWithAggregatesInput | exerciseprogressScalarWhereWithAggregatesInput[]
+    OR?: exerciseprogressScalarWhereWithAggregatesInput[]
+    NOT?: exerciseprogressScalarWhereWithAggregatesInput | exerciseprogressScalarWhereWithAggregatesInput[]
+    ID?: IntWithAggregatesFilter<"exerciseprogress"> | number
+    UID?: StringWithAggregatesFilter<"exerciseprogress"> | string
+    EID?: IntWithAggregatesFilter<"exerciseprogress"> | number
+    Status?: Enumexerciseprogress_StatusNullableWithAggregatesFilter<"exerciseprogress"> | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: DateTimeNullableWithAggregatesFilter<"exerciseprogress"> | Date | string | null
+  }
+
   export type exerciseCreateInput = {
     Name: string
     Slug: string
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -19211,9 +20408,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -19224,11 +20421,11 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -19242,9 +20439,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -19258,7 +20455,6 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
   }
 
   export type exerciseUpdateManyMutationInput = {
@@ -19267,7 +20463,6 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
   }
 
   export type exerciseUncheckedUpdateManyInput = {
@@ -19279,7 +20474,6 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
   }
 
   export type submissionCreateInput = {
@@ -19512,6 +20706,7 @@ export namespace Prisma {
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -19530,6 +20725,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -19548,6 +20744,7 @@ export namespace Prisma {
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -19566,6 +20763,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -20090,6 +21288,57 @@ export namespace Prisma {
     Name?: StringFieldUpdateOperationsInput | string
   }
 
+  export type exerciseprogressCreateInput = {
+    Status?: $Enums.exerciseprogress_Status | null
+    UpdatedAt?: Date | string | null
+    user: userCreateNestedOneWithoutExerciseprogressInput
+    exercise: exerciseCreateNestedOneWithoutExerciseprogressInput
+  }
+
+  export type exerciseprogressUncheckedCreateInput = {
+    ID?: number
+    UID: string
+    EID: number
+    Status?: $Enums.exerciseprogress_Status | null
+    UpdatedAt?: Date | string | null
+  }
+
+  export type exerciseprogressUpdateInput = {
+    Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: userUpdateOneRequiredWithoutExerciseprogressNestedInput
+    exercise?: exerciseUpdateOneRequiredWithoutExerciseprogressNestedInput
+  }
+
+  export type exerciseprogressUncheckedUpdateInput = {
+    ID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    EID?: IntFieldUpdateOperationsInput | number
+    Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type exerciseprogressCreateManyInput = {
+    ID?: number
+    UID: string
+    EID: number
+    Status?: $Enums.exerciseprogress_Status | null
+    UpdatedAt?: Date | string | null
+  }
+
+  export type exerciseprogressUpdateManyMutationInput = {
+    Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type exerciseprogressUncheckedUpdateManyInput = {
+    ID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    EID?: IntFieldUpdateOperationsInput | number
+    Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -20149,13 +21398,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type Enumexercise_statusFilter<$PrismaModel = never> = {
-    equals?: $Enums.exercise_status | Enumexercise_statusFieldRefInput<$PrismaModel>
-    in?: $Enums.exercise_status[]
-    notIn?: $Enums.exercise_status[]
-    not?: NestedEnumexercise_statusFilter<$PrismaModel> | $Enums.exercise_status
-  }
-
   export type CommentListRelationFilter = {
     every?: commentWhereInput
     some?: commentWhereInput
@@ -20176,6 +21418,12 @@ export namespace Prisma {
     every?: exerciselikeWhereInput
     some?: exerciselikeWhereInput
     none?: exerciselikeWhereInput
+  }
+
+  export type ExerciseprogressListRelationFilter = {
+    every?: exerciseprogressWhereInput
+    some?: exerciseprogressWhereInput
+    none?: exerciseprogressWhereInput
   }
 
   export type SubmissionListRelationFilter = {
@@ -20203,6 +21451,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type exerciseprogressOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type submissionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -20226,7 +21478,6 @@ export namespace Prisma {
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrder
-    status?: SortOrder
   }
 
   export type exerciseAvgOrderByAggregateInput = {
@@ -20244,7 +21495,6 @@ export namespace Prisma {
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrder
-    status?: SortOrder
   }
 
   export type exerciseMinOrderByAggregateInput = {
@@ -20256,7 +21506,6 @@ export namespace Prisma {
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrder
-    status?: SortOrder
   }
 
   export type exerciseSumOrderByAggregateInput = {
@@ -20341,16 +21590,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type Enumexercise_statusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.exercise_status | Enumexercise_statusFieldRefInput<$PrismaModel>
-    in?: $Enums.exercise_status[]
-    notIn?: $Enums.exercise_status[]
-    not?: NestedEnumexercise_statusWithAggregatesFilter<$PrismaModel> | $Enums.exercise_status
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumexercise_statusFilter<$PrismaModel>
-    _max?: NestedEnumexercise_statusFilter<$PrismaModel>
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -21167,6 +22406,68 @@ export namespace Prisma {
     SPID?: SortOrder
   }
 
+  export type Enumexerciseprogress_StatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.exerciseprogress_Status | Enumexerciseprogress_StatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.exerciseprogress_Status[] | null
+    notIn?: $Enums.exerciseprogress_Status[] | null
+    not?: NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel> | $Enums.exerciseprogress_Status | null
+  }
+
+  export type exerciseprogressOrderByRelevanceInput = {
+    fields: exerciseprogressOrderByRelevanceFieldEnum | exerciseprogressOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type exerciseprogressUIDEIDCompoundUniqueInput = {
+    UID: string
+    EID: number
+  }
+
+  export type exerciseprogressCountOrderByAggregateInput = {
+    ID?: SortOrder
+    UID?: SortOrder
+    EID?: SortOrder
+    Status?: SortOrder
+    UpdatedAt?: SortOrder
+  }
+
+  export type exerciseprogressAvgOrderByAggregateInput = {
+    ID?: SortOrder
+    EID?: SortOrder
+  }
+
+  export type exerciseprogressMaxOrderByAggregateInput = {
+    ID?: SortOrder
+    UID?: SortOrder
+    EID?: SortOrder
+    Status?: SortOrder
+    UpdatedAt?: SortOrder
+  }
+
+  export type exerciseprogressMinOrderByAggregateInput = {
+    ID?: SortOrder
+    UID?: SortOrder
+    EID?: SortOrder
+    Status?: SortOrder
+    UpdatedAt?: SortOrder
+  }
+
+  export type exerciseprogressSumOrderByAggregateInput = {
+    ID?: SortOrder
+    EID?: SortOrder
+  }
+
+  export type Enumexerciseprogress_StatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.exerciseprogress_Status | Enumexerciseprogress_StatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.exerciseprogress_Status[] | null
+    notIn?: $Enums.exerciseprogress_Status[] | null
+    not?: NestedEnumexerciseprogress_StatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.exerciseprogress_Status | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel>
+  }
+
   export type commentCreateNestedManyWithoutExerciseInput = {
     create?: XOR<commentCreateWithoutExerciseInput, commentUncheckedCreateWithoutExerciseInput> | commentCreateWithoutExerciseInput[] | commentUncheckedCreateWithoutExerciseInput[]
     connectOrCreate?: commentCreateOrConnectWithoutExerciseInput | commentCreateOrConnectWithoutExerciseInput[]
@@ -21191,6 +22492,13 @@ export namespace Prisma {
     connectOrCreate?: exerciselikeCreateOrConnectWithoutExerciseInput | exerciselikeCreateOrConnectWithoutExerciseInput[]
     createMany?: exerciselikeCreateManyExerciseInputEnvelope
     connect?: exerciselikeWhereUniqueInput | exerciselikeWhereUniqueInput[]
+  }
+
+  export type exerciseprogressCreateNestedManyWithoutExerciseInput = {
+    create?: XOR<exerciseprogressCreateWithoutExerciseInput, exerciseprogressUncheckedCreateWithoutExerciseInput> | exerciseprogressCreateWithoutExerciseInput[] | exerciseprogressUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: exerciseprogressCreateOrConnectWithoutExerciseInput | exerciseprogressCreateOrConnectWithoutExerciseInput[]
+    createMany?: exerciseprogressCreateManyExerciseInputEnvelope
+    connect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
   }
 
   export type submissionCreateNestedManyWithoutExerciseInput = {
@@ -21221,6 +22529,13 @@ export namespace Prisma {
     connect?: exerciselikeWhereUniqueInput | exerciselikeWhereUniqueInput[]
   }
 
+  export type exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput = {
+    create?: XOR<exerciseprogressCreateWithoutExerciseInput, exerciseprogressUncheckedCreateWithoutExerciseInput> | exerciseprogressCreateWithoutExerciseInput[] | exerciseprogressUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: exerciseprogressCreateOrConnectWithoutExerciseInput | exerciseprogressCreateOrConnectWithoutExerciseInput[]
+    createMany?: exerciseprogressCreateManyExerciseInputEnvelope
+    connect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+  }
+
   export type submissionUncheckedCreateNestedManyWithoutExerciseInput = {
     create?: XOR<submissionCreateWithoutExerciseInput, submissionUncheckedCreateWithoutExerciseInput> | submissionCreateWithoutExerciseInput[] | submissionUncheckedCreateWithoutExerciseInput[]
     connectOrCreate?: submissionCreateOrConnectWithoutExerciseInput | submissionCreateOrConnectWithoutExerciseInput[]
@@ -21245,10 +22560,6 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
-  }
-
-  export type Enumexercise_statusFieldUpdateOperationsInput = {
-    set?: $Enums.exercise_status
   }
 
   export type commentUpdateManyWithoutExerciseNestedInput = {
@@ -21297,6 +22608,20 @@ export namespace Prisma {
     update?: exerciselikeUpdateWithWhereUniqueWithoutExerciseInput | exerciselikeUpdateWithWhereUniqueWithoutExerciseInput[]
     updateMany?: exerciselikeUpdateManyWithWhereWithoutExerciseInput | exerciselikeUpdateManyWithWhereWithoutExerciseInput[]
     deleteMany?: exerciselikeScalarWhereInput | exerciselikeScalarWhereInput[]
+  }
+
+  export type exerciseprogressUpdateManyWithoutExerciseNestedInput = {
+    create?: XOR<exerciseprogressCreateWithoutExerciseInput, exerciseprogressUncheckedCreateWithoutExerciseInput> | exerciseprogressCreateWithoutExerciseInput[] | exerciseprogressUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: exerciseprogressCreateOrConnectWithoutExerciseInput | exerciseprogressCreateOrConnectWithoutExerciseInput[]
+    upsert?: exerciseprogressUpsertWithWhereUniqueWithoutExerciseInput | exerciseprogressUpsertWithWhereUniqueWithoutExerciseInput[]
+    createMany?: exerciseprogressCreateManyExerciseInputEnvelope
+    set?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    disconnect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    delete?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    connect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    update?: exerciseprogressUpdateWithWhereUniqueWithoutExerciseInput | exerciseprogressUpdateWithWhereUniqueWithoutExerciseInput[]
+    updateMany?: exerciseprogressUpdateManyWithWhereWithoutExerciseInput | exerciseprogressUpdateManyWithWhereWithoutExerciseInput[]
+    deleteMany?: exerciseprogressScalarWhereInput | exerciseprogressScalarWhereInput[]
   }
 
   export type submissionUpdateManyWithoutExerciseNestedInput = {
@@ -21369,6 +22694,20 @@ export namespace Prisma {
     update?: exerciselikeUpdateWithWhereUniqueWithoutExerciseInput | exerciselikeUpdateWithWhereUniqueWithoutExerciseInput[]
     updateMany?: exerciselikeUpdateManyWithWhereWithoutExerciseInput | exerciselikeUpdateManyWithWhereWithoutExerciseInput[]
     deleteMany?: exerciselikeScalarWhereInput | exerciselikeScalarWhereInput[]
+  }
+
+  export type exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput = {
+    create?: XOR<exerciseprogressCreateWithoutExerciseInput, exerciseprogressUncheckedCreateWithoutExerciseInput> | exerciseprogressCreateWithoutExerciseInput[] | exerciseprogressUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: exerciseprogressCreateOrConnectWithoutExerciseInput | exerciseprogressCreateOrConnectWithoutExerciseInput[]
+    upsert?: exerciseprogressUpsertWithWhereUniqueWithoutExerciseInput | exerciseprogressUpsertWithWhereUniqueWithoutExerciseInput[]
+    createMany?: exerciseprogressCreateManyExerciseInputEnvelope
+    set?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    disconnect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    delete?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    connect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    update?: exerciseprogressUpdateWithWhereUniqueWithoutExerciseInput | exerciseprogressUpdateWithWhereUniqueWithoutExerciseInput[]
+    updateMany?: exerciseprogressUpdateManyWithWhereWithoutExerciseInput | exerciseprogressUpdateManyWithWhereWithoutExerciseInput[]
+    deleteMany?: exerciseprogressScalarWhereInput | exerciseprogressScalarWhereInput[]
   }
 
   export type submissionUncheckedUpdateManyWithoutExerciseNestedInput = {
@@ -21632,6 +22971,13 @@ export namespace Prisma {
     connect?: exerciselikeWhereUniqueInput | exerciselikeWhereUniqueInput[]
   }
 
+  export type exerciseprogressCreateNestedManyWithoutUserInput = {
+    create?: XOR<exerciseprogressCreateWithoutUserInput, exerciseprogressUncheckedCreateWithoutUserInput> | exerciseprogressCreateWithoutUserInput[] | exerciseprogressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: exerciseprogressCreateOrConnectWithoutUserInput | exerciseprogressCreateOrConnectWithoutUserInput[]
+    createMany?: exerciseprogressCreateManyUserInputEnvelope
+    connect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+  }
+
   export type friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput = {
     create?: XOR<friendshipCreateWithoutUser_friendship_requesterTouserInput, friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput> | friendshipCreateWithoutUser_friendship_requesterTouserInput[] | friendshipUncheckedCreateWithoutUser_friendship_requesterTouserInput[]
     connectOrCreate?: friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput | friendshipCreateOrConnectWithoutUser_friendship_requesterTouserInput[]
@@ -21686,6 +23032,13 @@ export namespace Prisma {
     connectOrCreate?: exerciselikeCreateOrConnectWithoutUserInput | exerciselikeCreateOrConnectWithoutUserInput[]
     createMany?: exerciselikeCreateManyUserInputEnvelope
     connect?: exerciselikeWhereUniqueInput | exerciselikeWhereUniqueInput[]
+  }
+
+  export type exerciseprogressUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<exerciseprogressCreateWithoutUserInput, exerciseprogressUncheckedCreateWithoutUserInput> | exerciseprogressCreateWithoutUserInput[] | exerciseprogressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: exerciseprogressCreateOrConnectWithoutUserInput | exerciseprogressCreateOrConnectWithoutUserInput[]
+    createMany?: exerciseprogressCreateManyUserInputEnvelope
+    connect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
   }
 
   export type friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput = {
@@ -21767,6 +23120,20 @@ export namespace Prisma {
     update?: exerciselikeUpdateWithWhereUniqueWithoutUserInput | exerciselikeUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: exerciselikeUpdateManyWithWhereWithoutUserInput | exerciselikeUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: exerciselikeScalarWhereInput | exerciselikeScalarWhereInput[]
+  }
+
+  export type exerciseprogressUpdateManyWithoutUserNestedInput = {
+    create?: XOR<exerciseprogressCreateWithoutUserInput, exerciseprogressUncheckedCreateWithoutUserInput> | exerciseprogressCreateWithoutUserInput[] | exerciseprogressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: exerciseprogressCreateOrConnectWithoutUserInput | exerciseprogressCreateOrConnectWithoutUserInput[]
+    upsert?: exerciseprogressUpsertWithWhereUniqueWithoutUserInput | exerciseprogressUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: exerciseprogressCreateManyUserInputEnvelope
+    set?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    disconnect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    delete?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    connect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    update?: exerciseprogressUpdateWithWhereUniqueWithoutUserInput | exerciseprogressUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: exerciseprogressUpdateManyWithWhereWithoutUserInput | exerciseprogressUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: exerciseprogressScalarWhereInput | exerciseprogressScalarWhereInput[]
   }
 
   export type friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput = {
@@ -21879,6 +23246,20 @@ export namespace Prisma {
     update?: exerciselikeUpdateWithWhereUniqueWithoutUserInput | exerciselikeUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: exerciselikeUpdateManyWithWhereWithoutUserInput | exerciselikeUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: exerciselikeScalarWhereInput | exerciselikeScalarWhereInput[]
+  }
+
+  export type exerciseprogressUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<exerciseprogressCreateWithoutUserInput, exerciseprogressUncheckedCreateWithoutUserInput> | exerciseprogressCreateWithoutUserInput[] | exerciseprogressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: exerciseprogressCreateOrConnectWithoutUserInput | exerciseprogressCreateOrConnectWithoutUserInput[]
+    upsert?: exerciseprogressUpsertWithWhereUniqueWithoutUserInput | exerciseprogressUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: exerciseprogressCreateManyUserInputEnvelope
+    set?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    disconnect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    delete?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    connect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+    update?: exerciseprogressUpdateWithWhereUniqueWithoutUserInput | exerciseprogressUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: exerciseprogressUpdateManyWithWhereWithoutUserInput | exerciseprogressUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: exerciseprogressScalarWhereInput | exerciseprogressScalarWhereInput[]
   }
 
   export type friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput = {
@@ -22413,6 +23794,38 @@ export namespace Prisma {
     deleteMany?: exerciseScalarWhereInput | exerciseScalarWhereInput[]
   }
 
+  export type userCreateNestedOneWithoutExerciseprogressInput = {
+    create?: XOR<userCreateWithoutExerciseprogressInput, userUncheckedCreateWithoutExerciseprogressInput>
+    connectOrCreate?: userCreateOrConnectWithoutExerciseprogressInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type exerciseCreateNestedOneWithoutExerciseprogressInput = {
+    create?: XOR<exerciseCreateWithoutExerciseprogressInput, exerciseUncheckedCreateWithoutExerciseprogressInput>
+    connectOrCreate?: exerciseCreateOrConnectWithoutExerciseprogressInput
+    connect?: exerciseWhereUniqueInput
+  }
+
+  export type NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput = {
+    set?: $Enums.exerciseprogress_Status | null
+  }
+
+  export type userUpdateOneRequiredWithoutExerciseprogressNestedInput = {
+    create?: XOR<userCreateWithoutExerciseprogressInput, userUncheckedCreateWithoutExerciseprogressInput>
+    connectOrCreate?: userCreateOrConnectWithoutExerciseprogressInput
+    upsert?: userUpsertWithoutExerciseprogressInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutExerciseprogressInput, userUpdateWithoutExerciseprogressInput>, userUncheckedUpdateWithoutExerciseprogressInput>
+  }
+
+  export type exerciseUpdateOneRequiredWithoutExerciseprogressNestedInput = {
+    create?: XOR<exerciseCreateWithoutExerciseprogressInput, exerciseUncheckedCreateWithoutExerciseprogressInput>
+    connectOrCreate?: exerciseCreateOrConnectWithoutExerciseprogressInput
+    upsert?: exerciseUpsertWithoutExerciseprogressInput
+    connect?: exerciseWhereUniqueInput
+    update?: XOR<XOR<exerciseUpdateToOneWithWhereWithoutExerciseprogressInput, exerciseUpdateWithoutExerciseprogressInput>, exerciseUncheckedUpdateWithoutExerciseprogressInput>
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -22470,13 +23883,6 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     search?: string
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedEnumexercise_statusFilter<$PrismaModel = never> = {
-    equals?: $Enums.exercise_status | Enumexercise_statusFieldRefInput<$PrismaModel>
-    in?: $Enums.exercise_status[]
-    notIn?: $Enums.exercise_status[]
-    not?: NestedEnumexercise_statusFilter<$PrismaModel> | $Enums.exercise_status
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -22577,16 +23983,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type NestedEnumexercise_statusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.exercise_status | Enumexercise_statusFieldRefInput<$PrismaModel>
-    in?: $Enums.exercise_status[]
-    notIn?: $Enums.exercise_status[]
-    not?: NestedEnumexercise_statusWithAggregatesFilter<$PrismaModel> | $Enums.exercise_status
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumexercise_statusFilter<$PrismaModel>
-    _max?: NestedEnumexercise_statusFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -22712,6 +24108,23 @@ export namespace Prisma {
     _max?: NestedEnumnotification_TypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.exerciseprogress_Status | Enumexerciseprogress_StatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.exerciseprogress_Status[] | null
+    notIn?: $Enums.exerciseprogress_Status[] | null
+    not?: NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel> | $Enums.exerciseprogress_Status | null
+  }
+
+  export type NestedEnumexerciseprogress_StatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.exerciseprogress_Status | Enumexerciseprogress_StatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.exerciseprogress_Status[] | null
+    notIn?: $Enums.exerciseprogress_Status[] | null
+    not?: NestedEnumexerciseprogress_StatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.exerciseprogress_Status | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel>
+  }
+
   export type commentCreateWithoutExerciseInput = {
     Content: string
     CreatedAt?: Date | string | null
@@ -22791,6 +24204,29 @@ export namespace Prisma {
 
   export type exerciselikeCreateManyExerciseInputEnvelope = {
     data: exerciselikeCreateManyExerciseInput | exerciselikeCreateManyExerciseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type exerciseprogressCreateWithoutExerciseInput = {
+    Status?: $Enums.exerciseprogress_Status | null
+    UpdatedAt?: Date | string | null
+    user: userCreateNestedOneWithoutExerciseprogressInput
+  }
+
+  export type exerciseprogressUncheckedCreateWithoutExerciseInput = {
+    ID?: number
+    UID: string
+    Status?: $Enums.exerciseprogress_Status | null
+    UpdatedAt?: Date | string | null
+  }
+
+  export type exerciseprogressCreateOrConnectWithoutExerciseInput = {
+    where: exerciseprogressWhereUniqueInput
+    create: XOR<exerciseprogressCreateWithoutExerciseInput, exerciseprogressUncheckedCreateWithoutExerciseInput>
+  }
+
+  export type exerciseprogressCreateManyExerciseInputEnvelope = {
+    data: exerciseprogressCreateManyExerciseInput | exerciseprogressCreateManyExerciseInput[]
     skipDuplicates?: boolean
   }
 
@@ -22946,6 +24382,33 @@ export namespace Prisma {
     CreatedAt?: DateTimeNullableFilter<"exerciselike"> | Date | string | null
   }
 
+  export type exerciseprogressUpsertWithWhereUniqueWithoutExerciseInput = {
+    where: exerciseprogressWhereUniqueInput
+    update: XOR<exerciseprogressUpdateWithoutExerciseInput, exerciseprogressUncheckedUpdateWithoutExerciseInput>
+    create: XOR<exerciseprogressCreateWithoutExerciseInput, exerciseprogressUncheckedCreateWithoutExerciseInput>
+  }
+
+  export type exerciseprogressUpdateWithWhereUniqueWithoutExerciseInput = {
+    where: exerciseprogressWhereUniqueInput
+    data: XOR<exerciseprogressUpdateWithoutExerciseInput, exerciseprogressUncheckedUpdateWithoutExerciseInput>
+  }
+
+  export type exerciseprogressUpdateManyWithWhereWithoutExerciseInput = {
+    where: exerciseprogressScalarWhereInput
+    data: XOR<exerciseprogressUpdateManyMutationInput, exerciseprogressUncheckedUpdateManyWithoutExerciseInput>
+  }
+
+  export type exerciseprogressScalarWhereInput = {
+    AND?: exerciseprogressScalarWhereInput | exerciseprogressScalarWhereInput[]
+    OR?: exerciseprogressScalarWhereInput[]
+    NOT?: exerciseprogressScalarWhereInput | exerciseprogressScalarWhereInput[]
+    ID?: IntFilter<"exerciseprogress"> | number
+    UID?: StringFilter<"exerciseprogress"> | string
+    EID?: IntFilter<"exerciseprogress"> | number
+    Status?: Enumexerciseprogress_StatusNullableFilter<"exerciseprogress"> | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: DateTimeNullableFilter<"exerciseprogress"> | Date | string | null
+  }
+
   export type submissionUpsertWithWhereUniqueWithoutExerciseInput = {
     where: submissionWhereUniqueInput
     update: XOR<submissionUpdateWithoutExerciseInput, submissionUncheckedUpdateWithoutExerciseInput>
@@ -23008,11 +24471,11 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
 
@@ -23025,9 +24488,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
 
@@ -23047,6 +24510,7 @@ export namespace Prisma {
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -23064,6 +24528,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -23115,11 +24580,11 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
 
@@ -23132,9 +24597,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
 
@@ -23160,6 +24625,7 @@ export namespace Prisma {
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -23177,6 +24643,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -23216,11 +24683,11 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
   }
 
@@ -23233,9 +24700,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
   }
 
@@ -23284,11 +24751,11 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
   }
 
@@ -23301,9 +24768,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
   }
 
@@ -23429,10 +24896,10 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -23445,9 +24912,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -23490,7 +24957,6 @@ export namespace Prisma {
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableFilter<"exercise"> | string | null
-    status?: Enumexercise_statusFilter<"exercise"> | $Enums.exercise_status
   }
 
   export type commentCreateWithoutUserInput = {
@@ -23561,6 +25027,29 @@ export namespace Prisma {
 
   export type exerciselikeCreateManyUserInputEnvelope = {
     data: exerciselikeCreateManyUserInput | exerciselikeCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type exerciseprogressCreateWithoutUserInput = {
+    Status?: $Enums.exerciseprogress_Status | null
+    UpdatedAt?: Date | string | null
+    exercise: exerciseCreateNestedOneWithoutExerciseprogressInput
+  }
+
+  export type exerciseprogressUncheckedCreateWithoutUserInput = {
+    ID?: number
+    EID: number
+    Status?: $Enums.exerciseprogress_Status | null
+    UpdatedAt?: Date | string | null
+  }
+
+  export type exerciseprogressCreateOrConnectWithoutUserInput = {
+    where: exerciseprogressWhereUniqueInput
+    create: XOR<exerciseprogressCreateWithoutUserInput, exerciseprogressUncheckedCreateWithoutUserInput>
+  }
+
+  export type exerciseprogressCreateManyUserInputEnvelope = {
+    data: exerciseprogressCreateManyUserInput | exerciseprogressCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -23755,6 +25244,22 @@ export namespace Prisma {
     data: XOR<exerciselikeUpdateManyMutationInput, exerciselikeUncheckedUpdateManyWithoutUserInput>
   }
 
+  export type exerciseprogressUpsertWithWhereUniqueWithoutUserInput = {
+    where: exerciseprogressWhereUniqueInput
+    update: XOR<exerciseprogressUpdateWithoutUserInput, exerciseprogressUncheckedUpdateWithoutUserInput>
+    create: XOR<exerciseprogressCreateWithoutUserInput, exerciseprogressUncheckedCreateWithoutUserInput>
+  }
+
+  export type exerciseprogressUpdateWithWhereUniqueWithoutUserInput = {
+    where: exerciseprogressWhereUniqueInput
+    data: XOR<exerciseprogressUpdateWithoutUserInput, exerciseprogressUncheckedUpdateWithoutUserInput>
+  }
+
+  export type exerciseprogressUpdateManyWithWhereWithoutUserInput = {
+    where: exerciseprogressScalarWhereInput
+    data: XOR<exerciseprogressUpdateManyMutationInput, exerciseprogressUncheckedUpdateManyWithoutUserInput>
+  }
+
   export type friendshipUpsertWithWhereUniqueWithoutUser_friendship_requesterTouserInput = {
     where: friendshipWhereUniqueInput
     update: XOR<friendshipUpdateWithoutUser_friendship_requesterTouserInput, friendshipUncheckedUpdateWithoutUser_friendship_requesterTouserInput>
@@ -23871,6 +25376,7 @@ export namespace Prisma {
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
@@ -23888,6 +25394,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
@@ -23910,6 +25417,7 @@ export namespace Prisma {
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
@@ -23927,6 +25435,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
@@ -23960,6 +25469,7 @@ export namespace Prisma {
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
@@ -23977,6 +25487,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
@@ -24005,6 +25516,7 @@ export namespace Prisma {
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
@@ -24022,6 +25534,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
@@ -24090,6 +25603,7 @@ export namespace Prisma {
     CreatedAt?: Date | string | null
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -24107,6 +25621,7 @@ export namespace Prisma {
     CreatedAt?: Date | string | null
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -24145,10 +25660,10 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -24162,8 +25677,8 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -24244,6 +25759,7 @@ export namespace Prisma {
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -24261,6 +25777,7 @@ export namespace Prisma {
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -24311,10 +25828,10 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -24328,8 +25845,8 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -24376,6 +25893,7 @@ export namespace Prisma {
     CreatedAt?: Date | string | null
     comment?: commentCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -24393,6 +25911,7 @@ export namespace Prisma {
     CreatedAt?: Date | string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -24450,6 +25969,7 @@ export namespace Prisma {
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -24467,6 +25987,7 @@ export namespace Prisma {
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -24514,6 +26035,7 @@ export namespace Prisma {
     CreatedAt?: Date | string | null
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -24531,6 +26053,7 @@ export namespace Prisma {
     CreatedAt?: Date | string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -24549,10 +26072,10 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -24566,8 +26089,8 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -24598,6 +26121,7 @@ export namespace Prisma {
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -24615,6 +26139,7 @@ export namespace Prisma {
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -24639,10 +26164,10 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -24656,8 +26181,8 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -24756,6 +26281,7 @@ export namespace Prisma {
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
@@ -24773,6 +26299,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
@@ -24795,6 +26322,7 @@ export namespace Prisma {
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -24812,6 +26340,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
@@ -24869,6 +26398,7 @@ export namespace Prisma {
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
@@ -24886,6 +26416,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
@@ -24914,6 +26445,7 @@ export namespace Prisma {
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -24931,6 +26463,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
@@ -25019,10 +26552,10 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -25035,9 +26568,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -25122,6 +26655,168 @@ export namespace Prisma {
     Slug?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type userCreateWithoutExerciseprogressInput = {
+    UID?: string
+    Username: string
+    Email: string
+    isVerified?: boolean | null
+    Password: string
+    Role?: $Enums.user_Role
+    CreatedAt?: Date | string | null
+    comment?: commentCreateNestedManyWithoutUserInput
+    commentlike?: commentlikeCreateNestedManyWithoutUserInput
+    exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
+    notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    submission?: submissionCreateNestedManyWithoutUserInput
+  }
+
+  export type userUncheckedCreateWithoutExerciseprogressInput = {
+    UID?: string
+    Username: string
+    Email: string
+    isVerified?: boolean | null
+    Password: string
+    Role?: $Enums.user_Role
+    CreatedAt?: Date | string | null
+    comment?: commentUncheckedCreateNestedManyWithoutUserInput
+    commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
+    exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
+    notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    submission?: submissionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type userCreateOrConnectWithoutExerciseprogressInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutExerciseprogressInput, userUncheckedCreateWithoutExerciseprogressInput>
+  }
+
+  export type exerciseCreateWithoutExerciseprogressInput = {
+    Name: string
+    Slug: string
+    Content: string
+    Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
+    comment?: commentCreateNestedManyWithoutExerciseInput
+    topic?: topicCreateNestedOneWithoutExerciseInput
+    studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
+    exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
+    submission?: submissionCreateNestedManyWithoutExerciseInput
+    testcase?: testcaseCreateNestedManyWithoutExerciseInput
+  }
+
+  export type exerciseUncheckedCreateWithoutExerciseprogressInput = {
+    EID?: number
+    TpID?: number | null
+    SPIID?: number | null
+    Name: string
+    Slug: string
+    Content: string
+    Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
+    comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
+    exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
+    submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
+    testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
+  }
+
+  export type exerciseCreateOrConnectWithoutExerciseprogressInput = {
+    where: exerciseWhereUniqueInput
+    create: XOR<exerciseCreateWithoutExerciseprogressInput, exerciseUncheckedCreateWithoutExerciseprogressInput>
+  }
+
+  export type userUpsertWithoutExerciseprogressInput = {
+    update: XOR<userUpdateWithoutExerciseprogressInput, userUncheckedUpdateWithoutExerciseprogressInput>
+    create: XOR<userCreateWithoutExerciseprogressInput, userUncheckedCreateWithoutExerciseprogressInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutExerciseprogressInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutExerciseprogressInput, userUncheckedUpdateWithoutExerciseprogressInput>
+  }
+
+  export type userUpdateWithoutExerciseprogressInput = {
+    UID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    Password?: StringFieldUpdateOperationsInput | string
+    Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    comment?: commentUpdateManyWithoutUserNestedInput
+    commentlike?: commentlikeUpdateManyWithoutUserNestedInput
+    exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
+    notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    submission?: submissionUpdateManyWithoutUserNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutExerciseprogressInput = {
+    UID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    Password?: StringFieldUpdateOperationsInput | string
+    Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    comment?: commentUncheckedUpdateManyWithoutUserNestedInput
+    commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
+    notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type exerciseUpsertWithoutExerciseprogressInput = {
+    update: XOR<exerciseUpdateWithoutExerciseprogressInput, exerciseUncheckedUpdateWithoutExerciseprogressInput>
+    create: XOR<exerciseCreateWithoutExerciseprogressInput, exerciseUncheckedCreateWithoutExerciseprogressInput>
+    where?: exerciseWhereInput
+  }
+
+  export type exerciseUpdateToOneWithWhereWithoutExerciseprogressInput = {
+    where?: exerciseWhereInput
+    data: XOR<exerciseUpdateWithoutExerciseprogressInput, exerciseUncheckedUpdateWithoutExerciseprogressInput>
+  }
+
+  export type exerciseUpdateWithoutExerciseprogressInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Slug?: StringFieldUpdateOperationsInput | string
+    Content?: StringFieldUpdateOperationsInput | string
+    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
+    comment?: commentUpdateManyWithoutExerciseNestedInput
+    topic?: topicUpdateOneWithoutExerciseNestedInput
+    studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
+    exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
+    submission?: submissionUpdateManyWithoutExerciseNestedInput
+    testcase?: testcaseUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type exerciseUncheckedUpdateWithoutExerciseprogressInput = {
+    EID?: IntFieldUpdateOperationsInput | number
+    TpID?: NullableIntFieldUpdateOperationsInput | number | null
+    SPIID?: NullableIntFieldUpdateOperationsInput | number | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Slug?: StringFieldUpdateOperationsInput | string
+    Content?: StringFieldUpdateOperationsInput | string
+    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
+    comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
+    submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
+    testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
+  }
+
   export type commentCreateManyExerciseInput = {
     CoID?: number
     UID: string
@@ -25134,6 +26829,13 @@ export namespace Prisma {
     ELID?: number
     UID: string
     CreatedAt?: Date | string | null
+  }
+
+  export type exerciseprogressCreateManyExerciseInput = {
+    ID?: number
+    UID: string
+    Status?: $Enums.exerciseprogress_Status | null
+    UpdatedAt?: Date | string | null
   }
 
   export type submissionCreateManyExerciseInput = {
@@ -25194,6 +26896,26 @@ export namespace Prisma {
     ELID?: IntFieldUpdateOperationsInput | number
     UID?: StringFieldUpdateOperationsInput | string
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type exerciseprogressUpdateWithoutExerciseInput = {
+    Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: userUpdateOneRequiredWithoutExerciseprogressNestedInput
+  }
+
+  export type exerciseprogressUncheckedUpdateWithoutExerciseInput = {
+    ID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type exerciseprogressUncheckedUpdateManyWithoutExerciseInput = {
+    ID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type submissionUpdateWithoutExerciseInput = {
@@ -25308,7 +27030,6 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
   }
 
   export type exerciseUpdateWithoutTopicInput = {
@@ -25317,10 +27038,10 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -25333,9 +27054,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -25348,7 +27069,6 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
   }
 
   export type commentCreateManyUserInput = {
@@ -25369,6 +27089,13 @@ export namespace Prisma {
     ELID?: number
     EID: number
     CreatedAt?: Date | string | null
+  }
+
+  export type exerciseprogressCreateManyUserInput = {
+    ID?: number
+    EID: number
+    Status?: $Enums.exerciseprogress_Status | null
+    UpdatedAt?: Date | string | null
   }
 
   export type friendshipCreateManyUser_friendship_requesterTouserInput = {
@@ -25473,6 +27200,26 @@ export namespace Prisma {
     ELID?: IntFieldUpdateOperationsInput | number
     EID?: IntFieldUpdateOperationsInput | number
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type exerciseprogressUpdateWithoutUserInput = {
+    Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    exercise?: exerciseUpdateOneRequiredWithoutExerciseprogressNestedInput
+  }
+
+  export type exerciseprogressUncheckedUpdateWithoutUserInput = {
+    ID?: IntFieldUpdateOperationsInput | number
+    EID?: IntFieldUpdateOperationsInput | number
+    Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type exerciseprogressUncheckedUpdateManyWithoutUserInput = {
+    ID?: IntFieldUpdateOperationsInput | number
+    EID?: IntFieldUpdateOperationsInput | number
+    Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
+    UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type friendshipUpdateWithoutUser_friendship_requesterTouserInput = {
@@ -25756,7 +27503,6 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
-    status?: $Enums.exercise_status
   }
 
   export type exerciseUpdateWithoutStudyplanitemInput = {
@@ -25765,10 +27511,10 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -25781,9 +27527,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -25796,7 +27542,6 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: Enumexercise_statusFieldUpdateOperationsInput | $Enums.exercise_status
   }
 
 

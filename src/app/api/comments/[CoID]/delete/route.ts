@@ -3,44 +3,47 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-// Đệ quy lấy tất cả CoID của comment co
-
-export async function DELETE(req: NextRequest, context: { params: { CoID: string } }) {
+/**
+ * API DELETE: Xoá một bình luận cụ thể.
+ * Chỉ cho phép nếu người gọi API là chủ nhân của bình luận đó.
+ */
+export async function DELETE(req: NextRequest, { params }: { params: { CoID: string } }) {
   try {
     const session = await getServerSession(authOptions);
+
+    // Kiểm tra đăng nhập
     if (!session?.user?.uid) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+      return NextResponse.json({ error: "Chưa xác thực người dùng" }, { status: 401 });
     }
-    const { CoID } = await context.params;
-    const comment = await prisma.comment.findUnique({ where: { CoID: Number(CoID) } });
+
+    const CoID = Number((await params).CoID);
+
+    if (!CoID) {
+      return NextResponse.json({ error: "ID bình luận không hợp lệ" }, { status: 400 });
+    }
+
+    // Tìm comment để kiểm tra quyền xoá
+    const comment = await prisma.comment.findUnique({ where: { CoID } });
+
     if (!comment) {
-      return NextResponse.json({ error: "Comment not found" }, { status: 404 });
+      return NextResponse.json({ error: "Không tìm thấy bình luận" }, { status: 404 });
     }
+
     if (comment.UID !== session.user.uid) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Bạn không có quyền xoá bình luận này" }, { status: 403 });
     }
-    
-    // Xóa theo thứ tự để tránh lỗi foreign key constraint:
-    // 1. Xóa commentlike trước
-    // 2. Xóa notification liên quan
-    // 3. Xóa comment con
-    // 4. Xóa comment cha
-    
-    // Xóa tất cả like của các comment này
-    await prisma.commentlike.deleteMany({
-      where: { CoID: Number(CoID) }
-    });
-    
-    // Xóa tất cả notification liên quan đến các comment này
-    // await prisma.notification.deleteMany({
-    //   where: { CoID: Number(CoID) }
-    // });
-    
-    await prisma.comment.delete({ where: { CoID: Number(CoID) } });
-    
+
+    // XÓA CÁC LIÊN KẾT TRƯỚC KHI XÓA COMMENT
+    // 1. Xoá các lượt like của bình luận
+    await prisma.commentlike.deleteMany({ where: { CoID } });
+
+    // 2. Xoá bình luận
+    await prisma.comment.delete({ where: { CoID } });
+
     return NextResponse.json({ success: true });
+
   } catch (error) {
-    console.error("Delete comment error:", error);
-    return NextResponse.json({ error: "Failed to delete comment" }, { status: 500 });
+    console.error("Lỗi xoá bình luận:", error);
+    return NextResponse.json({ error: "Lỗi khi xoá bình luận" }, { status: 500 });
   }
-} 
+}
