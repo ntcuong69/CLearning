@@ -78,21 +78,22 @@ model topic {
 }
 
 model user {
-  UID                                      String             @id @default(dbgenerated("(uuid())")) @db.Char(36)
-  Username                                 String             @db.VarChar(50)
-  Email                                    String             @unique(map: "Email") @db.VarChar(50)
-  isVerified                               Boolean?           @default(false)
-  Password                                 String             @db.VarChar(255)
-  Role                                     user_Role          @default(User)
-  CreatedAt                                DateTime?          @default(now()) @db.Timestamp(0)
+  UID                                      String              @id @default(dbgenerated("(uuid())")) @db.Char(36)
+  Username                                 String              @db.VarChar(50)
+  Email                                    String              @unique(map: "Email") @db.VarChar(50)
+  isVerified                               Boolean?            @default(false)
+  Password                                 String              @db.VarChar(255)
+  Role                                     user_Role           @default(User)
+  CreatedAt                                DateTime?           @default(now()) @db.Timestamp(0)
   comment                                  comment[]
   commentlike                              commentlike[]
   exerciselike                             exerciselike[]
   exerciseprogress                         exerciseprogress[]
-  friendship_friendship_requesterTouser    friendship[]       @relation("friendship_requesterTouser")
-  friendship_friendship_addresseeTouser    friendship[]       @relation("friendship_addresseeTouser")
-  notification_notification_UIDTouser      notification[]     @relation("notification_UIDTouser")
-  notification_notification_FromUserTouser notification[]     @relation("notification_FromUserTouser")
+  friendship_friendship_requesterTouser    friendship[]        @relation("friendship_requesterTouser")
+  friendship_friendship_addresseeTouser    friendship[]        @relation("friendship_addresseeTouser")
+  notification_notification_UIDTouser      notification[]      @relation("notification_UIDTouser")
+  notification_notification_FromUserTouser notification[]      @relation("notification_FromUserTouser")
+  studyplanprogress                        studyplanprogress[]
   submission                               submission[]
 }
 
@@ -189,14 +190,13 @@ model notification {
 }
 
 model studyplan {
-  SPID          Int             @id @default(autoincrement())
-  Name          String          @db.VarChar(50)
-  Description   String          @db.Text
-  StartTime     DateTime?       @db.Timestamp(0)
-  EndTime       DateTime?       @db.Timestamp(0)
-  Icon          String?         @db.VarChar(100)
-  Slug          String?         @unique(map: "Slug") @db.VarChar(50)
-  studyplanitem studyplanitem[]
+  SPID              Int                 @id @default(autoincrement())
+  Name              String              @db.VarChar(50)
+  Description       String              @db.Text
+  Icon              String?             @db.VarChar(100)
+  Slug              String?             @unique(map: "Slug") @db.VarChar(50)
+  studyplanitem     studyplanitem[]
+  studyplanprogress studyplanprogress[]
 }
 
 model studyplanitem {
@@ -220,6 +220,20 @@ model exerciseprogress {
 
   @@unique([UID, EID], map: "unique_user_exercise")
   @@index([EID], map: "EID")
+}
+
+model studyplanprogress {
+  SPPID     Int                      @id @default(autoincrement())
+  SPID      Int
+  UID       String                   @db.Char(36)
+  Status    studyplanprogress_Status @default(NotStarted)
+  StartTime DateTime?                @db.Timestamp(0)
+  EndTime   DateTime?                @db.Timestamp(0)
+  studyplan studyplan                @relation(fields: [SPID], references: [SPID], onDelete: NoAction, onUpdate: NoAction, map: "studyplanprogress_ibfk_2")
+  user      user                     @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "studyplanprogress_ibfk_1")
+
+  @@index([SPID], map: "SPID")
+  @@index([UID], map: "UID")
 }
 
 enum exercise_Difficulty {
@@ -261,4 +275,10 @@ enum notification_Type {
 enum exerciseprogress_Status {
   Attempting
   Solved
+}
+
+enum studyplanprogress_Status {
+  NotStarted
+  InProgress
+  Completed
 }

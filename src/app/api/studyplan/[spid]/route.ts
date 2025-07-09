@@ -39,16 +39,40 @@ export async function GET(req: NextRequest, { params }: { params: { spid: string
       }, {} as Record<number, string>);
     }
 
-    // Gán status cho từng exercise
-    const studyplanitem = plan.studyplanitem.map(item => ({
-      ...item,
-      exercise: item.exercise.map(ex => ({
+    // Lấy trạng thái study plan
+    let studyPlanStatus = 'NotStarted';
+    if (session?.user?.uid) {
+      const studyPlanProgress = await prisma.studyplanprogress.findFirst({
+        where: {
+          UID: session.user.uid,
+          SPID: spid,
+        },
+      });
+      
+      if (studyPlanProgress) {
+        studyPlanStatus = studyPlanProgress.Status;
+      }
+    }
+
+    // Gán status cho từng exercise và tính isCompleted cho studyplanitem
+    const studyplanitem = plan.studyplanitem.map(item => {
+      const exerciseWithStatus = item.exercise.map(ex => ({
         ...ex,
         status: statusMap[ex.EID] || 'Unattempted',
-      })),
-    }));
+      }));
+      
+      // Kiểm tra xem tất cả exercise trong studyplanitem có status là 'Solved' không
+      const isCompleted = exerciseWithStatus.length > 0 && 
+        exerciseWithStatus.every(ex => ex.status === 'Solved');
+      
+      return {
+        ...item,
+        exercise: exerciseWithStatus,
+        isCompleted,
+      };
+    });
 
-    return NextResponse.json({ ...plan, studyplanitem });
+    return NextResponse.json({ ...plan, studyplanitem, studyPlanStatus });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch study plan' }, { status: 500 });
   }

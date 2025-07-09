@@ -31,9 +31,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import StarIcon from '@mui/icons-material/Star';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ErrorIcon from '@mui/icons-material/Error';
-import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
+
 import axios from 'axios';
 
 interface User {
@@ -54,8 +52,6 @@ const ProfilePage = () => {
   const [editEmail, setEditEmail] = useState("");
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [verifyLoading, setVerifyLoading] = useState(false);
-  const [verifyMsg, setVerifyMsg] = useState<string | null>(null);
 
   useEffect(() => {
     axios
@@ -338,48 +334,11 @@ const ProfilePage = () => {
                             required
                           />
                         ) : (
-                          <Typography variant="body2" fontWeight={500} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <Typography variant="body2" fontWeight={500}>
                             {user.Email}
-                            {user.isVerified !== undefined && (
-                              <Chip
-                                component="span"
-                                label={user.isVerified ? 'Đã xác thực' : 'Chưa xác thực'}
-                                size="small"
-                                icon={user.isVerified ? <CheckCircleIcon sx={{ color: '#00796b' }} /> : <ErrorIcon sx={{ color: '#ef6c00' }} />}
-                                sx={{ ml: 1, bgcolor: user.isVerified ? '#e0f7fa' : '#fff3e0', color: user.isVerified ? '#00796b' : '#ef6c00', fontWeight: 600 }}
-                              />
-                            )}
-                            {!user.isVerified && (
-                              <Button
-                                size="small"
-                                variant="outlined"
-                                color="primary"
-                                startIcon={<MarkEmailUnreadIcon />}
-                                sx={{ ml: 1, minWidth: 0, fontSize: 13, py: 0.5, px: 1.5 }}
-                                disabled={verifyLoading}
-                                onClick={async () => {
-                                  setVerifyLoading(true);
-                                  setVerifyMsg(null);
-                                  try {
-                                    const res = await axios.post('/api/me/verify');
-                                    setVerifyMsg('Đã gửi email xác thực. Vui lòng kiểm tra hộp thư.');
-                                  } catch (err: any) {
-                                    setVerifyMsg(err?.response?.data?.error || 'Gửi email xác thực thất bại');
-                                  }
-                                  setVerifyLoading(false);
-                                }}
-                              >
-                                Xác thực
-                              </Button>
-                            )}
                           </Typography>
                         )}
                       </Box>
-                      {verifyMsg && (
-                        <Typography variant="body2" color={verifyMsg.includes('thất bại') ? 'error' : 'success.main'} sx={{ mt: 0.5 }}>
-                          {verifyMsg}
-                        </Typography>
-                      )}
                     </Box>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: '#f8f9fa', borderRadius: 2 }}>

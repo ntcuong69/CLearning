@@ -269,13 +269,23 @@ export default function NavBar() {
                 px: 1.5,
                 borderRadius: "8px",
                 transition: "background 0.15s",
+                backgroundColor: "transparent !important",
                 "&:hover": {
-                  backgroundColor: "#e3f0ff",
+                  backgroundColor: "#e3f0ff !important",
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "transparent !important",
+                },
+                "&.Mui-focusVisible": {
+                  backgroundColor: "transparent !important",
+                },
+                "&.MuiMenuItem-root:hover": {
+                  backgroundColor: "#e3f0ff !important",
                 },
               }}
             >
               <AccountCircleIcon sx={{ mr: 2, color: "#666", fontSize: 20 }} />
-              <Typography sx={{ fontWeight: 600, fontSize: "0.9rem" }}>Trang cá nhân</Typography>
+              <Typography sx={{ fontWeight: 600, fontSize: "0.9rem", color: "#333" }}>Trang cá nhân</Typography>
             </MenuItem>
             <MenuItem
               onClick={handleSettings}
@@ -284,13 +294,23 @@ export default function NavBar() {
                 px: 1.5,
                 borderRadius: "8px",
                 transition: "background 0.15s",
+                backgroundColor: "transparent !important",
                 "&:hover": {
-                  backgroundColor: "#e3f0ff",
+                  backgroundColor: "#e3f0ff !important",
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "transparent !important",
+                },
+                "&.Mui-focusVisible": {
+                  backgroundColor: "transparent !important",
+                },
+                "&.MuiMenuItem-root:hover": {
+                  backgroundColor: "#e3f0ff !important",
                 },
               }}
             >
               <SettingsIcon sx={{ mr: 2, color: "#666", fontSize: 20 }} />
-              <Typography sx={{ fontWeight: 600, fontSize: "0.9rem" }}>Cài đặt</Typography>
+              <Typography sx={{ fontWeight: 600, fontSize: "0.9rem", color: "#333" }}>Cài đặt</Typography>
             </MenuItem>
             <Divider sx={{ my: 1 }} />
             <MenuItem
@@ -301,13 +321,23 @@ export default function NavBar() {
                 color: "#d32f2f",
                 borderRadius: "8px",
                 transition: "background 0.15s",
+                backgroundColor: "transparent !important",
                 "&:hover": {
-                  backgroundColor: "#ffeaea",
+                  backgroundColor: "#ffeaea !important",
+                },
+                "&.Mui-selected": {
+                  backgroundColor: "transparent !important",
+                },
+                "&.Mui-focusVisible": {
+                  backgroundColor: "transparent !important",
+                },
+                "&.MuiMenuItem-root:hover": {
+                  backgroundColor: "#ffeaea !important",
                 },
               }}
             >
               <LogoutIcon sx={{ mr: 2, fontSize: 20 }} />
-              <Typography sx={{ fontWeight: 600, fontSize: "0.9rem" }}>Đăng xuất</Typography>
+              <Typography sx={{ fontWeight: 600, fontSize: "0.9rem", color: "#d32f2f" }}>Đăng xuất</Typography>
             </MenuItem>
           </Menu>
         </Box>

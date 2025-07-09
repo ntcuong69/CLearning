@@ -93,6 +93,11 @@ export type studyplanitem = $Result.DefaultSelection<Prisma.$studyplanitemPayloa
  * 
  */
 export type exerciseprogress = $Result.DefaultSelection<Prisma.$exerciseprogressPayload>
+/**
+ * Model studyplanprogress
+ * 
+ */
+export type studyplanprogress = $Result.DefaultSelection<Prisma.$studyplanprogressPayload>
 
 /**
  * Enums
@@ -159,6 +164,15 @@ export const exerciseprogress_Status: {
 
 export type exerciseprogress_Status = (typeof exerciseprogress_Status)[keyof typeof exerciseprogress_Status]
 
+
+export const studyplanprogress_Status: {
+  NotStarted: 'NotStarted',
+  InProgress: 'InProgress',
+  Completed: 'Completed'
+};
+
+export type studyplanprogress_Status = (typeof studyplanprogress_Status)[keyof typeof studyplanprogress_Status]
+
 }
 
 export type exercise_Difficulty = $Enums.exercise_Difficulty
@@ -188,6 +202,10 @@ export const notification_Type: typeof $Enums.notification_Type
 export type exerciseprogress_Status = $Enums.exerciseprogress_Status
 
 export const exerciseprogress_Status: typeof $Enums.exerciseprogress_Status
+
+export type studyplanprogress_Status = $Enums.studyplanprogress_Status
+
+export const studyplanprogress_Status: typeof $Enums.studyplanprogress_Status
 
 /**
  * ##  Prisma Client ʲˢ
@@ -473,6 +491,16 @@ export class PrismaClient<
     * ```
     */
   get exerciseprogress(): Prisma.exerciseprogressDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.studyplanprogress`: Exposes CRUD operations for the **studyplanprogress** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Studyplanprogresses
+    * const studyplanprogresses = await prisma.studyplanprogress.findMany()
+    * ```
+    */
+  get studyplanprogress(): Prisma.studyplanprogressDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -928,7 +956,8 @@ export namespace Prisma {
     notification: 'notification',
     studyplan: 'studyplan',
     studyplanitem: 'studyplanitem',
-    exerciseprogress: 'exerciseprogress'
+    exerciseprogress: 'exerciseprogress',
+    studyplanprogress: 'studyplanprogress'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -947,7 +976,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "exercise" | "submission" | "testcase" | "testcaseresult" | "topic" | "user" | "friendship" | "chapter" | "comment" | "commentlike" | "exerciselike" | "lesson" | "notification" | "studyplan" | "studyplanitem" | "exerciseprogress"
+      modelProps: "exercise" | "submission" | "testcase" | "testcaseresult" | "topic" | "user" | "friendship" | "chapter" | "comment" | "commentlike" | "exerciselike" | "lesson" | "notification" | "studyplan" | "studyplanitem" | "exerciseprogress" | "studyplanprogress"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2007,6 +2036,72 @@ export namespace Prisma {
           }
         }
       }
+      studyplanprogress: {
+        payload: Prisma.$studyplanprogressPayload<ExtArgs>
+        fields: Prisma.studyplanprogressFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.studyplanprogressFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanprogressPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.studyplanprogressFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanprogressPayload>
+          }
+          findFirst: {
+            args: Prisma.studyplanprogressFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanprogressPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.studyplanprogressFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanprogressPayload>
+          }
+          findMany: {
+            args: Prisma.studyplanprogressFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanprogressPayload>[]
+          }
+          create: {
+            args: Prisma.studyplanprogressCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanprogressPayload>
+          }
+          createMany: {
+            args: Prisma.studyplanprogressCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.studyplanprogressDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanprogressPayload>
+          }
+          update: {
+            args: Prisma.studyplanprogressUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanprogressPayload>
+          }
+          deleteMany: {
+            args: Prisma.studyplanprogressDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.studyplanprogressUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.studyplanprogressUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$studyplanprogressPayload>
+          }
+          aggregate: {
+            args: Prisma.StudyplanprogressAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStudyplanprogress>
+          }
+          groupBy: {
+            args: Prisma.studyplanprogressGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StudyplanprogressGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.studyplanprogressCountArgs<ExtArgs>
+            result: $Utils.Optional<StudyplanprogressCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2107,6 +2202,7 @@ export namespace Prisma {
     studyplan?: studyplanOmit
     studyplanitem?: studyplanitemOmit
     exerciseprogress?: exerciseprogressOmit
+    studyplanprogress?: studyplanprogressOmit
   }
 
   /* Types for Logging */
@@ -2369,6 +2465,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser: number
     notification_notification_UIDTouser: number
     notification_notification_FromUserTouser: number
+    studyplanprogress: number
     submission: number
   }
 
@@ -2381,6 +2478,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: boolean | UserCountOutputTypeCountFriendship_friendship_addresseeTouserArgs
     notification_notification_UIDTouser?: boolean | UserCountOutputTypeCountNotification_notification_UIDTouserArgs
     notification_notification_FromUserTouser?: boolean | UserCountOutputTypeCountNotification_notification_FromUserTouserArgs
+    studyplanprogress?: boolean | UserCountOutputTypeCountStudyplanprogressArgs
     submission?: boolean | UserCountOutputTypeCountSubmissionArgs
   }
 
@@ -2449,6 +2547,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountNotification_notification_FromUserTouserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: notificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountStudyplanprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: studyplanprogressWhereInput
   }
 
   /**
@@ -2567,10 +2672,12 @@ export namespace Prisma {
 
   export type StudyplanCountOutputType = {
     studyplanitem: number
+    studyplanprogress: number
   }
 
   export type StudyplanCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     studyplanitem?: boolean | StudyplanCountOutputTypeCountStudyplanitemArgs
+    studyplanprogress?: boolean | StudyplanCountOutputTypeCountStudyplanprogressArgs
   }
 
   // Custom InputTypes
@@ -2589,6 +2696,13 @@ export namespace Prisma {
    */
   export type StudyplanCountOutputTypeCountStudyplanitemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: studyplanitemWhereInput
+  }
+
+  /**
+   * StudyplanCountOutputType without action
+   */
+  export type StudyplanCountOutputTypeCountStudyplanprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: studyplanprogressWhereInput
   }
 
 
@@ -7965,6 +8079,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: boolean | user$friendship_friendship_addresseeTouserArgs<ExtArgs>
     notification_notification_UIDTouser?: boolean | user$notification_notification_UIDTouserArgs<ExtArgs>
     notification_notification_FromUserTouser?: boolean | user$notification_notification_FromUserTouserArgs<ExtArgs>
+    studyplanprogress?: boolean | user$studyplanprogressArgs<ExtArgs>
     submission?: boolean | user$submissionArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -7991,6 +8106,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: boolean | user$friendship_friendship_addresseeTouserArgs<ExtArgs>
     notification_notification_UIDTouser?: boolean | user$notification_notification_UIDTouserArgs<ExtArgs>
     notification_notification_FromUserTouser?: boolean | user$notification_notification_FromUserTouserArgs<ExtArgs>
+    studyplanprogress?: boolean | user$studyplanprogressArgs<ExtArgs>
     submission?: boolean | user$submissionArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -8006,6 +8122,7 @@ export namespace Prisma {
       friendship_friendship_addresseeTouser: Prisma.$friendshipPayload<ExtArgs>[]
       notification_notification_UIDTouser: Prisma.$notificationPayload<ExtArgs>[]
       notification_notification_FromUserTouser: Prisma.$notificationPayload<ExtArgs>[]
+      studyplanprogress: Prisma.$studyplanprogressPayload<ExtArgs>[]
       submission: Prisma.$submissionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -8364,6 +8481,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser<T extends user$friendship_friendship_addresseeTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$friendship_friendship_addresseeTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notification_notification_UIDTouser<T extends user$notification_notification_UIDTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$notification_notification_UIDTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notification_notification_FromUserTouser<T extends user$notification_notification_FromUserTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$notification_notification_FromUserTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    studyplanprogress<T extends user$studyplanprogressArgs<ExtArgs> = {}>(args?: Subset<T, user$studyplanprogressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     submission<T extends user$submissionArgs<ExtArgs> = {}>(args?: Subset<T, user$submissionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$submissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -8933,6 +9051,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * user.studyplanprogress
+   */
+  export type user$studyplanprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    where?: studyplanprogressWhereInput
+    orderBy?: studyplanprogressOrderByWithRelationInput | studyplanprogressOrderByWithRelationInput[]
+    cursor?: studyplanprogressWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudyplanprogressScalarFieldEnum | StudyplanprogressScalarFieldEnum[]
   }
 
   /**
@@ -15974,8 +16116,6 @@ export namespace Prisma {
     SPID: number | null
     Name: string | null
     Description: string | null
-    StartTime: Date | null
-    EndTime: Date | null
     Icon: string | null
     Slug: string | null
   }
@@ -15984,8 +16124,6 @@ export namespace Prisma {
     SPID: number | null
     Name: string | null
     Description: string | null
-    StartTime: Date | null
-    EndTime: Date | null
     Icon: string | null
     Slug: string | null
   }
@@ -15994,8 +16132,6 @@ export namespace Prisma {
     SPID: number
     Name: number
     Description: number
-    StartTime: number
-    EndTime: number
     Icon: number
     Slug: number
     _all: number
@@ -16014,8 +16150,6 @@ export namespace Prisma {
     SPID?: true
     Name?: true
     Description?: true
-    StartTime?: true
-    EndTime?: true
     Icon?: true
     Slug?: true
   }
@@ -16024,8 +16158,6 @@ export namespace Prisma {
     SPID?: true
     Name?: true
     Description?: true
-    StartTime?: true
-    EndTime?: true
     Icon?: true
     Slug?: true
   }
@@ -16034,8 +16166,6 @@ export namespace Prisma {
     SPID?: true
     Name?: true
     Description?: true
-    StartTime?: true
-    EndTime?: true
     Icon?: true
     Slug?: true
     _all?: true
@@ -16131,8 +16261,6 @@ export namespace Prisma {
     SPID: number
     Name: string
     Description: string
-    StartTime: Date | null
-    EndTime: Date | null
     Icon: string | null
     Slug: string | null
     _count: StudyplanCountAggregateOutputType | null
@@ -16160,11 +16288,10 @@ export namespace Prisma {
     SPID?: boolean
     Name?: boolean
     Description?: boolean
-    StartTime?: boolean
-    EndTime?: boolean
     Icon?: boolean
     Slug?: boolean
     studyplanitem?: boolean | studyplan$studyplanitemArgs<ExtArgs>
+    studyplanprogress?: boolean | studyplan$studyplanprogressArgs<ExtArgs>
     _count?: boolean | StudyplanCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["studyplan"]>
 
@@ -16174,15 +16301,14 @@ export namespace Prisma {
     SPID?: boolean
     Name?: boolean
     Description?: boolean
-    StartTime?: boolean
-    EndTime?: boolean
     Icon?: boolean
     Slug?: boolean
   }
 
-  export type studyplanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"SPID" | "Name" | "Description" | "StartTime" | "EndTime" | "Icon" | "Slug", ExtArgs["result"]["studyplan"]>
+  export type studyplanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"SPID" | "Name" | "Description" | "Icon" | "Slug", ExtArgs["result"]["studyplan"]>
   export type studyplanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     studyplanitem?: boolean | studyplan$studyplanitemArgs<ExtArgs>
+    studyplanprogress?: boolean | studyplan$studyplanprogressArgs<ExtArgs>
     _count?: boolean | StudyplanCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -16190,13 +16316,12 @@ export namespace Prisma {
     name: "studyplan"
     objects: {
       studyplanitem: Prisma.$studyplanitemPayload<ExtArgs>[]
+      studyplanprogress: Prisma.$studyplanprogressPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       SPID: number
       Name: string
       Description: string
-      StartTime: Date | null
-      EndTime: Date | null
       Icon: string | null
       Slug: string | null
     }, ExtArgs["result"]["studyplan"]>
@@ -16540,6 +16665,7 @@ export namespace Prisma {
   export interface Prisma__studyplanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     studyplanitem<T extends studyplan$studyplanitemArgs<ExtArgs> = {}>(args?: Subset<T, studyplan$studyplanitemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    studyplanprogress<T extends studyplan$studyplanprogressArgs<ExtArgs> = {}>(args?: Subset<T, studyplan$studyplanprogressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -16572,8 +16698,6 @@ export namespace Prisma {
     readonly SPID: FieldRef<"studyplan", 'Int'>
     readonly Name: FieldRef<"studyplan", 'String'>
     readonly Description: FieldRef<"studyplan", 'String'>
-    readonly StartTime: FieldRef<"studyplan", 'DateTime'>
-    readonly EndTime: FieldRef<"studyplan", 'DateTime'>
     readonly Icon: FieldRef<"studyplan", 'String'>
     readonly Slug: FieldRef<"studyplan", 'String'>
   }
@@ -16940,6 +17064,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StudyplanitemScalarFieldEnum | StudyplanitemScalarFieldEnum[]
+  }
+
+  /**
+   * studyplan.studyplanprogress
+   */
+  export type studyplan$studyplanprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    where?: studyplanprogressWhereInput
+    orderBy?: studyplanprogressOrderByWithRelationInput | studyplanprogressOrderByWithRelationInput[]
+    cursor?: studyplanprogressWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StudyplanprogressScalarFieldEnum | StudyplanprogressScalarFieldEnum[]
   }
 
   /**
@@ -18908,6 +19056,988 @@ export namespace Prisma {
 
 
   /**
+   * Model studyplanprogress
+   */
+
+  export type AggregateStudyplanprogress = {
+    _count: StudyplanprogressCountAggregateOutputType | null
+    _avg: StudyplanprogressAvgAggregateOutputType | null
+    _sum: StudyplanprogressSumAggregateOutputType | null
+    _min: StudyplanprogressMinAggregateOutputType | null
+    _max: StudyplanprogressMaxAggregateOutputType | null
+  }
+
+  export type StudyplanprogressAvgAggregateOutputType = {
+    SPPID: number | null
+    SPID: number | null
+  }
+
+  export type StudyplanprogressSumAggregateOutputType = {
+    SPPID: number | null
+    SPID: number | null
+  }
+
+  export type StudyplanprogressMinAggregateOutputType = {
+    SPPID: number | null
+    SPID: number | null
+    UID: string | null
+    Status: $Enums.studyplanprogress_Status | null
+    StartTime: Date | null
+    EndTime: Date | null
+  }
+
+  export type StudyplanprogressMaxAggregateOutputType = {
+    SPPID: number | null
+    SPID: number | null
+    UID: string | null
+    Status: $Enums.studyplanprogress_Status | null
+    StartTime: Date | null
+    EndTime: Date | null
+  }
+
+  export type StudyplanprogressCountAggregateOutputType = {
+    SPPID: number
+    SPID: number
+    UID: number
+    Status: number
+    StartTime: number
+    EndTime: number
+    _all: number
+  }
+
+
+  export type StudyplanprogressAvgAggregateInputType = {
+    SPPID?: true
+    SPID?: true
+  }
+
+  export type StudyplanprogressSumAggregateInputType = {
+    SPPID?: true
+    SPID?: true
+  }
+
+  export type StudyplanprogressMinAggregateInputType = {
+    SPPID?: true
+    SPID?: true
+    UID?: true
+    Status?: true
+    StartTime?: true
+    EndTime?: true
+  }
+
+  export type StudyplanprogressMaxAggregateInputType = {
+    SPPID?: true
+    SPID?: true
+    UID?: true
+    Status?: true
+    StartTime?: true
+    EndTime?: true
+  }
+
+  export type StudyplanprogressCountAggregateInputType = {
+    SPPID?: true
+    SPID?: true
+    UID?: true
+    Status?: true
+    StartTime?: true
+    EndTime?: true
+    _all?: true
+  }
+
+  export type StudyplanprogressAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which studyplanprogress to aggregate.
+     */
+    where?: studyplanprogressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplanprogresses to fetch.
+     */
+    orderBy?: studyplanprogressOrderByWithRelationInput | studyplanprogressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: studyplanprogressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplanprogresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplanprogresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned studyplanprogresses
+    **/
+    _count?: true | StudyplanprogressCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StudyplanprogressAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StudyplanprogressSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StudyplanprogressMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StudyplanprogressMaxAggregateInputType
+  }
+
+  export type GetStudyplanprogressAggregateType<T extends StudyplanprogressAggregateArgs> = {
+        [P in keyof T & keyof AggregateStudyplanprogress]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStudyplanprogress[P]>
+      : GetScalarType<T[P], AggregateStudyplanprogress[P]>
+  }
+
+
+
+
+  export type studyplanprogressGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: studyplanprogressWhereInput
+    orderBy?: studyplanprogressOrderByWithAggregationInput | studyplanprogressOrderByWithAggregationInput[]
+    by: StudyplanprogressScalarFieldEnum[] | StudyplanprogressScalarFieldEnum
+    having?: studyplanprogressScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StudyplanprogressCountAggregateInputType | true
+    _avg?: StudyplanprogressAvgAggregateInputType
+    _sum?: StudyplanprogressSumAggregateInputType
+    _min?: StudyplanprogressMinAggregateInputType
+    _max?: StudyplanprogressMaxAggregateInputType
+  }
+
+  export type StudyplanprogressGroupByOutputType = {
+    SPPID: number
+    SPID: number
+    UID: string
+    Status: $Enums.studyplanprogress_Status
+    StartTime: Date | null
+    EndTime: Date | null
+    _count: StudyplanprogressCountAggregateOutputType | null
+    _avg: StudyplanprogressAvgAggregateOutputType | null
+    _sum: StudyplanprogressSumAggregateOutputType | null
+    _min: StudyplanprogressMinAggregateOutputType | null
+    _max: StudyplanprogressMaxAggregateOutputType | null
+  }
+
+  type GetStudyplanprogressGroupByPayload<T extends studyplanprogressGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StudyplanprogressGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StudyplanprogressGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StudyplanprogressGroupByOutputType[P]>
+            : GetScalarType<T[P], StudyplanprogressGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type studyplanprogressSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    SPPID?: boolean
+    SPID?: boolean
+    UID?: boolean
+    Status?: boolean
+    StartTime?: boolean
+    EndTime?: boolean
+    studyplan?: boolean | studyplanDefaultArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["studyplanprogress"]>
+
+
+
+  export type studyplanprogressSelectScalar = {
+    SPPID?: boolean
+    SPID?: boolean
+    UID?: boolean
+    Status?: boolean
+    StartTime?: boolean
+    EndTime?: boolean
+  }
+
+  export type studyplanprogressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"SPPID" | "SPID" | "UID" | "Status" | "StartTime" | "EndTime", ExtArgs["result"]["studyplanprogress"]>
+  export type studyplanprogressInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    studyplan?: boolean | studyplanDefaultArgs<ExtArgs>
+    user?: boolean | userDefaultArgs<ExtArgs>
+  }
+
+  export type $studyplanprogressPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "studyplanprogress"
+    objects: {
+      studyplan: Prisma.$studyplanPayload<ExtArgs>
+      user: Prisma.$userPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      SPPID: number
+      SPID: number
+      UID: string
+      Status: $Enums.studyplanprogress_Status
+      StartTime: Date | null
+      EndTime: Date | null
+    }, ExtArgs["result"]["studyplanprogress"]>
+    composites: {}
+  }
+
+  type studyplanprogressGetPayload<S extends boolean | null | undefined | studyplanprogressDefaultArgs> = $Result.GetResult<Prisma.$studyplanprogressPayload, S>
+
+  type studyplanprogressCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<studyplanprogressFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StudyplanprogressCountAggregateInputType | true
+    }
+
+  export interface studyplanprogressDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['studyplanprogress'], meta: { name: 'studyplanprogress' } }
+    /**
+     * Find zero or one Studyplanprogress that matches the filter.
+     * @param {studyplanprogressFindUniqueArgs} args - Arguments to find a Studyplanprogress
+     * @example
+     * // Get one Studyplanprogress
+     * const studyplanprogress = await prisma.studyplanprogress.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends studyplanprogressFindUniqueArgs>(args: SelectSubset<T, studyplanprogressFindUniqueArgs<ExtArgs>>): Prisma__studyplanprogressClient<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Studyplanprogress that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {studyplanprogressFindUniqueOrThrowArgs} args - Arguments to find a Studyplanprogress
+     * @example
+     * // Get one Studyplanprogress
+     * const studyplanprogress = await prisma.studyplanprogress.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends studyplanprogressFindUniqueOrThrowArgs>(args: SelectSubset<T, studyplanprogressFindUniqueOrThrowArgs<ExtArgs>>): Prisma__studyplanprogressClient<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Studyplanprogress that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanprogressFindFirstArgs} args - Arguments to find a Studyplanprogress
+     * @example
+     * // Get one Studyplanprogress
+     * const studyplanprogress = await prisma.studyplanprogress.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends studyplanprogressFindFirstArgs>(args?: SelectSubset<T, studyplanprogressFindFirstArgs<ExtArgs>>): Prisma__studyplanprogressClient<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Studyplanprogress that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanprogressFindFirstOrThrowArgs} args - Arguments to find a Studyplanprogress
+     * @example
+     * // Get one Studyplanprogress
+     * const studyplanprogress = await prisma.studyplanprogress.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends studyplanprogressFindFirstOrThrowArgs>(args?: SelectSubset<T, studyplanprogressFindFirstOrThrowArgs<ExtArgs>>): Prisma__studyplanprogressClient<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Studyplanprogresses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanprogressFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Studyplanprogresses
+     * const studyplanprogresses = await prisma.studyplanprogress.findMany()
+     * 
+     * // Get first 10 Studyplanprogresses
+     * const studyplanprogresses = await prisma.studyplanprogress.findMany({ take: 10 })
+     * 
+     * // Only select the `SPPID`
+     * const studyplanprogressWithSPPIDOnly = await prisma.studyplanprogress.findMany({ select: { SPPID: true } })
+     * 
+     */
+    findMany<T extends studyplanprogressFindManyArgs>(args?: SelectSubset<T, studyplanprogressFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Studyplanprogress.
+     * @param {studyplanprogressCreateArgs} args - Arguments to create a Studyplanprogress.
+     * @example
+     * // Create one Studyplanprogress
+     * const Studyplanprogress = await prisma.studyplanprogress.create({
+     *   data: {
+     *     // ... data to create a Studyplanprogress
+     *   }
+     * })
+     * 
+     */
+    create<T extends studyplanprogressCreateArgs>(args: SelectSubset<T, studyplanprogressCreateArgs<ExtArgs>>): Prisma__studyplanprogressClient<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Studyplanprogresses.
+     * @param {studyplanprogressCreateManyArgs} args - Arguments to create many Studyplanprogresses.
+     * @example
+     * // Create many Studyplanprogresses
+     * const studyplanprogress = await prisma.studyplanprogress.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends studyplanprogressCreateManyArgs>(args?: SelectSubset<T, studyplanprogressCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Studyplanprogress.
+     * @param {studyplanprogressDeleteArgs} args - Arguments to delete one Studyplanprogress.
+     * @example
+     * // Delete one Studyplanprogress
+     * const Studyplanprogress = await prisma.studyplanprogress.delete({
+     *   where: {
+     *     // ... filter to delete one Studyplanprogress
+     *   }
+     * })
+     * 
+     */
+    delete<T extends studyplanprogressDeleteArgs>(args: SelectSubset<T, studyplanprogressDeleteArgs<ExtArgs>>): Prisma__studyplanprogressClient<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Studyplanprogress.
+     * @param {studyplanprogressUpdateArgs} args - Arguments to update one Studyplanprogress.
+     * @example
+     * // Update one Studyplanprogress
+     * const studyplanprogress = await prisma.studyplanprogress.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends studyplanprogressUpdateArgs>(args: SelectSubset<T, studyplanprogressUpdateArgs<ExtArgs>>): Prisma__studyplanprogressClient<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Studyplanprogresses.
+     * @param {studyplanprogressDeleteManyArgs} args - Arguments to filter Studyplanprogresses to delete.
+     * @example
+     * // Delete a few Studyplanprogresses
+     * const { count } = await prisma.studyplanprogress.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends studyplanprogressDeleteManyArgs>(args?: SelectSubset<T, studyplanprogressDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Studyplanprogresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanprogressUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Studyplanprogresses
+     * const studyplanprogress = await prisma.studyplanprogress.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends studyplanprogressUpdateManyArgs>(args: SelectSubset<T, studyplanprogressUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Studyplanprogress.
+     * @param {studyplanprogressUpsertArgs} args - Arguments to update or create a Studyplanprogress.
+     * @example
+     * // Update or create a Studyplanprogress
+     * const studyplanprogress = await prisma.studyplanprogress.upsert({
+     *   create: {
+     *     // ... data to create a Studyplanprogress
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Studyplanprogress we want to update
+     *   }
+     * })
+     */
+    upsert<T extends studyplanprogressUpsertArgs>(args: SelectSubset<T, studyplanprogressUpsertArgs<ExtArgs>>): Prisma__studyplanprogressClient<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Studyplanprogresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanprogressCountArgs} args - Arguments to filter Studyplanprogresses to count.
+     * @example
+     * // Count the number of Studyplanprogresses
+     * const count = await prisma.studyplanprogress.count({
+     *   where: {
+     *     // ... the filter for the Studyplanprogresses we want to count
+     *   }
+     * })
+    **/
+    count<T extends studyplanprogressCountArgs>(
+      args?: Subset<T, studyplanprogressCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StudyplanprogressCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Studyplanprogress.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StudyplanprogressAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StudyplanprogressAggregateArgs>(args: Subset<T, StudyplanprogressAggregateArgs>): Prisma.PrismaPromise<GetStudyplanprogressAggregateType<T>>
+
+    /**
+     * Group by Studyplanprogress.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {studyplanprogressGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends studyplanprogressGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: studyplanprogressGroupByArgs['orderBy'] }
+        : { orderBy?: studyplanprogressGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, studyplanprogressGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStudyplanprogressGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the studyplanprogress model
+   */
+  readonly fields: studyplanprogressFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for studyplanprogress.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__studyplanprogressClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    studyplan<T extends studyplanDefaultArgs<ExtArgs> = {}>(args?: Subset<T, studyplanDefaultArgs<ExtArgs>>): Prisma__studyplanClient<$Result.GetResult<Prisma.$studyplanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the studyplanprogress model
+   */
+  interface studyplanprogressFieldRefs {
+    readonly SPPID: FieldRef<"studyplanprogress", 'Int'>
+    readonly SPID: FieldRef<"studyplanprogress", 'Int'>
+    readonly UID: FieldRef<"studyplanprogress", 'String'>
+    readonly Status: FieldRef<"studyplanprogress", 'studyplanprogress_Status'>
+    readonly StartTime: FieldRef<"studyplanprogress", 'DateTime'>
+    readonly EndTime: FieldRef<"studyplanprogress", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * studyplanprogress findUnique
+   */
+  export type studyplanprogressFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplanprogress to fetch.
+     */
+    where: studyplanprogressWhereUniqueInput
+  }
+
+  /**
+   * studyplanprogress findUniqueOrThrow
+   */
+  export type studyplanprogressFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplanprogress to fetch.
+     */
+    where: studyplanprogressWhereUniqueInput
+  }
+
+  /**
+   * studyplanprogress findFirst
+   */
+  export type studyplanprogressFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplanprogress to fetch.
+     */
+    where?: studyplanprogressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplanprogresses to fetch.
+     */
+    orderBy?: studyplanprogressOrderByWithRelationInput | studyplanprogressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for studyplanprogresses.
+     */
+    cursor?: studyplanprogressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplanprogresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplanprogresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of studyplanprogresses.
+     */
+    distinct?: StudyplanprogressScalarFieldEnum | StudyplanprogressScalarFieldEnum[]
+  }
+
+  /**
+   * studyplanprogress findFirstOrThrow
+   */
+  export type studyplanprogressFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplanprogress to fetch.
+     */
+    where?: studyplanprogressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplanprogresses to fetch.
+     */
+    orderBy?: studyplanprogressOrderByWithRelationInput | studyplanprogressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for studyplanprogresses.
+     */
+    cursor?: studyplanprogressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplanprogresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplanprogresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of studyplanprogresses.
+     */
+    distinct?: StudyplanprogressScalarFieldEnum | StudyplanprogressScalarFieldEnum[]
+  }
+
+  /**
+   * studyplanprogress findMany
+   */
+  export type studyplanprogressFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    /**
+     * Filter, which studyplanprogresses to fetch.
+     */
+    where?: studyplanprogressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of studyplanprogresses to fetch.
+     */
+    orderBy?: studyplanprogressOrderByWithRelationInput | studyplanprogressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing studyplanprogresses.
+     */
+    cursor?: studyplanprogressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` studyplanprogresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` studyplanprogresses.
+     */
+    skip?: number
+    distinct?: StudyplanprogressScalarFieldEnum | StudyplanprogressScalarFieldEnum[]
+  }
+
+  /**
+   * studyplanprogress create
+   */
+  export type studyplanprogressCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    /**
+     * The data needed to create a studyplanprogress.
+     */
+    data: XOR<studyplanprogressCreateInput, studyplanprogressUncheckedCreateInput>
+  }
+
+  /**
+   * studyplanprogress createMany
+   */
+  export type studyplanprogressCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many studyplanprogresses.
+     */
+    data: studyplanprogressCreateManyInput | studyplanprogressCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * studyplanprogress update
+   */
+  export type studyplanprogressUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    /**
+     * The data needed to update a studyplanprogress.
+     */
+    data: XOR<studyplanprogressUpdateInput, studyplanprogressUncheckedUpdateInput>
+    /**
+     * Choose, which studyplanprogress to update.
+     */
+    where: studyplanprogressWhereUniqueInput
+  }
+
+  /**
+   * studyplanprogress updateMany
+   */
+  export type studyplanprogressUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update studyplanprogresses.
+     */
+    data: XOR<studyplanprogressUpdateManyMutationInput, studyplanprogressUncheckedUpdateManyInput>
+    /**
+     * Filter which studyplanprogresses to update
+     */
+    where?: studyplanprogressWhereInput
+    /**
+     * Limit how many studyplanprogresses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * studyplanprogress upsert
+   */
+  export type studyplanprogressUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    /**
+     * The filter to search for the studyplanprogress to update in case it exists.
+     */
+    where: studyplanprogressWhereUniqueInput
+    /**
+     * In case the studyplanprogress found by the `where` argument doesn't exist, create a new studyplanprogress with this data.
+     */
+    create: XOR<studyplanprogressCreateInput, studyplanprogressUncheckedCreateInput>
+    /**
+     * In case the studyplanprogress was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<studyplanprogressUpdateInput, studyplanprogressUncheckedUpdateInput>
+  }
+
+  /**
+   * studyplanprogress delete
+   */
+  export type studyplanprogressDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+    /**
+     * Filter which studyplanprogress to delete.
+     */
+    where: studyplanprogressWhereUniqueInput
+  }
+
+  /**
+   * studyplanprogress deleteMany
+   */
+  export type studyplanprogressDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which studyplanprogresses to delete
+     */
+    where?: studyplanprogressWhereInput
+    /**
+     * Limit how many studyplanprogresses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * studyplanprogress without action
+   */
+  export type studyplanprogressDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the studyplanprogress
+     */
+    select?: studyplanprogressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the studyplanprogress
+     */
+    omit?: studyplanprogressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: studyplanprogressInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -19073,8 +20203,6 @@ export namespace Prisma {
     SPID: 'SPID',
     Name: 'Name',
     Description: 'Description',
-    StartTime: 'StartTime',
-    EndTime: 'EndTime',
     Icon: 'Icon',
     Slug: 'Slug'
   };
@@ -19100,6 +20228,18 @@ export namespace Prisma {
   };
 
   export type ExerciseprogressScalarFieldEnum = (typeof ExerciseprogressScalarFieldEnum)[keyof typeof ExerciseprogressScalarFieldEnum]
+
+
+  export const StudyplanprogressScalarFieldEnum: {
+    SPPID: 'SPPID',
+    SPID: 'SPID',
+    UID: 'UID',
+    Status: 'Status',
+    StartTime: 'StartTime',
+    EndTime: 'EndTime'
+  };
+
+  export type StudyplanprogressScalarFieldEnum = (typeof StudyplanprogressScalarFieldEnum)[keyof typeof StudyplanprogressScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -19247,6 +20387,13 @@ export namespace Prisma {
   export type exerciseprogressOrderByRelevanceFieldEnum = (typeof exerciseprogressOrderByRelevanceFieldEnum)[keyof typeof exerciseprogressOrderByRelevanceFieldEnum]
 
 
+  export const studyplanprogressOrderByRelevanceFieldEnum: {
+    UID: 'UID'
+  };
+
+  export type studyplanprogressOrderByRelevanceFieldEnum = (typeof studyplanprogressOrderByRelevanceFieldEnum)[keyof typeof studyplanprogressOrderByRelevanceFieldEnum]
+
+
   /**
    * Field references
    */
@@ -19326,6 +20473,13 @@ export namespace Prisma {
    * Reference to a field of type 'exerciseprogress_Status'
    */
   export type Enumexerciseprogress_StatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'exerciseprogress_Status'>
+    
+
+
+  /**
+   * Reference to a field of type 'studyplanprogress_Status'
+   */
+  export type Enumstudyplanprogress_StatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'studyplanprogress_Status'>
     
 
 
@@ -19693,6 +20847,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: FriendshipListRelationFilter
     notification_notification_UIDTouser?: NotificationListRelationFilter
     notification_notification_FromUserTouser?: NotificationListRelationFilter
+    studyplanprogress?: StudyplanprogressListRelationFilter
     submission?: SubmissionListRelationFilter
   }
 
@@ -19712,6 +20867,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipOrderByRelationAggregateInput
     notification_notification_UIDTouser?: notificationOrderByRelationAggregateInput
     notification_notification_FromUserTouser?: notificationOrderByRelationAggregateInput
+    studyplanprogress?: studyplanprogressOrderByRelationAggregateInput
     submission?: submissionOrderByRelationAggregateInput
     _relevance?: userOrderByRelevanceInput
   }
@@ -19735,6 +20891,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: FriendshipListRelationFilter
     notification_notification_UIDTouser?: NotificationListRelationFilter
     notification_notification_FromUserTouser?: NotificationListRelationFilter
+    studyplanprogress?: StudyplanprogressListRelationFilter
     submission?: SubmissionListRelationFilter
   }, "UID" | "Email">
 
@@ -20210,22 +21367,20 @@ export namespace Prisma {
     SPID?: IntFilter<"studyplan"> | number
     Name?: StringFilter<"studyplan"> | string
     Description?: StringFilter<"studyplan"> | string
-    StartTime?: DateTimeNullableFilter<"studyplan"> | Date | string | null
-    EndTime?: DateTimeNullableFilter<"studyplan"> | Date | string | null
     Icon?: StringNullableFilter<"studyplan"> | string | null
     Slug?: StringNullableFilter<"studyplan"> | string | null
     studyplanitem?: StudyplanitemListRelationFilter
+    studyplanprogress?: StudyplanprogressListRelationFilter
   }
 
   export type studyplanOrderByWithRelationInput = {
     SPID?: SortOrder
     Name?: SortOrder
     Description?: SortOrder
-    StartTime?: SortOrderInput | SortOrder
-    EndTime?: SortOrderInput | SortOrder
     Icon?: SortOrderInput | SortOrder
     Slug?: SortOrderInput | SortOrder
     studyplanitem?: studyplanitemOrderByRelationAggregateInput
+    studyplanprogress?: studyplanprogressOrderByRelationAggregateInput
     _relevance?: studyplanOrderByRelevanceInput
   }
 
@@ -20237,18 +21392,15 @@ export namespace Prisma {
     NOT?: studyplanWhereInput | studyplanWhereInput[]
     Name?: StringFilter<"studyplan"> | string
     Description?: StringFilter<"studyplan"> | string
-    StartTime?: DateTimeNullableFilter<"studyplan"> | Date | string | null
-    EndTime?: DateTimeNullableFilter<"studyplan"> | Date | string | null
     Icon?: StringNullableFilter<"studyplan"> | string | null
     studyplanitem?: StudyplanitemListRelationFilter
+    studyplanprogress?: StudyplanprogressListRelationFilter
   }, "SPID" | "Slug">
 
   export type studyplanOrderByWithAggregationInput = {
     SPID?: SortOrder
     Name?: SortOrder
     Description?: SortOrder
-    StartTime?: SortOrderInput | SortOrder
-    EndTime?: SortOrderInput | SortOrder
     Icon?: SortOrderInput | SortOrder
     Slug?: SortOrderInput | SortOrder
     _count?: studyplanCountOrderByAggregateInput
@@ -20265,8 +21417,6 @@ export namespace Prisma {
     SPID?: IntWithAggregatesFilter<"studyplan"> | number
     Name?: StringWithAggregatesFilter<"studyplan"> | string
     Description?: StringWithAggregatesFilter<"studyplan"> | string
-    StartTime?: DateTimeNullableWithAggregatesFilter<"studyplan"> | Date | string | null
-    EndTime?: DateTimeNullableWithAggregatesFilter<"studyplan"> | Date | string | null
     Icon?: StringNullableWithAggregatesFilter<"studyplan"> | string | null
     Slug?: StringNullableWithAggregatesFilter<"studyplan"> | string | null
   }
@@ -20382,6 +21532,72 @@ export namespace Prisma {
     EID?: IntWithAggregatesFilter<"exerciseprogress"> | number
     Status?: Enumexerciseprogress_StatusNullableWithAggregatesFilter<"exerciseprogress"> | $Enums.exerciseprogress_Status | null
     UpdatedAt?: DateTimeNullableWithAggregatesFilter<"exerciseprogress"> | Date | string | null
+  }
+
+  export type studyplanprogressWhereInput = {
+    AND?: studyplanprogressWhereInput | studyplanprogressWhereInput[]
+    OR?: studyplanprogressWhereInput[]
+    NOT?: studyplanprogressWhereInput | studyplanprogressWhereInput[]
+    SPPID?: IntFilter<"studyplanprogress"> | number
+    SPID?: IntFilter<"studyplanprogress"> | number
+    UID?: StringFilter<"studyplanprogress"> | string
+    Status?: Enumstudyplanprogress_StatusFilter<"studyplanprogress"> | $Enums.studyplanprogress_Status
+    StartTime?: DateTimeNullableFilter<"studyplanprogress"> | Date | string | null
+    EndTime?: DateTimeNullableFilter<"studyplanprogress"> | Date | string | null
+    studyplan?: XOR<StudyplanScalarRelationFilter, studyplanWhereInput>
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+  }
+
+  export type studyplanprogressOrderByWithRelationInput = {
+    SPPID?: SortOrder
+    SPID?: SortOrder
+    UID?: SortOrder
+    Status?: SortOrder
+    StartTime?: SortOrderInput | SortOrder
+    EndTime?: SortOrderInput | SortOrder
+    studyplan?: studyplanOrderByWithRelationInput
+    user?: userOrderByWithRelationInput
+    _relevance?: studyplanprogressOrderByRelevanceInput
+  }
+
+  export type studyplanprogressWhereUniqueInput = Prisma.AtLeast<{
+    SPPID?: number
+    AND?: studyplanprogressWhereInput | studyplanprogressWhereInput[]
+    OR?: studyplanprogressWhereInput[]
+    NOT?: studyplanprogressWhereInput | studyplanprogressWhereInput[]
+    SPID?: IntFilter<"studyplanprogress"> | number
+    UID?: StringFilter<"studyplanprogress"> | string
+    Status?: Enumstudyplanprogress_StatusFilter<"studyplanprogress"> | $Enums.studyplanprogress_Status
+    StartTime?: DateTimeNullableFilter<"studyplanprogress"> | Date | string | null
+    EndTime?: DateTimeNullableFilter<"studyplanprogress"> | Date | string | null
+    studyplan?: XOR<StudyplanScalarRelationFilter, studyplanWhereInput>
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+  }, "SPPID">
+
+  export type studyplanprogressOrderByWithAggregationInput = {
+    SPPID?: SortOrder
+    SPID?: SortOrder
+    UID?: SortOrder
+    Status?: SortOrder
+    StartTime?: SortOrderInput | SortOrder
+    EndTime?: SortOrderInput | SortOrder
+    _count?: studyplanprogressCountOrderByAggregateInput
+    _avg?: studyplanprogressAvgOrderByAggregateInput
+    _max?: studyplanprogressMaxOrderByAggregateInput
+    _min?: studyplanprogressMinOrderByAggregateInput
+    _sum?: studyplanprogressSumOrderByAggregateInput
+  }
+
+  export type studyplanprogressScalarWhereWithAggregatesInput = {
+    AND?: studyplanprogressScalarWhereWithAggregatesInput | studyplanprogressScalarWhereWithAggregatesInput[]
+    OR?: studyplanprogressScalarWhereWithAggregatesInput[]
+    NOT?: studyplanprogressScalarWhereWithAggregatesInput | studyplanprogressScalarWhereWithAggregatesInput[]
+    SPPID?: IntWithAggregatesFilter<"studyplanprogress"> | number
+    SPID?: IntWithAggregatesFilter<"studyplanprogress"> | number
+    UID?: StringWithAggregatesFilter<"studyplanprogress"> | string
+    Status?: Enumstudyplanprogress_StatusWithAggregatesFilter<"studyplanprogress"> | $Enums.studyplanprogress_Status
+    StartTime?: DateTimeNullableWithAggregatesFilter<"studyplanprogress"> | Date | string | null
+    EndTime?: DateTimeNullableWithAggregatesFilter<"studyplanprogress"> | Date | string | null
   }
 
   export type exerciseCreateInput = {
@@ -20711,6 +21927,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
   }
 
@@ -20730,6 +21947,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -20749,6 +21967,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
@@ -20768,6 +21987,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -21178,51 +22398,45 @@ export namespace Prisma {
   export type studyplanCreateInput = {
     Name: string
     Description: string
-    StartTime?: Date | string | null
-    EndTime?: Date | string | null
     Icon?: string | null
     Slug?: string | null
     studyplanitem?: studyplanitemCreateNestedManyWithoutStudyplanInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutStudyplanInput
   }
 
   export type studyplanUncheckedCreateInput = {
     SPID?: number
     Name: string
     Description: string
-    StartTime?: Date | string | null
-    EndTime?: Date | string | null
     Icon?: string | null
     Slug?: string | null
     studyplanitem?: studyplanitemUncheckedCreateNestedManyWithoutStudyplanInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutStudyplanInput
   }
 
   export type studyplanUpdateInput = {
     Name?: StringFieldUpdateOperationsInput | string
     Description?: StringFieldUpdateOperationsInput | string
-    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Icon?: NullableStringFieldUpdateOperationsInput | string | null
     Slug?: NullableStringFieldUpdateOperationsInput | string | null
     studyplanitem?: studyplanitemUpdateManyWithoutStudyplanNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutStudyplanNestedInput
   }
 
   export type studyplanUncheckedUpdateInput = {
     SPID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
     Description?: StringFieldUpdateOperationsInput | string
-    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Icon?: NullableStringFieldUpdateOperationsInput | string | null
     Slug?: NullableStringFieldUpdateOperationsInput | string | null
     studyplanitem?: studyplanitemUncheckedUpdateManyWithoutStudyplanNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutStudyplanNestedInput
   }
 
   export type studyplanCreateManyInput = {
     SPID?: number
     Name: string
     Description: string
-    StartTime?: Date | string | null
-    EndTime?: Date | string | null
     Icon?: string | null
     Slug?: string | null
   }
@@ -21230,8 +22444,6 @@ export namespace Prisma {
   export type studyplanUpdateManyMutationInput = {
     Name?: StringFieldUpdateOperationsInput | string
     Description?: StringFieldUpdateOperationsInput | string
-    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Icon?: NullableStringFieldUpdateOperationsInput | string | null
     Slug?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -21240,8 +22452,6 @@ export namespace Prisma {
     SPID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
     Description?: StringFieldUpdateOperationsInput | string
-    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Icon?: NullableStringFieldUpdateOperationsInput | string | null
     Slug?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -21337,6 +22547,64 @@ export namespace Prisma {
     EID?: IntFieldUpdateOperationsInput | number
     Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
     UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type studyplanprogressCreateInput = {
+    Status?: $Enums.studyplanprogress_Status
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+    studyplan: studyplanCreateNestedOneWithoutStudyplanprogressInput
+    user: userCreateNestedOneWithoutStudyplanprogressInput
+  }
+
+  export type studyplanprogressUncheckedCreateInput = {
+    SPPID?: number
+    SPID: number
+    UID: string
+    Status?: $Enums.studyplanprogress_Status
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+  }
+
+  export type studyplanprogressUpdateInput = {
+    Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    studyplan?: studyplanUpdateOneRequiredWithoutStudyplanprogressNestedInput
+    user?: userUpdateOneRequiredWithoutStudyplanprogressNestedInput
+  }
+
+  export type studyplanprogressUncheckedUpdateInput = {
+    SPPID?: IntFieldUpdateOperationsInput | number
+    SPID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type studyplanprogressCreateManyInput = {
+    SPPID?: number
+    SPID: number
+    UID: string
+    Status?: $Enums.studyplanprogress_Status
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+  }
+
+  export type studyplanprogressUpdateManyMutationInput = {
+    Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type studyplanprogressUncheckedUpdateManyInput = {
+    SPPID?: IntFieldUpdateOperationsInput | number
+    SPID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -21889,6 +23157,12 @@ export namespace Prisma {
     none?: notificationWhereInput
   }
 
+  export type StudyplanprogressListRelationFilter = {
+    every?: studyplanprogressWhereInput
+    some?: studyplanprogressWhereInput
+    none?: studyplanprogressWhereInput
+  }
+
   export type commentlikeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -21898,6 +23172,10 @@ export namespace Prisma {
   }
 
   export type notificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type studyplanprogressOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -22333,8 +23611,6 @@ export namespace Prisma {
     SPID?: SortOrder
     Name?: SortOrder
     Description?: SortOrder
-    StartTime?: SortOrder
-    EndTime?: SortOrder
     Icon?: SortOrder
     Slug?: SortOrder
   }
@@ -22347,8 +23623,6 @@ export namespace Prisma {
     SPID?: SortOrder
     Name?: SortOrder
     Description?: SortOrder
-    StartTime?: SortOrder
-    EndTime?: SortOrder
     Icon?: SortOrder
     Slug?: SortOrder
   }
@@ -22357,8 +23631,6 @@ export namespace Prisma {
     SPID?: SortOrder
     Name?: SortOrder
     Description?: SortOrder
-    StartTime?: SortOrder
-    EndTime?: SortOrder
     Icon?: SortOrder
     Slug?: SortOrder
   }
@@ -22466,6 +23738,66 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel>
     _max?: NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel>
+  }
+
+  export type Enumstudyplanprogress_StatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.studyplanprogress_Status | Enumstudyplanprogress_StatusFieldRefInput<$PrismaModel>
+    in?: $Enums.studyplanprogress_Status[]
+    notIn?: $Enums.studyplanprogress_Status[]
+    not?: NestedEnumstudyplanprogress_StatusFilter<$PrismaModel> | $Enums.studyplanprogress_Status
+  }
+
+  export type studyplanprogressOrderByRelevanceInput = {
+    fields: studyplanprogressOrderByRelevanceFieldEnum | studyplanprogressOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type studyplanprogressCountOrderByAggregateInput = {
+    SPPID?: SortOrder
+    SPID?: SortOrder
+    UID?: SortOrder
+    Status?: SortOrder
+    StartTime?: SortOrder
+    EndTime?: SortOrder
+  }
+
+  export type studyplanprogressAvgOrderByAggregateInput = {
+    SPPID?: SortOrder
+    SPID?: SortOrder
+  }
+
+  export type studyplanprogressMaxOrderByAggregateInput = {
+    SPPID?: SortOrder
+    SPID?: SortOrder
+    UID?: SortOrder
+    Status?: SortOrder
+    StartTime?: SortOrder
+    EndTime?: SortOrder
+  }
+
+  export type studyplanprogressMinOrderByAggregateInput = {
+    SPPID?: SortOrder
+    SPID?: SortOrder
+    UID?: SortOrder
+    Status?: SortOrder
+    StartTime?: SortOrder
+    EndTime?: SortOrder
+  }
+
+  export type studyplanprogressSumOrderByAggregateInput = {
+    SPPID?: SortOrder
+    SPID?: SortOrder
+  }
+
+  export type Enumstudyplanprogress_StatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.studyplanprogress_Status | Enumstudyplanprogress_StatusFieldRefInput<$PrismaModel>
+    in?: $Enums.studyplanprogress_Status[]
+    notIn?: $Enums.studyplanprogress_Status[]
+    not?: NestedEnumstudyplanprogress_StatusWithAggregatesFilter<$PrismaModel> | $Enums.studyplanprogress_Status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumstudyplanprogress_StatusFilter<$PrismaModel>
+    _max?: NestedEnumstudyplanprogress_StatusFilter<$PrismaModel>
   }
 
   export type commentCreateNestedManyWithoutExerciseInput = {
@@ -23006,6 +24338,13 @@ export namespace Prisma {
     connect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
   }
 
+  export type studyplanprogressCreateNestedManyWithoutUserInput = {
+    create?: XOR<studyplanprogressCreateWithoutUserInput, studyplanprogressUncheckedCreateWithoutUserInput> | studyplanprogressCreateWithoutUserInput[] | studyplanprogressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: studyplanprogressCreateOrConnectWithoutUserInput | studyplanprogressCreateOrConnectWithoutUserInput[]
+    createMany?: studyplanprogressCreateManyUserInputEnvelope
+    connect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+  }
+
   export type submissionCreateNestedManyWithoutUserInput = {
     create?: XOR<submissionCreateWithoutUserInput, submissionUncheckedCreateWithoutUserInput> | submissionCreateWithoutUserInput[] | submissionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: submissionCreateOrConnectWithoutUserInput | submissionCreateOrConnectWithoutUserInput[]
@@ -23067,6 +24406,13 @@ export namespace Prisma {
     connectOrCreate?: notificationCreateOrConnectWithoutUser_notification_FromUserTouserInput | notificationCreateOrConnectWithoutUser_notification_FromUserTouserInput[]
     createMany?: notificationCreateManyUser_notification_FromUserTouserInputEnvelope
     connect?: notificationWhereUniqueInput | notificationWhereUniqueInput[]
+  }
+
+  export type studyplanprogressUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<studyplanprogressCreateWithoutUserInput, studyplanprogressUncheckedCreateWithoutUserInput> | studyplanprogressCreateWithoutUserInput[] | studyplanprogressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: studyplanprogressCreateOrConnectWithoutUserInput | studyplanprogressCreateOrConnectWithoutUserInput[]
+    createMany?: studyplanprogressCreateManyUserInputEnvelope
+    connect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
   }
 
   export type submissionUncheckedCreateNestedManyWithoutUserInput = {
@@ -23190,6 +24536,20 @@ export namespace Prisma {
     update?: notificationUpdateWithWhereUniqueWithoutUser_notification_FromUserTouserInput | notificationUpdateWithWhereUniqueWithoutUser_notification_FromUserTouserInput[]
     updateMany?: notificationUpdateManyWithWhereWithoutUser_notification_FromUserTouserInput | notificationUpdateManyWithWhereWithoutUser_notification_FromUserTouserInput[]
     deleteMany?: notificationScalarWhereInput | notificationScalarWhereInput[]
+  }
+
+  export type studyplanprogressUpdateManyWithoutUserNestedInput = {
+    create?: XOR<studyplanprogressCreateWithoutUserInput, studyplanprogressUncheckedCreateWithoutUserInput> | studyplanprogressCreateWithoutUserInput[] | studyplanprogressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: studyplanprogressCreateOrConnectWithoutUserInput | studyplanprogressCreateOrConnectWithoutUserInput[]
+    upsert?: studyplanprogressUpsertWithWhereUniqueWithoutUserInput | studyplanprogressUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: studyplanprogressCreateManyUserInputEnvelope
+    set?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    disconnect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    delete?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    connect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    update?: studyplanprogressUpdateWithWhereUniqueWithoutUserInput | studyplanprogressUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: studyplanprogressUpdateManyWithWhereWithoutUserInput | studyplanprogressUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: studyplanprogressScalarWhereInput | studyplanprogressScalarWhereInput[]
   }
 
   export type submissionUpdateManyWithoutUserNestedInput = {
@@ -23316,6 +24676,20 @@ export namespace Prisma {
     update?: notificationUpdateWithWhereUniqueWithoutUser_notification_FromUserTouserInput | notificationUpdateWithWhereUniqueWithoutUser_notification_FromUserTouserInput[]
     updateMany?: notificationUpdateManyWithWhereWithoutUser_notification_FromUserTouserInput | notificationUpdateManyWithWhereWithoutUser_notification_FromUserTouserInput[]
     deleteMany?: notificationScalarWhereInput | notificationScalarWhereInput[]
+  }
+
+  export type studyplanprogressUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<studyplanprogressCreateWithoutUserInput, studyplanprogressUncheckedCreateWithoutUserInput> | studyplanprogressCreateWithoutUserInput[] | studyplanprogressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: studyplanprogressCreateOrConnectWithoutUserInput | studyplanprogressCreateOrConnectWithoutUserInput[]
+    upsert?: studyplanprogressUpsertWithWhereUniqueWithoutUserInput | studyplanprogressUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: studyplanprogressCreateManyUserInputEnvelope
+    set?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    disconnect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    delete?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    connect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    update?: studyplanprogressUpdateWithWhereUniqueWithoutUserInput | studyplanprogressUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: studyplanprogressUpdateManyWithWhereWithoutUserInput | studyplanprogressUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: studyplanprogressScalarWhereInput | studyplanprogressScalarWhereInput[]
   }
 
   export type submissionUncheckedUpdateManyWithoutUserNestedInput = {
@@ -23703,11 +25077,25 @@ export namespace Prisma {
     connect?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
   }
 
+  export type studyplanprogressCreateNestedManyWithoutStudyplanInput = {
+    create?: XOR<studyplanprogressCreateWithoutStudyplanInput, studyplanprogressUncheckedCreateWithoutStudyplanInput> | studyplanprogressCreateWithoutStudyplanInput[] | studyplanprogressUncheckedCreateWithoutStudyplanInput[]
+    connectOrCreate?: studyplanprogressCreateOrConnectWithoutStudyplanInput | studyplanprogressCreateOrConnectWithoutStudyplanInput[]
+    createMany?: studyplanprogressCreateManyStudyplanInputEnvelope
+    connect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+  }
+
   export type studyplanitemUncheckedCreateNestedManyWithoutStudyplanInput = {
     create?: XOR<studyplanitemCreateWithoutStudyplanInput, studyplanitemUncheckedCreateWithoutStudyplanInput> | studyplanitemCreateWithoutStudyplanInput[] | studyplanitemUncheckedCreateWithoutStudyplanInput[]
     connectOrCreate?: studyplanitemCreateOrConnectWithoutStudyplanInput | studyplanitemCreateOrConnectWithoutStudyplanInput[]
     createMany?: studyplanitemCreateManyStudyplanInputEnvelope
     connect?: studyplanitemWhereUniqueInput | studyplanitemWhereUniqueInput[]
+  }
+
+  export type studyplanprogressUncheckedCreateNestedManyWithoutStudyplanInput = {
+    create?: XOR<studyplanprogressCreateWithoutStudyplanInput, studyplanprogressUncheckedCreateWithoutStudyplanInput> | studyplanprogressCreateWithoutStudyplanInput[] | studyplanprogressUncheckedCreateWithoutStudyplanInput[]
+    connectOrCreate?: studyplanprogressCreateOrConnectWithoutStudyplanInput | studyplanprogressCreateOrConnectWithoutStudyplanInput[]
+    createMany?: studyplanprogressCreateManyStudyplanInputEnvelope
+    connect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
   }
 
   export type studyplanitemUpdateManyWithoutStudyplanNestedInput = {
@@ -23724,6 +25112,20 @@ export namespace Prisma {
     deleteMany?: studyplanitemScalarWhereInput | studyplanitemScalarWhereInput[]
   }
 
+  export type studyplanprogressUpdateManyWithoutStudyplanNestedInput = {
+    create?: XOR<studyplanprogressCreateWithoutStudyplanInput, studyplanprogressUncheckedCreateWithoutStudyplanInput> | studyplanprogressCreateWithoutStudyplanInput[] | studyplanprogressUncheckedCreateWithoutStudyplanInput[]
+    connectOrCreate?: studyplanprogressCreateOrConnectWithoutStudyplanInput | studyplanprogressCreateOrConnectWithoutStudyplanInput[]
+    upsert?: studyplanprogressUpsertWithWhereUniqueWithoutStudyplanInput | studyplanprogressUpsertWithWhereUniqueWithoutStudyplanInput[]
+    createMany?: studyplanprogressCreateManyStudyplanInputEnvelope
+    set?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    disconnect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    delete?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    connect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    update?: studyplanprogressUpdateWithWhereUniqueWithoutStudyplanInput | studyplanprogressUpdateWithWhereUniqueWithoutStudyplanInput[]
+    updateMany?: studyplanprogressUpdateManyWithWhereWithoutStudyplanInput | studyplanprogressUpdateManyWithWhereWithoutStudyplanInput[]
+    deleteMany?: studyplanprogressScalarWhereInput | studyplanprogressScalarWhereInput[]
+  }
+
   export type studyplanitemUncheckedUpdateManyWithoutStudyplanNestedInput = {
     create?: XOR<studyplanitemCreateWithoutStudyplanInput, studyplanitemUncheckedCreateWithoutStudyplanInput> | studyplanitemCreateWithoutStudyplanInput[] | studyplanitemUncheckedCreateWithoutStudyplanInput[]
     connectOrCreate?: studyplanitemCreateOrConnectWithoutStudyplanInput | studyplanitemCreateOrConnectWithoutStudyplanInput[]
@@ -23736,6 +25138,20 @@ export namespace Prisma {
     update?: studyplanitemUpdateWithWhereUniqueWithoutStudyplanInput | studyplanitemUpdateWithWhereUniqueWithoutStudyplanInput[]
     updateMany?: studyplanitemUpdateManyWithWhereWithoutStudyplanInput | studyplanitemUpdateManyWithWhereWithoutStudyplanInput[]
     deleteMany?: studyplanitemScalarWhereInput | studyplanitemScalarWhereInput[]
+  }
+
+  export type studyplanprogressUncheckedUpdateManyWithoutStudyplanNestedInput = {
+    create?: XOR<studyplanprogressCreateWithoutStudyplanInput, studyplanprogressUncheckedCreateWithoutStudyplanInput> | studyplanprogressCreateWithoutStudyplanInput[] | studyplanprogressUncheckedCreateWithoutStudyplanInput[]
+    connectOrCreate?: studyplanprogressCreateOrConnectWithoutStudyplanInput | studyplanprogressCreateOrConnectWithoutStudyplanInput[]
+    upsert?: studyplanprogressUpsertWithWhereUniqueWithoutStudyplanInput | studyplanprogressUpsertWithWhereUniqueWithoutStudyplanInput[]
+    createMany?: studyplanprogressCreateManyStudyplanInputEnvelope
+    set?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    disconnect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    delete?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    connect?: studyplanprogressWhereUniqueInput | studyplanprogressWhereUniqueInput[]
+    update?: studyplanprogressUpdateWithWhereUniqueWithoutStudyplanInput | studyplanprogressUpdateWithWhereUniqueWithoutStudyplanInput[]
+    updateMany?: studyplanprogressUpdateManyWithWhereWithoutStudyplanInput | studyplanprogressUpdateManyWithWhereWithoutStudyplanInput[]
+    deleteMany?: studyplanprogressScalarWhereInput | studyplanprogressScalarWhereInput[]
   }
 
   export type exerciseCreateNestedManyWithoutStudyplanitemInput = {
@@ -23824,6 +25240,38 @@ export namespace Prisma {
     upsert?: exerciseUpsertWithoutExerciseprogressInput
     connect?: exerciseWhereUniqueInput
     update?: XOR<XOR<exerciseUpdateToOneWithWhereWithoutExerciseprogressInput, exerciseUpdateWithoutExerciseprogressInput>, exerciseUncheckedUpdateWithoutExerciseprogressInput>
+  }
+
+  export type studyplanCreateNestedOneWithoutStudyplanprogressInput = {
+    create?: XOR<studyplanCreateWithoutStudyplanprogressInput, studyplanUncheckedCreateWithoutStudyplanprogressInput>
+    connectOrCreate?: studyplanCreateOrConnectWithoutStudyplanprogressInput
+    connect?: studyplanWhereUniqueInput
+  }
+
+  export type userCreateNestedOneWithoutStudyplanprogressInput = {
+    create?: XOR<userCreateWithoutStudyplanprogressInput, userUncheckedCreateWithoutStudyplanprogressInput>
+    connectOrCreate?: userCreateOrConnectWithoutStudyplanprogressInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type Enumstudyplanprogress_StatusFieldUpdateOperationsInput = {
+    set?: $Enums.studyplanprogress_Status
+  }
+
+  export type studyplanUpdateOneRequiredWithoutStudyplanprogressNestedInput = {
+    create?: XOR<studyplanCreateWithoutStudyplanprogressInput, studyplanUncheckedCreateWithoutStudyplanprogressInput>
+    connectOrCreate?: studyplanCreateOrConnectWithoutStudyplanprogressInput
+    upsert?: studyplanUpsertWithoutStudyplanprogressInput
+    connect?: studyplanWhereUniqueInput
+    update?: XOR<XOR<studyplanUpdateToOneWithWhereWithoutStudyplanprogressInput, studyplanUpdateWithoutStudyplanprogressInput>, studyplanUncheckedUpdateWithoutStudyplanprogressInput>
+  }
+
+  export type userUpdateOneRequiredWithoutStudyplanprogressNestedInput = {
+    create?: XOR<userCreateWithoutStudyplanprogressInput, userUncheckedCreateWithoutStudyplanprogressInput>
+    connectOrCreate?: userCreateOrConnectWithoutStudyplanprogressInput
+    upsert?: userUpsertWithoutStudyplanprogressInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutStudyplanprogressInput, userUpdateWithoutStudyplanprogressInput>, userUncheckedUpdateWithoutStudyplanprogressInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -24123,6 +25571,23 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel>
     _max?: NestedEnumexerciseprogress_StatusNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumstudyplanprogress_StatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.studyplanprogress_Status | Enumstudyplanprogress_StatusFieldRefInput<$PrismaModel>
+    in?: $Enums.studyplanprogress_Status[]
+    notIn?: $Enums.studyplanprogress_Status[]
+    not?: NestedEnumstudyplanprogress_StatusFilter<$PrismaModel> | $Enums.studyplanprogress_Status
+  }
+
+  export type NestedEnumstudyplanprogress_StatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.studyplanprogress_Status | Enumstudyplanprogress_StatusFieldRefInput<$PrismaModel>
+    in?: $Enums.studyplanprogress_Status[]
+    notIn?: $Enums.studyplanprogress_Status[]
+    not?: NestedEnumstudyplanprogress_StatusWithAggregatesFilter<$PrismaModel> | $Enums.studyplanprogress_Status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumstudyplanprogress_StatusFilter<$PrismaModel>
+    _max?: NestedEnumstudyplanprogress_StatusFilter<$PrismaModel>
   }
 
   export type commentCreateWithoutExerciseInput = {
@@ -24515,6 +25980,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
   }
 
   export type userUncheckedCreateWithoutSubmissionInput = {
@@ -24533,6 +25999,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type userCreateOrConnectWithoutSubmissionInput = {
@@ -24630,6 +26097,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
   }
 
   export type userUncheckedUpdateWithoutSubmissionInput = {
@@ -24648,6 +26116,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type testcaseresultUpsertWithWhereUniqueWithoutSubmissionInput = {
@@ -25157,6 +26626,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type studyplanprogressCreateWithoutUserInput = {
+    Status?: $Enums.studyplanprogress_Status
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+    studyplan: studyplanCreateNestedOneWithoutStudyplanprogressInput
+  }
+
+  export type studyplanprogressUncheckedCreateWithoutUserInput = {
+    SPPID?: number
+    SPID: number
+    Status?: $Enums.studyplanprogress_Status
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+  }
+
+  export type studyplanprogressCreateOrConnectWithoutUserInput = {
+    where: studyplanprogressWhereUniqueInput
+    create: XOR<studyplanprogressCreateWithoutUserInput, studyplanprogressUncheckedCreateWithoutUserInput>
+  }
+
+  export type studyplanprogressCreateManyUserInputEnvelope = {
+    data: studyplanprogressCreateManyUserInput | studyplanprogressCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type submissionCreateWithoutUserInput = {
     Code?: string | null
     CreatedAt?: Date | string | null
@@ -25349,6 +26843,34 @@ export namespace Prisma {
     data: XOR<notificationUpdateManyMutationInput, notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserInput>
   }
 
+  export type studyplanprogressUpsertWithWhereUniqueWithoutUserInput = {
+    where: studyplanprogressWhereUniqueInput
+    update: XOR<studyplanprogressUpdateWithoutUserInput, studyplanprogressUncheckedUpdateWithoutUserInput>
+    create: XOR<studyplanprogressCreateWithoutUserInput, studyplanprogressUncheckedCreateWithoutUserInput>
+  }
+
+  export type studyplanprogressUpdateWithWhereUniqueWithoutUserInput = {
+    where: studyplanprogressWhereUniqueInput
+    data: XOR<studyplanprogressUpdateWithoutUserInput, studyplanprogressUncheckedUpdateWithoutUserInput>
+  }
+
+  export type studyplanprogressUpdateManyWithWhereWithoutUserInput = {
+    where: studyplanprogressScalarWhereInput
+    data: XOR<studyplanprogressUpdateManyMutationInput, studyplanprogressUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type studyplanprogressScalarWhereInput = {
+    AND?: studyplanprogressScalarWhereInput | studyplanprogressScalarWhereInput[]
+    OR?: studyplanprogressScalarWhereInput[]
+    NOT?: studyplanprogressScalarWhereInput | studyplanprogressScalarWhereInput[]
+    SPPID?: IntFilter<"studyplanprogress"> | number
+    SPID?: IntFilter<"studyplanprogress"> | number
+    UID?: StringFilter<"studyplanprogress"> | string
+    Status?: Enumstudyplanprogress_StatusFilter<"studyplanprogress"> | $Enums.studyplanprogress_Status
+    StartTime?: DateTimeNullableFilter<"studyplanprogress"> | Date | string | null
+    EndTime?: DateTimeNullableFilter<"studyplanprogress"> | Date | string | null
+  }
+
   export type submissionUpsertWithWhereUniqueWithoutUserInput = {
     where: submissionWhereUniqueInput
     update: XOR<submissionUpdateWithoutUserInput, submissionUncheckedUpdateWithoutUserInput>
@@ -25380,6 +26902,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
   }
 
@@ -25398,6 +26921,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -25421,6 +26945,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
   }
 
@@ -25439,6 +26964,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -25473,6 +26999,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
@@ -25491,6 +27018,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -25520,6 +27048,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
@@ -25538,6 +27067,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -25608,6 +27138,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
   }
 
@@ -25626,6 +27157,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -25764,6 +27296,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
@@ -25782,6 +27315,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -25898,6 +27432,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
   }
 
@@ -25916,6 +27451,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -25974,6 +27510,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
@@ -25992,6 +27529,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -26040,6 +27578,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
   }
 
@@ -26058,6 +27597,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -26126,6 +27666,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
@@ -26144,6 +27685,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -26285,6 +27827,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
   }
 
@@ -26303,6 +27846,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -26326,6 +27870,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
   }
 
@@ -26344,6 +27889,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -26402,6 +27948,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
@@ -26420,6 +27967,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -26449,6 +27997,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
@@ -26467,6 +28016,7 @@ export namespace Prisma {
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -26521,6 +28071,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type studyplanprogressCreateWithoutStudyplanInput = {
+    Status?: $Enums.studyplanprogress_Status
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+    user: userCreateNestedOneWithoutStudyplanprogressInput
+  }
+
+  export type studyplanprogressUncheckedCreateWithoutStudyplanInput = {
+    SPPID?: number
+    UID: string
+    Status?: $Enums.studyplanprogress_Status
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+  }
+
+  export type studyplanprogressCreateOrConnectWithoutStudyplanInput = {
+    where: studyplanprogressWhereUniqueInput
+    create: XOR<studyplanprogressCreateWithoutStudyplanInput, studyplanprogressUncheckedCreateWithoutStudyplanInput>
+  }
+
+  export type studyplanprogressCreateManyStudyplanInputEnvelope = {
+    data: studyplanprogressCreateManyStudyplanInput | studyplanprogressCreateManyStudyplanInput[]
+    skipDuplicates?: boolean
+  }
+
   export type studyplanitemUpsertWithWhereUniqueWithoutStudyplanInput = {
     where: studyplanitemWhereUniqueInput
     update: XOR<studyplanitemUpdateWithoutStudyplanInput, studyplanitemUncheckedUpdateWithoutStudyplanInput>
@@ -26544,6 +28119,22 @@ export namespace Prisma {
     SPIID?: IntFilter<"studyplanitem"> | number
     SPID?: IntFilter<"studyplanitem"> | number
     Name?: StringFilter<"studyplanitem"> | string
+  }
+
+  export type studyplanprogressUpsertWithWhereUniqueWithoutStudyplanInput = {
+    where: studyplanprogressWhereUniqueInput
+    update: XOR<studyplanprogressUpdateWithoutStudyplanInput, studyplanprogressUncheckedUpdateWithoutStudyplanInput>
+    create: XOR<studyplanprogressCreateWithoutStudyplanInput, studyplanprogressUncheckedCreateWithoutStudyplanInput>
+  }
+
+  export type studyplanprogressUpdateWithWhereUniqueWithoutStudyplanInput = {
+    where: studyplanprogressWhereUniqueInput
+    data: XOR<studyplanprogressUpdateWithoutStudyplanInput, studyplanprogressUncheckedUpdateWithoutStudyplanInput>
+  }
+
+  export type studyplanprogressUpdateManyWithWhereWithoutStudyplanInput = {
+    where: studyplanprogressScalarWhereInput
+    data: XOR<studyplanprogressUpdateManyMutationInput, studyplanprogressUncheckedUpdateManyWithoutStudyplanInput>
   }
 
   export type exerciseCreateWithoutStudyplanitemInput = {
@@ -26588,20 +28179,18 @@ export namespace Prisma {
   export type studyplanCreateWithoutStudyplanitemInput = {
     Name: string
     Description: string
-    StartTime?: Date | string | null
-    EndTime?: Date | string | null
     Icon?: string | null
     Slug?: string | null
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutStudyplanInput
   }
 
   export type studyplanUncheckedCreateWithoutStudyplanitemInput = {
     SPID?: number
     Name: string
     Description: string
-    StartTime?: Date | string | null
-    EndTime?: Date | string | null
     Icon?: string | null
     Slug?: string | null
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutStudyplanInput
   }
 
   export type studyplanCreateOrConnectWithoutStudyplanitemInput = {
@@ -26639,20 +28228,18 @@ export namespace Prisma {
   export type studyplanUpdateWithoutStudyplanitemInput = {
     Name?: StringFieldUpdateOperationsInput | string
     Description?: StringFieldUpdateOperationsInput | string
-    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Icon?: NullableStringFieldUpdateOperationsInput | string | null
     Slug?: NullableStringFieldUpdateOperationsInput | string | null
+    studyplanprogress?: studyplanprogressUpdateManyWithoutStudyplanNestedInput
   }
 
   export type studyplanUncheckedUpdateWithoutStudyplanitemInput = {
     SPID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
     Description?: StringFieldUpdateOperationsInput | string
-    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     Icon?: NullableStringFieldUpdateOperationsInput | string | null
     Slug?: NullableStringFieldUpdateOperationsInput | string | null
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutStudyplanNestedInput
   }
 
   export type userCreateWithoutExerciseprogressInput = {
@@ -26670,6 +28257,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
   }
 
@@ -26688,6 +28276,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -26756,6 +28345,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
   }
 
@@ -26774,6 +28364,7 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -26815,6 +28406,148 @@ export namespace Prisma {
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type studyplanCreateWithoutStudyplanprogressInput = {
+    Name: string
+    Description: string
+    Icon?: string | null
+    Slug?: string | null
+    studyplanitem?: studyplanitemCreateNestedManyWithoutStudyplanInput
+  }
+
+  export type studyplanUncheckedCreateWithoutStudyplanprogressInput = {
+    SPID?: number
+    Name: string
+    Description: string
+    Icon?: string | null
+    Slug?: string | null
+    studyplanitem?: studyplanitemUncheckedCreateNestedManyWithoutStudyplanInput
+  }
+
+  export type studyplanCreateOrConnectWithoutStudyplanprogressInput = {
+    where: studyplanWhereUniqueInput
+    create: XOR<studyplanCreateWithoutStudyplanprogressInput, studyplanUncheckedCreateWithoutStudyplanprogressInput>
+  }
+
+  export type userCreateWithoutStudyplanprogressInput = {
+    UID?: string
+    Username: string
+    Email: string
+    isVerified?: boolean | null
+    Password: string
+    Role?: $Enums.user_Role
+    CreatedAt?: Date | string | null
+    comment?: commentCreateNestedManyWithoutUserInput
+    commentlike?: commentlikeCreateNestedManyWithoutUserInput
+    exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
+    friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
+    notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    submission?: submissionCreateNestedManyWithoutUserInput
+  }
+
+  export type userUncheckedCreateWithoutStudyplanprogressInput = {
+    UID?: string
+    Username: string
+    Email: string
+    isVerified?: boolean | null
+    Password: string
+    Role?: $Enums.user_Role
+    CreatedAt?: Date | string | null
+    comment?: commentUncheckedCreateNestedManyWithoutUserInput
+    commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
+    exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
+    friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
+    notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    submission?: submissionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type userCreateOrConnectWithoutStudyplanprogressInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutStudyplanprogressInput, userUncheckedCreateWithoutStudyplanprogressInput>
+  }
+
+  export type studyplanUpsertWithoutStudyplanprogressInput = {
+    update: XOR<studyplanUpdateWithoutStudyplanprogressInput, studyplanUncheckedUpdateWithoutStudyplanprogressInput>
+    create: XOR<studyplanCreateWithoutStudyplanprogressInput, studyplanUncheckedCreateWithoutStudyplanprogressInput>
+    where?: studyplanWhereInput
+  }
+
+  export type studyplanUpdateToOneWithWhereWithoutStudyplanprogressInput = {
+    where?: studyplanWhereInput
+    data: XOR<studyplanUpdateWithoutStudyplanprogressInput, studyplanUncheckedUpdateWithoutStudyplanprogressInput>
+  }
+
+  export type studyplanUpdateWithoutStudyplanprogressInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: StringFieldUpdateOperationsInput | string
+    Icon?: NullableStringFieldUpdateOperationsInput | string | null
+    Slug?: NullableStringFieldUpdateOperationsInput | string | null
+    studyplanitem?: studyplanitemUpdateManyWithoutStudyplanNestedInput
+  }
+
+  export type studyplanUncheckedUpdateWithoutStudyplanprogressInput = {
+    SPID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: StringFieldUpdateOperationsInput | string
+    Icon?: NullableStringFieldUpdateOperationsInput | string | null
+    Slug?: NullableStringFieldUpdateOperationsInput | string | null
+    studyplanitem?: studyplanitemUncheckedUpdateManyWithoutStudyplanNestedInput
+  }
+
+  export type userUpsertWithoutStudyplanprogressInput = {
+    update: XOR<userUpdateWithoutStudyplanprogressInput, userUncheckedUpdateWithoutStudyplanprogressInput>
+    create: XOR<userCreateWithoutStudyplanprogressInput, userUncheckedCreateWithoutStudyplanprogressInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutStudyplanprogressInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutStudyplanprogressInput, userUncheckedUpdateWithoutStudyplanprogressInput>
+  }
+
+  export type userUpdateWithoutStudyplanprogressInput = {
+    UID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    Password?: StringFieldUpdateOperationsInput | string
+    Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    comment?: commentUpdateManyWithoutUserNestedInput
+    commentlike?: commentlikeUpdateManyWithoutUserNestedInput
+    exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
+    friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
+    notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    submission?: submissionUpdateManyWithoutUserNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutStudyplanprogressInput = {
+    UID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    Password?: StringFieldUpdateOperationsInput | string
+    Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    comment?: commentUncheckedUpdateManyWithoutUserNestedInput
+    commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
+    friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
+    notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type commentCreateManyExerciseInput = {
@@ -27132,6 +28865,14 @@ export namespace Prisma {
     isRead?: boolean | null
   }
 
+  export type studyplanprogressCreateManyUserInput = {
+    SPPID?: number
+    SPID: number
+    Status?: $Enums.studyplanprogress_Status
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+  }
+
   export type submissionCreateManyUserInput = {
     SID?: number
     EID: number
@@ -27320,6 +29061,29 @@ export namespace Prisma {
     isRead?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
+  export type studyplanprogressUpdateWithoutUserInput = {
+    Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    studyplan?: studyplanUpdateOneRequiredWithoutStudyplanprogressNestedInput
+  }
+
+  export type studyplanprogressUncheckedUpdateWithoutUserInput = {
+    SPPID?: IntFieldUpdateOperationsInput | number
+    SPID?: IntFieldUpdateOperationsInput | number
+    Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type studyplanprogressUncheckedUpdateManyWithoutUserInput = {
+    SPPID?: IntFieldUpdateOperationsInput | number
+    SPID?: IntFieldUpdateOperationsInput | number
+    Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type submissionUpdateWithoutUserInput = {
     Code?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -27479,6 +29243,14 @@ export namespace Prisma {
     Name: string
   }
 
+  export type studyplanprogressCreateManyStudyplanInput = {
+    SPPID?: number
+    UID: string
+    Status?: $Enums.studyplanprogress_Status
+    StartTime?: Date | string | null
+    EndTime?: Date | string | null
+  }
+
   export type studyplanitemUpdateWithoutStudyplanInput = {
     Name?: StringFieldUpdateOperationsInput | string
     exercise?: exerciseUpdateManyWithoutStudyplanitemNestedInput
@@ -27493,6 +29265,29 @@ export namespace Prisma {
   export type studyplanitemUncheckedUpdateManyWithoutStudyplanInput = {
     SPIID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type studyplanprogressUpdateWithoutStudyplanInput = {
+    Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: userUpdateOneRequiredWithoutStudyplanprogressNestedInput
+  }
+
+  export type studyplanprogressUncheckedUpdateWithoutStudyplanInput = {
+    SPPID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type studyplanprogressUncheckedUpdateManyWithoutStudyplanInput = {
+    SPPID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
+    StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type exerciseCreateManyStudyplanitemInput = {
