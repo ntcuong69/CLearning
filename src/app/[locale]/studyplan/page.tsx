@@ -91,28 +91,7 @@ const StudyPlanPage = () => {
         }}
       >
         {/* Header Section */}
-        <Box sx={{ 
-          textAlign: 'center', 
-          mb: 6,
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          borderRadius: 4,
-          p: 4,
-          color: 'white',
-          boxShadow: '0 8px 32px rgba(102, 126, 234, 0.3)'
-        }}>
-          <SchoolIcon sx={{ fontSize: 48, mb: 2, opacity: 0.9 }} />
-          <Typography variant="h3" fontWeight={700} sx={{ mb: 2, textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
-            Lộ trình học
-          </Typography>
-          <Typography variant="h6" sx={{ 
-            opacity: 0.9,
-            fontWeight: 300,
-            maxWidth: 600,
-            mx: 'auto'
-          }}>
-            Chọn lộ trình phù hợp với mục tiêu học tập của bạn
-          </Typography>
-        </Box>
+        
         {loading ? (
           <Box sx={{ 
             display: 'flex', 

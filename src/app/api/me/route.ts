@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
         Email: true,
         Role: true,
         CreatedAt: true,
-        isVerified: true,
+        Image: true,
       }
     });
     
@@ -64,9 +64,7 @@ export async function PUT(req: NextRequest) {
         UID: true,
         Username: true,
         Email: true,
-        Role: true,
-        CreatedAt: true,
-        isVerified: true,
+        Image: true,
       }
     });
     return NextResponse.json({ user: updated });

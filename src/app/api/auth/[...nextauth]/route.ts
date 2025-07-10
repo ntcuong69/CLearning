@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import { Session, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -38,6 +39,10 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   session: {
@@ -45,8 +50,50 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: User }) {
-      if (user) {
+    async signIn({ user, account, profile }) {
+      if (account?.provider === "google") {
+        const existingUser = await prisma.user.findUnique({
+          where: { Email: user.email },
+        });
+        if (existingUser) {
+          // Nếu user này đã đăng ký bằng email/password (Password khác rỗng), chặn đăng nhập Google
+          if (existingUser.Password && existingUser.Password !== "") {
+            throw new Error("Email already registered with credentials");
+          }
+          // Nếu user này là user Google (Password rỗng), cho phép đăng nhập lại
+          return true;
+        } else {
+          // Nếu chưa có, tạo user mới trong database
+          await prisma.user.create({
+            data: {
+              Email: user.email,
+              Username: user.name || 'GoogleUser',
+              Password: '', // Google user không có password
+              Image: user.image || '',
+            },
+          });
+          return true;
+        }
+      }
+      // Đăng nhập credentials hoặc provider khác
+      return true;
+    },
+    async jwt({ token, user, account, profile }) {
+      // Lưu provider và email vào token để dùng cho các lần sau
+      if (account?.provider) token.provider = account.provider;
+      if (user?.email) token.email = user.email;
+      // Đăng nhập Google lần đầu
+      if (user && (account?.provider === "google")) {
+        const dbUser = await prisma.user.findUnique({ where: { Email: user.email } });
+        if (dbUser) token.uid = dbUser.UID;
+      }
+      // Đăng nhập Google các lần sau (không có user, chỉ có token)
+      else if (!user && token.email && token.provider === "google") {
+        const dbUser = await prisma.user.findUnique({ where: { Email: token.email as string } });
+        if (dbUser) token.uid = dbUser.UID;
+      }
+      // Đăng nhập credentials
+      else if (user) {
         token.uid = user.id;
       }
       return token;
@@ -54,9 +101,16 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }: { session: Session; token: JWT }) {
       if (token && session.user) {
         session.user.uid = token.uid as string;
+        if (token.picture || token.image) {
+          (session.user as any).image = (token.picture as string) || (token.image as string);
+        }
       }
       return session;
     },
+  },
+  pages: {
+    signIn: "/auth",
+    error: "/auth/error",
   },
 };
 

@@ -1,8 +1,9 @@
 "use client";
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, createRef } from "react";
 import NavBar from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import ExerciseStatusBadge from "@/components/ExercisePage/ExerciseStatusBadge";
+import ListSidebar from "@/components/ListSidebar";
 import {
   Box,
   Typography,
@@ -17,13 +18,21 @@ import {
   TableCell,
   Button,
   CircularProgress,
+  Select,
+  MenuItem,
+  Popover,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import Popover from "@mui/material/Popover";
-import axios from "axios";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import SearchIcon from "@mui/icons-material/Search";
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import Menu from '@mui/material/Menu';
+import axios from "axios";
 
 // Các hằng số cho filter
 const STATUS_OPTIONS = [
@@ -39,6 +48,10 @@ const DIFFICULTY_OPTIONS = [
   { label: "Khó", value: "Hard" },
 ];
 
+// Đặt initialLoadCount và loadMoreCount ở ngoài component, không lặp lại trong component
+const initialLoadCount = 50;
+const loadMoreCount = 20;
+
 const ExercisesPage = () => {
   // State cho chủ đề, bài tập, loading
   const [selectedTopic, setSelectedTopic] = useState("all");
@@ -51,25 +64,81 @@ const ExercisesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const initialLoadCount = 50;
-  const loadMoreCount = 20;
   const loadingRef = useRef<HTMLDivElement>(null);
 
   // State cho tìm kiếm và filter
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "Solved" | "Attempting" | "Unattempted">("all");
   const [difficultyFilter, setDifficultyFilter] = useState<"all" | "Easy" | "Medium" | "Hard">("all");
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null);
+
+  // State cho đánh dấu (bookmark)
+  const [bookmarkAnchorEl, setBookmarkAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedEID, setSelectedEID] = useState<number | null>(null);
+  const [userLists, setUserLists] = useState<any[]>([]);
+  const [menuLoading, setMenuLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState<{open: boolean, message: string, color?: string}>({open: false, message: ''});
+  const [savedEIDs, setSavedEIDs] = useState<number[]>([]); // EID đã lưu vào bất kỳ list nào
+  const [listItemEIDs, setListItemEIDs] = useState<{ [lid: number]: number[] }>({}); // EID theo từng list
 
   // Xử lý mở/đóng popover filter
-  const handleFilterClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleFilterClick = (event: React.MouseEvent<HTMLElement>) => setFilterAnchorEl(event.currentTarget);
+  const handleFilterClose = () => setFilterAnchorEl(null);
+  const filterOpen = Boolean(filterAnchorEl);
+  const filterId = filterOpen ? 'filter-popover' : undefined;
+
+  const bookmarkMenuOpen = Boolean(bookmarkAnchorEl);
+
+  // Đảm bảo chỉ có 1 khai báo cellRefs
+  const cellRefs = useRef<{ [eid: number]: React.RefObject<HTMLTableCellElement | null> }>({});
+
+  const handleBookmarkClick = async (eid: number) => {
+    const cellRef = cellRefs.current[eid];
+    if (cellRef && cellRef.current) {
+      setBookmarkAnchorEl(cellRef.current);
+    }
+    setSelectedEID(eid);
+    setMenuLoading(true);
+    try {
+      const res = await axios.get('/api/list');
+      setUserLists(res.data.lists || []);
+      // Lấy EID cho từng list
+      const eidsMap: { [lid: number]: number[] } = {};
+      await Promise.all((res.data.lists || []).map(async (list: any) => {
+        const r = await axios.get(`/api/listitem/${list.LID}`);
+        eidsMap[list.LID] = (r.data.exercises || []).map((ex: any) => ex.EID);
+      }));
+      setListItemEIDs(eidsMap);
+    } catch {
+      setUserLists([]);
+      setListItemEIDs({});
+    }
+    setMenuLoading(false);
   };
-  const handleFilterClose = () => {
-    setAnchorEl(null);
+
+  const handleToggleListItem = async (lid: number, checked: boolean) => {
+    if (!selectedEID) return;
+    try {
+      if (checked) {
+        await axios.post('/api/listitem', { lid, eid: selectedEID });
+      } else {
+        await axios.delete('/api/listitem', { data: { lid, eid: selectedEID } });
+      }
+      // Refetch for this list
+      const r = await axios.get(`/api/listitem/${lid}`);
+      setListItemEIDs(prev => ({ ...prev, [lid]: (r.data.exercises || []).map((ex: any) => ex.EID) }));
+      // Refetch savedEIDs for global icon
+      const res = await axios.get('/api/listitem/user');
+      setSavedEIDs(res.data.eids || []);
+    } catch (e: any) {
+      setSnackbar({ open: true, message: e?.response?.data?.error || 'Lỗi khi lưu/xóa', color: 'error' });
+    }
   };
-  const open = Boolean(anchorEl);
-  const id = open ? 'filter-popover' : undefined;
+
+  const handleMenuClose = () => {
+    setBookmarkAnchorEl(null);
+    setSelectedEID(null);
+  };
 
   // Lấy danh sách chủ đề và bài tập khi load trang
   useEffect(() => {
@@ -86,6 +155,14 @@ const ExercisesPage = () => {
         setProblems(exercises);
       })
       .finally(() => setLoading(false));
+    // Lấy EID đã lưu
+    const fetchSavedEIDs = async () => {
+      try {
+        const res = await axios.get('/api/listitem/user');
+        setSavedEIDs(res.data.eids || []);
+      } catch {}
+    };
+    fetchSavedEIDs();
   }, []);
 
   // Hàm lọc bài tập theo chủ đề, từ khóa, trạng thái, độ khó
@@ -102,7 +179,7 @@ const ExercisesPage = () => {
     setCurrentPage(1);
     setDisplayedProblems(filteredProblems.slice(0, initialLoadCount));
     setHasMore(filteredProblems.length > initialLoadCount);
-  }, [selectedTopic, problems, initialLoadCount, searchTerm, statusFilter, difficultyFilter]);
+  }, [selectedTopic, problems, searchTerm, statusFilter, difficultyFilter]);
 
   // Lazy load thêm bài tập khi scroll
   const loadMore = useCallback(() => {
@@ -118,7 +195,7 @@ const ExercisesPage = () => {
       setHasMore(endIndex < filteredProblems.length);
       setLoadingMore(false);
     }, 500); // Hiệu ứng loading
-  }, [currentPage, filteredProblems, loadMoreCount, loadingMore, hasMore]);
+  }, [currentPage, filteredProblems, loadingMore, hasMore]);
 
   // Intersection Observer để detect scroll cuối trang
   useEffect(() => {
@@ -160,10 +237,10 @@ const ExercisesPage = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          ml: { md: "280px" },
+          ml: { md: "220px" },
+          mr: { lg: "250px" }, // Add right margin to avoid overlap with ListSidebar
           px: { xs: 2, sm: 6, md: 10 },
           py: 6,
-          maxWidth: 1200,
           mx: "auto",
         }}
       >
@@ -198,7 +275,6 @@ const ExercisesPage = () => {
                     height: "auto",
                     padding: "8px 4px",
                     "& .MuiChip-label": {
-                      padding: "4px 8px",
                     },
                   }}
                 />
@@ -231,7 +307,7 @@ const ExercisesPage = () => {
           </Box>
           {/* Icon filter mở popover */}
           <Button
-            aria-describedby={id}
+            aria-describedby={filterId}
             onClick={handleFilterClick}
             variant="outlined"
             sx={{ minWidth: 0, p: 1, borderRadius: '50%' }}
@@ -240,10 +316,10 @@ const ExercisesPage = () => {
           </Button>
           {/* Popover filter */}
           <Popover
-            id={id}
-            open={open}
+            id={filterId}
+            open={filterOpen}
             disableScrollLock={true}
-            anchorEl={anchorEl}
+            anchorEl={filterAnchorEl}
             onClose={handleFilterClose}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           >
@@ -320,52 +396,76 @@ const ExercisesPage = () => {
             <Table>
               <TableHead className="bg-gray-50">
                 <TableRow>
-                  <TableCell className="font-semibold text-gray-900">Trạng thái</TableCell>
-                  <TableCell className="font-semibold text-gray-900">Tên bài tập</TableCell>
-                  <TableCell className="font-semibold text-gray-900">Độ khó</TableCell>
+                  <TableCell className="font-semibold text-gray-900" style={{ width: "15%" }} align="center">Trạng thái</TableCell>
+                  <TableCell className="font-semibold text-gray-900" style={{ width: "60%" }}>Tên bài tập</TableCell>
+                  <TableCell className="font-semibold text-gray-900" style={{ width: "10%" }} align="center">Độ khó</TableCell>
+                  <TableCell className="font-semibold text-gray-900" style={{ width: "15%" }} align="center">Đánh dấu</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {displayedProblems.map((problem, idx) => (
-                  <TableRow
-                    key={problem.EID}
-                    className="transition-colors duration-150 cursor-pointer"
-                    sx={{ backgroundColor: idx % 2 === 0 ? '#fff' : '#f9fafb', '&:hover': { backgroundColor: '#f1f5f9' } }}
-                  >
-                    <TableCell>
-                      <ExerciseStatusBadge status={problem.status || 'Unattempted'} />
-                    </TableCell>
-                    <TableCell
-                      onClick={() => window.location.href = `/exercises/${problem.Slug}`}
-                      style={{ cursor: 'pointer' }}
+                {displayedProblems.map((problem, idx) => {
+                  // Tạo ref cho mỗi TableCell nếu chưa có
+                  if (!cellRefs.current[problem.EID]) {
+                    cellRefs.current[problem.EID] = createRef<HTMLTableCellElement>();
+                  }
+                  return (
+                    <TableRow
+                      key={problem.EID}
+                      className="transition-colors duration-150 cursor-pointer"
+                      sx={{ backgroundColor: idx % 2 === 0 ? '#fff' : '#f9fafb', '&:hover': { backgroundColor: '#f1f5f9' } }}
                     >
-                      <Box>
-                        <Typography 
-                          variant="body2" 
-                          className="font-medium text-gray-900 hover:text-blue-600"
-                        >
-                          {problem.Name}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body2"
-                        className={`font-medium ${
-                          (problem.Difficulty || "") === "Easy"
-                            ? "text-green-500"
-                            : (problem.Difficulty || "") === "Medium"
-                            ? "text-yellow-500"
-                            : (problem.Difficulty || "") === "Hard"
-                            ? "text-red-500"
-                            : ""
-                        }`}
+                      <TableCell align="center">
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                          <ExerciseStatusBadge status={problem.status || 'Unattempted'} />
+                        </Box>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => window.location.href = `/exercises/${problem.Slug}`}
+                        style={{ cursor: 'pointer' }}
                       >
-                        {problem.Difficulty === 'Easy' ? 'Dễ' : problem.Difficulty === 'Medium' ? 'Vừa' : problem.Difficulty === 'Hard' ? 'Khó' : problem.Difficulty}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                        <Box>
+                          <Typography 
+                            variant="body2" 
+                            className="font-medium text-gray-900 hover:text-blue-600"
+                          >
+                            {problem.Name}
+                          </Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography
+                          variant="body2"
+                          className={`font-medium ${
+                            (problem.Difficulty || "") === "Easy"
+                              ? "text-green-500"
+                              : (problem.Difficulty || "") === "Medium"
+                              ? "text-yellow-500"
+                              : (problem.Difficulty || "") === "Hard"
+                              ? "text-red-500"
+                              : ""
+                          }`}
+                        >
+                          {problem.Difficulty === 'Easy' ? 'Dễ' : problem.Difficulty === 'Medium' ? 'Vừa' : problem.Difficulty === 'Hard' ? 'Khó' : problem.Difficulty}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center" ref={cellRefs.current[problem.EID]}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          {savedEIDs.includes(problem.EID) ? (
+                            <BookmarkIcon
+                              sx={{ cursor: 'pointer', color: '#FFD600' }}
+                              onClick={() => handleBookmarkClick(problem.EID)}
+                            />
+                          ) : (
+                            <BookmarkBorderIcon
+                              sx={{ cursor: 'pointer', color: '#888' }}
+                              onClick={() => handleBookmarkClick(problem.EID)}
+                            />
+                          )}
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>
@@ -406,7 +506,60 @@ const ExercisesPage = () => {
             </Typography>
           </Box>
         )}
+        {/* Popup đánh dấu */}
+        <Menu
+          anchorEl={bookmarkAnchorEl}
+          disableScrollLock={true}
+          open={bookmarkMenuOpen}
+          onClose={handleMenuClose}
+          PaperProps={{ sx: { borderRadius: 3, minWidth: 260, p: 0 } }}
+        >
+          <Box sx={{ px: 2, pt: 2, pb: 1 }}>
+            <Typography sx={{ fontWeight: 700, fontSize: 16, mb: 1 }}>Danh sách của tôi</Typography>
+            {menuLoading ? (
+              <Typography sx={{ py: 2, color: 'text.secondary', fontSize: 14 }}>Đang tải...</Typography>
+            ) : userLists.length === 0 ? (
+              <Typography sx={{ py: 2, color: 'text.secondary', fontSize: 14 }}>Không có danh sách</Typography>
+            ) : (
+              <List sx={{ p: 0 }}>
+                {userLists.map(list => {
+                  const checked = listItemEIDs[list.LID]?.includes(selectedEID ?? -1);
+                  return (
+                    <ListItem key={list.LID} disablePadding sx={{ mb: 1, borderRadius: 2 }}>
+                      <ListItemIcon sx={{ minWidth: 36 }}>
+                        <Checkbox
+                          checked={checked}
+                          onChange={e => handleToggleListItem(list.LID, e.target.checked)}
+                          sx={{
+                            p: 0,
+                            borderRadius: 1.5,
+                            color: '#222',
+                            '&.Mui-checked': {
+                              color: '#111',
+                              bgcolor: '#111',
+                              borderRadius: 1.5,
+                            },
+                            '& .MuiSvgIcon-root': {
+                              borderRadius: 1.5,
+                            },
+                          }}
+                          icon={<span style={{ border: '2px solid #222', borderRadius: 8, width: 22, height: 22, display: 'block' }} />}
+                          checkedIcon={<span style={{ background: '#111', borderRadius: 8, width: 22, height: 22, display: 'block', position: 'relative' }}><svg width="16" height="16" style={{ position: 'absolute', top: 2, left: 3 }}><polyline points="2,8 6,12 14,4" style={{ fill: 'none', stroke: 'white', strokeWidth: 2 }} /></svg></span>}
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={<Typography sx={{ fontWeight: 400, fontSize: 14 }}>{list.Name}</Typography>}
+                      />
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )}
+          </Box>
+        </Menu>
+        
       </Box>
+      <ListSidebar />
     </Box>
   );
 };

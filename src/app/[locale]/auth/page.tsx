@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import {
@@ -17,7 +17,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { Visibility, VisibilityOff, AlternateEmail, LockOutlined, Facebook, Google, GitHub, Person2Outlined } from "@mui/icons-material";
+import { Visibility, VisibilityOff, AlternateEmail, LockOutlined, Person2Outlined } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
@@ -43,6 +43,7 @@ export default function AuthPage() {
     message: "",
     severity: "success",
   });
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   // Xử lý thay đổi input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -312,36 +313,81 @@ export default function AuthPage() {
               </Typography>
             </Box>
 
-            {/* Đăng nhập mạng xã hội (chỉ giao diện, chưa có logic) */}
+            {/* Đăng nhập mạng xã hội (chỉ Google, theo thiết kế mẫu, dùng ảnh SVG) */}
             <Box className="mt-8 mb-2">
               <Box className="relative flex items-center justify-center">
-                <Divider className="w-full" sx={{ ".dark &": { borderColor: "#99a1af", borderBottomWidth: "1px" } }} />
-                <Typography variant="body2" className="absolute px-4 bg-white dark:bg-[#242533] text-gray-600 dark:text-gray-400">
+                <Divider className="w-full" sx={{ borderColor: '#e5e7eb', borderBottomWidth: '1px', ".dark &": { borderColor: "#444950", borderBottomWidth: "1px" } }} />
+                <Typography variant="body2" className="absolute px-4 bg-white dark:bg-[#23272f] text-gray-600 dark:text-gray-300">
                   {t("or_connect_with")}
                 </Typography>
               </Box>
-              <Box className="flex justify-center mt-6 space-x-4">
-                <IconButton
-                  sx={{ color: "#155dfc", ".dark &": { color: "#4c6ef5", "&:hover": { backgroundColor: "#333333" } } }}
-                  size="large"
-                  aria-label="login with Facebook"
+              <Box className="flex justify-center mt-6">
+                <Button
+                  variant="outlined"
+                  aria-label="Continue with Google"
+                  disabled={isGoogleLoading}
+                  sx={{
+                    borderRadius: "24px",
+                    borderColor: "#dadce0",
+                    backgroundColor: "#fff",
+                    color: "#3c4043",
+                    textTransform: "none",
+                    fontWeight: 500,
+                    fontSize: "1rem",
+                    boxShadow: "none",
+                    paddingY: 1.2,
+                    paddingX: 2,
+                    minHeight: "48px",
+                    minWidth: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1.5,
+                    '&:hover': {
+                      backgroundColor: "#f7f8fa",
+                      borderColor: "#bcbcbc",
+                      boxShadow: "none",
+                    },
+                    // Style cho dark mode
+                    ".dark &": {
+                      backgroundColor: "#23272f",
+                      color: "#f1f1f1",
+                      borderColor: "#444950",
+                      '&:hover': {
+                        backgroundColor: "#2d323c",
+                        borderColor: "#6b7280",
+                        boxShadow: "none",
+                      },
+                    },
+                  }}
+                  onClick={async () => {
+                    setIsGoogleLoading(true);
+                    try {
+                      const result = await signIn("google", { callbackUrl: "/home", redirect: false });
+                      if (result?.error) {
+                        if (result.error.includes("Email already registered with credentials")) {
+                          setSnackbar({ open: true, message: "Email này đã được sử dụng để đăng ký bằng mật khẩu. Vui lòng đăng nhập bằng email và mật khẩu.", severity: "error" });
+                        } else {
+                          setSnackbar({ open: true, message: result.error, severity: "error" });
+                        }
+                        setIsGoogleLoading(false);
+                      } else if (result?.ok) {
+                        // Nếu thành công, sẽ redirect tự động
+                      } else {
+                        setIsGoogleLoading(false);
+                      }
+                    } catch (err) {
+                      setSnackbar({ open: true, message: "Google login failed. Please try again.", severity: "error" });
+                      setIsGoogleLoading(false);
+                    }
+                  }}
                 >
-                  <Facebook />
-                </IconButton>
-                <IconButton
-                  sx={{ color: "#dc2626", ".dark &": { color: "#f87171", "&:hover": { backgroundColor: "#333333" } } }}
-                  size="large"
-                  aria-label="login with Google"
-                >
-                  <Google />
-                </IconButton>
-                <IconButton
-                  sx={{ color: "#1e2939", ".dark &": { color: "white", "&:hover": { backgroundColor: "#333333" } } }}
-                  size="large"
-                  aria-label="login with GitHub"
-                >
-                  <GitHub />
-                </IconButton>
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                    alt="Google logo"
+                    style={{ width: 22, height: 22, marginRight: 12, display: "inline-block" }}
+                  />
+                  {isGoogleLoading ? <CircularProgress size={22} sx={{ color: "#3c4043" }} /> : "Continue with Google"}
+                </Button>
               </Box>
             </Box>
           </CardContent>

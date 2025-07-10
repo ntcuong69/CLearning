@@ -98,6 +98,16 @@ export type exerciseprogress = $Result.DefaultSelection<Prisma.$exerciseprogress
  * 
  */
 export type studyplanprogress = $Result.DefaultSelection<Prisma.$studyplanprogressPayload>
+/**
+ * Model list
+ * 
+ */
+export type list = $Result.DefaultSelection<Prisma.$listPayload>
+/**
+ * Model listitem
+ * 
+ */
+export type listitem = $Result.DefaultSelection<Prisma.$listitemPayload>
 
 /**
  * Enums
@@ -166,7 +176,6 @@ export type exerciseprogress_Status = (typeof exerciseprogress_Status)[keyof typ
 
 
 export const studyplanprogress_Status: {
-  NotStarted: 'NotStarted',
   InProgress: 'InProgress',
   Completed: 'Completed'
 };
@@ -501,6 +510,26 @@ export class PrismaClient<
     * ```
     */
   get studyplanprogress(): Prisma.studyplanprogressDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.list`: Exposes CRUD operations for the **list** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Lists
+    * const lists = await prisma.list.findMany()
+    * ```
+    */
+  get list(): Prisma.listDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.listitem`: Exposes CRUD operations for the **listitem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Listitems
+    * const listitems = await prisma.listitem.findMany()
+    * ```
+    */
+  get listitem(): Prisma.listitemDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -957,7 +986,9 @@ export namespace Prisma {
     studyplan: 'studyplan',
     studyplanitem: 'studyplanitem',
     exerciseprogress: 'exerciseprogress',
-    studyplanprogress: 'studyplanprogress'
+    studyplanprogress: 'studyplanprogress',
+    list: 'list',
+    listitem: 'listitem'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -976,7 +1007,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "exercise" | "submission" | "testcase" | "testcaseresult" | "topic" | "user" | "friendship" | "chapter" | "comment" | "commentlike" | "exerciselike" | "lesson" | "notification" | "studyplan" | "studyplanitem" | "exerciseprogress" | "studyplanprogress"
+      modelProps: "exercise" | "submission" | "testcase" | "testcaseresult" | "topic" | "user" | "friendship" | "chapter" | "comment" | "commentlike" | "exerciselike" | "lesson" | "notification" | "studyplan" | "studyplanitem" | "exerciseprogress" | "studyplanprogress" | "list" | "listitem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2102,6 +2133,138 @@ export namespace Prisma {
           }
         }
       }
+      list: {
+        payload: Prisma.$listPayload<ExtArgs>
+        fields: Prisma.listFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.listFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.listFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listPayload>
+          }
+          findFirst: {
+            args: Prisma.listFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.listFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listPayload>
+          }
+          findMany: {
+            args: Prisma.listFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listPayload>[]
+          }
+          create: {
+            args: Prisma.listCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listPayload>
+          }
+          createMany: {
+            args: Prisma.listCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.listDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listPayload>
+          }
+          update: {
+            args: Prisma.listUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listPayload>
+          }
+          deleteMany: {
+            args: Prisma.listDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.listUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.listUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listPayload>
+          }
+          aggregate: {
+            args: Prisma.ListAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateList>
+          }
+          groupBy: {
+            args: Prisma.listGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ListGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.listCountArgs<ExtArgs>
+            result: $Utils.Optional<ListCountAggregateOutputType> | number
+          }
+        }
+      }
+      listitem: {
+        payload: Prisma.$listitemPayload<ExtArgs>
+        fields: Prisma.listitemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.listitemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listitemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.listitemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listitemPayload>
+          }
+          findFirst: {
+            args: Prisma.listitemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listitemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.listitemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listitemPayload>
+          }
+          findMany: {
+            args: Prisma.listitemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listitemPayload>[]
+          }
+          create: {
+            args: Prisma.listitemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listitemPayload>
+          }
+          createMany: {
+            args: Prisma.listitemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.listitemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listitemPayload>
+          }
+          update: {
+            args: Prisma.listitemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listitemPayload>
+          }
+          deleteMany: {
+            args: Prisma.listitemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.listitemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.listitemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$listitemPayload>
+          }
+          aggregate: {
+            args: Prisma.ListitemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateListitem>
+          }
+          groupBy: {
+            args: Prisma.listitemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ListitemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.listitemCountArgs<ExtArgs>
+            result: $Utils.Optional<ListitemCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2203,6 +2366,8 @@ export namespace Prisma {
     studyplanitem?: studyplanitemOmit
     exerciseprogress?: exerciseprogressOmit
     studyplanprogress?: studyplanprogressOmit
+    list?: listOmit
+    listitem?: listitemOmit
   }
 
   /* Types for Logging */
@@ -2300,6 +2465,7 @@ export namespace Prisma {
     comment: number
     exerciselike: number
     exerciseprogress: number
+    listitem: number
     submission: number
     testcase: number
   }
@@ -2308,6 +2474,7 @@ export namespace Prisma {
     comment?: boolean | ExerciseCountOutputTypeCountCommentArgs
     exerciselike?: boolean | ExerciseCountOutputTypeCountExerciselikeArgs
     exerciseprogress?: boolean | ExerciseCountOutputTypeCountExerciseprogressArgs
+    listitem?: boolean | ExerciseCountOutputTypeCountListitemArgs
     submission?: boolean | ExerciseCountOutputTypeCountSubmissionArgs
     testcase?: boolean | ExerciseCountOutputTypeCountTestcaseArgs
   }
@@ -2342,6 +2509,13 @@ export namespace Prisma {
    */
   export type ExerciseCountOutputTypeCountExerciseprogressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: exerciseprogressWhereInput
+  }
+
+  /**
+   * ExerciseCountOutputType without action
+   */
+  export type ExerciseCountOutputTypeCountListitemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: listitemWhereInput
   }
 
   /**
@@ -2463,6 +2637,7 @@ export namespace Prisma {
     exerciseprogress: number
     friendship_friendship_requesterTouser: number
     friendship_friendship_addresseeTouser: number
+    list: number
     notification_notification_UIDTouser: number
     notification_notification_FromUserTouser: number
     studyplanprogress: number
@@ -2476,6 +2651,7 @@ export namespace Prisma {
     exerciseprogress?: boolean | UserCountOutputTypeCountExerciseprogressArgs
     friendship_friendship_requesterTouser?: boolean | UserCountOutputTypeCountFriendship_friendship_requesterTouserArgs
     friendship_friendship_addresseeTouser?: boolean | UserCountOutputTypeCountFriendship_friendship_addresseeTouserArgs
+    list?: boolean | UserCountOutputTypeCountListArgs
     notification_notification_UIDTouser?: boolean | UserCountOutputTypeCountNotification_notification_UIDTouserArgs
     notification_notification_FromUserTouser?: boolean | UserCountOutputTypeCountNotification_notification_FromUserTouserArgs
     studyplanprogress?: boolean | UserCountOutputTypeCountStudyplanprogressArgs
@@ -2533,6 +2709,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountFriendship_friendship_addresseeTouserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: friendshipWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountListArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: listWhereInput
   }
 
   /**
@@ -2734,6 +2917,37 @@ export namespace Prisma {
    */
   export type StudyplanitemCountOutputTypeCountExerciseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: exerciseWhereInput
+  }
+
+
+  /**
+   * Count Type ListCountOutputType
+   */
+
+  export type ListCountOutputType = {
+    listitem: number
+  }
+
+  export type ListCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    listitem?: boolean | ListCountOutputTypeCountListitemArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ListCountOutputType without action
+   */
+  export type ListCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ListCountOutputType
+     */
+    select?: ListCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ListCountOutputType without action
+   */
+  export type ListCountOutputTypeCountListitemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: listitemWhereInput
   }
 
 
@@ -2976,6 +3190,7 @@ export namespace Prisma {
     studyplanitem?: boolean | exercise$studyplanitemArgs<ExtArgs>
     exerciselike?: boolean | exercise$exerciselikeArgs<ExtArgs>
     exerciseprogress?: boolean | exercise$exerciseprogressArgs<ExtArgs>
+    listitem?: boolean | exercise$listitemArgs<ExtArgs>
     submission?: boolean | exercise$submissionArgs<ExtArgs>
     testcase?: boolean | exercise$testcaseArgs<ExtArgs>
     _count?: boolean | ExerciseCountOutputTypeDefaultArgs<ExtArgs>
@@ -3001,6 +3216,7 @@ export namespace Prisma {
     studyplanitem?: boolean | exercise$studyplanitemArgs<ExtArgs>
     exerciselike?: boolean | exercise$exerciselikeArgs<ExtArgs>
     exerciseprogress?: boolean | exercise$exerciseprogressArgs<ExtArgs>
+    listitem?: boolean | exercise$listitemArgs<ExtArgs>
     submission?: boolean | exercise$submissionArgs<ExtArgs>
     testcase?: boolean | exercise$testcaseArgs<ExtArgs>
     _count?: boolean | ExerciseCountOutputTypeDefaultArgs<ExtArgs>
@@ -3014,6 +3230,7 @@ export namespace Prisma {
       studyplanitem: Prisma.$studyplanitemPayload<ExtArgs> | null
       exerciselike: Prisma.$exerciselikePayload<ExtArgs>[]
       exerciseprogress: Prisma.$exerciseprogressPayload<ExtArgs>[]
+      listitem: Prisma.$listitemPayload<ExtArgs>[]
       submission: Prisma.$submissionPayload<ExtArgs>[]
       testcase: Prisma.$testcasePayload<ExtArgs>[]
     }
@@ -3371,6 +3588,7 @@ export namespace Prisma {
     studyplanitem<T extends exercise$studyplanitemArgs<ExtArgs> = {}>(args?: Subset<T, exercise$studyplanitemArgs<ExtArgs>>): Prisma__studyplanitemClient<$Result.GetResult<Prisma.$studyplanitemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     exerciselike<T extends exercise$exerciselikeArgs<ExtArgs> = {}>(args?: Subset<T, exercise$exerciselikeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exerciselikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     exerciseprogress<T extends exercise$exerciseprogressArgs<ExtArgs> = {}>(args?: Subset<T, exercise$exerciseprogressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    listitem<T extends exercise$listitemArgs<ExtArgs> = {}>(args?: Subset<T, exercise$listitemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     submission<T extends exercise$submissionArgs<ExtArgs> = {}>(args?: Subset<T, exercise$submissionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$submissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     testcase<T extends exercise$testcaseArgs<ExtArgs> = {}>(args?: Subset<T, exercise$testcaseArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$testcasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -3860,6 +4078,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ExerciseprogressScalarFieldEnum | ExerciseprogressScalarFieldEnum[]
+  }
+
+  /**
+   * exercise.listitem
+   */
+  export type exercise$listitemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    where?: listitemWhereInput
+    orderBy?: listitemOrderByWithRelationInput | listitemOrderByWithRelationInput[]
+    cursor?: listitemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ListitemScalarFieldEnum | ListitemScalarFieldEnum[]
   }
 
   /**
@@ -7905,30 +8147,30 @@ export namespace Prisma {
     UID: string | null
     Username: string | null
     Email: string | null
-    isVerified: boolean | null
     Password: string | null
     Role: $Enums.user_Role | null
     CreatedAt: Date | null
+    Image: string | null
   }
 
   export type UserMaxAggregateOutputType = {
     UID: string | null
     Username: string | null
     Email: string | null
-    isVerified: boolean | null
     Password: string | null
     Role: $Enums.user_Role | null
     CreatedAt: Date | null
+    Image: string | null
   }
 
   export type UserCountAggregateOutputType = {
     UID: number
     Username: number
     Email: number
-    isVerified: number
     Password: number
     Role: number
     CreatedAt: number
+    Image: number
     _all: number
   }
 
@@ -7937,30 +8179,30 @@ export namespace Prisma {
     UID?: true
     Username?: true
     Email?: true
-    isVerified?: true
     Password?: true
     Role?: true
     CreatedAt?: true
+    Image?: true
   }
 
   export type UserMaxAggregateInputType = {
     UID?: true
     Username?: true
     Email?: true
-    isVerified?: true
     Password?: true
     Role?: true
     CreatedAt?: true
+    Image?: true
   }
 
   export type UserCountAggregateInputType = {
     UID?: true
     Username?: true
     Email?: true
-    isVerified?: true
     Password?: true
     Role?: true
     CreatedAt?: true
+    Image?: true
     _all?: true
   }
 
@@ -8040,10 +8282,10 @@ export namespace Prisma {
     UID: string
     Username: string
     Email: string
-    isVerified: boolean | null
     Password: string
     Role: $Enums.user_Role
     CreatedAt: Date | null
+    Image: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -8067,16 +8309,17 @@ export namespace Prisma {
     UID?: boolean
     Username?: boolean
     Email?: boolean
-    isVerified?: boolean
     Password?: boolean
     Role?: boolean
     CreatedAt?: boolean
+    Image?: boolean
     comment?: boolean | user$commentArgs<ExtArgs>
     commentlike?: boolean | user$commentlikeArgs<ExtArgs>
     exerciselike?: boolean | user$exerciselikeArgs<ExtArgs>
     exerciseprogress?: boolean | user$exerciseprogressArgs<ExtArgs>
     friendship_friendship_requesterTouser?: boolean | user$friendship_friendship_requesterTouserArgs<ExtArgs>
     friendship_friendship_addresseeTouser?: boolean | user$friendship_friendship_addresseeTouserArgs<ExtArgs>
+    list?: boolean | user$listArgs<ExtArgs>
     notification_notification_UIDTouser?: boolean | user$notification_notification_UIDTouserArgs<ExtArgs>
     notification_notification_FromUserTouser?: boolean | user$notification_notification_FromUserTouserArgs<ExtArgs>
     studyplanprogress?: boolean | user$studyplanprogressArgs<ExtArgs>
@@ -8090,13 +8333,13 @@ export namespace Prisma {
     UID?: boolean
     Username?: boolean
     Email?: boolean
-    isVerified?: boolean
     Password?: boolean
     Role?: boolean
     CreatedAt?: boolean
+    Image?: boolean
   }
 
-  export type userOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"UID" | "Username" | "Email" | "isVerified" | "Password" | "Role" | "CreatedAt", ExtArgs["result"]["user"]>
+  export type userOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"UID" | "Username" | "Email" | "Password" | "Role" | "CreatedAt" | "Image", ExtArgs["result"]["user"]>
   export type userInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     comment?: boolean | user$commentArgs<ExtArgs>
     commentlike?: boolean | user$commentlikeArgs<ExtArgs>
@@ -8104,6 +8347,7 @@ export namespace Prisma {
     exerciseprogress?: boolean | user$exerciseprogressArgs<ExtArgs>
     friendship_friendship_requesterTouser?: boolean | user$friendship_friendship_requesterTouserArgs<ExtArgs>
     friendship_friendship_addresseeTouser?: boolean | user$friendship_friendship_addresseeTouserArgs<ExtArgs>
+    list?: boolean | user$listArgs<ExtArgs>
     notification_notification_UIDTouser?: boolean | user$notification_notification_UIDTouserArgs<ExtArgs>
     notification_notification_FromUserTouser?: boolean | user$notification_notification_FromUserTouserArgs<ExtArgs>
     studyplanprogress?: boolean | user$studyplanprogressArgs<ExtArgs>
@@ -8120,6 +8364,7 @@ export namespace Prisma {
       exerciseprogress: Prisma.$exerciseprogressPayload<ExtArgs>[]
       friendship_friendship_requesterTouser: Prisma.$friendshipPayload<ExtArgs>[]
       friendship_friendship_addresseeTouser: Prisma.$friendshipPayload<ExtArgs>[]
+      list: Prisma.$listPayload<ExtArgs>[]
       notification_notification_UIDTouser: Prisma.$notificationPayload<ExtArgs>[]
       notification_notification_FromUserTouser: Prisma.$notificationPayload<ExtArgs>[]
       studyplanprogress: Prisma.$studyplanprogressPayload<ExtArgs>[]
@@ -8129,10 +8374,10 @@ export namespace Prisma {
       UID: string
       Username: string
       Email: string
-      isVerified: boolean | null
       Password: string
       Role: $Enums.user_Role
       CreatedAt: Date | null
+      Image: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -8479,6 +8724,7 @@ export namespace Prisma {
     exerciseprogress<T extends user$exerciseprogressArgs<ExtArgs> = {}>(args?: Subset<T, user$exerciseprogressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$exerciseprogressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     friendship_friendship_requesterTouser<T extends user$friendship_friendship_requesterTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$friendship_friendship_requesterTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     friendship_friendship_addresseeTouser<T extends user$friendship_friendship_addresseeTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$friendship_friendship_addresseeTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$friendshipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    list<T extends user$listArgs<ExtArgs> = {}>(args?: Subset<T, user$listArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notification_notification_UIDTouser<T extends user$notification_notification_UIDTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$notification_notification_UIDTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notification_notification_FromUserTouser<T extends user$notification_notification_FromUserTouserArgs<ExtArgs> = {}>(args?: Subset<T, user$notification_notification_FromUserTouserArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     studyplanprogress<T extends user$studyplanprogressArgs<ExtArgs> = {}>(args?: Subset<T, user$studyplanprogressArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$studyplanprogressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -8515,10 +8761,10 @@ export namespace Prisma {
     readonly UID: FieldRef<"user", 'String'>
     readonly Username: FieldRef<"user", 'String'>
     readonly Email: FieldRef<"user", 'String'>
-    readonly isVerified: FieldRef<"user", 'Boolean'>
     readonly Password: FieldRef<"user", 'String'>
     readonly Role: FieldRef<"user", 'user_Role'>
     readonly CreatedAt: FieldRef<"user", 'DateTime'>
+    readonly Image: FieldRef<"user", 'String'>
   }
     
 
@@ -9003,6 +9249,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: FriendshipScalarFieldEnum | FriendshipScalarFieldEnum[]
+  }
+
+  /**
+   * user.list
+   */
+  export type user$listArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+    where?: listWhereInput
+    orderBy?: listOrderByWithRelationInput | listOrderByWithRelationInput[]
+    cursor?: listWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ListScalarFieldEnum | ListScalarFieldEnum[]
   }
 
   /**
@@ -20038,6 +20308,1937 @@ export namespace Prisma {
 
 
   /**
+   * Model list
+   */
+
+  export type AggregateList = {
+    _count: ListCountAggregateOutputType | null
+    _avg: ListAvgAggregateOutputType | null
+    _sum: ListSumAggregateOutputType | null
+    _min: ListMinAggregateOutputType | null
+    _max: ListMaxAggregateOutputType | null
+  }
+
+  export type ListAvgAggregateOutputType = {
+    LID: number | null
+  }
+
+  export type ListSumAggregateOutputType = {
+    LID: number | null
+  }
+
+  export type ListMinAggregateOutputType = {
+    LID: number | null
+    UID: string | null
+    Name: string | null
+    Description: string | null
+    CreatedAt: Date | null
+  }
+
+  export type ListMaxAggregateOutputType = {
+    LID: number | null
+    UID: string | null
+    Name: string | null
+    Description: string | null
+    CreatedAt: Date | null
+  }
+
+  export type ListCountAggregateOutputType = {
+    LID: number
+    UID: number
+    Name: number
+    Description: number
+    CreatedAt: number
+    _all: number
+  }
+
+
+  export type ListAvgAggregateInputType = {
+    LID?: true
+  }
+
+  export type ListSumAggregateInputType = {
+    LID?: true
+  }
+
+  export type ListMinAggregateInputType = {
+    LID?: true
+    UID?: true
+    Name?: true
+    Description?: true
+    CreatedAt?: true
+  }
+
+  export type ListMaxAggregateInputType = {
+    LID?: true
+    UID?: true
+    Name?: true
+    Description?: true
+    CreatedAt?: true
+  }
+
+  export type ListCountAggregateInputType = {
+    LID?: true
+    UID?: true
+    Name?: true
+    Description?: true
+    CreatedAt?: true
+    _all?: true
+  }
+
+  export type ListAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which list to aggregate.
+     */
+    where?: listWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of lists to fetch.
+     */
+    orderBy?: listOrderByWithRelationInput | listOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: listWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` lists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` lists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned lists
+    **/
+    _count?: true | ListCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ListAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ListSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ListMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ListMaxAggregateInputType
+  }
+
+  export type GetListAggregateType<T extends ListAggregateArgs> = {
+        [P in keyof T & keyof AggregateList]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateList[P]>
+      : GetScalarType<T[P], AggregateList[P]>
+  }
+
+
+
+
+  export type listGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: listWhereInput
+    orderBy?: listOrderByWithAggregationInput | listOrderByWithAggregationInput[]
+    by: ListScalarFieldEnum[] | ListScalarFieldEnum
+    having?: listScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ListCountAggregateInputType | true
+    _avg?: ListAvgAggregateInputType
+    _sum?: ListSumAggregateInputType
+    _min?: ListMinAggregateInputType
+    _max?: ListMaxAggregateInputType
+  }
+
+  export type ListGroupByOutputType = {
+    LID: number
+    UID: string
+    Name: string
+    Description: string | null
+    CreatedAt: Date | null
+    _count: ListCountAggregateOutputType | null
+    _avg: ListAvgAggregateOutputType | null
+    _sum: ListSumAggregateOutputType | null
+    _min: ListMinAggregateOutputType | null
+    _max: ListMaxAggregateOutputType | null
+  }
+
+  type GetListGroupByPayload<T extends listGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ListGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ListGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ListGroupByOutputType[P]>
+            : GetScalarType<T[P], ListGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type listSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    LID?: boolean
+    UID?: boolean
+    Name?: boolean
+    Description?: boolean
+    CreatedAt?: boolean
+    user?: boolean | userDefaultArgs<ExtArgs>
+    listitem?: boolean | list$listitemArgs<ExtArgs>
+    _count?: boolean | ListCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["list"]>
+
+
+
+  export type listSelectScalar = {
+    LID?: boolean
+    UID?: boolean
+    Name?: boolean
+    Description?: boolean
+    CreatedAt?: boolean
+  }
+
+  export type listOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"LID" | "UID" | "Name" | "Description" | "CreatedAt", ExtArgs["result"]["list"]>
+  export type listInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | userDefaultArgs<ExtArgs>
+    listitem?: boolean | list$listitemArgs<ExtArgs>
+    _count?: boolean | ListCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $listPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "list"
+    objects: {
+      user: Prisma.$userPayload<ExtArgs>
+      listitem: Prisma.$listitemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      LID: number
+      UID: string
+      Name: string
+      Description: string | null
+      CreatedAt: Date | null
+    }, ExtArgs["result"]["list"]>
+    composites: {}
+  }
+
+  type listGetPayload<S extends boolean | null | undefined | listDefaultArgs> = $Result.GetResult<Prisma.$listPayload, S>
+
+  type listCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<listFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ListCountAggregateInputType | true
+    }
+
+  export interface listDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['list'], meta: { name: 'list' } }
+    /**
+     * Find zero or one List that matches the filter.
+     * @param {listFindUniqueArgs} args - Arguments to find a List
+     * @example
+     * // Get one List
+     * const list = await prisma.list.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends listFindUniqueArgs>(args: SelectSubset<T, listFindUniqueArgs<ExtArgs>>): Prisma__listClient<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one List that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {listFindUniqueOrThrowArgs} args - Arguments to find a List
+     * @example
+     * // Get one List
+     * const list = await prisma.list.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends listFindUniqueOrThrowArgs>(args: SelectSubset<T, listFindUniqueOrThrowArgs<ExtArgs>>): Prisma__listClient<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first List that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listFindFirstArgs} args - Arguments to find a List
+     * @example
+     * // Get one List
+     * const list = await prisma.list.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends listFindFirstArgs>(args?: SelectSubset<T, listFindFirstArgs<ExtArgs>>): Prisma__listClient<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first List that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listFindFirstOrThrowArgs} args - Arguments to find a List
+     * @example
+     * // Get one List
+     * const list = await prisma.list.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends listFindFirstOrThrowArgs>(args?: SelectSubset<T, listFindFirstOrThrowArgs<ExtArgs>>): Prisma__listClient<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Lists that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Lists
+     * const lists = await prisma.list.findMany()
+     * 
+     * // Get first 10 Lists
+     * const lists = await prisma.list.findMany({ take: 10 })
+     * 
+     * // Only select the `LID`
+     * const listWithLIDOnly = await prisma.list.findMany({ select: { LID: true } })
+     * 
+     */
+    findMany<T extends listFindManyArgs>(args?: SelectSubset<T, listFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a List.
+     * @param {listCreateArgs} args - Arguments to create a List.
+     * @example
+     * // Create one List
+     * const List = await prisma.list.create({
+     *   data: {
+     *     // ... data to create a List
+     *   }
+     * })
+     * 
+     */
+    create<T extends listCreateArgs>(args: SelectSubset<T, listCreateArgs<ExtArgs>>): Prisma__listClient<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Lists.
+     * @param {listCreateManyArgs} args - Arguments to create many Lists.
+     * @example
+     * // Create many Lists
+     * const list = await prisma.list.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends listCreateManyArgs>(args?: SelectSubset<T, listCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a List.
+     * @param {listDeleteArgs} args - Arguments to delete one List.
+     * @example
+     * // Delete one List
+     * const List = await prisma.list.delete({
+     *   where: {
+     *     // ... filter to delete one List
+     *   }
+     * })
+     * 
+     */
+    delete<T extends listDeleteArgs>(args: SelectSubset<T, listDeleteArgs<ExtArgs>>): Prisma__listClient<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one List.
+     * @param {listUpdateArgs} args - Arguments to update one List.
+     * @example
+     * // Update one List
+     * const list = await prisma.list.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends listUpdateArgs>(args: SelectSubset<T, listUpdateArgs<ExtArgs>>): Prisma__listClient<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Lists.
+     * @param {listDeleteManyArgs} args - Arguments to filter Lists to delete.
+     * @example
+     * // Delete a few Lists
+     * const { count } = await prisma.list.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends listDeleteManyArgs>(args?: SelectSubset<T, listDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Lists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Lists
+     * const list = await prisma.list.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends listUpdateManyArgs>(args: SelectSubset<T, listUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one List.
+     * @param {listUpsertArgs} args - Arguments to update or create a List.
+     * @example
+     * // Update or create a List
+     * const list = await prisma.list.upsert({
+     *   create: {
+     *     // ... data to create a List
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the List we want to update
+     *   }
+     * })
+     */
+    upsert<T extends listUpsertArgs>(args: SelectSubset<T, listUpsertArgs<ExtArgs>>): Prisma__listClient<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Lists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listCountArgs} args - Arguments to filter Lists to count.
+     * @example
+     * // Count the number of Lists
+     * const count = await prisma.list.count({
+     *   where: {
+     *     // ... the filter for the Lists we want to count
+     *   }
+     * })
+    **/
+    count<T extends listCountArgs>(
+      args?: Subset<T, listCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ListCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a List.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ListAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ListAggregateArgs>(args: Subset<T, ListAggregateArgs>): Prisma.PrismaPromise<GetListAggregateType<T>>
+
+    /**
+     * Group by List.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends listGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: listGroupByArgs['orderBy'] }
+        : { orderBy?: listGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, listGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetListGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the list model
+   */
+  readonly fields: listFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for list.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__listClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    listitem<T extends list$listitemArgs<ExtArgs> = {}>(args?: Subset<T, list$listitemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the list model
+   */
+  interface listFieldRefs {
+    readonly LID: FieldRef<"list", 'Int'>
+    readonly UID: FieldRef<"list", 'String'>
+    readonly Name: FieldRef<"list", 'String'>
+    readonly Description: FieldRef<"list", 'String'>
+    readonly CreatedAt: FieldRef<"list", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * list findUnique
+   */
+  export type listFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+    /**
+     * Filter, which list to fetch.
+     */
+    where: listWhereUniqueInput
+  }
+
+  /**
+   * list findUniqueOrThrow
+   */
+  export type listFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+    /**
+     * Filter, which list to fetch.
+     */
+    where: listWhereUniqueInput
+  }
+
+  /**
+   * list findFirst
+   */
+  export type listFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+    /**
+     * Filter, which list to fetch.
+     */
+    where?: listWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of lists to fetch.
+     */
+    orderBy?: listOrderByWithRelationInput | listOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for lists.
+     */
+    cursor?: listWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` lists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` lists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of lists.
+     */
+    distinct?: ListScalarFieldEnum | ListScalarFieldEnum[]
+  }
+
+  /**
+   * list findFirstOrThrow
+   */
+  export type listFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+    /**
+     * Filter, which list to fetch.
+     */
+    where?: listWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of lists to fetch.
+     */
+    orderBy?: listOrderByWithRelationInput | listOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for lists.
+     */
+    cursor?: listWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` lists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` lists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of lists.
+     */
+    distinct?: ListScalarFieldEnum | ListScalarFieldEnum[]
+  }
+
+  /**
+   * list findMany
+   */
+  export type listFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+    /**
+     * Filter, which lists to fetch.
+     */
+    where?: listWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of lists to fetch.
+     */
+    orderBy?: listOrderByWithRelationInput | listOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing lists.
+     */
+    cursor?: listWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` lists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` lists.
+     */
+    skip?: number
+    distinct?: ListScalarFieldEnum | ListScalarFieldEnum[]
+  }
+
+  /**
+   * list create
+   */
+  export type listCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+    /**
+     * The data needed to create a list.
+     */
+    data: XOR<listCreateInput, listUncheckedCreateInput>
+  }
+
+  /**
+   * list createMany
+   */
+  export type listCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many lists.
+     */
+    data: listCreateManyInput | listCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * list update
+   */
+  export type listUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+    /**
+     * The data needed to update a list.
+     */
+    data: XOR<listUpdateInput, listUncheckedUpdateInput>
+    /**
+     * Choose, which list to update.
+     */
+    where: listWhereUniqueInput
+  }
+
+  /**
+   * list updateMany
+   */
+  export type listUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update lists.
+     */
+    data: XOR<listUpdateManyMutationInput, listUncheckedUpdateManyInput>
+    /**
+     * Filter which lists to update
+     */
+    where?: listWhereInput
+    /**
+     * Limit how many lists to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * list upsert
+   */
+  export type listUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+    /**
+     * The filter to search for the list to update in case it exists.
+     */
+    where: listWhereUniqueInput
+    /**
+     * In case the list found by the `where` argument doesn't exist, create a new list with this data.
+     */
+    create: XOR<listCreateInput, listUncheckedCreateInput>
+    /**
+     * In case the list was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<listUpdateInput, listUncheckedUpdateInput>
+  }
+
+  /**
+   * list delete
+   */
+  export type listDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+    /**
+     * Filter which list to delete.
+     */
+    where: listWhereUniqueInput
+  }
+
+  /**
+   * list deleteMany
+   */
+  export type listDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which lists to delete
+     */
+    where?: listWhereInput
+    /**
+     * Limit how many lists to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * list.listitem
+   */
+  export type list$listitemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    where?: listitemWhereInput
+    orderBy?: listitemOrderByWithRelationInput | listitemOrderByWithRelationInput[]
+    cursor?: listitemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ListitemScalarFieldEnum | ListitemScalarFieldEnum[]
+  }
+
+  /**
+   * list without action
+   */
+  export type listDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the list
+     */
+    select?: listSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the list
+     */
+    omit?: listOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model listitem
+   */
+
+  export type AggregateListitem = {
+    _count: ListitemCountAggregateOutputType | null
+    _avg: ListitemAvgAggregateOutputType | null
+    _sum: ListitemSumAggregateOutputType | null
+    _min: ListitemMinAggregateOutputType | null
+    _max: ListitemMaxAggregateOutputType | null
+  }
+
+  export type ListitemAvgAggregateOutputType = {
+    LID: number | null
+    EID: number | null
+  }
+
+  export type ListitemSumAggregateOutputType = {
+    LID: number | null
+    EID: number | null
+  }
+
+  export type ListitemMinAggregateOutputType = {
+    LID: number | null
+    EID: number | null
+  }
+
+  export type ListitemMaxAggregateOutputType = {
+    LID: number | null
+    EID: number | null
+  }
+
+  export type ListitemCountAggregateOutputType = {
+    LID: number
+    EID: number
+    _all: number
+  }
+
+
+  export type ListitemAvgAggregateInputType = {
+    LID?: true
+    EID?: true
+  }
+
+  export type ListitemSumAggregateInputType = {
+    LID?: true
+    EID?: true
+  }
+
+  export type ListitemMinAggregateInputType = {
+    LID?: true
+    EID?: true
+  }
+
+  export type ListitemMaxAggregateInputType = {
+    LID?: true
+    EID?: true
+  }
+
+  export type ListitemCountAggregateInputType = {
+    LID?: true
+    EID?: true
+    _all?: true
+  }
+
+  export type ListitemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which listitem to aggregate.
+     */
+    where?: listitemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of listitems to fetch.
+     */
+    orderBy?: listitemOrderByWithRelationInput | listitemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: listitemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` listitems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` listitems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned listitems
+    **/
+    _count?: true | ListitemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ListitemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ListitemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ListitemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ListitemMaxAggregateInputType
+  }
+
+  export type GetListitemAggregateType<T extends ListitemAggregateArgs> = {
+        [P in keyof T & keyof AggregateListitem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateListitem[P]>
+      : GetScalarType<T[P], AggregateListitem[P]>
+  }
+
+
+
+
+  export type listitemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: listitemWhereInput
+    orderBy?: listitemOrderByWithAggregationInput | listitemOrderByWithAggregationInput[]
+    by: ListitemScalarFieldEnum[] | ListitemScalarFieldEnum
+    having?: listitemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ListitemCountAggregateInputType | true
+    _avg?: ListitemAvgAggregateInputType
+    _sum?: ListitemSumAggregateInputType
+    _min?: ListitemMinAggregateInputType
+    _max?: ListitemMaxAggregateInputType
+  }
+
+  export type ListitemGroupByOutputType = {
+    LID: number
+    EID: number
+    _count: ListitemCountAggregateOutputType | null
+    _avg: ListitemAvgAggregateOutputType | null
+    _sum: ListitemSumAggregateOutputType | null
+    _min: ListitemMinAggregateOutputType | null
+    _max: ListitemMaxAggregateOutputType | null
+  }
+
+  type GetListitemGroupByPayload<T extends listitemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ListitemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ListitemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ListitemGroupByOutputType[P]>
+            : GetScalarType<T[P], ListitemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type listitemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    LID?: boolean
+    EID?: boolean
+    list?: boolean | listDefaultArgs<ExtArgs>
+    exercise?: boolean | exerciseDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["listitem"]>
+
+
+
+  export type listitemSelectScalar = {
+    LID?: boolean
+    EID?: boolean
+  }
+
+  export type listitemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"LID" | "EID", ExtArgs["result"]["listitem"]>
+  export type listitemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    list?: boolean | listDefaultArgs<ExtArgs>
+    exercise?: boolean | exerciseDefaultArgs<ExtArgs>
+  }
+
+  export type $listitemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "listitem"
+    objects: {
+      list: Prisma.$listPayload<ExtArgs>
+      exercise: Prisma.$exercisePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      LID: number
+      EID: number
+    }, ExtArgs["result"]["listitem"]>
+    composites: {}
+  }
+
+  type listitemGetPayload<S extends boolean | null | undefined | listitemDefaultArgs> = $Result.GetResult<Prisma.$listitemPayload, S>
+
+  type listitemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<listitemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ListitemCountAggregateInputType | true
+    }
+
+  export interface listitemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['listitem'], meta: { name: 'listitem' } }
+    /**
+     * Find zero or one Listitem that matches the filter.
+     * @param {listitemFindUniqueArgs} args - Arguments to find a Listitem
+     * @example
+     * // Get one Listitem
+     * const listitem = await prisma.listitem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends listitemFindUniqueArgs>(args: SelectSubset<T, listitemFindUniqueArgs<ExtArgs>>): Prisma__listitemClient<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Listitem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {listitemFindUniqueOrThrowArgs} args - Arguments to find a Listitem
+     * @example
+     * // Get one Listitem
+     * const listitem = await prisma.listitem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends listitemFindUniqueOrThrowArgs>(args: SelectSubset<T, listitemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__listitemClient<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Listitem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listitemFindFirstArgs} args - Arguments to find a Listitem
+     * @example
+     * // Get one Listitem
+     * const listitem = await prisma.listitem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends listitemFindFirstArgs>(args?: SelectSubset<T, listitemFindFirstArgs<ExtArgs>>): Prisma__listitemClient<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Listitem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listitemFindFirstOrThrowArgs} args - Arguments to find a Listitem
+     * @example
+     * // Get one Listitem
+     * const listitem = await prisma.listitem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends listitemFindFirstOrThrowArgs>(args?: SelectSubset<T, listitemFindFirstOrThrowArgs<ExtArgs>>): Prisma__listitemClient<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Listitems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listitemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Listitems
+     * const listitems = await prisma.listitem.findMany()
+     * 
+     * // Get first 10 Listitems
+     * const listitems = await prisma.listitem.findMany({ take: 10 })
+     * 
+     * // Only select the `LID`
+     * const listitemWithLIDOnly = await prisma.listitem.findMany({ select: { LID: true } })
+     * 
+     */
+    findMany<T extends listitemFindManyArgs>(args?: SelectSubset<T, listitemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Listitem.
+     * @param {listitemCreateArgs} args - Arguments to create a Listitem.
+     * @example
+     * // Create one Listitem
+     * const Listitem = await prisma.listitem.create({
+     *   data: {
+     *     // ... data to create a Listitem
+     *   }
+     * })
+     * 
+     */
+    create<T extends listitemCreateArgs>(args: SelectSubset<T, listitemCreateArgs<ExtArgs>>): Prisma__listitemClient<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Listitems.
+     * @param {listitemCreateManyArgs} args - Arguments to create many Listitems.
+     * @example
+     * // Create many Listitems
+     * const listitem = await prisma.listitem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends listitemCreateManyArgs>(args?: SelectSubset<T, listitemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Listitem.
+     * @param {listitemDeleteArgs} args - Arguments to delete one Listitem.
+     * @example
+     * // Delete one Listitem
+     * const Listitem = await prisma.listitem.delete({
+     *   where: {
+     *     // ... filter to delete one Listitem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends listitemDeleteArgs>(args: SelectSubset<T, listitemDeleteArgs<ExtArgs>>): Prisma__listitemClient<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Listitem.
+     * @param {listitemUpdateArgs} args - Arguments to update one Listitem.
+     * @example
+     * // Update one Listitem
+     * const listitem = await prisma.listitem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends listitemUpdateArgs>(args: SelectSubset<T, listitemUpdateArgs<ExtArgs>>): Prisma__listitemClient<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Listitems.
+     * @param {listitemDeleteManyArgs} args - Arguments to filter Listitems to delete.
+     * @example
+     * // Delete a few Listitems
+     * const { count } = await prisma.listitem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends listitemDeleteManyArgs>(args?: SelectSubset<T, listitemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Listitems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listitemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Listitems
+     * const listitem = await prisma.listitem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends listitemUpdateManyArgs>(args: SelectSubset<T, listitemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Listitem.
+     * @param {listitemUpsertArgs} args - Arguments to update or create a Listitem.
+     * @example
+     * // Update or create a Listitem
+     * const listitem = await prisma.listitem.upsert({
+     *   create: {
+     *     // ... data to create a Listitem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Listitem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends listitemUpsertArgs>(args: SelectSubset<T, listitemUpsertArgs<ExtArgs>>): Prisma__listitemClient<$Result.GetResult<Prisma.$listitemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Listitems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listitemCountArgs} args - Arguments to filter Listitems to count.
+     * @example
+     * // Count the number of Listitems
+     * const count = await prisma.listitem.count({
+     *   where: {
+     *     // ... the filter for the Listitems we want to count
+     *   }
+     * })
+    **/
+    count<T extends listitemCountArgs>(
+      args?: Subset<T, listitemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ListitemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Listitem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ListitemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ListitemAggregateArgs>(args: Subset<T, ListitemAggregateArgs>): Prisma.PrismaPromise<GetListitemAggregateType<T>>
+
+    /**
+     * Group by Listitem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {listitemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends listitemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: listitemGroupByArgs['orderBy'] }
+        : { orderBy?: listitemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, listitemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetListitemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the listitem model
+   */
+  readonly fields: listitemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for listitem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__listitemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    list<T extends listDefaultArgs<ExtArgs> = {}>(args?: Subset<T, listDefaultArgs<ExtArgs>>): Prisma__listClient<$Result.GetResult<Prisma.$listPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    exercise<T extends exerciseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, exerciseDefaultArgs<ExtArgs>>): Prisma__exerciseClient<$Result.GetResult<Prisma.$exercisePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the listitem model
+   */
+  interface listitemFieldRefs {
+    readonly LID: FieldRef<"listitem", 'Int'>
+    readonly EID: FieldRef<"listitem", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * listitem findUnique
+   */
+  export type listitemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    /**
+     * Filter, which listitem to fetch.
+     */
+    where: listitemWhereUniqueInput
+  }
+
+  /**
+   * listitem findUniqueOrThrow
+   */
+  export type listitemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    /**
+     * Filter, which listitem to fetch.
+     */
+    where: listitemWhereUniqueInput
+  }
+
+  /**
+   * listitem findFirst
+   */
+  export type listitemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    /**
+     * Filter, which listitem to fetch.
+     */
+    where?: listitemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of listitems to fetch.
+     */
+    orderBy?: listitemOrderByWithRelationInput | listitemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for listitems.
+     */
+    cursor?: listitemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` listitems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` listitems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of listitems.
+     */
+    distinct?: ListitemScalarFieldEnum | ListitemScalarFieldEnum[]
+  }
+
+  /**
+   * listitem findFirstOrThrow
+   */
+  export type listitemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    /**
+     * Filter, which listitem to fetch.
+     */
+    where?: listitemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of listitems to fetch.
+     */
+    orderBy?: listitemOrderByWithRelationInput | listitemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for listitems.
+     */
+    cursor?: listitemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` listitems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` listitems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of listitems.
+     */
+    distinct?: ListitemScalarFieldEnum | ListitemScalarFieldEnum[]
+  }
+
+  /**
+   * listitem findMany
+   */
+  export type listitemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    /**
+     * Filter, which listitems to fetch.
+     */
+    where?: listitemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of listitems to fetch.
+     */
+    orderBy?: listitemOrderByWithRelationInput | listitemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing listitems.
+     */
+    cursor?: listitemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` listitems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` listitems.
+     */
+    skip?: number
+    distinct?: ListitemScalarFieldEnum | ListitemScalarFieldEnum[]
+  }
+
+  /**
+   * listitem create
+   */
+  export type listitemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a listitem.
+     */
+    data: XOR<listitemCreateInput, listitemUncheckedCreateInput>
+  }
+
+  /**
+   * listitem createMany
+   */
+  export type listitemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many listitems.
+     */
+    data: listitemCreateManyInput | listitemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * listitem update
+   */
+  export type listitemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a listitem.
+     */
+    data: XOR<listitemUpdateInput, listitemUncheckedUpdateInput>
+    /**
+     * Choose, which listitem to update.
+     */
+    where: listitemWhereUniqueInput
+  }
+
+  /**
+   * listitem updateMany
+   */
+  export type listitemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update listitems.
+     */
+    data: XOR<listitemUpdateManyMutationInput, listitemUncheckedUpdateManyInput>
+    /**
+     * Filter which listitems to update
+     */
+    where?: listitemWhereInput
+    /**
+     * Limit how many listitems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * listitem upsert
+   */
+  export type listitemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the listitem to update in case it exists.
+     */
+    where: listitemWhereUniqueInput
+    /**
+     * In case the listitem found by the `where` argument doesn't exist, create a new listitem with this data.
+     */
+    create: XOR<listitemCreateInput, listitemUncheckedCreateInput>
+    /**
+     * In case the listitem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<listitemUpdateInput, listitemUncheckedUpdateInput>
+  }
+
+  /**
+   * listitem delete
+   */
+  export type listitemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+    /**
+     * Filter which listitem to delete.
+     */
+    where: listitemWhereUniqueInput
+  }
+
+  /**
+   * listitem deleteMany
+   */
+  export type listitemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which listitems to delete
+     */
+    where?: listitemWhereInput
+    /**
+     * Limit how many listitems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * listitem without action
+   */
+  export type listitemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the listitem
+     */
+    select?: listitemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the listitem
+     */
+    omit?: listitemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: listitemInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -20113,10 +22314,10 @@ export namespace Prisma {
     UID: 'UID',
     Username: 'Username',
     Email: 'Email',
-    isVerified: 'isVerified',
     Password: 'Password',
     Role: 'Role',
-    CreatedAt: 'CreatedAt'
+    CreatedAt: 'CreatedAt',
+    Image: 'Image'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -20242,6 +22443,25 @@ export namespace Prisma {
   export type StudyplanprogressScalarFieldEnum = (typeof StudyplanprogressScalarFieldEnum)[keyof typeof StudyplanprogressScalarFieldEnum]
 
 
+  export const ListScalarFieldEnum: {
+    LID: 'LID',
+    UID: 'UID',
+    Name: 'Name',
+    Description: 'Description',
+    CreatedAt: 'CreatedAt'
+  };
+
+  export type ListScalarFieldEnum = (typeof ListScalarFieldEnum)[keyof typeof ListScalarFieldEnum]
+
+
+  export const ListitemScalarFieldEnum: {
+    LID: 'LID',
+    EID: 'EID'
+  };
+
+  export type ListitemScalarFieldEnum = (typeof ListitemScalarFieldEnum)[keyof typeof ListitemScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -20303,7 +22523,8 @@ export namespace Prisma {
     UID: 'UID',
     Username: 'Username',
     Email: 'Email',
-    Password: 'Password'
+    Password: 'Password',
+    Image: 'Image'
   };
 
   export type userOrderByRelevanceFieldEnum = (typeof userOrderByRelevanceFieldEnum)[keyof typeof userOrderByRelevanceFieldEnum]
@@ -20392,6 +22613,15 @@ export namespace Prisma {
   };
 
   export type studyplanprogressOrderByRelevanceFieldEnum = (typeof studyplanprogressOrderByRelevanceFieldEnum)[keyof typeof studyplanprogressOrderByRelevanceFieldEnum]
+
+
+  export const listOrderByRelevanceFieldEnum: {
+    UID: 'UID',
+    Name: 'Name',
+    Description: 'Description'
+  };
+
+  export type listOrderByRelevanceFieldEnum = (typeof listOrderByRelevanceFieldEnum)[keyof typeof listOrderByRelevanceFieldEnum]
 
 
   /**
@@ -20510,6 +22740,7 @@ export namespace Prisma {
     studyplanitem?: XOR<StudyplanitemNullableScalarRelationFilter, studyplanitemWhereInput> | null
     exerciselike?: ExerciselikeListRelationFilter
     exerciseprogress?: ExerciseprogressListRelationFilter
+    listitem?: ListitemListRelationFilter
     submission?: SubmissionListRelationFilter
     testcase?: TestcaseListRelationFilter
   }
@@ -20528,6 +22759,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemOrderByWithRelationInput
     exerciselike?: exerciselikeOrderByRelationAggregateInput
     exerciseprogress?: exerciseprogressOrderByRelationAggregateInput
+    listitem?: listitemOrderByRelationAggregateInput
     submission?: submissionOrderByRelationAggregateInput
     testcase?: testcaseOrderByRelationAggregateInput
     _relevance?: exerciseOrderByRelevanceInput
@@ -20550,6 +22782,7 @@ export namespace Prisma {
     studyplanitem?: XOR<StudyplanitemNullableScalarRelationFilter, studyplanitemWhereInput> | null
     exerciselike?: ExerciselikeListRelationFilter
     exerciseprogress?: ExerciseprogressListRelationFilter
+    listitem?: ListitemListRelationFilter
     submission?: SubmissionListRelationFilter
     testcase?: TestcaseListRelationFilter
   }, "EID" | "Slug">
@@ -20835,16 +23068,17 @@ export namespace Prisma {
     UID?: StringFilter<"user"> | string
     Username?: StringFilter<"user"> | string
     Email?: StringFilter<"user"> | string
-    isVerified?: BoolNullableFilter<"user"> | boolean | null
     Password?: StringFilter<"user"> | string
     Role?: Enumuser_RoleFilter<"user"> | $Enums.user_Role
     CreatedAt?: DateTimeNullableFilter<"user"> | Date | string | null
+    Image?: StringNullableFilter<"user"> | string | null
     comment?: CommentListRelationFilter
     commentlike?: CommentlikeListRelationFilter
     exerciselike?: ExerciselikeListRelationFilter
     exerciseprogress?: ExerciseprogressListRelationFilter
     friendship_friendship_requesterTouser?: FriendshipListRelationFilter
     friendship_friendship_addresseeTouser?: FriendshipListRelationFilter
+    list?: ListListRelationFilter
     notification_notification_UIDTouser?: NotificationListRelationFilter
     notification_notification_FromUserTouser?: NotificationListRelationFilter
     studyplanprogress?: StudyplanprogressListRelationFilter
@@ -20855,16 +23089,17 @@ export namespace Prisma {
     UID?: SortOrder
     Username?: SortOrder
     Email?: SortOrder
-    isVerified?: SortOrderInput | SortOrder
     Password?: SortOrder
     Role?: SortOrder
     CreatedAt?: SortOrderInput | SortOrder
+    Image?: SortOrderInput | SortOrder
     comment?: commentOrderByRelationAggregateInput
     commentlike?: commentlikeOrderByRelationAggregateInput
     exerciselike?: exerciselikeOrderByRelationAggregateInput
     exerciseprogress?: exerciseprogressOrderByRelationAggregateInput
     friendship_friendship_requesterTouser?: friendshipOrderByRelationAggregateInput
     friendship_friendship_addresseeTouser?: friendshipOrderByRelationAggregateInput
+    list?: listOrderByRelationAggregateInput
     notification_notification_UIDTouser?: notificationOrderByRelationAggregateInput
     notification_notification_FromUserTouser?: notificationOrderByRelationAggregateInput
     studyplanprogress?: studyplanprogressOrderByRelationAggregateInput
@@ -20879,16 +23114,17 @@ export namespace Prisma {
     OR?: userWhereInput[]
     NOT?: userWhereInput | userWhereInput[]
     Username?: StringFilter<"user"> | string
-    isVerified?: BoolNullableFilter<"user"> | boolean | null
     Password?: StringFilter<"user"> | string
     Role?: Enumuser_RoleFilter<"user"> | $Enums.user_Role
     CreatedAt?: DateTimeNullableFilter<"user"> | Date | string | null
+    Image?: StringNullableFilter<"user"> | string | null
     comment?: CommentListRelationFilter
     commentlike?: CommentlikeListRelationFilter
     exerciselike?: ExerciselikeListRelationFilter
     exerciseprogress?: ExerciseprogressListRelationFilter
     friendship_friendship_requesterTouser?: FriendshipListRelationFilter
     friendship_friendship_addresseeTouser?: FriendshipListRelationFilter
+    list?: ListListRelationFilter
     notification_notification_UIDTouser?: NotificationListRelationFilter
     notification_notification_FromUserTouser?: NotificationListRelationFilter
     studyplanprogress?: StudyplanprogressListRelationFilter
@@ -20899,10 +23135,10 @@ export namespace Prisma {
     UID?: SortOrder
     Username?: SortOrder
     Email?: SortOrder
-    isVerified?: SortOrderInput | SortOrder
     Password?: SortOrder
     Role?: SortOrder
     CreatedAt?: SortOrderInput | SortOrder
+    Image?: SortOrderInput | SortOrder
     _count?: userCountOrderByAggregateInput
     _max?: userMaxOrderByAggregateInput
     _min?: userMinOrderByAggregateInput
@@ -20915,10 +23151,10 @@ export namespace Prisma {
     UID?: StringWithAggregatesFilter<"user"> | string
     Username?: StringWithAggregatesFilter<"user"> | string
     Email?: StringWithAggregatesFilter<"user"> | string
-    isVerified?: BoolNullableWithAggregatesFilter<"user"> | boolean | null
     Password?: StringWithAggregatesFilter<"user"> | string
     Role?: Enumuser_RoleWithAggregatesFilter<"user"> | $Enums.user_Role
     CreatedAt?: DateTimeNullableWithAggregatesFilter<"user"> | Date | string | null
+    Image?: StringNullableWithAggregatesFilter<"user"> | string | null
   }
 
   export type friendshipWhereInput = {
@@ -21600,6 +23836,113 @@ export namespace Prisma {
     EndTime?: DateTimeNullableWithAggregatesFilter<"studyplanprogress"> | Date | string | null
   }
 
+  export type listWhereInput = {
+    AND?: listWhereInput | listWhereInput[]
+    OR?: listWhereInput[]
+    NOT?: listWhereInput | listWhereInput[]
+    LID?: IntFilter<"list"> | number
+    UID?: StringFilter<"list"> | string
+    Name?: StringFilter<"list"> | string
+    Description?: StringNullableFilter<"list"> | string | null
+    CreatedAt?: DateTimeNullableFilter<"list"> | Date | string | null
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+    listitem?: ListitemListRelationFilter
+  }
+
+  export type listOrderByWithRelationInput = {
+    LID?: SortOrder
+    UID?: SortOrder
+    Name?: SortOrder
+    Description?: SortOrderInput | SortOrder
+    CreatedAt?: SortOrderInput | SortOrder
+    user?: userOrderByWithRelationInput
+    listitem?: listitemOrderByRelationAggregateInput
+    _relevance?: listOrderByRelevanceInput
+  }
+
+  export type listWhereUniqueInput = Prisma.AtLeast<{
+    LID?: number
+    AND?: listWhereInput | listWhereInput[]
+    OR?: listWhereInput[]
+    NOT?: listWhereInput | listWhereInput[]
+    UID?: StringFilter<"list"> | string
+    Name?: StringFilter<"list"> | string
+    Description?: StringNullableFilter<"list"> | string | null
+    CreatedAt?: DateTimeNullableFilter<"list"> | Date | string | null
+    user?: XOR<UserScalarRelationFilter, userWhereInput>
+    listitem?: ListitemListRelationFilter
+  }, "LID">
+
+  export type listOrderByWithAggregationInput = {
+    LID?: SortOrder
+    UID?: SortOrder
+    Name?: SortOrder
+    Description?: SortOrderInput | SortOrder
+    CreatedAt?: SortOrderInput | SortOrder
+    _count?: listCountOrderByAggregateInput
+    _avg?: listAvgOrderByAggregateInput
+    _max?: listMaxOrderByAggregateInput
+    _min?: listMinOrderByAggregateInput
+    _sum?: listSumOrderByAggregateInput
+  }
+
+  export type listScalarWhereWithAggregatesInput = {
+    AND?: listScalarWhereWithAggregatesInput | listScalarWhereWithAggregatesInput[]
+    OR?: listScalarWhereWithAggregatesInput[]
+    NOT?: listScalarWhereWithAggregatesInput | listScalarWhereWithAggregatesInput[]
+    LID?: IntWithAggregatesFilter<"list"> | number
+    UID?: StringWithAggregatesFilter<"list"> | string
+    Name?: StringWithAggregatesFilter<"list"> | string
+    Description?: StringNullableWithAggregatesFilter<"list"> | string | null
+    CreatedAt?: DateTimeNullableWithAggregatesFilter<"list"> | Date | string | null
+  }
+
+  export type listitemWhereInput = {
+    AND?: listitemWhereInput | listitemWhereInput[]
+    OR?: listitemWhereInput[]
+    NOT?: listitemWhereInput | listitemWhereInput[]
+    LID?: IntFilter<"listitem"> | number
+    EID?: IntFilter<"listitem"> | number
+    list?: XOR<ListScalarRelationFilter, listWhereInput>
+    exercise?: XOR<ExerciseScalarRelationFilter, exerciseWhereInput>
+  }
+
+  export type listitemOrderByWithRelationInput = {
+    LID?: SortOrder
+    EID?: SortOrder
+    list?: listOrderByWithRelationInput
+    exercise?: exerciseOrderByWithRelationInput
+  }
+
+  export type listitemWhereUniqueInput = Prisma.AtLeast<{
+    LID_EID?: listitemLIDEIDCompoundUniqueInput
+    AND?: listitemWhereInput | listitemWhereInput[]
+    OR?: listitemWhereInput[]
+    NOT?: listitemWhereInput | listitemWhereInput[]
+    LID?: IntFilter<"listitem"> | number
+    EID?: IntFilter<"listitem"> | number
+    list?: XOR<ListScalarRelationFilter, listWhereInput>
+    exercise?: XOR<ExerciseScalarRelationFilter, exerciseWhereInput>
+  }, "LID_EID">
+
+  export type listitemOrderByWithAggregationInput = {
+    LID?: SortOrder
+    EID?: SortOrder
+    _count?: listitemCountOrderByAggregateInput
+    _avg?: listitemAvgOrderByAggregateInput
+    _max?: listitemMaxOrderByAggregateInput
+    _min?: listitemMinOrderByAggregateInput
+    _sum?: listitemSumOrderByAggregateInput
+  }
+
+  export type listitemScalarWhereWithAggregatesInput = {
+    AND?: listitemScalarWhereWithAggregatesInput | listitemScalarWhereWithAggregatesInput[]
+    OR?: listitemScalarWhereWithAggregatesInput[]
+    NOT?: listitemScalarWhereWithAggregatesInput | listitemScalarWhereWithAggregatesInput[]
+    LID?: IntWithAggregatesFilter<"listitem"> | number
+    EID?: IntWithAggregatesFilter<"listitem"> | number
+  }
+
   export type exerciseCreateInput = {
     Name: string
     Slug: string
@@ -21611,6 +23954,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
+    listitem?: listitemCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -21627,6 +23971,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
+    listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -21642,6 +23987,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -21658,6 +24004,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -21915,16 +24262,17 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
@@ -21935,16 +24283,17 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
@@ -21955,16 +24304,17 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
@@ -21975,16 +24325,17 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
@@ -21995,30 +24346,30 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
   }
 
   export type userUpdateManyMutationInput = {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type userUncheckedUpdateManyInput = {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type friendshipCreateInput = {
@@ -22550,7 +24901,7 @@ export namespace Prisma {
   }
 
   export type studyplanprogressCreateInput = {
-    Status?: $Enums.studyplanprogress_Status
+    Status: $Enums.studyplanprogress_Status
     StartTime?: Date | string | null
     EndTime?: Date | string | null
     studyplan: studyplanCreateNestedOneWithoutStudyplanprogressInput
@@ -22561,7 +24912,7 @@ export namespace Prisma {
     SPPID?: number
     SPID: number
     UID: string
-    Status?: $Enums.studyplanprogress_Status
+    Status: $Enums.studyplanprogress_Status
     StartTime?: Date | string | null
     EndTime?: Date | string | null
   }
@@ -22587,7 +24938,7 @@ export namespace Prisma {
     SPPID?: number
     SPID: number
     UID: string
-    Status?: $Enums.studyplanprogress_Status
+    Status: $Enums.studyplanprogress_Status
     StartTime?: Date | string | null
     EndTime?: Date | string | null
   }
@@ -22605,6 +24956,96 @@ export namespace Prisma {
     Status?: Enumstudyplanprogress_StatusFieldUpdateOperationsInput | $Enums.studyplanprogress_Status
     StartTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     EndTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type listCreateInput = {
+    Name: string
+    Description?: string | null
+    CreatedAt?: Date | string | null
+    user: userCreateNestedOneWithoutListInput
+    listitem?: listitemCreateNestedManyWithoutListInput
+  }
+
+  export type listUncheckedCreateInput = {
+    LID?: number
+    UID: string
+    Name: string
+    Description?: string | null
+    CreatedAt?: Date | string | null
+    listitem?: listitemUncheckedCreateNestedManyWithoutListInput
+  }
+
+  export type listUpdateInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: userUpdateOneRequiredWithoutListNestedInput
+    listitem?: listitemUpdateManyWithoutListNestedInput
+  }
+
+  export type listUncheckedUpdateInput = {
+    LID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    listitem?: listitemUncheckedUpdateManyWithoutListNestedInput
+  }
+
+  export type listCreateManyInput = {
+    LID?: number
+    UID: string
+    Name: string
+    Description?: string | null
+    CreatedAt?: Date | string | null
+  }
+
+  export type listUpdateManyMutationInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type listUncheckedUpdateManyInput = {
+    LID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type listitemCreateInput = {
+    list: listCreateNestedOneWithoutListitemInput
+    exercise: exerciseCreateNestedOneWithoutListitemInput
+  }
+
+  export type listitemUncheckedCreateInput = {
+    LID: number
+    EID: number
+  }
+
+  export type listitemUpdateInput = {
+    list?: listUpdateOneRequiredWithoutListitemNestedInput
+    exercise?: exerciseUpdateOneRequiredWithoutListitemNestedInput
+  }
+
+  export type listitemUncheckedUpdateInput = {
+    LID?: IntFieldUpdateOperationsInput | number
+    EID?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type listitemCreateManyInput = {
+    LID: number
+    EID: number
+  }
+
+  export type listitemUpdateManyMutationInput = {
+
+  }
+
+  export type listitemUncheckedUpdateManyInput = {
+    LID?: IntFieldUpdateOperationsInput | number
+    EID?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -22694,6 +25135,12 @@ export namespace Prisma {
     none?: exerciseprogressWhereInput
   }
 
+  export type ListitemListRelationFilter = {
+    every?: listitemWhereInput
+    some?: listitemWhereInput
+    none?: listitemWhereInput
+  }
+
   export type SubmissionListRelationFilter = {
     every?: submissionWhereInput
     some?: submissionWhereInput
@@ -22720,6 +25167,10 @@ export namespace Prisma {
   }
 
   export type exerciseprogressOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type listitemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23151,6 +25602,12 @@ export namespace Prisma {
     none?: friendshipWhereInput
   }
 
+  export type ListListRelationFilter = {
+    every?: listWhereInput
+    some?: listWhereInput
+    none?: listWhereInput
+  }
+
   export type NotificationListRelationFilter = {
     every?: notificationWhereInput
     some?: notificationWhereInput
@@ -23168,6 +25625,10 @@ export namespace Prisma {
   }
 
   export type friendshipOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type listOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -23189,30 +25650,30 @@ export namespace Prisma {
     UID?: SortOrder
     Username?: SortOrder
     Email?: SortOrder
-    isVerified?: SortOrder
     Password?: SortOrder
     Role?: SortOrder
     CreatedAt?: SortOrder
+    Image?: SortOrder
   }
 
   export type userMaxOrderByAggregateInput = {
     UID?: SortOrder
     Username?: SortOrder
     Email?: SortOrder
-    isVerified?: SortOrder
     Password?: SortOrder
     Role?: SortOrder
     CreatedAt?: SortOrder
+    Image?: SortOrder
   }
 
   export type userMinOrderByAggregateInput = {
     UID?: SortOrder
     Username?: SortOrder
     Email?: SortOrder
-    isVerified?: SortOrder
     Password?: SortOrder
     Role?: SortOrder
     CreatedAt?: SortOrder
+    Image?: SortOrder
   }
 
   export type Enumuser_RoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -23800,6 +26261,79 @@ export namespace Prisma {
     _max?: NestedEnumstudyplanprogress_StatusFilter<$PrismaModel>
   }
 
+  export type listOrderByRelevanceInput = {
+    fields: listOrderByRelevanceFieldEnum | listOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type listCountOrderByAggregateInput = {
+    LID?: SortOrder
+    UID?: SortOrder
+    Name?: SortOrder
+    Description?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type listAvgOrderByAggregateInput = {
+    LID?: SortOrder
+  }
+
+  export type listMaxOrderByAggregateInput = {
+    LID?: SortOrder
+    UID?: SortOrder
+    Name?: SortOrder
+    Description?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type listMinOrderByAggregateInput = {
+    LID?: SortOrder
+    UID?: SortOrder
+    Name?: SortOrder
+    Description?: SortOrder
+    CreatedAt?: SortOrder
+  }
+
+  export type listSumOrderByAggregateInput = {
+    LID?: SortOrder
+  }
+
+  export type ListScalarRelationFilter = {
+    is?: listWhereInput
+    isNot?: listWhereInput
+  }
+
+  export type listitemLIDEIDCompoundUniqueInput = {
+    LID: number
+    EID: number
+  }
+
+  export type listitemCountOrderByAggregateInput = {
+    LID?: SortOrder
+    EID?: SortOrder
+  }
+
+  export type listitemAvgOrderByAggregateInput = {
+    LID?: SortOrder
+    EID?: SortOrder
+  }
+
+  export type listitemMaxOrderByAggregateInput = {
+    LID?: SortOrder
+    EID?: SortOrder
+  }
+
+  export type listitemMinOrderByAggregateInput = {
+    LID?: SortOrder
+    EID?: SortOrder
+  }
+
+  export type listitemSumOrderByAggregateInput = {
+    LID?: SortOrder
+    EID?: SortOrder
+  }
+
   export type commentCreateNestedManyWithoutExerciseInput = {
     create?: XOR<commentCreateWithoutExerciseInput, commentUncheckedCreateWithoutExerciseInput> | commentCreateWithoutExerciseInput[] | commentUncheckedCreateWithoutExerciseInput[]
     connectOrCreate?: commentCreateOrConnectWithoutExerciseInput | commentCreateOrConnectWithoutExerciseInput[]
@@ -23831,6 +26365,13 @@ export namespace Prisma {
     connectOrCreate?: exerciseprogressCreateOrConnectWithoutExerciseInput | exerciseprogressCreateOrConnectWithoutExerciseInput[]
     createMany?: exerciseprogressCreateManyExerciseInputEnvelope
     connect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+  }
+
+  export type listitemCreateNestedManyWithoutExerciseInput = {
+    create?: XOR<listitemCreateWithoutExerciseInput, listitemUncheckedCreateWithoutExerciseInput> | listitemCreateWithoutExerciseInput[] | listitemUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: listitemCreateOrConnectWithoutExerciseInput | listitemCreateOrConnectWithoutExerciseInput[]
+    createMany?: listitemCreateManyExerciseInputEnvelope
+    connect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
   }
 
   export type submissionCreateNestedManyWithoutExerciseInput = {
@@ -23866,6 +26407,13 @@ export namespace Prisma {
     connectOrCreate?: exerciseprogressCreateOrConnectWithoutExerciseInput | exerciseprogressCreateOrConnectWithoutExerciseInput[]
     createMany?: exerciseprogressCreateManyExerciseInputEnvelope
     connect?: exerciseprogressWhereUniqueInput | exerciseprogressWhereUniqueInput[]
+  }
+
+  export type listitemUncheckedCreateNestedManyWithoutExerciseInput = {
+    create?: XOR<listitemCreateWithoutExerciseInput, listitemUncheckedCreateWithoutExerciseInput> | listitemCreateWithoutExerciseInput[] | listitemUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: listitemCreateOrConnectWithoutExerciseInput | listitemCreateOrConnectWithoutExerciseInput[]
+    createMany?: listitemCreateManyExerciseInputEnvelope
+    connect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
   }
 
   export type submissionUncheckedCreateNestedManyWithoutExerciseInput = {
@@ -23956,6 +26504,20 @@ export namespace Prisma {
     deleteMany?: exerciseprogressScalarWhereInput | exerciseprogressScalarWhereInput[]
   }
 
+  export type listitemUpdateManyWithoutExerciseNestedInput = {
+    create?: XOR<listitemCreateWithoutExerciseInput, listitemUncheckedCreateWithoutExerciseInput> | listitemCreateWithoutExerciseInput[] | listitemUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: listitemCreateOrConnectWithoutExerciseInput | listitemCreateOrConnectWithoutExerciseInput[]
+    upsert?: listitemUpsertWithWhereUniqueWithoutExerciseInput | listitemUpsertWithWhereUniqueWithoutExerciseInput[]
+    createMany?: listitemCreateManyExerciseInputEnvelope
+    set?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    disconnect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    delete?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    connect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    update?: listitemUpdateWithWhereUniqueWithoutExerciseInput | listitemUpdateWithWhereUniqueWithoutExerciseInput[]
+    updateMany?: listitemUpdateManyWithWhereWithoutExerciseInput | listitemUpdateManyWithWhereWithoutExerciseInput[]
+    deleteMany?: listitemScalarWhereInput | listitemScalarWhereInput[]
+  }
+
   export type submissionUpdateManyWithoutExerciseNestedInput = {
     create?: XOR<submissionCreateWithoutExerciseInput, submissionUncheckedCreateWithoutExerciseInput> | submissionCreateWithoutExerciseInput[] | submissionUncheckedCreateWithoutExerciseInput[]
     connectOrCreate?: submissionCreateOrConnectWithoutExerciseInput | submissionCreateOrConnectWithoutExerciseInput[]
@@ -24040,6 +26602,20 @@ export namespace Prisma {
     update?: exerciseprogressUpdateWithWhereUniqueWithoutExerciseInput | exerciseprogressUpdateWithWhereUniqueWithoutExerciseInput[]
     updateMany?: exerciseprogressUpdateManyWithWhereWithoutExerciseInput | exerciseprogressUpdateManyWithWhereWithoutExerciseInput[]
     deleteMany?: exerciseprogressScalarWhereInput | exerciseprogressScalarWhereInput[]
+  }
+
+  export type listitemUncheckedUpdateManyWithoutExerciseNestedInput = {
+    create?: XOR<listitemCreateWithoutExerciseInput, listitemUncheckedCreateWithoutExerciseInput> | listitemCreateWithoutExerciseInput[] | listitemUncheckedCreateWithoutExerciseInput[]
+    connectOrCreate?: listitemCreateOrConnectWithoutExerciseInput | listitemCreateOrConnectWithoutExerciseInput[]
+    upsert?: listitemUpsertWithWhereUniqueWithoutExerciseInput | listitemUpsertWithWhereUniqueWithoutExerciseInput[]
+    createMany?: listitemCreateManyExerciseInputEnvelope
+    set?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    disconnect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    delete?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    connect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    update?: listitemUpdateWithWhereUniqueWithoutExerciseInput | listitemUpdateWithWhereUniqueWithoutExerciseInput[]
+    updateMany?: listitemUpdateManyWithWhereWithoutExerciseInput | listitemUpdateManyWithWhereWithoutExerciseInput[]
+    deleteMany?: listitemScalarWhereInput | listitemScalarWhereInput[]
   }
 
   export type submissionUncheckedUpdateManyWithoutExerciseNestedInput = {
@@ -24324,6 +26900,13 @@ export namespace Prisma {
     connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
   }
 
+  export type listCreateNestedManyWithoutUserInput = {
+    create?: XOR<listCreateWithoutUserInput, listUncheckedCreateWithoutUserInput> | listCreateWithoutUserInput[] | listUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: listCreateOrConnectWithoutUserInput | listCreateOrConnectWithoutUserInput[]
+    createMany?: listCreateManyUserInputEnvelope
+    connect?: listWhereUniqueInput | listWhereUniqueInput[]
+  }
+
   export type notificationCreateNestedManyWithoutUser_notification_UIDTouserInput = {
     create?: XOR<notificationCreateWithoutUser_notification_UIDTouserInput, notificationUncheckedCreateWithoutUser_notification_UIDTouserInput> | notificationCreateWithoutUser_notification_UIDTouserInput[] | notificationUncheckedCreateWithoutUser_notification_UIDTouserInput[]
     connectOrCreate?: notificationCreateOrConnectWithoutUser_notification_UIDTouserInput | notificationCreateOrConnectWithoutUser_notification_UIDTouserInput[]
@@ -24392,6 +26975,13 @@ export namespace Prisma {
     connectOrCreate?: friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput | friendshipCreateOrConnectWithoutUser_friendship_addresseeTouserInput[]
     createMany?: friendshipCreateManyUser_friendship_addresseeTouserInputEnvelope
     connect?: friendshipWhereUniqueInput | friendshipWhereUniqueInput[]
+  }
+
+  export type listUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<listCreateWithoutUserInput, listUncheckedCreateWithoutUserInput> | listCreateWithoutUserInput[] | listUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: listCreateOrConnectWithoutUserInput | listCreateOrConnectWithoutUserInput[]
+    createMany?: listCreateManyUserInputEnvelope
+    connect?: listWhereUniqueInput | listWhereUniqueInput[]
   }
 
   export type notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput = {
@@ -24508,6 +27098,20 @@ export namespace Prisma {
     update?: friendshipUpdateWithWhereUniqueWithoutUser_friendship_addresseeTouserInput | friendshipUpdateWithWhereUniqueWithoutUser_friendship_addresseeTouserInput[]
     updateMany?: friendshipUpdateManyWithWhereWithoutUser_friendship_addresseeTouserInput | friendshipUpdateManyWithWhereWithoutUser_friendship_addresseeTouserInput[]
     deleteMany?: friendshipScalarWhereInput | friendshipScalarWhereInput[]
+  }
+
+  export type listUpdateManyWithoutUserNestedInput = {
+    create?: XOR<listCreateWithoutUserInput, listUncheckedCreateWithoutUserInput> | listCreateWithoutUserInput[] | listUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: listCreateOrConnectWithoutUserInput | listCreateOrConnectWithoutUserInput[]
+    upsert?: listUpsertWithWhereUniqueWithoutUserInput | listUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: listCreateManyUserInputEnvelope
+    set?: listWhereUniqueInput | listWhereUniqueInput[]
+    disconnect?: listWhereUniqueInput | listWhereUniqueInput[]
+    delete?: listWhereUniqueInput | listWhereUniqueInput[]
+    connect?: listWhereUniqueInput | listWhereUniqueInput[]
+    update?: listUpdateWithWhereUniqueWithoutUserInput | listUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: listUpdateManyWithWhereWithoutUserInput | listUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: listScalarWhereInput | listScalarWhereInput[]
   }
 
   export type notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput = {
@@ -24648,6 +27252,20 @@ export namespace Prisma {
     update?: friendshipUpdateWithWhereUniqueWithoutUser_friendship_addresseeTouserInput | friendshipUpdateWithWhereUniqueWithoutUser_friendship_addresseeTouserInput[]
     updateMany?: friendshipUpdateManyWithWhereWithoutUser_friendship_addresseeTouserInput | friendshipUpdateManyWithWhereWithoutUser_friendship_addresseeTouserInput[]
     deleteMany?: friendshipScalarWhereInput | friendshipScalarWhereInput[]
+  }
+
+  export type listUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<listCreateWithoutUserInput, listUncheckedCreateWithoutUserInput> | listCreateWithoutUserInput[] | listUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: listCreateOrConnectWithoutUserInput | listCreateOrConnectWithoutUserInput[]
+    upsert?: listUpsertWithWhereUniqueWithoutUserInput | listUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: listCreateManyUserInputEnvelope
+    set?: listWhereUniqueInput | listWhereUniqueInput[]
+    disconnect?: listWhereUniqueInput | listWhereUniqueInput[]
+    delete?: listWhereUniqueInput | listWhereUniqueInput[]
+    connect?: listWhereUniqueInput | listWhereUniqueInput[]
+    update?: listUpdateWithWhereUniqueWithoutUserInput | listUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: listUpdateManyWithWhereWithoutUserInput | listUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: listScalarWhereInput | listScalarWhereInput[]
   }
 
   export type notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput = {
@@ -25274,6 +27892,90 @@ export namespace Prisma {
     update?: XOR<XOR<userUpdateToOneWithWhereWithoutStudyplanprogressInput, userUpdateWithoutStudyplanprogressInput>, userUncheckedUpdateWithoutStudyplanprogressInput>
   }
 
+  export type userCreateNestedOneWithoutListInput = {
+    create?: XOR<userCreateWithoutListInput, userUncheckedCreateWithoutListInput>
+    connectOrCreate?: userCreateOrConnectWithoutListInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type listitemCreateNestedManyWithoutListInput = {
+    create?: XOR<listitemCreateWithoutListInput, listitemUncheckedCreateWithoutListInput> | listitemCreateWithoutListInput[] | listitemUncheckedCreateWithoutListInput[]
+    connectOrCreate?: listitemCreateOrConnectWithoutListInput | listitemCreateOrConnectWithoutListInput[]
+    createMany?: listitemCreateManyListInputEnvelope
+    connect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+  }
+
+  export type listitemUncheckedCreateNestedManyWithoutListInput = {
+    create?: XOR<listitemCreateWithoutListInput, listitemUncheckedCreateWithoutListInput> | listitemCreateWithoutListInput[] | listitemUncheckedCreateWithoutListInput[]
+    connectOrCreate?: listitemCreateOrConnectWithoutListInput | listitemCreateOrConnectWithoutListInput[]
+    createMany?: listitemCreateManyListInputEnvelope
+    connect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+  }
+
+  export type userUpdateOneRequiredWithoutListNestedInput = {
+    create?: XOR<userCreateWithoutListInput, userUncheckedCreateWithoutListInput>
+    connectOrCreate?: userCreateOrConnectWithoutListInput
+    upsert?: userUpsertWithoutListInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutListInput, userUpdateWithoutListInput>, userUncheckedUpdateWithoutListInput>
+  }
+
+  export type listitemUpdateManyWithoutListNestedInput = {
+    create?: XOR<listitemCreateWithoutListInput, listitemUncheckedCreateWithoutListInput> | listitemCreateWithoutListInput[] | listitemUncheckedCreateWithoutListInput[]
+    connectOrCreate?: listitemCreateOrConnectWithoutListInput | listitemCreateOrConnectWithoutListInput[]
+    upsert?: listitemUpsertWithWhereUniqueWithoutListInput | listitemUpsertWithWhereUniqueWithoutListInput[]
+    createMany?: listitemCreateManyListInputEnvelope
+    set?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    disconnect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    delete?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    connect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    update?: listitemUpdateWithWhereUniqueWithoutListInput | listitemUpdateWithWhereUniqueWithoutListInput[]
+    updateMany?: listitemUpdateManyWithWhereWithoutListInput | listitemUpdateManyWithWhereWithoutListInput[]
+    deleteMany?: listitemScalarWhereInput | listitemScalarWhereInput[]
+  }
+
+  export type listitemUncheckedUpdateManyWithoutListNestedInput = {
+    create?: XOR<listitemCreateWithoutListInput, listitemUncheckedCreateWithoutListInput> | listitemCreateWithoutListInput[] | listitemUncheckedCreateWithoutListInput[]
+    connectOrCreate?: listitemCreateOrConnectWithoutListInput | listitemCreateOrConnectWithoutListInput[]
+    upsert?: listitemUpsertWithWhereUniqueWithoutListInput | listitemUpsertWithWhereUniqueWithoutListInput[]
+    createMany?: listitemCreateManyListInputEnvelope
+    set?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    disconnect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    delete?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    connect?: listitemWhereUniqueInput | listitemWhereUniqueInput[]
+    update?: listitemUpdateWithWhereUniqueWithoutListInput | listitemUpdateWithWhereUniqueWithoutListInput[]
+    updateMany?: listitemUpdateManyWithWhereWithoutListInput | listitemUpdateManyWithWhereWithoutListInput[]
+    deleteMany?: listitemScalarWhereInput | listitemScalarWhereInput[]
+  }
+
+  export type listCreateNestedOneWithoutListitemInput = {
+    create?: XOR<listCreateWithoutListitemInput, listUncheckedCreateWithoutListitemInput>
+    connectOrCreate?: listCreateOrConnectWithoutListitemInput
+    connect?: listWhereUniqueInput
+  }
+
+  export type exerciseCreateNestedOneWithoutListitemInput = {
+    create?: XOR<exerciseCreateWithoutListitemInput, exerciseUncheckedCreateWithoutListitemInput>
+    connectOrCreate?: exerciseCreateOrConnectWithoutListitemInput
+    connect?: exerciseWhereUniqueInput
+  }
+
+  export type listUpdateOneRequiredWithoutListitemNestedInput = {
+    create?: XOR<listCreateWithoutListitemInput, listUncheckedCreateWithoutListitemInput>
+    connectOrCreate?: listCreateOrConnectWithoutListitemInput
+    upsert?: listUpsertWithoutListitemInput
+    connect?: listWhereUniqueInput
+    update?: XOR<XOR<listUpdateToOneWithWhereWithoutListitemInput, listUpdateWithoutListitemInput>, listUncheckedUpdateWithoutListitemInput>
+  }
+
+  export type exerciseUpdateOneRequiredWithoutListitemNestedInput = {
+    create?: XOR<exerciseCreateWithoutListitemInput, exerciseUncheckedCreateWithoutListitemInput>
+    connectOrCreate?: exerciseCreateOrConnectWithoutListitemInput
+    upsert?: exerciseUpsertWithoutListitemInput
+    connect?: exerciseWhereUniqueInput
+    update?: XOR<XOR<exerciseUpdateToOneWithWhereWithoutListitemInput, exerciseUpdateWithoutListitemInput>, exerciseUncheckedUpdateWithoutListitemInput>
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -25695,6 +28397,24 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type listitemCreateWithoutExerciseInput = {
+    list: listCreateNestedOneWithoutListitemInput
+  }
+
+  export type listitemUncheckedCreateWithoutExerciseInput = {
+    LID: number
+  }
+
+  export type listitemCreateOrConnectWithoutExerciseInput = {
+    where: listitemWhereUniqueInput
+    create: XOR<listitemCreateWithoutExerciseInput, listitemUncheckedCreateWithoutExerciseInput>
+  }
+
+  export type listitemCreateManyExerciseInputEnvelope = {
+    data: listitemCreateManyExerciseInput | listitemCreateManyExerciseInput[]
+    skipDuplicates?: boolean
+  }
+
   export type submissionCreateWithoutExerciseInput = {
     Code?: string | null
     CreatedAt?: Date | string | null
@@ -25874,6 +28594,30 @@ export namespace Prisma {
     UpdatedAt?: DateTimeNullableFilter<"exerciseprogress"> | Date | string | null
   }
 
+  export type listitemUpsertWithWhereUniqueWithoutExerciseInput = {
+    where: listitemWhereUniqueInput
+    update: XOR<listitemUpdateWithoutExerciseInput, listitemUncheckedUpdateWithoutExerciseInput>
+    create: XOR<listitemCreateWithoutExerciseInput, listitemUncheckedCreateWithoutExerciseInput>
+  }
+
+  export type listitemUpdateWithWhereUniqueWithoutExerciseInput = {
+    where: listitemWhereUniqueInput
+    data: XOR<listitemUpdateWithoutExerciseInput, listitemUncheckedUpdateWithoutExerciseInput>
+  }
+
+  export type listitemUpdateManyWithWhereWithoutExerciseInput = {
+    where: listitemScalarWhereInput
+    data: XOR<listitemUpdateManyMutationInput, listitemUncheckedUpdateManyWithoutExerciseInput>
+  }
+
+  export type listitemScalarWhereInput = {
+    AND?: listitemScalarWhereInput | listitemScalarWhereInput[]
+    OR?: listitemScalarWhereInput[]
+    NOT?: listitemScalarWhereInput | listitemScalarWhereInput[]
+    LID?: IntFilter<"listitem"> | number
+    EID?: IntFilter<"listitem"> | number
+  }
+
   export type submissionUpsertWithWhereUniqueWithoutExerciseInput = {
     where: submissionWhereUniqueInput
     update: XOR<submissionUpdateWithoutExerciseInput, submissionUncheckedUpdateWithoutExerciseInput>
@@ -25941,6 +28685,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
+    listitem?: listitemCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
 
@@ -25956,6 +28701,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
+    listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
 
@@ -25968,16 +28714,17 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
@@ -25987,16 +28734,17 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
@@ -26052,6 +28800,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
 
@@ -26067,6 +28816,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
 
@@ -26085,16 +28835,17 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
@@ -26104,16 +28855,17 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
@@ -26157,6 +28909,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
+    listitem?: listitemCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
   }
 
@@ -26172,6 +28925,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
+    listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
   }
 
@@ -26225,6 +28979,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
   }
 
@@ -26240,6 +28995,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
   }
 
@@ -26369,6 +29125,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
+    listitem?: listitemCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -26384,6 +29141,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
+    listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -26568,6 +29326,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type listCreateWithoutUserInput = {
+    Name: string
+    Description?: string | null
+    CreatedAt?: Date | string | null
+    listitem?: listitemCreateNestedManyWithoutListInput
+  }
+
+  export type listUncheckedCreateWithoutUserInput = {
+    LID?: number
+    Name: string
+    Description?: string | null
+    CreatedAt?: Date | string | null
+    listitem?: listitemUncheckedCreateNestedManyWithoutListInput
+  }
+
+  export type listCreateOrConnectWithoutUserInput = {
+    where: listWhereUniqueInput
+    create: XOR<listCreateWithoutUserInput, listUncheckedCreateWithoutUserInput>
+  }
+
+  export type listCreateManyUserInputEnvelope = {
+    data: listCreateManyUserInput | listCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type notificationCreateWithoutUser_notification_UIDTouserInput = {
     Type: $Enums.notification_Type
     Message: string
@@ -26627,7 +29410,7 @@ export namespace Prisma {
   }
 
   export type studyplanprogressCreateWithoutUserInput = {
-    Status?: $Enums.studyplanprogress_Status
+    Status: $Enums.studyplanprogress_Status
     StartTime?: Date | string | null
     EndTime?: Date | string | null
     studyplan: studyplanCreateNestedOneWithoutStudyplanprogressInput
@@ -26636,7 +29419,7 @@ export namespace Prisma {
   export type studyplanprogressUncheckedCreateWithoutUserInput = {
     SPPID?: number
     SPID: number
-    Status?: $Enums.studyplanprogress_Status
+    Status: $Enums.studyplanprogress_Status
     StartTime?: Date | string | null
     EndTime?: Date | string | null
   }
@@ -26797,6 +29580,33 @@ export namespace Prisma {
     data: XOR<friendshipUpdateManyMutationInput, friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserInput>
   }
 
+  export type listUpsertWithWhereUniqueWithoutUserInput = {
+    where: listWhereUniqueInput
+    update: XOR<listUpdateWithoutUserInput, listUncheckedUpdateWithoutUserInput>
+    create: XOR<listCreateWithoutUserInput, listUncheckedCreateWithoutUserInput>
+  }
+
+  export type listUpdateWithWhereUniqueWithoutUserInput = {
+    where: listWhereUniqueInput
+    data: XOR<listUpdateWithoutUserInput, listUncheckedUpdateWithoutUserInput>
+  }
+
+  export type listUpdateManyWithWhereWithoutUserInput = {
+    where: listScalarWhereInput
+    data: XOR<listUpdateManyMutationInput, listUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type listScalarWhereInput = {
+    AND?: listScalarWhereInput | listScalarWhereInput[]
+    OR?: listScalarWhereInput[]
+    NOT?: listScalarWhereInput | listScalarWhereInput[]
+    LID?: IntFilter<"list"> | number
+    UID?: StringFilter<"list"> | string
+    Name?: StringFilter<"list"> | string
+    Description?: StringNullableFilter<"list"> | string | null
+    CreatedAt?: DateTimeNullableFilter<"list"> | Date | string | null
+  }
+
   export type notificationUpsertWithWhereUniqueWithoutUser_notification_UIDTouserInput = {
     where: notificationWhereUniqueInput
     update: XOR<notificationUpdateWithoutUser_notification_UIDTouserInput, notificationUncheckedUpdateWithoutUser_notification_UIDTouserInput>
@@ -26891,15 +29701,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
@@ -26910,15 +29721,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
@@ -26934,15 +29746,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
@@ -26953,15 +29766,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
@@ -26988,15 +29802,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
@@ -27007,15 +29822,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
@@ -27037,15 +29853,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
@@ -27056,15 +29873,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
@@ -27127,15 +29945,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
@@ -27146,15 +29965,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
@@ -27196,6 +30016,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
+    listitem?: listitemCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -27211,6 +30032,7 @@ export namespace Prisma {
     template?: string | null
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
+    listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -27285,15 +30107,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
@@ -27304,15 +30127,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
@@ -27366,6 +30190,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -27381,6 +30206,7 @@ export namespace Prisma {
     template?: NullableStringFieldUpdateOperationsInput | string | null
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -27421,15 +30247,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
@@ -27440,15 +30267,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
@@ -27499,15 +30327,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
@@ -27518,15 +30347,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
@@ -27567,15 +30397,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
@@ -27586,15 +30417,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
@@ -27616,6 +30448,7 @@ export namespace Prisma {
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
+    listitem?: listitemCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -27631,6 +30464,7 @@ export namespace Prisma {
     template?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
+    listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -27655,15 +30489,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
@@ -27674,15 +30509,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
@@ -27710,6 +30546,7 @@ export namespace Prisma {
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -27725,6 +30562,7 @@ export namespace Prisma {
     template?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -27816,16 +30654,17 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
@@ -27835,16 +30674,17 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
@@ -27859,16 +30699,17 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
     submission?: submissionCreateNestedManyWithoutUserInput
@@ -27878,16 +30719,17 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
@@ -27937,16 +30779,17 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
@@ -27956,16 +30799,17 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
@@ -27986,16 +30830,17 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
@@ -28005,16 +30850,17 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
@@ -28072,7 +30918,7 @@ export namespace Prisma {
   }
 
   export type studyplanprogressCreateWithoutStudyplanInput = {
-    Status?: $Enums.studyplanprogress_Status
+    Status: $Enums.studyplanprogress_Status
     StartTime?: Date | string | null
     EndTime?: Date | string | null
     user: userCreateNestedOneWithoutStudyplanprogressInput
@@ -28081,7 +30927,7 @@ export namespace Prisma {
   export type studyplanprogressUncheckedCreateWithoutStudyplanInput = {
     SPPID?: number
     UID: string
-    Status?: $Enums.studyplanprogress_Status
+    Status: $Enums.studyplanprogress_Status
     StartTime?: Date | string | null
     EndTime?: Date | string | null
   }
@@ -28147,6 +30993,7 @@ export namespace Prisma {
     topic?: topicCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
+    listitem?: listitemCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -28162,6 +31009,7 @@ export namespace Prisma {
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
+    listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -28246,15 +31094,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
@@ -28265,15 +31114,16 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
     studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
@@ -28295,6 +31145,7 @@ export namespace Prisma {
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
+    listitem?: listitemCreateNestedManyWithoutExerciseInput
     submission?: submissionCreateNestedManyWithoutExerciseInput
     testcase?: testcaseCreateNestedManyWithoutExerciseInput
   }
@@ -28310,6 +31161,7 @@ export namespace Prisma {
     template?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
+    listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
     submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
     testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
   }
@@ -28334,15 +31186,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
@@ -28353,15 +31206,16 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
@@ -28389,6 +31243,7 @@ export namespace Prisma {
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -28404,6 +31259,7 @@ export namespace Prisma {
     template?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -28434,16 +31290,17 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentCreateNestedManyWithoutUserInput
     commentlike?: commentlikeCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
     submission?: submissionCreateNestedManyWithoutUserInput
@@ -28453,16 +31310,17 @@ export namespace Prisma {
     UID?: string
     Username: string
     Email: string
-    isVerified?: boolean | null
     Password: string
     Role?: $Enums.user_Role
     CreatedAt?: Date | string | null
+    Image?: string | null
     comment?: commentUncheckedCreateNestedManyWithoutUserInput
     commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
     friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
     friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    list?: listUncheckedCreateNestedManyWithoutUserInput
     notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
     notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
     submission?: submissionUncheckedCreateNestedManyWithoutUserInput
@@ -28516,16 +31374,17 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
     friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
     friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUpdateManyWithoutUserNestedInput
     notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
     submission?: submissionUpdateManyWithoutUserNestedInput
@@ -28535,10 +31394,124 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Username?: StringFieldUpdateOperationsInput | string
     Email?: StringFieldUpdateOperationsInput | string
-    isVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     Password?: StringFieldUpdateOperationsInput | string
     Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    comment?: commentUncheckedUpdateManyWithoutUserNestedInput
+    commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutUserNestedInput
+    friendship_friendship_requesterTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    list?: listUncheckedUpdateManyWithoutUserNestedInput
+    notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
+    notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type userCreateWithoutListInput = {
+    UID?: string
+    Username: string
+    Email: string
+    Password: string
+    Role?: $Enums.user_Role
+    CreatedAt?: Date | string | null
+    Image?: string | null
+    comment?: commentCreateNestedManyWithoutUserInput
+    commentlike?: commentlikeCreateNestedManyWithoutUserInput
+    exerciselike?: exerciselikeCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutUserInput
+    friendship_friendship_requesterTouser?: friendshipCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    friendship_friendship_addresseeTouser?: friendshipCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    notification_notification_UIDTouser?: notificationCreateNestedManyWithoutUser_notification_UIDTouserInput
+    notification_notification_FromUserTouser?: notificationCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressCreateNestedManyWithoutUserInput
+    submission?: submissionCreateNestedManyWithoutUserInput
+  }
+
+  export type userUncheckedCreateWithoutListInput = {
+    UID?: string
+    Username: string
+    Email: string
+    Password: string
+    Role?: $Enums.user_Role
+    CreatedAt?: Date | string | null
+    Image?: string | null
+    comment?: commentUncheckedCreateNestedManyWithoutUserInput
+    commentlike?: commentlikeUncheckedCreateNestedManyWithoutUserInput
+    exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutUserInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutUserInput
+    friendship_friendship_requesterTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_requesterTouserInput
+    friendship_friendship_addresseeTouser?: friendshipUncheckedCreateNestedManyWithoutUser_friendship_addresseeTouserInput
+    notification_notification_UIDTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_UIDTouserInput
+    notification_notification_FromUserTouser?: notificationUncheckedCreateNestedManyWithoutUser_notification_FromUserTouserInput
+    studyplanprogress?: studyplanprogressUncheckedCreateNestedManyWithoutUserInput
+    submission?: submissionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type userCreateOrConnectWithoutListInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutListInput, userUncheckedCreateWithoutListInput>
+  }
+
+  export type listitemCreateWithoutListInput = {
+    exercise: exerciseCreateNestedOneWithoutListitemInput
+  }
+
+  export type listitemUncheckedCreateWithoutListInput = {
+    EID: number
+  }
+
+  export type listitemCreateOrConnectWithoutListInput = {
+    where: listitemWhereUniqueInput
+    create: XOR<listitemCreateWithoutListInput, listitemUncheckedCreateWithoutListInput>
+  }
+
+  export type listitemCreateManyListInputEnvelope = {
+    data: listitemCreateManyListInput | listitemCreateManyListInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type userUpsertWithoutListInput = {
+    update: XOR<userUpdateWithoutListInput, userUncheckedUpdateWithoutListInput>
+    create: XOR<userCreateWithoutListInput, userUncheckedCreateWithoutListInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutListInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutListInput, userUncheckedUpdateWithoutListInput>
+  }
+
+  export type userUpdateWithoutListInput = {
+    UID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    Password?: StringFieldUpdateOperationsInput | string
+    Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    comment?: commentUpdateManyWithoutUserNestedInput
+    commentlike?: commentlikeUpdateManyWithoutUserNestedInput
+    exerciselike?: exerciselikeUpdateManyWithoutUserNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutUserNestedInput
+    friendship_friendship_requesterTouser?: friendshipUpdateManyWithoutUser_friendship_requesterTouserNestedInput
+    friendship_friendship_addresseeTouser?: friendshipUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
+    notification_notification_UIDTouser?: notificationUpdateManyWithoutUser_notification_UIDTouserNestedInput
+    notification_notification_FromUserTouser?: notificationUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUpdateManyWithoutUserNestedInput
+    submission?: submissionUpdateManyWithoutUserNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutListInput = {
+    UID?: StringFieldUpdateOperationsInput | string
+    Username?: StringFieldUpdateOperationsInput | string
+    Email?: StringFieldUpdateOperationsInput | string
+    Password?: StringFieldUpdateOperationsInput | string
+    Role?: Enumuser_RoleFieldUpdateOperationsInput | $Enums.user_Role
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
     comment?: commentUncheckedUpdateManyWithoutUserNestedInput
     commentlike?: commentlikeUncheckedUpdateManyWithoutUserNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutUserNestedInput
@@ -28547,7 +31520,148 @@ export namespace Prisma {
     friendship_friendship_addresseeTouser?: friendshipUncheckedUpdateManyWithoutUser_friendship_addresseeTouserNestedInput
     notification_notification_UIDTouser?: notificationUncheckedUpdateManyWithoutUser_notification_UIDTouserNestedInput
     notification_notification_FromUserTouser?: notificationUncheckedUpdateManyWithoutUser_notification_FromUserTouserNestedInput
+    studyplanprogress?: studyplanprogressUncheckedUpdateManyWithoutUserNestedInput
     submission?: submissionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type listitemUpsertWithWhereUniqueWithoutListInput = {
+    where: listitemWhereUniqueInput
+    update: XOR<listitemUpdateWithoutListInput, listitemUncheckedUpdateWithoutListInput>
+    create: XOR<listitemCreateWithoutListInput, listitemUncheckedCreateWithoutListInput>
+  }
+
+  export type listitemUpdateWithWhereUniqueWithoutListInput = {
+    where: listitemWhereUniqueInput
+    data: XOR<listitemUpdateWithoutListInput, listitemUncheckedUpdateWithoutListInput>
+  }
+
+  export type listitemUpdateManyWithWhereWithoutListInput = {
+    where: listitemScalarWhereInput
+    data: XOR<listitemUpdateManyMutationInput, listitemUncheckedUpdateManyWithoutListInput>
+  }
+
+  export type listCreateWithoutListitemInput = {
+    Name: string
+    Description?: string | null
+    CreatedAt?: Date | string | null
+    user: userCreateNestedOneWithoutListInput
+  }
+
+  export type listUncheckedCreateWithoutListitemInput = {
+    LID?: number
+    UID: string
+    Name: string
+    Description?: string | null
+    CreatedAt?: Date | string | null
+  }
+
+  export type listCreateOrConnectWithoutListitemInput = {
+    where: listWhereUniqueInput
+    create: XOR<listCreateWithoutListitemInput, listUncheckedCreateWithoutListitemInput>
+  }
+
+  export type exerciseCreateWithoutListitemInput = {
+    Name: string
+    Slug: string
+    Content: string
+    Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
+    comment?: commentCreateNestedManyWithoutExerciseInput
+    topic?: topicCreateNestedOneWithoutExerciseInput
+    studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
+    exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressCreateNestedManyWithoutExerciseInput
+    submission?: submissionCreateNestedManyWithoutExerciseInput
+    testcase?: testcaseCreateNestedManyWithoutExerciseInput
+  }
+
+  export type exerciseUncheckedCreateWithoutListitemInput = {
+    EID?: number
+    TpID?: number | null
+    SPIID?: number | null
+    Name: string
+    Slug: string
+    Content: string
+    Difficulty?: $Enums.exercise_Difficulty
+    template?: string | null
+    comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
+    exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
+    exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
+    submission?: submissionUncheckedCreateNestedManyWithoutExerciseInput
+    testcase?: testcaseUncheckedCreateNestedManyWithoutExerciseInput
+  }
+
+  export type exerciseCreateOrConnectWithoutListitemInput = {
+    where: exerciseWhereUniqueInput
+    create: XOR<exerciseCreateWithoutListitemInput, exerciseUncheckedCreateWithoutListitemInput>
+  }
+
+  export type listUpsertWithoutListitemInput = {
+    update: XOR<listUpdateWithoutListitemInput, listUncheckedUpdateWithoutListitemInput>
+    create: XOR<listCreateWithoutListitemInput, listUncheckedCreateWithoutListitemInput>
+    where?: listWhereInput
+  }
+
+  export type listUpdateToOneWithWhereWithoutListitemInput = {
+    where?: listWhereInput
+    data: XOR<listUpdateWithoutListitemInput, listUncheckedUpdateWithoutListitemInput>
+  }
+
+  export type listUpdateWithoutListitemInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: userUpdateOneRequiredWithoutListNestedInput
+  }
+
+  export type listUncheckedUpdateWithoutListitemInput = {
+    LID?: IntFieldUpdateOperationsInput | number
+    UID?: StringFieldUpdateOperationsInput | string
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type exerciseUpsertWithoutListitemInput = {
+    update: XOR<exerciseUpdateWithoutListitemInput, exerciseUncheckedUpdateWithoutListitemInput>
+    create: XOR<exerciseCreateWithoutListitemInput, exerciseUncheckedCreateWithoutListitemInput>
+    where?: exerciseWhereInput
+  }
+
+  export type exerciseUpdateToOneWithWhereWithoutListitemInput = {
+    where?: exerciseWhereInput
+    data: XOR<exerciseUpdateWithoutListitemInput, exerciseUncheckedUpdateWithoutListitemInput>
+  }
+
+  export type exerciseUpdateWithoutListitemInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Slug?: StringFieldUpdateOperationsInput | string
+    Content?: StringFieldUpdateOperationsInput | string
+    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
+    comment?: commentUpdateManyWithoutExerciseNestedInput
+    topic?: topicUpdateOneWithoutExerciseNestedInput
+    studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
+    exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
+    submission?: submissionUpdateManyWithoutExerciseNestedInput
+    testcase?: testcaseUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type exerciseUncheckedUpdateWithoutListitemInput = {
+    EID?: IntFieldUpdateOperationsInput | number
+    TpID?: NullableIntFieldUpdateOperationsInput | number | null
+    SPIID?: NullableIntFieldUpdateOperationsInput | number | null
+    Name?: StringFieldUpdateOperationsInput | string
+    Slug?: StringFieldUpdateOperationsInput | string
+    Content?: StringFieldUpdateOperationsInput | string
+    Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
+    template?: NullableStringFieldUpdateOperationsInput | string | null
+    comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
+    exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
+    submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
+    testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
 
   export type commentCreateManyExerciseInput = {
@@ -28569,6 +31683,10 @@ export namespace Prisma {
     UID: string
     Status?: $Enums.exerciseprogress_Status | null
     UpdatedAt?: Date | string | null
+  }
+
+  export type listitemCreateManyExerciseInput = {
+    LID: number
   }
 
   export type submissionCreateManyExerciseInput = {
@@ -28649,6 +31767,18 @@ export namespace Prisma {
     UID?: StringFieldUpdateOperationsInput | string
     Status?: NullableEnumexerciseprogress_StatusFieldUpdateOperationsInput | $Enums.exerciseprogress_Status | null
     UpdatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type listitemUpdateWithoutExerciseInput = {
+    list?: listUpdateOneRequiredWithoutListitemNestedInput
+  }
+
+  export type listitemUncheckedUpdateWithoutExerciseInput = {
+    LID?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type listitemUncheckedUpdateManyWithoutExerciseInput = {
+    LID?: IntFieldUpdateOperationsInput | number
   }
 
   export type submissionUpdateWithoutExerciseInput = {
@@ -28775,6 +31905,7 @@ export namespace Prisma {
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -28790,6 +31921,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -28845,6 +31977,13 @@ export namespace Prisma {
     CreatedAt?: Date | string | null
   }
 
+  export type listCreateManyUserInput = {
+    LID?: number
+    Name: string
+    Description?: string | null
+    CreatedAt?: Date | string | null
+  }
+
   export type notificationCreateManyUser_notification_UIDTouserInput = {
     NID?: number
     Type: $Enums.notification_Type
@@ -28868,7 +32007,7 @@ export namespace Prisma {
   export type studyplanprogressCreateManyUserInput = {
     SPPID?: number
     SPID: number
-    Status?: $Enums.studyplanprogress_Status
+    Status: $Enums.studyplanprogress_Status
     StartTime?: Date | string | null
     EndTime?: Date | string | null
   }
@@ -29000,6 +32139,28 @@ export namespace Prisma {
     FID?: IntFieldUpdateOperationsInput | number
     requester?: StringFieldUpdateOperationsInput | string
     status?: Enumfriendship_statusFieldUpdateOperationsInput | $Enums.friendship_status
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type listUpdateWithoutUserInput = {
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    listitem?: listitemUpdateManyWithoutListNestedInput
+  }
+
+  export type listUncheckedUpdateWithoutUserInput = {
+    LID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
+    CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    listitem?: listitemUncheckedUpdateManyWithoutListNestedInput
+  }
+
+  export type listUncheckedUpdateManyWithoutUserInput = {
+    LID?: IntFieldUpdateOperationsInput | number
+    Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
     CreatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
@@ -29246,7 +32407,7 @@ export namespace Prisma {
   export type studyplanprogressCreateManyStudyplanInput = {
     SPPID?: number
     UID: string
-    Status?: $Enums.studyplanprogress_Status
+    Status: $Enums.studyplanprogress_Status
     StartTime?: Date | string | null
     EndTime?: Date | string | null
   }
@@ -29310,6 +32471,7 @@ export namespace Prisma {
     topic?: topicUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUpdateManyWithoutExerciseNestedInput
     submission?: submissionUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUpdateManyWithoutExerciseNestedInput
   }
@@ -29325,6 +32487,7 @@ export namespace Prisma {
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
+    listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
     submission?: submissionUncheckedUpdateManyWithoutExerciseNestedInput
     testcase?: testcaseUncheckedUpdateManyWithoutExerciseNestedInput
   }
@@ -29337,6 +32500,22 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type listitemCreateManyListInput = {
+    EID: number
+  }
+
+  export type listitemUpdateWithoutListInput = {
+    exercise?: exerciseUpdateOneRequiredWithoutListitemNestedInput
+  }
+
+  export type listitemUncheckedUpdateWithoutListInput = {
+    EID?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type listitemUncheckedUpdateManyWithoutListInput = {
+    EID?: IntFieldUpdateOperationsInput | number
   }
 
 

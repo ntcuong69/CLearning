@@ -91,6 +91,7 @@ export default function NavBar() {
   const router = useRouter();
   const pathname = usePathname();
   const [username, setUsername] = useState<string>("");
+  const [image, setImage] = useState<string>("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -99,9 +100,11 @@ export default function NavBar() {
       .get("/api/me")
       .then((res) => {
         setUsername(res.data.user.Username);
+        setImage(res.data.user.Image || res.data.user.image || "");
       })
       .catch(() => {
         setUsername("");
+        setImage("");
       });
   }, []);
 
@@ -204,8 +207,8 @@ export default function NavBar() {
             >
               <Avatar
                 sx={{
-                  width: 48,
-                  height: 48,
+                  width: 32,
+                  height: 32,
                   bgcolor: "#F0F4F8",
                   color: "#1a1a1a",
                   border: "none",
@@ -214,8 +217,9 @@ export default function NavBar() {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
+                src={image || undefined}
               >
-                <AccountCircleIcon sx={{ fontSize: 32, color: "#4A4A4A" }} />
+                {!image && <AccountCircleIcon sx={{ fontSize: 24, color: "#4A4A4A" }} />}
               </Avatar>
 
               <Box sx={{ display: { xs: "none", md: "block" } }}>

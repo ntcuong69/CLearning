@@ -39,6 +39,9 @@ import {
   ArrowBack,
   Close,
   Pending,
+  AccountCircle as AccountCircleIcon,
+  Settings as SettingsIcon,
+  Logout as LogoutIcon,
 } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { useSubmitCode } from "@/hooks/useSubmitCode";
@@ -71,6 +74,8 @@ export default function ExerciseHeader({
   const [mounted, setMounted] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [username, setUsername] = useState<string>("");
+  const [image, setImage] = useState<string>("");
 
   // Topic và Exercise states
   const [topics, setTopics] = useState<any[]>([]);
@@ -164,10 +169,12 @@ export default function ExerciseHeader({
         const res = await fetch("/api/me");
         if (res.ok) {
           const data = await res.json();
-          setUser(data.user);
+          setUsername(data.user.Username);
+          setImage(data.user.Image || data.user.image || "");
         }
       } catch (error) {
-        console.error("Error fetching user:", error);
+        setUsername("");
+        setImage("");
       }
     };
     fetchUser();
@@ -352,9 +359,14 @@ export default function ExerciseHeader({
     setMenuOpen(!menuOpen);
   };
 
-  /**
-   * Xử lý logout
-   */
+  const handleProfile = () => {
+    router.push("/profile");
+    handleMenuClose();
+  };
+  const handleSettings = () => {
+    router.push("/settings");
+    handleMenuClose();
+  };
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/signout", { method: "POST" });
@@ -362,6 +374,7 @@ export default function ExerciseHeader({
     } catch (error) {
       console.error("Error logging out:", error);
     }
+    handleMenuClose();
   };
 
   // ======================
@@ -564,34 +577,35 @@ export default function ExerciseHeader({
               }} 
               onClick={handleMenuClick}
             >
-              <Avatar 
-                sx={{ 
-                  width: 40, 
-                  height: 40,
-                  border: "3px solid #ffffff",
-                  bgcolor: user?.Username ? "#1a1a1a" : "#666",
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                  fontSize: '1rem',
-                  fontWeight: 700,
+              <Avatar
+                sx={{
+                  width: 32,
+                  height: 32,
+                  bgcolor: "#F0F4F8",
+                  color: "#1a1a1a",
+                  border: "none",
+                  boxShadow: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
+                src={image || undefined}
               >
-                {user?.Username ? user.Username.charAt(0).toUpperCase() : "U"}
+                {!image && <AccountCircleIcon sx={{ fontSize: 20, color: "#4A4A4A" }} />}
               </Avatar>
-              
-              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                <Typography 
-                  variant="body2" 
-                  sx={{ 
-                    fontWeight: 700, 
+              <Box sx={{ ml: 1, display: { xs: "none", md: "block" } }}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: 700,
                     color: "#1a1a1a",
-                    fontSize: '0.9rem',
+                    fontSize: "0.9rem",
                     lineHeight: 1.2,
                   }}
                 >
-                  {user?.Username || "User"}
+                  {username || "Chưa đăng nhập"}
                 </Typography>
               </Box>
-              
               <KeyboardArrowDown 
                 sx={{ 
                   color: "#666", 
@@ -601,90 +615,106 @@ export default function ExerciseHeader({
                 }} 
               />
             </Box>
+            {/* User Dropdown Menu giống Header */}
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              disableScrollLock
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+              PaperProps={{
+                sx: {
+                  mt: 1,
+                  minWidth: 170,
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.10)",
+                  borderRadius: "10px",
+                  border: "1px solid #f0f0f0",
+                  overflow: "hidden",
+                },
+              }}
+            >
+              <MenuItem
+                onClick={handleProfile}
+                sx={{
+                  py: 1.2,
+                  px: 1.5,
+                  borderRadius: "8px",
+                  transition: "background 0.15s",
+                  backgroundColor: "transparent !important",
+                  "&:hover": {
+                    backgroundColor: "#e3f0ff !important",
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "transparent !important",
+                  },
+                  "&.Mui-focusVisible": {
+                    backgroundColor: "transparent !important",
+                  },
+                  "&.MuiMenuItem-root:hover": {
+                    backgroundColor: "#e3f0ff !important",
+                  },
+                }}
+              >
+                <AccountCircleIcon sx={{ mr: 2, color: "#666", fontSize: 20 }} />
+                <Typography sx={{ fontWeight: 600, fontSize: "0.9rem", color: "#333" }}>Trang cá nhân</Typography>
+              </MenuItem>
+              <MenuItem
+                onClick={handleSettings}
+                sx={{
+                  py: 1.2,
+                  px: 1.5,
+                  borderRadius: "8px",
+                  transition: "background 0.15s",
+                  backgroundColor: "transparent !important",
+                  "&:hover": {
+                    backgroundColor: "#e3f0ff !important",
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "transparent !important",
+                  },
+                  "&.Mui-focusVisible": {
+                    backgroundColor: "transparent !important",
+                  },
+                  "&.MuiMenuItem-root:hover": {
+                    backgroundColor: "#e3f0ff !important",
+                  },
+                }}
+              >
+                <SettingsIcon sx={{ mr: 2, color: "#666", fontSize: 20 }} />
+                <Typography sx={{ fontWeight: 600, fontSize: "0.9rem", color: "#333" }}>Cài đặt</Typography>
+              </MenuItem>
+              <Divider sx={{ my: 1 }} />
+              <MenuItem
+                onClick={handleLogout}
+                sx={{
+                  py: 1.2,
+                  px: 1.5,
+                  color: "#d32f2f",
+                  borderRadius: "8px",
+                  transition: "background 0.15s",
+                  backgroundColor: "transparent !important",
+                  "&:hover": {
+                    backgroundColor: "#ffeaea !important",
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "transparent !important",
+                  },
+                  "&.Mui-focusVisible": {
+                    backgroundColor: "transparent !important",
+                  },
+                  "&.MuiMenuItem-root:hover": {
+                    backgroundColor: "#ffeaea !important",
+                  },
+                }}
+              >
+                <LogoutIcon sx={{ mr: 2, fontSize: 20 }} />
+                <Typography sx={{ fontWeight: 600, fontSize: "0.9rem", color: "#d32f2f" }}>Đăng xuất</Typography>
+              </MenuItem>
+            </Menu>
           </Box>
         </Toolbar>
       </AppBar>
-
-      {/* User Dropdown Menu */}
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        autoFocus={false}
-        disableAutoFocusItem={true}
-        PaperProps={{
-          sx: {
-            mt: 1,
-            minWidth: 200,
-            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-            borderRadius: 2,
-          },
-        }}
-      >
-        <MenuItem onClick={handleMenuClose} sx={{ 
-          py: 1.5,
-          "&:hover": { backgroundColor: "#f5f5f5" },
-          "&.Mui-focusVisible": { backgroundColor: "transparent" }
-        }}>
-          <ListItemIcon>
-            <Person fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primary="Hồ sơ"
-            secondary={user?.Email}
-            primaryTypographyProps={{ fontSize: "0.875rem", fontWeight: 500 }}
-            secondaryTypographyProps={{ fontSize: "0.75rem" }}
-          />
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose} sx={{ 
-          py: 1.5,
-          "&:hover": { backgroundColor: "#f5f5f5" },
-          "&.Mui-focusVisible": { backgroundColor: "transparent" }
-        }}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primary="Cài đặt"
-            primaryTypographyProps={{ fontSize: "0.875rem" }}
-          />
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose} sx={{ 
-          py: 1.5,
-          "&:hover": { backgroundColor: "#f5f5f5" },
-          "&.Mui-focusVisible": { backgroundColor: "transparent" }
-        }}>
-          <ListItemIcon>
-            <Help fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primary="Trợ giúp"
-            primaryTypographyProps={{ fontSize: "0.875rem" }}
-          />
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleLogout} sx={{ 
-          py: 1.5,
-          "&:hover": { backgroundColor: "#f5f5f5" },
-          "&.Mui-focusVisible": { backgroundColor: "transparent" }
-        }}>
-          <ListItemIcon>
-            <ExitToApp fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primary="Đăng xuất"
-            primaryTypographyProps={{ fontSize: "0.875rem" }}
-          />
-        </MenuItem>
-      </Menu>
 
       {/* Sidebar Menu */}
       <Drawer

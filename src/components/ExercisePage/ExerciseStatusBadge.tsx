@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CheckCircleIconOutlined from "@mui/icons-material/CheckCircleOutlined";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import PendingIcon from "@mui/icons-material/Pending";
 
@@ -15,13 +15,13 @@ export default function ExerciseStatusBadge({
   status, 
   showIcon = true, 
   showText = false,
-  size = "medium" 
+  size = "small" 
 }: ExerciseStatusBadgeProps) {
   const getStatusInfo = () => {
     switch (status) {
       case "Solved":
         return {
-          icon: <CheckCircleIcon fontSize={size} sx={{ color: "#4CAF50" }} />,
+          icon: <CheckCircleIconOutlined fontSize={size} sx={{ color: "#4CAF50" }} />,
           color: "#4CAF50",
           text: "Đã giải",
         };

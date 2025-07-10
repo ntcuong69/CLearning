@@ -22,6 +22,7 @@ model exercise {
   studyplanitem    studyplanitem?      @relation(fields: [SPIID], references: [SPIID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_2")
   exerciselike     exerciselike[]
   exerciseprogress exerciseprogress[]
+  listitem         listitem[]
   submission       submission[]
   testcase         testcase[]
 
@@ -81,16 +82,17 @@ model user {
   UID                                      String              @id @default(dbgenerated("(uuid())")) @db.Char(36)
   Username                                 String              @db.VarChar(50)
   Email                                    String              @unique(map: "Email") @db.VarChar(50)
-  isVerified                               Boolean?            @default(false)
   Password                                 String              @db.VarChar(255)
   Role                                     user_Role           @default(User)
   CreatedAt                                DateTime?           @default(now()) @db.Timestamp(0)
+  Image                                    String?             @db.VarChar(255)
   comment                                  comment[]
   commentlike                              commentlike[]
   exerciselike                             exerciselike[]
   exerciseprogress                         exerciseprogress[]
   friendship_friendship_requesterTouser    friendship[]        @relation("friendship_requesterTouser")
   friendship_friendship_addresseeTouser    friendship[]        @relation("friendship_addresseeTouser")
+  list                                     list[]
   notification_notification_UIDTouser      notification[]      @relation("notification_UIDTouser")
   notification_notification_FromUserTouser notification[]      @relation("notification_FromUserTouser")
   studyplanprogress                        studyplanprogress[]
@@ -226,7 +228,7 @@ model studyplanprogress {
   SPPID     Int                      @id @default(autoincrement())
   SPID      Int
   UID       String                   @db.Char(36)
-  Status    studyplanprogress_Status @default(NotStarted)
+  Status    studyplanprogress_Status
   StartTime DateTime?                @db.Timestamp(0)
   EndTime   DateTime?                @db.Timestamp(0)
   studyplan studyplan                @relation(fields: [SPID], references: [SPID], onDelete: NoAction, onUpdate: NoAction, map: "studyplanprogress_ibfk_2")
@@ -234,6 +236,28 @@ model studyplanprogress {
 
   @@index([SPID], map: "SPID")
   @@index([UID], map: "UID")
+}
+
+model list {
+  LID         Int        @id @default(autoincrement())
+  UID         String     @db.Char(36)
+  Name        String     @db.VarChar(50)
+  Description String?    @db.Text
+  CreatedAt   DateTime?  @default(now()) @db.Timestamp(0)
+  user        user       @relation(fields: [UID], references: [UID], onDelete: NoAction, onUpdate: NoAction, map: "list_ibfk_1")
+  listitem    listitem[]
+
+  @@index([UID], map: "UID")
+}
+
+model listitem {
+  LID      Int
+  EID      Int
+  list     list     @relation(fields: [LID], references: [LID], onDelete: NoAction, onUpdate: NoAction, map: "listitem_ibfk_1")
+  exercise exercise @relation(fields: [EID], references: [EID], onDelete: NoAction, onUpdate: NoAction, map: "listitem_ibfk_2")
+
+  @@unique([LID, EID], map: "unique_list_exercise")
+  @@index([EID], map: "EID")
 }
 
 enum exercise_Difficulty {
@@ -278,7 +302,6 @@ enum exerciseprogress_Status {
 }
 
 enum studyplanprogress_Status {
-  NotStarted
   InProgress
   Completed
 }

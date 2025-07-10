@@ -164,10 +164,10 @@ exports.Prisma.UserScalarFieldEnum = {
   UID: 'UID',
   Username: 'Username',
   Email: 'Email',
-  isVerified: 'isVerified',
   Password: 'Password',
   Role: 'Role',
-  CreatedAt: 'CreatedAt'
+  CreatedAt: 'CreatedAt',
+  Image: 'Image'
 };
 
 exports.Prisma.FriendshipScalarFieldEnum = {
@@ -257,6 +257,19 @@ exports.Prisma.StudyplanprogressScalarFieldEnum = {
   EndTime: 'EndTime'
 };
 
+exports.Prisma.ListScalarFieldEnum = {
+  LID: 'LID',
+  UID: 'UID',
+  Name: 'Name',
+  Description: 'Description',
+  CreatedAt: 'CreatedAt'
+};
+
+exports.Prisma.ListitemScalarFieldEnum = {
+  LID: 'LID',
+  EID: 'EID'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -297,7 +310,8 @@ exports.Prisma.userOrderByRelevanceFieldEnum = {
   UID: 'UID',
   Username: 'Username',
   Email: 'Email',
-  Password: 'Password'
+  Password: 'Password',
+  Image: 'Image'
 };
 
 exports.Prisma.friendshipOrderByRelevanceFieldEnum = {
@@ -351,6 +365,12 @@ exports.Prisma.exerciseprogressOrderByRelevanceFieldEnum = {
 exports.Prisma.studyplanprogressOrderByRelevanceFieldEnum = {
   UID: 'UID'
 };
+
+exports.Prisma.listOrderByRelevanceFieldEnum = {
+  UID: 'UID',
+  Name: 'Name',
+  Description: 'Description'
+};
 exports.exercise_Difficulty = exports.$Enums.exercise_Difficulty = {
   Easy: 'Easy',
   Medium: 'Medium',
@@ -393,7 +413,6 @@ exports.exerciseprogress_Status = exports.$Enums.exerciseprogress_Status = {
 };
 
 exports.studyplanprogress_Status = exports.$Enums.studyplanprogress_Status = {
-  NotStarted: 'NotStarted',
   InProgress: 'InProgress',
   Completed: 'Completed'
 };
@@ -415,7 +434,9 @@ exports.Prisma.ModelName = {
   studyplan: 'studyplan',
   studyplanitem: 'studyplanitem',
   exerciseprogress: 'exerciseprogress',
-  studyplanprogress: 'studyplanprogress'
+  studyplanprogress: 'studyplanprogress',
+  list: 'list',
+  listitem: 'listitem'
 };
 
 /**
