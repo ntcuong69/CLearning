@@ -19,6 +19,13 @@ import {
   Menu,
   MenuItem,
   Alert,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ListIcon from "@mui/icons-material/List";
@@ -29,6 +36,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
+import ExerciseStatusBadge from "./ExercisePage/ExerciseStatusBadge";
 
 const ListSidebar = ({ onListDeleted, onListExerciseChanged }: any) => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -701,7 +709,7 @@ const ListSidebar = ({ onListDeleted, onListExerciseChanged }: any) => {
       </Dialog>
 
       {/* Dialog hiển thị danh sách bài tập */}
-      <Dialog open={openListDialog} onClose={handleCloseListDialog} maxWidth="sm" fullWidth
+      <Dialog open={openListDialog} onClose={handleCloseListDialog} maxWidth="md" fullWidth
         PaperProps={{ sx: { borderRadius: 3 } }}
       >
         <DialogTitle sx={{ 
@@ -716,7 +724,7 @@ const ListSidebar = ({ onListDeleted, onListExerciseChanged }: any) => {
           <ListIcon sx={{ color: "#1976d2" }} />
           Danh sách bài tập trong "{selectedList?.Name}"
         </DialogTitle>
-        <DialogContent sx={{ pt: 2 }}>
+        <DialogContent sx={{ pt: 2, p: 0 }}>
           {listDialogLoading ? (
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2, py: 2 }}>
               {[1, 2, 3].map((i) => (
@@ -747,89 +755,104 @@ const ListSidebar = ({ onListDeleted, onListExerciseChanged }: any) => {
               </Typography>
             </Box>
           ) : (
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-              {listExercises.map((ex, index) => (
-                <Card
-                  key={ex.EID}
-                  sx={{
-                    bgcolor: "#fafafa",
-                    borderRadius: 2,
-                    border: "1px solid #f0f0f0",
-                    transition: "all 0.2s ease",
-                    "&:hover": {
-                      bgcolor: "#f5f5f5",
-                      borderColor: "#1976d2"
-                    }
-                  }}
-                >
-                  <CardContent sx={{ p: 2 }}>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                      <Avatar
-                        sx={{
-                          bgcolor: "#e3f2fd",
-                          color: "#1976d2",
-                          width: 36,
-                          height: 36,
-                          fontSize: "14px",
-                          fontWeight: 600
+            <Card className="border border-gray-200 shadow-lg">
+              <TableContainer component={Paper} className="rounded-xl">
+                <Table>
+                  <TableHead sx={{ bgcolor: '#f9fafb' }}>
+                    <TableRow>
+                      <TableCell 
+                        align="center" 
+                        sx={{ 
+                          width: "15%", 
+                          fontWeight: 700, 
+                          color: '#1a1a1a',
+                          fontSize: '14px',
+                          py: 2
                         }}
                       >
-                        {index + 1}
-                      </Avatar>
-                      <Box sx={{ flex: 1, minWidth: 0 }}>
-                        <Typography
-                          component="a"
-                          href={`/exercises/${ex.Slug}`}
-                          target="_blank"
-                          sx={{
-                            fontWeight: 600,
-                            color: "#1976d2",
-                            textDecoration: "none",
-                            fontSize: "14px",
-                            display: "block",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                            "&:hover": {
-                              textDecoration: "underline"
-                            }
-                          }}
-                        >
-                          {ex.Name}
-                        </Typography>
-                        {ex.Description && (
+                        Trạng thái
+                      </TableCell>
+                      <TableCell 
+                        sx={{ 
+                          width: "60%", 
+                          fontWeight: 700, 
+                          color: '#1a1a1a',
+                          fontSize: '14px',
+                          py: 2
+                        }}
+                      >
+                        Tên bài tập
+                      </TableCell>
+                      <TableCell 
+                        align="center" 
+                        sx={{ 
+                          width: "15%", 
+                          fontWeight: 700, 
+                          color: '#1a1a1a',
+                          fontSize: '14px',
+                          py: 2
+                        }}
+                      >
+                        Độ khó
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {listExercises.map((ex, index) => (
+                      <TableRow
+                        key={ex.EID}
+                        className="transition-colors duration-150 cursor-pointer"
+                        sx={{ backgroundColor: index % 2 === 0 ? '#fff' : '#f9fafb', '&:hover': { backgroundColor: '#f1f5f9' } }}
+                        onClick={() => window.open(`/exercises/${ex.Slug}`, '_blank')}
+                      >
+                        <TableCell align="center">
+                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                            <ExerciseStatusBadge status={ex.status || 'Unattempted'} />
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box>
+                            <Typography 
+                              variant="body2" 
+                              className="font-medium text-gray-900 hover:text-blue-600"
+                            >
+                              {ex.Name}
+                            </Typography>
+                            {ex.Description && (
+                              <Typography 
+                                variant="body2" 
+                                color="text.secondary" 
+                                sx={{ 
+                                  fontSize: "12px",
+                                  mt: 0.5,
+                                  lineHeight: 1.3
+                                }}
+                              >
+                                {ex.Description}
+                              </Typography>
+                            )}
+                          </Box>
+                        </TableCell>
+                        <TableCell align="center">
                           <Typography
                             variant="body2"
-                            color="text.secondary"
-                            sx={{
-                              fontSize: "12px",
-                              mt: 0.5,
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap"
-                            }}
+                            className={`font-medium ${
+                              ex.Difficulty === 'Easy' ? 'text-green-500' :
+                              ex.Difficulty === 'Medium' ? 'text-yellow-500' :
+                              ex.Difficulty === 'Hard' ? 'text-red-500' : ''
+                            }`}
                           >
-                            {ex.Description}
+                            {ex.Difficulty === 'Easy' ? 'Dễ' : 
+                             ex.Difficulty === 'Medium' ? 'Vừa' : 
+                             ex.Difficulty === 'Hard' ? 'Khó' : ex.Difficulty}
                           </Typography>
-                        )}
-                      </Box>
-                      <Chip
-                        label={getDifficultyText(ex.Difficulty)}
-                        size="small"
-                        sx={{
-                          bgcolor: getDifficultyColor(ex.Difficulty),
-                          color: "#fff",
-                          fontSize: "11px",
-                          height: "22px",
-                          fontWeight: 500,
-                          "& .MuiChip-label": { px: 1 }
-                        }}
-                      />
-                    </Box>
-                  </CardContent>
-                </Card>
-              ))}
-            </Box>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Card>
           )}
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2, pt: 1 }}>

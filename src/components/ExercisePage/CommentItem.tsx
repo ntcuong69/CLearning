@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import PersonIcon from "@mui/icons-material/Person";
 import { formatDistanceToNow } from "date-fns";
 
 export default function CommentItem({
@@ -33,9 +34,20 @@ export default function CommentItem({
   return (
     <Box sx={{ mb: 2, p: 1.5, borderRadius: 2, bgcolor: "#fff", boxShadow: "0 1px 4px #0001" }}>
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Avatar sx={{ width: 32, height: 32, bgcolor: "#753a88" }}>{comment.user?.Username?.[0]?.toUpperCase() || "U"}</Avatar>
+        <Avatar 
+          sx={{ 
+            width: 32, 
+            height: 32, 
+            bgcolor: comment.user?.Image ? "transparent" : "#753a88" 
+          }}
+          src={comment.user?.Image}
+        >
+          {!comment.user?.Image && (
+            <PersonIcon sx={{ fontSize: 20, color: "#fff" }} />
+          )}
+        </Avatar>
         <Box sx={{ flex: 1 }}>
-          <Typography variant="subtitle2" fontWeight={600} color="#753a88">
+          <Typography variant="subtitle2" fontWeight={600} color="#753a88" sx={{ mb: -1 }}>
             {comment.user?.Username || "Người dùng ẩn danh"}
           </Typography>
           <Typography variant="caption" color="text.secondary">

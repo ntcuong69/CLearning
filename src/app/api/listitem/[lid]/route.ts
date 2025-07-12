@@ -26,6 +26,37 @@ export async function GET(req: NextRequest, { params }: { params: { lid: string 
     where: { LID: lid },
     include: { exercise: { select: { EID: true, Name: true, Difficulty: true, Slug: true } } },
   });
+  
   const exercises = items.map(i => i.exercise);
-  return NextResponse.json({ exercises });
+  
+  // Lấy trạng thái progress cho các exercises trong list
+  const exerciseIds = exercises.map(ex => ex.EID);
+  const progressMap = await prisma.exerciseprogress.findMany({
+    where: {
+      UID: user.UID,
+      EID: {
+        in: exerciseIds,
+      },
+    },
+    select: {
+      EID: true,
+      Status: true,
+    },
+  });
+
+  // Tạo map EID -> Status
+  const statusMap = progressMap.reduce((acc, progress) => {
+    if (progress.Status) {
+      acc[progress.EID] = progress.Status; // Chỉ có 'Attempting' hoặc 'Solved'
+    }
+    return acc;
+  }, {} as Record<number, string>);
+
+  // Thêm status vào exercises
+  const exercisesWithStatus = exercises.map(exercise => ({
+    ...exercise,
+    status: statusMap[exercise.EID] || 'Unattempted',
+  }));
+
+  return NextResponse.json({ exercises: exercisesWithStatus });
 } 

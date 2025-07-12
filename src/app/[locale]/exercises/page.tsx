@@ -578,26 +578,26 @@ const ExercisesPage = () => {
             minWidth: 200
           }}>
             <Box sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
-              {/* Nền xám */}
+            {/* Nền xám */}
               <svg width={40} height={40} style={{ position: 'absolute', top: 0, left: 0 }}>
-                <circle
+              <circle
                   cx={20}
                   cy={20}
                   r={16}
                   stroke="#e2e8f0"
                   strokeWidth={3}
-                  fill="none"
-                />
-              </svg>
-              {/* Phần đã làm màu xanh */}
+                fill="none"
+              />
+            </svg>
+            {/* Phần đã làm màu xanh */}
               <svg width={40} height={40} style={{ position: 'absolute', top: 0, left: 0 }}>
-                <circle
+              <circle
                   cx={20}
                   cy={20}
                   r={16}
-                  stroke="#4CAF50"
+                stroke="#4CAF50"
                   strokeWidth={3}
-                  fill="none"
+                fill="none"
                   strokeDasharray={2 * Math.PI * 16}
                   strokeDashoffset={2 * Math.PI * 16 * (1 - (problems.length === 0 ? 0 : statusCounts.solved / problems.length))}
                   style={{ 
@@ -605,9 +605,9 @@ const ExercisesPage = () => {
                     transform: 'rotate(-90deg)', 
                     transformOrigin: '50% 50%' 
                   }}
-                />
-              </svg>
-              {/* Vòng ngoài để giữ layout */}
+              />
+            </svg>
+            {/* Vòng ngoài để giữ layout */}
               <Box sx={{ width: 40, height: 40 }} />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
@@ -616,7 +616,7 @@ const ExercisesPage = () => {
               </Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>
                 Đã giải xong
-              </Typography>
+            </Typography>
             </Box>
           </Box>
         </Box>
@@ -627,10 +627,53 @@ const ExercisesPage = () => {
             <Table>
               <TableHead className="bg-gray-50">
                 <TableRow>
-                  <TableCell className="font-semibold text-gray-900" style={{ width: "15%" }} align="center">Trạng thái</TableCell>
-                  <TableCell className="font-semibold text-gray-900" style={{ width: "60%" }}>Tên bài tập</TableCell>
-                  <TableCell className="font-semibold text-gray-900" style={{ width: "10%" }} align="center">Độ khó</TableCell>
-                  <TableCell className="font-semibold text-gray-900" style={{ width: "15%" }} align="center">Đánh dấu</TableCell>
+                <TableCell 
+                        align="center" 
+                        sx={{ 
+                          width: "15%", 
+                          fontWeight: 700, 
+                          color: '#1a1a1a',
+                          fontSize: '14px',
+                          py: 2
+                        }}
+                      >
+                        Trạng thái
+                      </TableCell>
+                      <TableCell 
+                        sx={{ 
+                          width: "60%", 
+                          fontWeight: 700, 
+                          color: '#1a1a1a',
+                          fontSize: '14px',
+                          py: 2
+                        }}
+                      >
+                        Tên bài tập
+                      </TableCell>
+                      <TableCell 
+                        align="center" 
+                        sx={{ 
+                          width: "10%", 
+                          fontWeight: 700, 
+                          color: '#1a1a1a',
+                          fontSize: '14px',
+                          py: 2
+                        }}
+                      >
+                        Độ khó
+                      </TableCell>
+                      <TableCell 
+                        align="center" 
+                        sx={{ 
+                          width: "15%", 
+                          fontWeight: 700, 
+                          color: '#1a1a1a',
+                          fontSize: '14px',
+                          py: 2
+                        }}
+                      >
+                        Đánh dấu
+                      </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
