@@ -124,6 +124,17 @@ const ExercisesPage = () => {
       } else {
         await axios.delete('/api/listitem', { data: { lid, eid: selectedEID } });
       }
+      
+      // Notify ListSidebar about the change
+      if (handleListExerciseChanged) {
+        handleListExerciseChanged(lid, selectedEID, checked);
+      }
+      
+      // Also notify ListSidebar's internal handler if available
+      if ((window as any).handleListExerciseChanged) {
+        (window as any).handleListExerciseChanged(lid, selectedEID, checked);
+      }
+      
       // Refetch for this list
       const r = await axios.get(`/api/listitem/${lid}`);
       setListItemEIDs(prev => ({ ...prev, [lid]: (r.data.exercises || []).map((ex: any) => ex.EID) }));
@@ -138,6 +149,56 @@ const ExercisesPage = () => {
   const handleMenuClose = () => {
     setBookmarkAnchorEl(null);
     setSelectedEID(null);
+  };
+
+  // Handler for when a list is deleted
+  const handleListDeleted = async (deletedListId: number) => {
+    // Remove the deleted list from userLists
+    setUserLists(prev => prev.filter(list => list.LID !== deletedListId));
+    
+    // Remove the deleted list from listItemEIDs
+    setListItemEIDs(prev => {
+      const newState = { ...prev };
+      delete newState[deletedListId];
+      return newState;
+    });
+    
+    // Refetch saved EIDs to update bookmark icons
+    try {
+      const res = await axios.get('/api/listitem/user');
+      setSavedEIDs(res.data.eids || []);
+    } catch (error) {
+      console.error('Error refetching saved EIDs:', error);
+    }
+  };
+
+  // Handler for when exercises are added/removed from lists
+  const handleListExerciseChanged = async (listId: number, exerciseId: number, isAdded: boolean) => {
+    // Update listItemEIDs
+    setListItemEIDs(prev => {
+      const newState = { ...prev };
+      if (!newState[listId]) {
+        newState[listId] = [];
+      }
+      
+      if (isAdded) {
+        if (!newState[listId].includes(exerciseId)) {
+          newState[listId] = [...newState[listId], exerciseId];
+        }
+      } else {
+        newState[listId] = newState[listId].filter(id => id !== exerciseId);
+      }
+      
+      return newState;
+    });
+
+    // Update savedEIDs for bookmark icons
+    try {
+      const res = await axios.get('/api/listitem/user');
+      setSavedEIDs(res.data.eids || []);
+    } catch (error) {
+      console.error('Error refetching saved EIDs:', error);
+    }
   };
 
   // Lấy danh sách chủ đề và bài tập khi load trang
@@ -245,75 +306,193 @@ const ExercisesPage = () => {
         }}
       >
         {/* Thanh chọn chủ đề */}
-        <Box className="mb-6">
-          <Box className="flex flex-wrap gap-3">
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: '#1a1a1a' }}>
+            Chủ đề bài tập
+          </Typography>
+          <Box sx={{ 
+            display: 'flex', 
+            flexWrap: 'wrap', 
+            gap: 1.5,
+            p: 1,
+            bgcolor: '#f8fafc',
+            borderRadius: 3,
+            border: '1px solid #e2e8f0'
+          }}>
             {topics.map((topic) => {
               // Đếm số bài theo trạng thái cho từng chủ đề
               let topicProblems = topic.TpID === "all" ? problems : problems.filter((p) => p.TpID === Number(topic.TpID || topic.id));
               const statusCounts = getStatusCounts(topicProblems);
               const totalCount = topicProblems.length;
+              const isSelected = selectedTopic === String(topic.TpID);
+              const progressPercentage = totalCount === 0 ? 0 : (statusCounts.solved / totalCount) * 100;
+              
               return (
-                <Chip
+                <Box
                   key={topic.TpID}
-                  label={
-                    <Box className="flex items-center gap-2">
-                      <span>{topic.Name}</span>
-                      <Box className="bg-white bg-opacity-50 rounded-full px-2 py-0.5">
-                        <Typography variant="caption" className="font-semibold">
-                          {`${statusCounts.solved}/${totalCount}`}
+                  onClick={() => setSelectedTopic(String(topic.TpID))}
+                  sx={{
+                    position: 'relative',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    borderRadius: 2.5,
+                    '&:hover': {
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+                    }
+                  }}
+                >
+                  <Card
+                    sx={{
+                      bgcolor: isSelected ? '#1976d2' : '#fff',
+                      color: isSelected ? '#fff' : '#1a1a1a',
+                      borderRadius: 2.5,
+                      border: isSelected ? '2px solid #1976d2' : '2px solid #e2e8f0',
+                      boxShadow: isSelected ? '0 4px 12px rgba(25, 118, 210, 0.3)' : '0 2px 8px rgba(0,0,0,0.08)',
+                      p: 2,
+                      minWidth: 140,
+                      position: 'relative',
+                      overflow: 'hidden',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: '3px',
+                        background: `linear-gradient(90deg, #4caf50 ${progressPercentage}%, #e0e0e0 ${progressPercentage}%)`,
+                        borderRadius: '2px 2px 0 0'
+                      }
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      <Typography 
+                        variant="body2" 
+                        sx={{ 
+                          fontWeight: 600, 
+                          fontSize: '14px',
+                          lineHeight: 1.2
+                        }}
+                      >
+                        {topic.Name}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: 0.5,
+                          bgcolor: isSelected ? 'rgba(255,255,255,0.2)' : 'rgba(76, 175, 80, 0.1)',
+                          px: 1,
+                          py: 0.5,
+                          borderRadius: 1,
+                          minWidth: 'fit-content'
+                        }}>
+                          <Typography 
+                            variant="caption" 
+                            sx={{ 
+                              fontWeight: 600,
+                              fontSize: '11px',
+                              color: isSelected ? '#fff' : '#4caf50'
+                            }}
+                          >
+                            {statusCounts.solved}/{totalCount}
+                          </Typography>
+                        </Box>
+                        <Typography 
+                          variant="caption" 
+                          sx={{ 
+                            color: isSelected ? 'rgba(255,255,255,0.8)' : 'text.secondary',
+                            fontSize: '10px',
+                            fontWeight: 500
+                          }}
+                        >
+                          {progressPercentage.toFixed(0)}%
                         </Typography>
                       </Box>
                     </Box>
-                  }
-                  onClick={() => setSelectedTopic(String(topic.TpID))}
-                  className={`${
-                    topic.TpID === "all" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-800"
-                  } cursor-pointer transition-all duration-200 hover:shadow-md ${
-                    selectedTopic === String(topic.TpID) ? "ring-2 ring-blue-500 ring-opacity-50" : ""
-                  }`}
-                  sx={{
-                    height: "auto",
-                    padding: "8px 4px",
-                    "& .MuiChip-label": {
-                    },
-                  }}
-                />
+                  </Card>
+                </Box>
               );
             })}
           </Box>
         </Box>
 
         {/* Thanh tìm kiếm + filter icon + vòng tròn thống kê tổng quan */}
-        <Box sx={{ mb: 3, mt: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ 
+          mb: 4, 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 3,
+          p: 3,
+          bgcolor: '#fff',
+          borderRadius: 3,
+          border: '1px solid #e2e8f0',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
+        }}>
           {/* Ô tìm kiếm tên bài tập kiểu mới */}
-          <Box sx={{ position: 'relative', width: '100%', maxWidth: 250 }}>
-            <SearchIcon sx={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af', fontSize: 22 }} />
+          <Box sx={{ position: 'relative', flex: 1, maxWidth: 350 }}>
+            <SearchIcon sx={{ 
+              position: 'absolute', 
+              left: 16, 
+              top: '50%', 
+              transform: 'translateY(-50%)', 
+              color: '#9ca3af', 
+              fontSize: 20 
+            }} />
             <input
               type="text"
-              placeholder="Tìm kiếm bài tập"
+              placeholder="Tìm kiếm bài tập..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               style={{
                 width: '100%',
-                padding: '10px 14px 10px 40px',
-                borderRadius: 24,
-                border: '1px solid #d1d5db',
-                fontSize: 16,
+                padding: '12px 16px 12px 48px',
+                borderRadius: 12,
+                border: '2px solid #e2e8f0',
+                fontSize: 15,
                 outline: 'none',
                 boxSizing: 'border-box',
-                color: '#222',
+                color: '#1a1a1a',
+                backgroundColor: '#f8fafc',
+                transition: 'all 0.2s ease',
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#1976d2';
+                e.target.style.backgroundColor = '#fff';
+                e.target.style.boxShadow = '0 0 0 3px rgba(25, 118, 210, 0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#e2e8f0';
+                e.target.style.backgroundColor = '#f8fafc';
+                e.target.style.boxShadow = 'none';
               }}
             />
           </Box>
+
           {/* Icon filter mở popover */}
           <Button
             aria-describedby={filterId}
             onClick={handleFilterClick}
             variant="outlined"
-            sx={{ minWidth: 0, p: 1, borderRadius: '50%' }}
+            sx={{ 
+              minWidth: 48, 
+              height: 48,
+              p: 0, 
+              borderRadius: 2,
+              border: '2px solid #e2e8f0',
+              color: '#64748b',
+              bgcolor: '#f8fafc',
+              '&:hover': {
+                borderColor: '#1976d2',
+                bgcolor: '#e3f2fd',
+                color: '#1976d2'
+              },
+              transition: 'all 0.2s ease'
+            }}
           >
-            <FilterListIcon />
+            <FilterListIcon sx={{ fontSize: 20 }} />
           </Button>
+
           {/* Popover filter */}
           <Popover
             id={filterId}
@@ -322,30 +501,61 @@ const ExercisesPage = () => {
             anchorEl={filterAnchorEl}
             onClose={handleFilterClose}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+            PaperProps={{
+              sx: {
+                borderRadius: 3,
+                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                border: '1px solid #e2e8f0',
+                mt: 1
+              }
+            }}
           >
-            <Box sx={{ p: 2, minWidth: 260 }}>
-              {/* Dropdown trạng thái và độ khó: mỗi dropdown 1 hàng, label và select cách đều 2 bên */}
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
-                  <span style={{ fontWeight: 500 }}>Trạng thái:</span>
+            <Box sx={{ p: 3, minWidth: 300 }}>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: '#1a1a1a' }}>
+                Bộ lọc
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <Box>
+                  <Typography variant="body2" sx={{ fontWeight: 600, mb: 1, color: '#374151' }}>
+                    Trạng thái
+                  </Typography>
                   <Select
                     size="small"
                     value={statusFilter}
                     onChange={e => setStatusFilter(e.target.value as any)}
-                    sx={{ minWidth: 120 }}
+                    sx={{ 
+                      width: '100%',
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 2,
+                        '& fieldset': { borderColor: '#e2e8f0' },
+                        '&:hover fieldset': { borderColor: '#1976d2' },
+                        '&.Mui-focused fieldset': { borderColor: '#1976d2' },
+                      }
+                    }}
                   >
                     {STATUS_OPTIONS.map(item => (
                       <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
                     ))}
                   </Select>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
-                  <span style={{ fontWeight: 500 }}>Độ khó:</span>
+                <Box>
+                  <Typography variant="body2" sx={{ fontWeight: 600, mb: 1, color: '#374151' }}>
+                    Độ khó
+                  </Typography>
                   <Select
                     size="small"
                     value={difficultyFilter}
                     onChange={e => setDifficultyFilter(e.target.value as any)}
-                    sx={{ minWidth: 120 }}
+                    sx={{ 
+                      width: '100%',
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 2,
+                        '& fieldset': { borderColor: '#e2e8f0' },
+                        '&:hover fieldset': { borderColor: '#1976d2' },
+                        '&.Mui-focused fieldset': { borderColor: '#1976d2' },
+                      }
+                    }}
                   >
                     {DIFFICULTY_OPTIONS.map(item => (
                       <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
@@ -355,38 +565,59 @@ const ExercisesPage = () => {
               </Box>
             </Box>
           </Popover>
+
           {/* Vòng tròn progress tổng quan */}
-          <Box sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center', ml: 2 }}>
-            {/* Nền xám */}
-            <svg width={28} height={28} style={{ position: 'absolute', top: 0, left: 0 }}>
-              <circle
-                cx={14}
-                cy={14}
-                r={12}
-                stroke="#bdbdbd"
-                strokeWidth={4}
-                fill="none"
-              />
-            </svg>
-            {/* Phần đã làm màu xanh */}
-            <svg width={28} height={28} style={{ position: 'absolute', top: 0, left: 0 }}>
-              <circle
-                cx={14}
-                cy={14}
-                r={12}
-                stroke="#4CAF50"
-                strokeWidth={4}
-                fill="none"
-                strokeDasharray={2 * Math.PI * 12}
-                strokeDashoffset={2 * Math.PI * 12 * (1 - (problems.length === 0 ? 0 : statusCounts.solved / problems.length))}
-                style={{ transition: 'stroke-dashoffset 0.5s', transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
-              />
-            </svg>
-            {/* Vòng ngoài để giữ layout */}
-            <Box sx={{ width: 28, height: 28 }} />
-            <Typography variant="body2" sx={{ fontWeight: 500, ml: 1 }}>
-              {statusCounts.solved}/{problems.length} Đã giải
-            </Typography>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 2,
+            p: 2,
+            bgcolor: '#f8fafc',
+            borderRadius: 3,
+            border: '1px solid #e2e8f0',
+            minWidth: 200
+          }}>
+            <Box sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
+              {/* Nền xám */}
+              <svg width={40} height={40} style={{ position: 'absolute', top: 0, left: 0 }}>
+                <circle
+                  cx={20}
+                  cy={20}
+                  r={16}
+                  stroke="#e2e8f0"
+                  strokeWidth={3}
+                  fill="none"
+                />
+              </svg>
+              {/* Phần đã làm màu xanh */}
+              <svg width={40} height={40} style={{ position: 'absolute', top: 0, left: 0 }}>
+                <circle
+                  cx={20}
+                  cy={20}
+                  r={16}
+                  stroke="#4CAF50"
+                  strokeWidth={3}
+                  fill="none"
+                  strokeDasharray={2 * Math.PI * 16}
+                  strokeDashoffset={2 * Math.PI * 16 * (1 - (problems.length === 0 ? 0 : statusCounts.solved / problems.length))}
+                  style={{ 
+                    transition: 'stroke-dashoffset 0.8s ease-in-out', 
+                    transform: 'rotate(-90deg)', 
+                    transformOrigin: '50% 50%' 
+                  }}
+                />
+              </svg>
+              {/* Vòng ngoài để giữ layout */}
+              <Box sx={{ width: 40, height: 40 }} />
+            </Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+              <Typography variant="body2" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
+                {statusCounts.solved}/{problems.length}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+                Đã giải xong
+              </Typography>
+            </Box>
           </Box>
         </Box>
 
@@ -559,7 +790,7 @@ const ExercisesPage = () => {
         </Menu>
         
       </Box>
-      <ListSidebar />
+      <ListSidebar onListDeleted={handleListDeleted} onListExerciseChanged={handleListExerciseChanged} />
     </Box>
   );
 };

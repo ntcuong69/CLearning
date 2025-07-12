@@ -12,12 +12,33 @@ export async function GET(req: NextRequest) {
   if (!user) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
+  
   const lists = await prisma.list.findMany({
     where: { UID: user.UID },
     orderBy: { CreatedAt: 'asc' },
-    select: { LID: true, Name: true, Description: true, CreatedAt: true },
+    select: { 
+      LID: true, 
+      Name: true, 
+      Description: true, 
+      CreatedAt: true,
+      _count: {
+        select: {
+          listitem: true
+        }
+      }
+    },
   });
-  return NextResponse.json({ lists });
+
+  // Transform the data to include exercise count
+  const listsWithCount = lists.map(list => ({
+    LID: list.LID,
+    Name: list.Name,
+    Description: list.Description,
+    CreatedAt: list.CreatedAt,
+    ExerciseCount: list._count.listitem
+  }));
+
+  return NextResponse.json({ lists: listsWithCount });
 }
 
 export async function POST(req: NextRequest) {
@@ -40,7 +61,27 @@ export async function POST(req: NextRequest) {
       Description: description || '',
       UID: user.UID,
     },
-    select: { LID: true, Name: true, Description: true, CreatedAt: true },
+    select: { 
+      LID: true, 
+      Name: true, 
+      Description: true, 
+      CreatedAt: true,
+      _count: {
+        select: {
+          listitem: true
+        }
+      }
+    },
   });
-  return NextResponse.json({ list: newList });
+
+  // Transform the data to include exercise count
+  const listWithCount = {
+    LID: newList.LID,
+    Name: newList.Name,
+    Description: newList.Description,
+    CreatedAt: newList.CreatedAt,
+    ExerciseCount: newList._count.listitem
+  };
+
+  return NextResponse.json({ list: listWithCount });
 } 
