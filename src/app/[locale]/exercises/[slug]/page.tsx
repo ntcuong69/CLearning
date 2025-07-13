@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   Box,
   Button,
@@ -22,6 +22,9 @@ import ExerciseHeader from "@/components/ExercisePage/ExerciseHeader";
 
 export default function ExerciseDetailPage() {
   const { slug } = useParams();
+  const searchParams = useSearchParams();
+  const source = searchParams.get('source'); // 'all', 'list', 'studyplan'
+  const sourceId = searchParams.get('id'); // LID for list, SPIID for studyplan
   const [exercise, setExercise] = useState<any>(null);
   const [testcases, setTestcases] = useState<any[]>([]);
   const [code, setCode] = useState<string>("");
@@ -234,6 +237,8 @@ export default function ExerciseDetailPage() {
         setResults={setResults}
         setSubmissionResult={setSubmissionResult}
         setSubmissions={setSubmissions}
+        source={source}
+        sourceId={sourceId}
       />
       <Box sx={{ display: "flex", height: "calc(100vh - 64px)", py: 1, px: 2, gap: 1 }}>
         {/* Left: Tabs panel */}

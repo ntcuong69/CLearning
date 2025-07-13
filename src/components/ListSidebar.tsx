@@ -803,7 +803,10 @@ const ListSidebar = ({ onListDeleted, onListExerciseChanged }: any) => {
                         key={ex.EID}
                         className="transition-colors duration-150 cursor-pointer"
                         sx={{ backgroundColor: index % 2 === 0 ? '#fff' : '#f9fafb', '&:hover': { backgroundColor: '#f1f5f9' } }}
-                        onClick={() => window.open(`/exercises/${ex.Slug}`, '_blank')}
+                        onClick={() => {
+                          const url = `/exercises/${ex.Slug}?source=list&id=${selectedList.LID}`;
+                          window.location.href = url;
+                        }}
                       >
                         <TableCell align="center">
                           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>

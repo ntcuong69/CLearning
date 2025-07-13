@@ -305,11 +305,38 @@ const ExercisesPage = () => {
           mx: "auto",
         }}
       >
+        {/* Header Section */}
+        <Box sx={{ mb: 6 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+            <Box sx={{
+              width: 4,
+              height: 32,
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              borderRadius: 2,
+              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)'
+            }} />
+            <Typography variant="h3" sx={{ 
+              fontWeight: 800, 
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              fontSize: { xs: '28px', md: '36px' }
+            }}>
+              Bài tập lập trình
+            </Typography>
+          </Box>
+          <Typography variant="h6" sx={{ 
+            color: '#64748b', 
+            fontWeight: 500,
+            fontSize: '18px'
+          }}>
+            Khám phá và thực hành các bài tập lập trình C từ cơ bản đến nâng cao
+          </Typography>
+        </Box>
+
         {/* Thanh chọn chủ đề */}
         <Box sx={{ mb: 4 }}>
-          <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: '#1a1a1a' }}>
-            Chủ đề bài tập
-          </Typography>
           <Box sx={{ 
             display: 'flex', 
             flexWrap: 'wrap', 
@@ -419,18 +446,18 @@ const ExercisesPage = () => {
 
         {/* Thanh tìm kiếm + filter icon + vòng tròn thống kê tổng quan */}
         <Box sx={{ 
-          mb: 4, 
           display: 'flex', 
           alignItems: 'center', 
           gap: 3,
           p: 3,
           bgcolor: '#fff',
-          borderRadius: 3,
+          borderRadius: '12px 12px 0 0',
           border: '1px solid #e2e8f0',
+          borderBottom: 'none',
           boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
         }}>
           {/* Ô tìm kiếm tên bài tập kiểu mới */}
-          <Box sx={{ position: 'relative', flex: 1, maxWidth: 350 }}>
+          <Box sx={{ position: 'relative', flex: 1, maxWidth: 250 }}>
             <SearchIcon sx={{ 
               position: 'absolute', 
               left: 16, 
@@ -478,7 +505,7 @@ const ExercisesPage = () => {
               minWidth: 48, 
               height: 48,
               p: 0, 
-              borderRadius: 2,
+              borderRadius: 12,
               border: '2px solid #e2e8f0',
               color: '#64748b',
               bgcolor: '#f8fafc',
@@ -572,9 +599,6 @@ const ExercisesPage = () => {
             alignItems: 'center', 
             gap: 2,
             p: 2,
-            bgcolor: '#f8fafc',
-            borderRadius: 3,
-            border: '1px solid #e2e8f0',
             minWidth: 200
           }}>
             <Box sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
@@ -622,7 +646,7 @@ const ExercisesPage = () => {
         </Box>
 
         {/* Danh sách bài tập */}
-        <Card className="border border-gray-200 shadow-lg">
+        <Card className="border border-gray-200 shadow-lg" sx={{ borderRadius: '0 0 12px 12px', borderTop: 'none' }}>
           <TableContainer component={Paper} className="rounded-xl">
             <Table>
               <TableHead className="bg-gray-50">
@@ -694,7 +718,10 @@ const ExercisesPage = () => {
                         </Box>
                       </TableCell>
                       <TableCell
-                        onClick={() => window.location.href = `/exercises/${problem.Slug}`}
+                        onClick={() => {
+                          const url = `/exercises/${problem.Slug}?source=all`;
+                          window.location.href = url;
+                        }}
                         style={{ cursor: 'pointer' }}
                       >
                         <Box>

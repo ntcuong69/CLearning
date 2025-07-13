@@ -62,6 +62,8 @@ export default function ExerciseHeader({
   setResults,
   setSubmissionResult,
   setSubmissions,
+  source = "all", // 'all', 'list', 'studyplan'
+  sourceId = null, // LID for list, SPIID for studyplan
 }: any) {
   const router = useRouter();
 
@@ -192,6 +194,25 @@ export default function ExerciseHeader({
     }
   }, [topicId]);
 
+  // Set initial selected topic based on source
+  useEffect(() => {
+    if (source === "list" && sourceId && topics.length > 0) {
+      // For list source, select the first list by default
+      setSelectedTopicId(topics[0]?.LID || "");
+    } else if (source === "studyplan" && sourceId && topics.length > 0) {
+      // For studyplan source, select the first studyplan item by default
+      setSelectedTopicId(topics[0]?.SPIID || "");
+    } else if (source === "all" && topics.length > 0) {
+      // For all source, select the first topic by default
+      setSelectedTopicId(topics[0]?.TpID || "");
+    } else if (!source || !sourceId) {
+      // Fallback for when no source is specified - use all topics
+      if (topics.length > 0) {
+        setSelectedTopicId(topics[0]?.TpID || "");
+      }
+    }
+  }, [source, sourceId, topics]);
+
   // Fetch exercises khi selectedTopicId thay đổi
   useEffect(() => {
     if (selectedTopicId && !isFetchingExercises) {
@@ -230,16 +251,32 @@ export default function ExerciseHeader({
   // ======================
   
   /**
-   * Fetch tất cả topics và exercises
+   * Fetch tất cả topics và exercises dựa trên source
    */
   const fetchTopicsAndExercises = async () => {
     setLoadingTopics(true);
     try {
-      // Fetch topics
-      const topicsRes = await fetch("/api/topics/list");
-      if (topicsRes.ok) {
-        const topicsData = await topicsRes.json();
-        setTopics(topicsData.topics || []);
+      if (source === "list" && sourceId) {
+        // Fetch user lists
+        const listsRes = await fetch("/api/list");
+        if (listsRes.ok) {
+          const listsData = await listsRes.json();
+          setTopics(listsData.lists || []);
+        }
+      } else if (source === "studyplan" && sourceId) {
+        // Fetch studyplan items
+        const studyplanRes = await fetch(`/api/studyplan/${sourceId}`);
+        if (studyplanRes.ok) {
+          const studyplanData = await studyplanRes.json();
+          setTopics(studyplanData.studyplanitem || []);
+        }
+      } else {
+        // Default: fetch all topics (for source="all" or no source)
+        const topicsRes = await fetch("/api/topics/list");
+        if (topicsRes.ok) {
+          const topicsData = await topicsRes.json();
+          setTopics(topicsData.topics || []);
+        }
       }
 
       // Fetch exercises
@@ -264,11 +301,29 @@ export default function ExerciseHeader({
     setIsFetchingExercises(true);
     setLoadingExercises(true);
     try {
-      const topicRes = await fetch(`/api/topics/${selectedTopicId}`);
-      if (topicRes.ok) {
-        const topicData = await topicRes.json();
-        const exercises = topicData.topic.exercise || [];
-        setTopicExercises(exercises);
+      if (source === "list" && sourceId) {
+        // Fetch exercises from user list
+        const listRes = await fetch(`/api/listitem/${selectedTopicId}`);
+        if (listRes.ok) {
+          const listData = await listRes.json();
+          setTopicExercises(listData.exercises || []);
+        }
+      } else if (source === "studyplan" && sourceId) {
+        // Fetch exercises from studyplan item
+        const studyplanRes = await fetch(`/api/studyplan/${sourceId}`);
+        if (studyplanRes.ok) {
+          const studyplanData = await studyplanRes.json();
+          const selectedItem = studyplanData.studyplanitem.find((item: any) => item.SPIID === Number(selectedTopicId));
+          setTopicExercises(selectedItem?.exercise || []);
+        }
+      } else {
+        // Default: fetch exercises from topic (for source="all" or no source)
+        const topicRes = await fetch(`/api/topics/${selectedTopicId}`);
+        if (topicRes.ok) {
+          const topicData = await topicRes.json();
+          const exercises = topicData.topic.exercise || [];
+          setTopicExercises(exercises);
+        }
       }
     } catch (error) {
       console.error("Error fetching topic exercises:", error);
@@ -287,11 +342,29 @@ export default function ExerciseHeader({
     setIsFetchingExercises(true);
     setLoadingExercises(true);
     try {
-      const topicRes = await fetch(`/api/topics/${selectedTopicId}`);
-      if (topicRes.ok) {
-        const topicData = await topicRes.json();
-        const exercises = topicData.topic.exercise || [];
-        setTopicExercises(exercises);
+      if (source === "list" && sourceId) {
+        // Refresh exercises from user list
+        const listRes = await fetch(`/api/listitem/${selectedTopicId}`);
+        if (listRes.ok) {
+          const listData = await listRes.json();
+          setTopicExercises(listData.exercises || []);
+        }
+      } else if (source === "studyplan" && sourceId) {
+        // Refresh exercises from studyplan item
+        const studyplanRes = await fetch(`/api/studyplan/${sourceId}`);
+        if (studyplanRes.ok) {
+          const studyplanData = await studyplanRes.json();
+          const selectedItem = studyplanData.studyplanitem.find((item: any) => item.SPIID === Number(selectedTopicId));
+          setTopicExercises(selectedItem?.exercise || []);
+        }
+      } else {
+        // Default: refresh exercises from topic (for source="all" or no source)
+        const topicRes = await fetch(`/api/topics/${selectedTopicId}`);
+        if (topicRes.ok) {
+          const topicData = await topicRes.json();
+          const exercises = topicData.topic.exercise || [];
+          setTopicExercises(exercises);
+        }
       }
     } catch (error) {
       console.error("Error refreshing topic exercises:", error);
@@ -319,7 +392,22 @@ export default function ExerciseHeader({
    */
   const handleExerciseClick = (exerciseSlug: string) => {
     if (mounted) {
-      router.push(`/exercises/${exerciseSlug}`);
+      // Tạo URL với query parameters
+      let url = `/exercises/${exerciseSlug}`;
+      const params = new URLSearchParams();
+      
+      if (source) {
+        params.set('source', source);
+      }
+      if (sourceId) {
+        params.set('id', sourceId);
+      }
+      
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+      
+      router.push(url);
       setMenuOpen(false);
     }
   };
@@ -330,7 +418,23 @@ export default function ExerciseHeader({
   const handlePreviousExercise = () => {
     if (hasPreviousExercise && currentExerciseIndex > 0) {
       const previousExercise = topicExercises[currentExerciseIndex - 1];
-      router.push(`/exercises/${previousExercise.Slug}`);
+      
+      // Tạo URL với query parameters
+      let url = `/exercises/${previousExercise.Slug}`;
+      const params = new URLSearchParams();
+      
+      if (source) {
+        params.set('source', source);
+      }
+      if (sourceId) {
+        params.set('id', sourceId);
+      }
+      
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+      
+      router.push(url);
     }
   };
 
@@ -340,7 +444,23 @@ export default function ExerciseHeader({
   const handleNextExercise = () => {
     if (hasNextExercise && currentExerciseIndex < topicExercises.length - 1) {
       const nextExercise = topicExercises[currentExerciseIndex + 1];
-      router.push(`/exercises/${nextExercise.Slug}`);
+      
+      // Tạo URL với query parameters
+      let url = `/exercises/${nextExercise.Slug}`;
+      const params = new URLSearchParams();
+      
+      if (source) {
+        params.set('source', source);
+      }
+      if (sourceId) {
+        params.set('id', sourceId);
+      }
+      
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+      
+      router.push(url);
     }
   };
 
@@ -447,8 +567,17 @@ export default function ExerciseHeader({
    * Lấy tên topic được chọn
    */
   const getSelectedTopicName = () => {
-    const selectedTopic = topics.find(t => t.TpID === Number(selectedTopicId));
-    return selectedTopic ? selectedTopic.Name : "Chọn chủ đề";
+    if (source === "list") {
+      const selectedTopic = topics.find(t => t.LID === Number(selectedTopicId));
+      return selectedTopic ? selectedTopic.Name : "Chọn danh sách";
+    } else if (source === "studyplan") {
+      const selectedTopic = topics.find(t => t.SPIID === Number(selectedTopicId));
+      return selectedTopic ? selectedTopic.Name : "Chọn chương học";
+    } else {
+      // Default for source="all" or no source
+      const selectedTopic = topics.find(t => t.TpID === Number(selectedTopicId));
+      return selectedTopic ? selectedTopic.Name : "Chọn chủ đề";
+    }
   };
 
   // ======================
@@ -739,7 +868,9 @@ export default function ExerciseHeader({
               mb: 3,
             }}
           >
-            Danh sách bài tập
+            {source === "list" ? "Danh sách bài tập" :
+             source === "studyplan" ? "Chương học" :
+             "Danh sách bài tập"}
           </Typography>
 
           {/* Topic Selection */}
@@ -752,12 +883,16 @@ export default function ExerciseHeader({
                   fontSize: "0.875rem",
                 }}
               >
-                Chọn chủ đề
+                {source === "list" ? "Chọn danh sách" : 
+                 source === "studyplan" ? "Chọn chương học" : 
+                 "Chọn chủ đề"}
               </InputLabel>
               <Select
                 labelId="topic-select-label"
                 value={selectedTopicId}
-                label="Chọn chủ đề"
+                label={source === "list" ? "Chọn danh sách" : 
+                       source === "studyplan" ? "Chọn chương học" : 
+                       "Chọn chủ đề"}
                 onChange={handleTopicChange}
                 sx={{
                   borderRadius: 2,
@@ -779,7 +914,12 @@ export default function ExerciseHeader({
                   </MenuItem>
                 ) : (
                   topics.map((topic) => (
-                    <MenuItem key={topic.TpID} value={topic.TpID}>
+                    <MenuItem key={source === "list" ? topic.LID : 
+                                   source === "studyplan" ? topic.SPIID : 
+                                   topic.TpID} 
+                              value={source === "list" ? topic.LID : 
+                                     source === "studyplan" ? topic.SPIID : 
+                                     topic.TpID}>
                       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                         <Folder sx={{ fontSize: 18, color: "#6b7280" }} />
                         {topic.Name}
@@ -894,7 +1034,9 @@ export default function ExerciseHeader({
                 py: 4,
               }}
             >
-              Không có bài tập nào trong chủ đề này.
+              {source === "list" ? "Không có bài tập nào trong danh sách này." :
+               source === "studyplan" ? "Không có bài tập nào trong chương học này." :
+               "Không có bài tập nào trong chủ đề này."}
             </Typography>
           ) : (
             <Typography
@@ -905,7 +1047,9 @@ export default function ExerciseHeader({
                 py: 4,
               }}
             >
-              Vui lòng chọn một chủ đề để xem danh sách bài tập.
+              {source === "list" ? "Vui lòng chọn một danh sách để xem bài tập." :
+               source === "studyplan" ? "Vui lòng chọn một chương học để xem bài tập." :
+               "Vui lòng chọn một chủ đề để xem danh sách bài tập."}
             </Typography>
           )}
         </Box>

@@ -37,7 +37,30 @@ const ExerciseListItem = ({ ex, spiid }: { ex: any, spiid: number }) => {
           bgcolor: '#f8f9fa'
         }
       }}
-      onClick={() => window.location.href = `/exercises/${ex.Slug}`}
+      onClick={() => {
+        // Get the studyplan slug from the current URL
+        const pathSegments = window.location.pathname.split('/');
+        const studyplanSlug = pathSegments[pathSegments.length - 1];
+        
+        // Find the studyplan SPID by slug
+        fetch('/api/studyplan/list')
+          .then(async (res) => {
+            if (!res.ok) throw new Error('Lỗi khi tải lộ trình học');
+            const data = await res.json();
+            const found = data.find((p: any) => p.Slug === studyplanSlug);
+            if (!found) throw new Error('Không tìm thấy lộ trình học');
+            return found.SPID;
+          })
+          .then((spid) => {
+            const url = `/exercises/${ex.Slug}?source=studyplan&id=${spid}`;
+            window.location.href = url;
+          })
+          .catch((error) => {
+            console.error('Error getting studyplan ID:', error);
+            // Fallback to regular exercise URL
+            window.location.href = `/exercises/${ex.Slug}`;
+          });
+      }}
       secondaryAction={
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Chip
