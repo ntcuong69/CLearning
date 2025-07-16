@@ -29,9 +29,9 @@ import {
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import Menu from '@mui/material/Menu';
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import Menu from "@mui/material/Menu";
 import axios from "axios";
 
 // Các hằng số cho filter
@@ -77,7 +77,7 @@ const ExercisesPage = () => {
   const [selectedEID, setSelectedEID] = useState<number | null>(null);
   const [userLists, setUserLists] = useState<any[]>([]);
   const [menuLoading, setMenuLoading] = useState(false);
-  const [snackbar, setSnackbar] = useState<{open: boolean, message: string, color?: string}>({open: false, message: ''});
+  const [snackbar, setSnackbar] = useState<{ open: boolean; message: string; color?: string }>({ open: false, message: "" });
   const [savedEIDs, setSavedEIDs] = useState<number[]>([]); // EID đã lưu vào bất kỳ list nào
   const [listItemEIDs, setListItemEIDs] = useState<{ [lid: number]: number[] }>({}); // EID theo từng list
 
@@ -85,7 +85,7 @@ const ExercisesPage = () => {
   const handleFilterClick = (event: React.MouseEvent<HTMLElement>) => setFilterAnchorEl(event.currentTarget);
   const handleFilterClose = () => setFilterAnchorEl(null);
   const filterOpen = Boolean(filterAnchorEl);
-  const filterId = filterOpen ? 'filter-popover' : undefined;
+  const filterId = filterOpen ? "filter-popover" : undefined;
 
   const bookmarkMenuOpen = Boolean(bookmarkAnchorEl);
 
@@ -100,14 +100,16 @@ const ExercisesPage = () => {
     setSelectedEID(eid);
     setMenuLoading(true);
     try {
-      const res = await axios.get('/api/list');
+      const res = await axios.get("/api/list");
       setUserLists(res.data.lists || []);
       // Lấy EID cho từng list
       const eidsMap: { [lid: number]: number[] } = {};
-      await Promise.all((res.data.lists || []).map(async (list: any) => {
-        const r = await axios.get(`/api/listitem/${list.LID}`);
-        eidsMap[list.LID] = (r.data.exercises || []).map((ex: any) => ex.EID);
-      }));
+      await Promise.all(
+        (res.data.lists || []).map(async (list: any) => {
+          const r = await axios.get(`/api/listitem/${list.LID}`);
+          eidsMap[list.LID] = (r.data.exercises || []).map((ex: any) => ex.EID);
+        })
+      );
       setListItemEIDs(eidsMap);
     } catch {
       setUserLists([]);
@@ -120,29 +122,29 @@ const ExercisesPage = () => {
     if (!selectedEID) return;
     try {
       if (checked) {
-        await axios.post('/api/listitem', { lid, eid: selectedEID });
+        await axios.post("/api/listitem", { lid, eid: selectedEID });
       } else {
-        await axios.delete('/api/listitem', { data: { lid, eid: selectedEID } });
+        await axios.delete("/api/listitem", { data: { lid, eid: selectedEID } });
       }
-      
+
       // Notify ListSidebar about the change
       if (handleListExerciseChanged) {
         handleListExerciseChanged(lid, selectedEID, checked);
       }
-      
+
       // Also notify ListSidebar's internal handler if available
       if ((window as any).handleListExerciseChanged) {
         (window as any).handleListExerciseChanged(lid, selectedEID, checked);
       }
-      
+
       // Refetch for this list
       const r = await axios.get(`/api/listitem/${lid}`);
-      setListItemEIDs(prev => ({ ...prev, [lid]: (r.data.exercises || []).map((ex: any) => ex.EID) }));
+      setListItemEIDs((prev) => ({ ...prev, [lid]: (r.data.exercises || []).map((ex: any) => ex.EID) }));
       // Refetch savedEIDs for global icon
-      const res = await axios.get('/api/listitem/user');
+      const res = await axios.get("/api/listitem/user");
       setSavedEIDs(res.data.eids || []);
     } catch (e: any) {
-      setSnackbar({ open: true, message: e?.response?.data?.error || 'Lỗi khi lưu/xóa', color: 'error' });
+      setSnackbar({ open: true, message: e?.response?.data?.error || "Lỗi khi lưu/xóa", color: "error" });
     }
   };
 
@@ -154,60 +156,57 @@ const ExercisesPage = () => {
   // Handler for when a list is deleted
   const handleListDeleted = async (deletedListId: number) => {
     // Remove the deleted list from userLists
-    setUserLists(prev => prev.filter(list => list.LID !== deletedListId));
-    
+    setUserLists((prev) => prev.filter((list) => list.LID !== deletedListId));
+
     // Remove the deleted list from listItemEIDs
-    setListItemEIDs(prev => {
+    setListItemEIDs((prev) => {
       const newState = { ...prev };
       delete newState[deletedListId];
       return newState;
     });
-    
+
     // Refetch saved EIDs to update bookmark icons
     try {
-      const res = await axios.get('/api/listitem/user');
+      const res = await axios.get("/api/listitem/user");
       setSavedEIDs(res.data.eids || []);
     } catch (error) {
-      console.error('Error refetching saved EIDs:', error);
+      console.error("Error refetching saved EIDs:", error);
     }
   };
 
   // Handler for when exercises are added/removed from lists
   const handleListExerciseChanged = async (listId: number, exerciseId: number, isAdded: boolean) => {
     // Update listItemEIDs
-    setListItemEIDs(prev => {
+    setListItemEIDs((prev) => {
       const newState = { ...prev };
       if (!newState[listId]) {
         newState[listId] = [];
       }
-      
+
       if (isAdded) {
         if (!newState[listId].includes(exerciseId)) {
           newState[listId] = [...newState[listId], exerciseId];
         }
       } else {
-        newState[listId] = newState[listId].filter(id => id !== exerciseId);
+        newState[listId] = newState[listId].filter((id) => id !== exerciseId);
       }
-      
+
       return newState;
     });
 
     // Update savedEIDs for bookmark icons
     try {
-      const res = await axios.get('/api/listitem/user');
+      const res = await axios.get("/api/listitem/user");
       setSavedEIDs(res.data.eids || []);
     } catch (error) {
-      console.error('Error refetching saved EIDs:', error);
+      console.error("Error refetching saved EIDs:", error);
     }
   };
 
   // Lấy danh sách chủ đề và bài tập khi load trang
   useEffect(() => {
     setLoading(true);
-    Promise.all([
-      axios.get("/api/topics/list"),
-      axios.get("/api/exercise/list")
-    ])
+    Promise.all([axios.get("/api/topics/list"), axios.get("/api/exercise/list")])
       .then(([topicsRes, exercisesRes]) => {
         const fetchedTopics = topicsRes.data.topics || [];
         const allTopic = { TpID: "all", Name: "Tất cả" };
@@ -219,7 +218,7 @@ const ExercisesPage = () => {
     // Lấy EID đã lưu
     const fetchSavedEIDs = async () => {
       try {
-        const res = await axios.get('/api/listitem/user');
+        const res = await axios.get("/api/listitem/user");
         setSavedEIDs(res.data.eids || []);
       } catch {}
     };
@@ -230,8 +229,8 @@ const ExercisesPage = () => {
   const getFilteredProblems = () => {
     return (selectedTopic === "all" ? problems : problems.filter((p) => p.TpID === Number(selectedTopic)))
       .filter((p) => p.Name.toLowerCase().includes(searchTerm.toLowerCase()))
-      .filter((p) => statusFilter === "all" ? true : (p.status || "Unattempted") === statusFilter)
-      .filter((p) => difficultyFilter === "all" ? true : (p.Difficulty || "") === difficultyFilter);
+      .filter((p) => (statusFilter === "all" ? true : (p.status || "Unattempted") === statusFilter))
+      .filter((p) => (difficultyFilter === "all" ? true : (p.Difficulty || "") === difficultyFilter));
   };
   const filteredProblems = getFilteredProblems();
 
@@ -280,15 +279,20 @@ const ExercisesPage = () => {
   const getStatusCounts = (problems: any[]) =>
     problems.reduce(
       (acc, p) => {
-        const status = p.status || 'Unattempted';
-        if (status === 'Solved') acc.solved++;
-        else if (status === 'Attempting') acc.attempting++;
+        const status = p.status || "Unattempted";
+        if (status === "Solved") acc.solved++;
+        else if (status === "Attempting") acc.attempting++;
         else acc.unattempted++;
         return acc;
       },
       { solved: 0, attempting: 0, unattempted: 0 }
     );
-  const statusCounts = getStatusCounts(problems);
+
+  // Lọc các bài tập có TpID (bài tập thuộc chủ đề)
+  const problemsWithTpID = problems.filter((p) => p.TpID);
+
+  // Đếm trạng thái tổng quan chỉ với các bài tập có TpID
+  const statusCounts = getStatusCounts(problemsWithTpID);
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", pt: "70px" }}>
@@ -306,131 +310,104 @@ const ExercisesPage = () => {
         }}
       >
         {/* Header Section */}
-        <Box sx={{ mb: 6 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-            <Box sx={{
-              width: 4,
-              height: 32,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              borderRadius: 2,
-              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)'
-            }} />
-            <Typography variant="h3" sx={{ 
-              fontWeight: 800, 
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              fontSize: { xs: '28px', md: '36px' }
-            }}>
-              Bài tập lập trình
-            </Typography>
-          </Box>
-          <Typography variant="h6" sx={{ 
-            color: '#64748b', 
-            fontWeight: 500,
-            fontSize: '18px'
-          }}>
-            Khám phá và thực hành các bài tập lập trình C từ cơ bản đến nâng cao
-          </Typography>
-        </Box>
 
         {/* Thanh chọn chủ đề */}
         <Box sx={{ mb: 4 }}>
-          <Box sx={{ 
-            display: 'flex', 
-            flexWrap: 'wrap', 
-            gap: 1.5,
-            p: 1,
-            bgcolor: '#f8fafc',
-            borderRadius: 3,
-            border: '1px solid #e2e8f0'
-          }}>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+              gap: 2,
+              p: 1,
+            }}
+          >
             {topics.map((topic) => {
               // Đếm số bài theo trạng thái cho từng chủ đề
-              let topicProblems = topic.TpID === "all" ? problems : problems.filter((p) => p.TpID === Number(topic.TpID || topic.id));
+              let topicProblems = topic.TpID === "all" ? problemsWithTpID : problems.filter((p) => p.TpID === Number(topic.TpID));
               const statusCounts = getStatusCounts(topicProblems);
               const totalCount = topicProblems.length;
               const isSelected = selectedTopic === String(topic.TpID);
               const progressPercentage = totalCount === 0 ? 0 : (statusCounts.solved / totalCount) * 100;
-              
+
               return (
                 <Box
                   key={topic.TpID}
                   onClick={() => setSelectedTopic(String(topic.TpID))}
                   sx={{
-                    position: 'relative',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
+                    position: "relative",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
                     borderRadius: 2.5,
-                    '&:hover': {
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-                    }
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                    },
                   }}
                 >
                   <Card
                     sx={{
-                      bgcolor: isSelected ? '#1976d2' : '#fff',
-                      color: isSelected ? '#fff' : '#1a1a1a',
+                      bgcolor: isSelected ? "#1976d2" : "#fff",
+                      color: isSelected ? "#fff" : "#1a1a1a",
                       borderRadius: 2.5,
-                      border: isSelected ? '2px solid #1976d2' : '2px solid #e2e8f0',
-                      boxShadow: isSelected ? '0 4px 12px rgba(25, 118, 210, 0.3)' : '0 2px 8px rgba(0,0,0,0.08)',
+                      border: isSelected ? "2px solid #1976d2" : "2px solid #e2e8f0",
+                      boxShadow: isSelected ? "0 4px 12px rgba(25, 118, 210, 0.3)" : "0 2px 8px rgba(0,0,0,0.08)",
                       p: 2,
-                      minWidth: 140,
-                      position: 'relative',
-                      overflow: 'hidden',
-                      '&::before': {
+                      minWidth: 150,
+                      position: "relative",
+                      overflow: "hidden",
+                      "&::before": {
                         content: '""',
-                        position: 'absolute',
+                        position: "absolute",
                         top: 0,
                         left: 0,
                         right: 0,
-                        height: '3px',
+                        height: "3px",
                         background: `linear-gradient(90deg, #4caf50 ${progressPercentage}%, #e0e0e0 ${progressPercentage}%)`,
-                        borderRadius: '2px 2px 0 0'
-                      }
+                        borderRadius: "2px 2px 0 0",
+                      },
                     }}
                   >
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                      <Typography 
-                        variant="body2" 
-                        sx={{ 
-                          fontWeight: 600, 
-                          fontSize: '14px',
-                          lineHeight: 1.2
+                    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: "14px",
+                          lineHeight: 1.2,
                         }}
                       >
                         {topic.Name}
                       </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Box sx={{ 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          gap: 0.5,
-                          bgcolor: isSelected ? 'rgba(255,255,255,0.2)' : 'rgba(76, 175, 80, 0.1)',
-                          px: 1,
-                          py: 0.5,
-                          borderRadius: 1,
-                          minWidth: 'fit-content'
-                        }}>
-                          <Typography 
-                            variant="caption" 
-                            sx={{ 
+                      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                            bgcolor: isSelected ? "rgba(255,255,255,0.2)" : "rgba(76, 175, 80, 0.1)",
+                            px: 1,
+                            py: 0.5,
+                            borderRadius: 1,
+                            minWidth: "fit-content",
+                          }}
+                        >
+                          <Typography
+                            variant="caption"
+                            sx={{
                               fontWeight: 600,
-                              fontSize: '11px',
-                              color: isSelected ? '#fff' : '#4caf50'
+                              fontSize: "11px",
+                              color: isSelected ? "#fff" : "#4caf50",
                             }}
                           >
                             {statusCounts.solved}/{totalCount}
                           </Typography>
                         </Box>
-                        <Typography 
-                          variant="caption" 
-                          sx={{ 
-                            color: isSelected ? 'rgba(255,255,255,0.8)' : 'text.secondary',
-                            fontSize: '10px',
-                            fontWeight: 500
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            color: isSelected ? "rgba(255,255,255,0.8)" : "text.secondary",
+                            fontSize: "10px",
+                            fontWeight: 500,
                           }}
                         >
                           {progressPercentage.toFixed(0)}%
@@ -445,53 +422,57 @@ const ExercisesPage = () => {
         </Box>
 
         {/* Thanh tìm kiếm + filter icon + vòng tròn thống kê tổng quan */}
-        <Box sx={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: 3,
-          p: 3,
-          bgcolor: '#fff',
-          borderRadius: '12px 12px 0 0',
-          border: '1px solid #e2e8f0',
-          borderBottom: 'none',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.06)'
-        }}>
-          {/* Ô tìm kiếm tên bài tập kiểu mới */}
-          <Box sx={{ position: 'relative', flex: 1, maxWidth: 250 }}>
-            <SearchIcon sx={{ 
-              position: 'absolute', 
-              left: 16, 
-              top: '50%', 
-              transform: 'translateY(-50%)', 
-              color: '#9ca3af', 
-              fontSize: 20 
-            }} />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 3,
+            p: 3,
+            bgcolor: "#fff",
+            borderRadius: "12px 12px 0 0",
+            border: "1px solid #e2e8f0",
+            borderBottom: "none",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+          }}
+        >
+          {/* Thanh tìm kiếm */}
+          <Box sx={{ position: "relative", flex: 1 }}>
+            <SearchIcon
+              sx={{
+                position: "absolute",
+                left: 16,
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#9ca3af",
+                fontSize: 20,
+              }}
+            />
             <input
               type="text"
               placeholder="Tìm kiếm bài tập..."
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
               style={{
-                width: '100%',
-                padding: '12px 16px 12px 48px',
+                width: "100%",
+                padding: "12px 16px 12px 48px",
                 borderRadius: 12,
-                border: '2px solid #e2e8f0',
+                border: "2px solid #e2e8f0",
                 fontSize: 15,
-                outline: 'none',
-                boxSizing: 'border-box',
-                color: '#1a1a1a',
-                backgroundColor: '#f8fafc',
-                transition: 'all 0.2s ease',
+                outline: "none",
+                boxSizing: "border-box",
+                color: "#1a1a1a",
+                backgroundColor: "#f8fafc",
+                transition: "all 0.2s ease",
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = '#1976d2';
-                e.target.style.backgroundColor = '#fff';
-                e.target.style.boxShadow = '0 0 0 3px rgba(25, 118, 210, 0.1)';
+                e.target.style.borderColor = "#1976d2";
+                e.target.style.backgroundColor = "#fff";
+                e.target.style.boxShadow = "0 0 0 3px rgba(25, 118, 210, 0.1)";
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = '#e2e8f0';
-                e.target.style.backgroundColor = '#f8fafc';
-                e.target.style.boxShadow = 'none';
+                e.target.style.borderColor = "#e2e8f0";
+                e.target.style.backgroundColor = "#f8fafc";
+                e.target.style.boxShadow = "none";
               }}
             />
           </Box>
@@ -501,20 +482,20 @@ const ExercisesPage = () => {
             aria-describedby={filterId}
             onClick={handleFilterClick}
             variant="outlined"
-            sx={{ 
-              minWidth: 48, 
+            sx={{
+              minWidth: 48,
               height: 48,
-              p: 0, 
+              p: 0,
               borderRadius: 12,
-              border: '2px solid #e2e8f0',
-              color: '#64748b',
-              bgcolor: '#f8fafc',
-              '&:hover': {
-                borderColor: '#1976d2',
-                bgcolor: '#e3f2fd',
-                color: '#1976d2'
+              border: "2px solid #e2e8f0",
+              color: "#64748b",
+              bgcolor: "#f8fafc",
+              "&:hover": {
+                borderColor: "#1976d2",
+                bgcolor: "#e3f2fd",
+                color: "#1976d2",
               },
-              transition: 'all 0.2s ease'
+              transition: "all 0.2s ease",
             }}
           >
             <FilterListIcon sx={{ fontSize: 20 }} />
@@ -527,65 +508,69 @@ const ExercisesPage = () => {
             disableScrollLock={true}
             anchorEl={filterAnchorEl}
             onClose={handleFilterClose}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+            transformOrigin={{ vertical: "top", horizontal: "left" }}
             PaperProps={{
               sx: {
                 borderRadius: 3,
-                boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                border: '1px solid #e2e8f0',
-                mt: 1
-              }
+                boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
+                border: "1px solid #e2e8f0",
+                mt: 1,
+              },
             }}
           >
             <Box sx={{ p: 3, minWidth: 300 }}>
-              <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: '#1a1a1a' }}>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 2, color: "#1a1a1a" }}>
                 Bộ lọc
               </Typography>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <Box>
-                  <Typography variant="body2" sx={{ fontWeight: 600, mb: 1, color: '#374151' }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, mb: 1, color: "#374151" }}>
                     Trạng thái
                   </Typography>
                   <Select
                     size="small"
                     value={statusFilter}
-                    onChange={e => setStatusFilter(e.target.value as any)}
-                    sx={{ 
-                      width: '100%',
-                      '& .MuiOutlinedInput-root': {
+                    onChange={(e) => setStatusFilter(e.target.value as any)}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
                         borderRadius: 2,
-                        '& fieldset': { borderColor: '#e2e8f0' },
-                        '&:hover fieldset': { borderColor: '#1976d2' },
-                        '&.Mui-focused fieldset': { borderColor: '#1976d2' },
-                      }
+                        "& fieldset": { borderColor: "#e2e8f0" },
+                        "&:hover fieldset": { borderColor: "#1976d2" },
+                        "&.Mui-focused fieldset": { borderColor: "#1976d2" },
+                      },
                     }}
                   >
-                    {STATUS_OPTIONS.map(item => (
-                      <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+                    {STATUS_OPTIONS.map((item) => (
+                      <MenuItem key={item.value} value={item.value}>
+                        {item.label}
+                      </MenuItem>
                     ))}
                   </Select>
                 </Box>
                 <Box>
-                  <Typography variant="body2" sx={{ fontWeight: 600, mb: 1, color: '#374151' }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, mb: 1, color: "#374151" }}>
                     Độ khó
                   </Typography>
                   <Select
                     size="small"
                     value={difficultyFilter}
-                    onChange={e => setDifficultyFilter(e.target.value as any)}
-                    sx={{ 
-                      width: '100%',
-                      '& .MuiOutlinedInput-root': {
+                    onChange={(e) => setDifficultyFilter(e.target.value as any)}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
                         borderRadius: 2,
-                        '& fieldset': { borderColor: '#e2e8f0' },
-                        '&:hover fieldset': { borderColor: '#1976d2' },
-                        '&.Mui-focused fieldset': { borderColor: '#1976d2' },
-                      }
+                        "& fieldset": { borderColor: "#e2e8f0" },
+                        "&:hover fieldset": { borderColor: "#1976d2" },
+                        "&.Mui-focused fieldset": { borderColor: "#1976d2" },
+                      },
                     }}
                   >
-                    {DIFFICULTY_OPTIONS.map(item => (
-                      <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+                    {DIFFICULTY_OPTIONS.map((item) => (
+                      <MenuItem key={item.value} value={item.value}>
+                        {item.label}
+                      </MenuItem>
                     ))}
                   </Select>
                 </Box>
@@ -594,179 +579,173 @@ const ExercisesPage = () => {
           </Popover>
 
           {/* Vòng tròn progress tổng quan */}
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 2,
-            p: 2,
-            minWidth: 200
-          }}>
-            <Box sx={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
-            {/* Nền xám */}
-              <svg width={40} height={40} style={{ position: 'absolute', top: 0, left: 0 }}>
-              <circle
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              p: 2,
+              minWidth: 200,
+            }}
+          >
+            <Box sx={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
+              {/* Nền xám */}
+              <svg width={40} height={40} style={{ position: "absolute", top: 0, left: 0 }}>
+                <circle cx={20} cy={20} r={16} stroke="#e2e8f0" strokeWidth={3} fill="none" />
+              </svg>
+              {/* Phần đã làm màu xanh */}
+              <svg width={40} height={40} style={{ position: "absolute", top: 0, left: 0 }}>
+                <circle
                   cx={20}
                   cy={20}
                   r={16}
-                  stroke="#e2e8f0"
+                  stroke="#4CAF50"
                   strokeWidth={3}
-                fill="none"
-              />
-            </svg>
-            {/* Phần đã làm màu xanh */}
-              <svg width={40} height={40} style={{ position: 'absolute', top: 0, left: 0 }}>
-              <circle
-                  cx={20}
-                  cy={20}
-                  r={16}
-                stroke="#4CAF50"
-                  strokeWidth={3}
-                fill="none"
+                  fill="none"
                   strokeDasharray={2 * Math.PI * 16}
-                  strokeDashoffset={2 * Math.PI * 16 * (1 - (problems.length === 0 ? 0 : statusCounts.solved / problems.length))}
-                  style={{ 
-                    transition: 'stroke-dashoffset 0.8s ease-in-out', 
-                    transform: 'rotate(-90deg)', 
-                    transformOrigin: '50% 50%' 
+                  strokeDashoffset={2 * Math.PI * 16 * (1 - (problemsWithTpID.length === 0 ? 0 : statusCounts.solved / problemsWithTpID.length))}
+                  style={{
+                    transition: "stroke-dashoffset 0.8s ease-in-out",
+                    transform: "rotate(-90deg)",
+                    transformOrigin: "50% 50%",
                   }}
-              />
-            </svg>
-            {/* Vòng ngoài để giữ layout */}
+                />
+              </svg>
+              {/* Vòng ngoài để giữ layout */}
               <Box sx={{ width: 40, height: 40 }} />
             </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-              <Typography variant="body2" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-                {statusCounts.solved}/{problems.length}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+              <Typography variant="body2" sx={{ fontWeight: 600, color: "#1a1a1a" }}>
+                {statusCounts.solved}/{problemsWithTpID.length}
               </Typography>
-              <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+              <Typography variant="caption" sx={{ color: "text.secondary", fontWeight: 500 }}>
                 Đã giải xong
-            </Typography>
+              </Typography>
             </Box>
           </Box>
         </Box>
 
         {/* Danh sách bài tập */}
-        <Card className="border border-gray-200 shadow-lg" sx={{ borderRadius: '0 0 12px 12px', borderTop: 'none' }}>
+        <Card className="border border-gray-200 shadow-lg" sx={{ borderRadius: "0 0 12px 12px", borderTop: "none" }}>
           <TableContainer component={Paper} className="rounded-xl">
             <Table>
               <TableHead className="bg-gray-50">
                 <TableRow>
-                <TableCell 
-                        align="center" 
-                        sx={{ 
-                          width: "15%", 
-                          fontWeight: 700, 
-                          color: '#1a1a1a',
-                          fontSize: '14px',
-                          py: 2
-                        }}
-                      >
-                        Trạng thái
-                      </TableCell>
-                      <TableCell 
-                        sx={{ 
-                          width: "60%", 
-                          fontWeight: 700, 
-                          color: '#1a1a1a',
-                          fontSize: '14px',
-                          py: 2
-                        }}
-                      >
-                        Tên bài tập
-                      </TableCell>
-                      <TableCell 
-                        align="center" 
-                        sx={{ 
-                          width: "10%", 
-                          fontWeight: 700, 
-                          color: '#1a1a1a',
-                          fontSize: '14px',
-                          py: 2
-                        }}
-                      >
-                        Độ khó
-                      </TableCell>
-                      <TableCell 
-                        align="center" 
-                        sx={{ 
-                          width: "15%", 
-                          fontWeight: 700, 
-                          color: '#1a1a1a',
-                          fontSize: '14px',
-                          py: 2
-                        }}
-                      >
-                        Đánh dấu
-                      </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      width: "15%",
+                      fontWeight: 700,
+                      color: "#1a1a1a",
+                      fontSize: "14px",
+                      py: 2,
+                    }}
+                  >
+                    Trạng thái
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      width: "60%",
+                      fontWeight: 700,
+                      color: "#1a1a1a",
+                      fontSize: "14px",
+                      py: 2,
+                    }}
+                  >
+                    Tên bài tập
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      width: "10%",
+                      fontWeight: 700,
+                      color: "#1a1a1a",
+                      fontSize: "14px",
+                      py: 2,
+                    }}
+                  >
+                    Độ khó
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      width: "15%",
+                      fontWeight: 700,
+                      color: "#1a1a1a",
+                      fontSize: "14px",
+                      py: 2,
+                    }}
+                  >
+                    Đánh dấu
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {displayedProblems.map((problem, idx) => {
-                  // Tạo ref cho mỗi TableCell nếu chưa có
-                  if (!cellRefs.current[problem.EID]) {
-                    cellRefs.current[problem.EID] = createRef<HTMLTableCellElement>();
-                  }
-                  return (
-                    <TableRow
-                      key={problem.EID}
-                      className="transition-colors duration-150 cursor-pointer"
-                      sx={{ backgroundColor: idx % 2 === 0 ? '#fff' : '#f9fafb', '&:hover': { backgroundColor: '#f1f5f9' } }}
-                    >
-                      <TableCell align="center">
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                          <ExerciseStatusBadge status={problem.status || 'Unattempted'} />
-                        </Box>
-                      </TableCell>
-                      <TableCell
-                        onClick={() => {
-                          const url = `/exercises/${problem.Slug}?source=all`;
-                          window.location.href = url;
-                        }}
-                        style={{ cursor: 'pointer' }}
+                {displayedProblems
+                  .filter((problem) => problem.TpID)
+                  .map((problem, idx) => {
+                    // Tạo ref cho mỗi TableCell nếu chưa có
+                    if (!cellRefs.current[problem.EID]) {
+                      cellRefs.current[problem.EID] = createRef<HTMLTableCellElement>();
+                    }
+                    return (
+                      <TableRow
+                        key={problem.EID}
+                        className="transition-colors duration-150 cursor-pointer"
+                        sx={{ backgroundColor: idx % 2 === 0 ? "#fff" : "#f9fafb", "&:hover": { backgroundColor: "#f1f5f9" } }}
                       >
-                        <Box>
-                          <Typography 
-                            variant="body2" 
-                            className="font-medium text-gray-900 hover:text-blue-600"
-                          >
-                            {problem.Name}
-                          </Typography>
-                        </Box>
-                      </TableCell>
-                      <TableCell align="center">
-                        <Typography
-                          variant="body2"
-                          className={`font-medium ${
-                            (problem.Difficulty || "") === "Easy"
-                              ? "text-green-500"
-                              : (problem.Difficulty || "") === "Medium"
-                              ? "text-yellow-500"
-                              : (problem.Difficulty || "") === "Hard"
-                              ? "text-red-500"
-                              : ""
-                          }`}
+                        <TableCell align="center">
+                          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
+                            <ExerciseStatusBadge status={problem.status || "Unattempted"} />
+                          </Box>
+                        </TableCell>
+                        <TableCell
+                          onClick={() => {
+                            const url = `/exercises/${problem.Slug}?source=all`;
+                            window.location.href = url;
+                          }}
+                          style={{ cursor: "pointer" }}
                         >
-                          {problem.Difficulty === 'Easy' ? 'Dễ' : problem.Difficulty === 'Medium' ? 'Vừa' : problem.Difficulty === 'Hard' ? 'Khó' : problem.Difficulty}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="center" ref={cellRefs.current[problem.EID]}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          {savedEIDs.includes(problem.EID) ? (
-                            <BookmarkIcon
-                              sx={{ cursor: 'pointer', color: '#FFD600' }}
-                              onClick={() => handleBookmarkClick(problem.EID)}
-                            />
-                          ) : (
-                            <BookmarkBorderIcon
-                              sx={{ cursor: 'pointer', color: '#888' }}
-                              onClick={() => handleBookmarkClick(problem.EID)}
-                            />
-                          )}
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                          <Box>
+                            <Typography variant="body2" className="font-medium text-gray-900 hover:text-blue-600">
+                              {problem.Name}
+                            </Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography
+                            variant="body2"
+                            className={`font-medium ${
+                              (problem.Difficulty || "") === "Easy"
+                                ? "text-green-500"
+                                : (problem.Difficulty || "") === "Medium"
+                                ? "text-yellow-500"
+                                : (problem.Difficulty || "") === "Hard"
+                                ? "text-red-500"
+                                : ""
+                            }`}
+                          >
+                            {problem.Difficulty === "Easy"
+                              ? "Dễ"
+                              : problem.Difficulty === "Medium"
+                              ? "Vừa"
+                              : problem.Difficulty === "Hard"
+                              ? "Khó"
+                              : problem.Difficulty}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center" ref={cellRefs.current[problem.EID]}>
+                          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            {savedEIDs.includes(problem.EID) ? (
+                              <BookmarkIcon sx={{ cursor: "pointer", color: "#FFD600" }} onClick={() => handleBookmarkClick(problem.EID)} />
+                            ) : (
+                              <BookmarkBorderIcon sx={{ cursor: "pointer", color: "#888" }} onClick={() => handleBookmarkClick(problem.EID)} />
+                            )}
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
               </TableBody>
             </Table>
           </TableContainer>
@@ -803,7 +782,7 @@ const ExercisesPage = () => {
         {!hasMore && displayedProblems.length > 0 && (
           <Box sx={{ textAlign: "center", py: 4, mt: 2 }}>
             <Typography variant="body2" color="text.secondary">
-              Đã hiển thị tất cả {filteredProblems.length} bài tập
+              Đã hiển thị tất cả {filteredProblems.filter(p => p.TpID).length} bài tập
             </Typography>
           </Box>
         )}
@@ -818,39 +797,43 @@ const ExercisesPage = () => {
           <Box sx={{ px: 2, pt: 2, pb: 1 }}>
             <Typography sx={{ fontWeight: 700, fontSize: 16, mb: 1 }}>Danh sách của tôi</Typography>
             {menuLoading ? (
-              <Typography sx={{ py: 2, color: 'text.secondary', fontSize: 14 }}>Đang tải...</Typography>
+              <Typography sx={{ py: 2, color: "text.secondary", fontSize: 14 }}>Đang tải...</Typography>
             ) : userLists.length === 0 ? (
-              <Typography sx={{ py: 2, color: 'text.secondary', fontSize: 14 }}>Không có danh sách</Typography>
+              <Typography sx={{ py: 2, color: "text.secondary", fontSize: 14 }}>Không có danh sách</Typography>
             ) : (
               <List sx={{ p: 0 }}>
-                {userLists.map(list => {
+                {userLists.map((list) => {
                   const checked = listItemEIDs[list.LID]?.includes(selectedEID ?? -1);
                   return (
                     <ListItem key={list.LID} disablePadding sx={{ mb: 1, borderRadius: 2 }}>
                       <ListItemIcon sx={{ minWidth: 36 }}>
                         <Checkbox
                           checked={checked}
-                          onChange={e => handleToggleListItem(list.LID, e.target.checked)}
+                          onChange={(e) => handleToggleListItem(list.LID, e.target.checked)}
                           sx={{
                             p: 0,
                             borderRadius: 1.5,
-                            color: '#222',
-                            '&.Mui-checked': {
-                              color: '#111',
-                              bgcolor: '#111',
+                            color: "#222",
+                            "&.Mui-checked": {
+                              color: "#111",
+                              bgcolor: "#111",
                               borderRadius: 1.5,
                             },
-                            '& .MuiSvgIcon-root': {
+                            "& .MuiSvgIcon-root": {
                               borderRadius: 1.5,
                             },
                           }}
-                          icon={<span style={{ border: '2px solid #222', borderRadius: 8, width: 22, height: 22, display: 'block' }} />}
-                          checkedIcon={<span style={{ background: '#111', borderRadius: 8, width: 22, height: 22, display: 'block', position: 'relative' }}><svg width="16" height="16" style={{ position: 'absolute', top: 2, left: 3 }}><polyline points="2,8 6,12 14,4" style={{ fill: 'none', stroke: 'white', strokeWidth: 2 }} /></svg></span>}
+                          icon={<span style={{ border: "2px solid #222", borderRadius: 8, width: 22, height: 22, display: "block" }} />}
+                          checkedIcon={
+                            <span style={{ background: "#111", borderRadius: 8, width: 22, height: 22, display: "block", position: "relative" }}>
+                              <svg width="16" height="16" style={{ position: "absolute", top: 2, left: 3 }}>
+                                <polyline points="2,8 6,12 14,4" style={{ fill: "none", stroke: "white", strokeWidth: 2 }} />
+                              </svg>
+                            </span>
+                          }
                         />
                       </ListItemIcon>
-                      <ListItemText
-                        primary={<Typography sx={{ fontWeight: 400, fontSize: 14 }}>{list.Name}</Typography>}
-                      />
+                      <ListItemText primary={<Typography sx={{ fontWeight: 400, fontSize: 14 }}>{list.Name}</Typography>} />
                     </ListItem>
                   );
                 })}
@@ -858,7 +841,6 @@ const ExercisesPage = () => {
             )}
           </Box>
         </Menu>
-        
       </Box>
       <ListSidebar onListDeleted={handleListDeleted} onListExerciseChanged={handleListExerciseChanged} />
     </Box>

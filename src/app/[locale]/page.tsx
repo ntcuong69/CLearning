@@ -1,125 +1,263 @@
-'use client';
-import React from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+"use client";
+import React from "react";
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Typography,
+  Chip,
+  Box,
+  Container,
+  Stack,
+  Link as MuiLink,
+} from "@mui/material";
+import CodeIcon from "@mui/icons-material/Code";
+import BookIcon from "@mui/icons-material/Book";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { blue, green, orange, red } from "@mui/material/colors";
+import { CLearningLogo } from "../../components/CLearningLogo";
+import { useRouter } from "next/navigation";
 
-const locales = [
-  { code: 'en', label: 'EN', flag: '/EN.png' },
-  { code: 'vi', label: 'VN', flag: '/VN.png' },
-];
-
-function getCurrentLocale(pathname: string) {
-  const segments = pathname.split('/');
-  return locales.find(l => l.code === segments[1])?.code || 'vi';
-}
-
-export default function LandingPage() {
+export default function HomePage() {
   const router = useRouter();
-  const pathname = usePathname();
-  const currentLocale = getCurrentLocale(pathname);
-  const nextLocale = currentLocale === 'en' ? 'vi' : 'en';
-  const nextFlag = locales.find(l => l.code === nextLocale)?.flag;
-  const nextLabel = locales.find(l => l.code === nextLocale)?.label;
-
-  const handleLocaleSwitch = () => {
-    const segments = pathname.split('/');
-    segments[1] = nextLocale;
-    router.replace(segments.join('/'));
-  };
-
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white font-sans">
+    <Box display="flex" flexDirection="column" minHeight="100vh">
       {/* Header */}
-      <header className="w-full flex items-center justify-between px-6 md:px-16 py-4 bg-[#181c24]/80 backdrop-blur-md border-b border-blue-900 fixed top-0 left-0 z-30 shadow-lg">
-        <div className="flex items-center gap-3">
-          <img src="/code-logo.png" alt="Code Forge Logo" className="w-10 h-10" />
-          <span className="text-2xl font-extrabold tracking-tight text-blue-200 select-none">Code Forge</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <button
-            onClick={handleLocaleSwitch}
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 border border-blue-700 text-white font-semibold rounded-full shadow-sm transition-all duration-200 hover:bg-white/20 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            title={`Chuyển sang ${nextLabel}`}
-          >
-            <img src={nextFlag} alt={nextLabel} className="w-6 h-4 rounded shadow border border-white" />
-            <span className="font-bold text-white text-base tracking-wide drop-shadow">{nextLabel}</span>
-          </button>
-          <button
-            className="ml-2 px-5 py-2 bg-white/10 border border-blue-700 text-white font-semibold rounded-full shadow-sm transition-all duration-200 hover:bg-white/20 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onClick={() => router.push('/auth')}
-          >
-            Đăng nhập
-          </button>
-        </div>
-      </header>
-      {/* Hero Section */}
-      <section className="w-full flex flex-col md:flex-row items-center justify-between px-6 md:px-20 pt-32 pb-10 md:pb-20">
-        <div className="flex-1 text-center md:text-left">
-          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-xl">
-            Luyện Tập Lập Trình <span className="text-blue-400">C</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-xl mx-auto md:mx-0">
-            Nền tảng học, luyện tập và chấm code tự động hiện đại, dành cho người mới bắt đầu.
-          </p>
-          <button
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 border border-blue-700 text-white font-semibold rounded-full shadow-sm transition-all duration-200 hover:bg-white/20 hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onClick={() => router.push('/home')}
-          >
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
-            Bắt đầu ngay
-          </button>
-        </div>
-        {/* SVG Illustration replaced by VSCode-like code block */}
-        <div className="flex-1 flex justify-center mt-10 md:mt-0">
-          <div className="w-[340px] md:w-[400px] rounded-xl shadow-2xl bg-[#1e1e2f] border border-[#232b39] overflow-hidden font-mono">
-            {/* Fake VSCode window controls */}
-            <div className="flex items-center gap-2 px-4 py-2 bg-[#232b39] border-b border-[#232b39]">
-              <span className="w-3 h-3 rounded-full bg-red-400 inline-block"></span>
-              <span className="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span>
-              <span className="w-3 h-3 rounded-full bg-green-400 inline-block"></span>
-              <span className="ml-4 text-xs text-gray-400">hello.c</span>
-            </div>
-            <pre className="px-4 py-3 text-sm leading-relaxed whitespace-pre overflow-x-auto">
-              <code>
-                <span className="text-[#569CD6]">#include</span> <span className="text-[#CE9178]">&lt;stdio.h&gt;</span>{'\n'}
-                {'\n'}
-                <span className="text-[#4EC9B0]">int</span> <span className="text-[#9CDCFE]">main</span><span className="text-white">()</span> <span className="text-white">{'{'}</span>{'\n'}
-                &nbsp;&nbsp;<span className="text-[#DCDCAA]">printf</span><span className="text-white">(</span><span className="text-[#CE9178]">"Hello, World!\n"</span><span className="text-white">);</span>{'\n'}
-                &nbsp;&nbsp;<span className="text-[#B5CEA8]">return</span> <span className="text-[#B5CEA8]">0</span><span className="text-white">;</span>{'\n'}
-                <span className="text-white">{'}'}</span>
-              </code>
-            </pre>
-          </div>
-        </div>
-      </section>
+      <AppBar position="sticky" color="default" elevation={0} sx={{ bgcolor: "rgba(255,255,255,0.95)", backdropFilter: "blur(8px)", borderBottom: 1, borderColor: "divider" }}>
+        <Toolbar sx={{ justifyContent: "space-between", minHeight: 64 }}>
+          <CLearningLogo />
+          <Stack direction="row" spacing={4} sx={{ display: { xs: "none", md: "flex" } }}>
+            <MuiLink href="#courses" underline="none" color="text.secondary" sx={{ fontWeight: 500, "&:hover": { color: blue[600] } }}>Khóa học</MuiLink>
+            <MuiLink href="#practice" underline="none" color="text.secondary" sx={{ fontWeight: 500, "&:hover": { color: blue[600] } }}>Luyện tập</MuiLink>
+            <MuiLink href="#about" underline="none" color="text.secondary" sx={{ fontWeight: 500, "&:hover": { color: blue[600] } }}>Giới thiệu</MuiLink>
+          </Stack>
+          <Stack direction="row" spacing={2}>
+            <Button onClick={() => router.push("/auth")} variant="text" sx={{ display: { xs: "none", sm: "inline-flex" } }}>Đăng nhập</Button>
+          </Stack>
+        </Toolbar>
+      </AppBar>
 
-      {/* Features Section */}
-      <section className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6 md:px-0 -mt-10 z-10">
-        <div className="backdrop-blur-md bg-white/10 border border-blue-700 rounded-2xl shadow-xl p-6 flex flex-col items-center hover:scale-105 transition-transform duration-200">
-          <svg width="40" height="40" fill="none" viewBox="0 0 24 24" className="mb-3 text-green-400"><path d="M4 4h16v16H4z" stroke="currentColor" strokeWidth="2"/><path d="M8 8h8v8H8z" fill="currentColor" fillOpacity=".2"/></svg>
-          <h3 className="text-lg font-bold text-green-300 mb-1">Video Bài Giảng</h3>
-          <p className="text-center text-blue-100 text-sm">Học lý thuyết qua video sinh động, dễ hiểu, bám sát chương trình C căn bản.</p>
-        </div>
-        <div className="backdrop-blur-md bg-white/10 border border-yellow-600 rounded-2xl shadow-xl p-6 flex flex-col items-center hover:scale-105 transition-transform duration-200">
-          <svg width="40" height="40" fill="none" viewBox="0 0 24 24" className="mb-3 text-yellow-400"><path d="M3 5h18M3 12h18M3 19h18" stroke="currentColor" strokeWidth="2"/></svg>
-          <h3 className="text-lg font-bold text-yellow-200 mb-1">Bài Tập Code & Trắc Nghiệm</h3>
-          <p className="text-center text-blue-100 text-sm">Làm bài tập trắc nghiệm, bài tập code với hệ thống chấm điểm tự động, phản hồi tức thì.</p>
-        </div>
-        <div className="backdrop-blur-md bg-white/10 border border-pink-600 rounded-2xl shadow-xl p-6 flex flex-col items-center hover:scale-105 transition-transform duration-200">
-          <svg width="40" height="40" fill="none" viewBox="0 0 24 24" className="mb-3 text-pink-400"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z" stroke="currentColor" strokeWidth="2"/></svg>
-          <h3 className="text-lg font-bold text-pink-200 mb-1">Nhiệm Vụ & Thành Tích</h3>
-          <p className="text-center text-blue-100 text-sm">Hoàn thành nhiệm vụ, nhận huy hiệu, theo dõi tiến trình học tập và thành tích cá nhân.</p>
-        </div>
-        <div className="backdrop-blur-md bg-white/10 border border-blue-600 rounded-2xl shadow-xl p-6 flex flex-col items-center hover:scale-105 transition-transform duration-200">
-          <svg width="40" height="40" fill="none" viewBox="0 0 24 24" className="mb-3 text-blue-400"><rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M7 8h10M7 12h6" stroke="currentColor" strokeWidth="2"/></svg>
-          <h3 className="text-lg font-bold text-blue-200 mb-1">Chấm Code Tự Động</h3>
-          <p className="text-center text-blue-100 text-sm">Nộp bài, nhận kết quả chấm code tự động, giúp bạn tiến bộ từng ngày.</p>
-        </div>
-      </section>
+      <Box component="main" flex={1}>
+        {/* Hero Section */}
+        <Box sx={{ bgcolor: "linear-gradient(135deg, #e3f0ff 0%, #fff 60%, #f3e8ff 100%)", py: { xs: 8, lg: 14 } }}>
+          <Container maxWidth="lg">
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+                gap: 8,
+                alignItems: "center",
+              }}
+            >
+              <Box>
+                <Stack spacing={4}>
+                  <Chip label="🚀 Học lập trình căn bản" sx={{ bgcolor: blue[50], color: blue[700], fontWeight: 600, width: "fit-content" }} />
+                  <Typography variant="h2" fontWeight={600} color="text.primary" gutterBottom>
+                    Thành thạo <Box component="span" color={blue[600]}>C</Box> từ con số 0
+                  </Typography>
+                  <Typography variant="h5" color="text.secondary">
+                    Khóa học lập trình C toàn diện với hàng trăm bài tập thực hành, từ cơ bản đến nâng cao. Học theo lộ trình khoa học.
+                  </Typography>
+                  <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+                    <Button onClick={() => router.push("/home")} size="large" variant="contained" startIcon={<PlayArrowIcon />} sx={{ bgcolor: blue[600], px: 4, fontSize: 18, ":hover": { bgcolor: blue[700] } }}>
+                      Bắt đầu ngay
+                    </Button>
+                  </Stack>
+                </Stack>
+              </Box>
+              <Box>
+                <Box sx={{ position: "relative", maxWidth: 480, mx: "auto" }}>
+                  <Box sx={{ bgcolor: "#222", borderRadius: 4, p: 3, boxShadow: 6 }}>
+                    <Stack direction="row" spacing={1} alignItems="center" mb={2}>
+                      <Box width={12} height={12} borderRadius={6} bgcolor={red[500]} />
+                      <Box width={12} height={12} borderRadius={6} bgcolor={orange[500]} />
+                      <Box width={12} height={12} borderRadius={6} bgcolor={green[500]} />
+                      <Typography color="gray" fontSize={14} ml={2}>main.c</Typography>
+                    </Stack>
+                    <Box component="pre" sx={{ color: green[200], fontSize: 15, m: 0, fontFamily: "monospace"}}>
+{`#include <stdio.h>
+int main() {
+    printf("Hello, World!\\n");
+    printf("Chào mừng đến với C!\\n");
+    return 0;
+}`}
+                    </Box>
+                  </Box>
+                  <Box sx={{ position: "absolute", bottom: -24, right: -24, bgcolor: blue[600], color: "white", p: 2, borderRadius: 2, boxShadow: 4 }}>
+                    <CheckCircleIcon fontSize="large" />
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Container>
+        </Box>
+
+        {/* Features Section */}
+        <Box sx={{ py: 12, bgcolor: "white" }}>
+          <Container maxWidth="lg">
+            <Box textAlign="center" mb={8}>
+              <Typography variant="h3" fontWeight={700} gutterBottom>Tại sao nên chọn C-Learning?</Typography>
+              <Typography variant="h6" color="text.secondary" maxWidth={600} mx="auto">
+                Tài liệu, bài tập đa dạng, học theo lộ trình khoa học
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" },
+                gap: 4,
+              }}
+            >
+              {[{
+                icon: <BookIcon sx={{ bgcolor: blue[50], color: blue[600], p: 1, borderRadius: 2, fontSize: 32 }} />, title: "Lộ trình khoa học", desc: "Từ cơ bản đến nâng cao, được thiết kế phù hợp cho người mới bắt đầu"
+              }, {
+                icon: <CodeIcon sx={{ bgcolor: green[50], color: green[600], p: 1, borderRadius: 2, fontSize: 32 }} />, title: "Thực hành nhiều", desc: "Hàng trăm bài tập từ dễ đến khó, tự động chấm điểm"
+              }, {
+                icon: <PlayArrowIcon sx={{ bgcolor: red[50], color: red[600], p: 1, borderRadius: 2, fontSize: 32 }} />, title: "Học mọi lúc", desc: "Truy cập 24/7, học theo tốc độ của riêng bạn"
+              }].map((f, i) => (
+                <Card key={i} elevation={4} sx={{ borderRadius: 4, transition: "box-shadow 0.2s", ":hover": { boxShadow: 8 } }}>
+                  <CardHeader
+                    avatar={f.icon}
+                    title={<Typography variant="h6">{f.title}</Typography>}
+                    subheader={<Typography color="text.secondary">{f.desc}</Typography>}
+                  />
+                </Card>
+              ))}
+            </Box>
+          </Container>
+        </Box>
+
+        {/* Course Curriculum */}
+        <Box id="courses" sx={{ py: 12, bgcolor: "#f8fafc" }}>
+          <Container maxWidth="lg">
+            <Box textAlign="center" mb={8}>
+              <Typography variant="h3" fontWeight={700} gutterBottom>Chương trình học</Typography>
+              <Typography variant="h6" color="text.secondary">Lộ trình học từ cơ bản đến nâng cao</Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+                gap: 4,
+              }}
+            >
+              {/* Cơ bản */}
+              <Card elevation={4} sx={{ borderRadius: 4 }}>
+                <CardHeader
+                  avatar={<Chip label="Cơ bản" sx={{ bgcolor: green[50], color: green[700], fontWeight: 600 }} />}
+                  title={<Typography variant="h5">Nền tảng C Programming</Typography>}
+                  subheader={<Typography color="text.secondary">Học các khái niệm cơ bản và cú pháp của ngôn ngữ C</Typography>}
+                />
+                <CardContent>
+                  <Stack spacing={2}>
+                    {["Giới thiệu về lập trình và ngôn ngữ C", "Biến, kiểu dữ liệu và toán tử", "Cấu trúc điều khiển (if, switch, loops)", "Hàm và phạm vi biến", "Mảng và chuỗi"].map((txt, idx) => (
+                      <Stack key={idx} direction="row" spacing={1} alignItems="center">
+                        <CheckCircleIcon color="success" />
+                        <Typography>{txt}</Typography>
+                      </Stack>
+                    ))}
+                  </Stack>
+                  <Button variant="outlined" fullWidth sx={{ mt: 4 }} endIcon={<ArrowForwardIcon />}>
+                    Xem chi tiết
+                  </Button>
+                </CardContent>
+              </Card>
+              {/* Nâng cao */}
+              <Card elevation={4} sx={{ borderRadius: 4 }}>
+                <CardHeader
+                  avatar={<Chip label="Nâng cao" sx={{ bgcolor: blue[50], color: blue[700], fontWeight: 600 }} />}
+                  title={<Typography variant="h5">C Programming Nâng cao</Typography>}
+                  subheader={<Typography color="text.secondary">Khám phá các tính năng nâng cao và kỹ thuật lập trình</Typography>}
+                />
+                <CardContent>
+                  <Stack spacing={2}>
+                    {["Con trỏ và quản lý bộ nhớ", "Cấu trúc dữ liệu (struct, union)", "Xử lý file và I/O", "Preprocessor và Macro", "Debug và tối ưu hóa code"].map((txt, idx) => (
+                      <Stack key={idx} direction="row" spacing={1} alignItems="center">
+                        <CheckCircleIcon color="primary" />
+                        <Typography>{txt}</Typography>
+                      </Stack>
+                    ))}
+                  </Stack>
+                  <Button variant="outlined" fullWidth sx={{ mt: 4 }} endIcon={<ArrowForwardIcon />}>
+                    Xem chi tiết
+                  </Button>
+                </CardContent>
+              </Card>
+            </Box>
+          </Container>
+        </Box>
+
+        {/* Practice Section */}
+        <Box id="practice" sx={{ py: 12, bgcolor: "white" }}>
+          <Container maxWidth="lg">
+            <Box textAlign="center" mb={8}>
+              <Typography variant="h3" fontWeight={700} gutterBottom>Luyện tập thực hành</Typography>
+              <Typography variant="h6" color="text.secondary">Hàng trăm bài tập được phân loại theo độ khó</Typography>
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" },
+                gap: 4,
+              }}
+            >
+              {/* Dễ */}
+              <Card elevation={3} sx={{ borderRadius: 4, border: `2px solid ${green[100]}`, transition: "border-color 0.2s", ":hover": { borderColor: green[300] } }}>
+                <CardHeader
+                  avatar={<Box sx={{ width: 56, height: 56, bgcolor: green[50], borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}><Typography variant="h4" color={green[600]}>1</Typography></Box>}
+                  title={<Typography variant="h6" color={green[700]}>Dễ</Typography>}
+                  subheader={<Typography color="text.secondary">150+ bài tập cơ bản</Typography>}
+                />
+                <CardContent>
+                  <Typography color="text.secondary" mb={2}>Phù hợp cho người mới bắt đầu</Typography>
+                  <Button variant="contained" fullWidth sx={{ bgcolor: green[600], ":hover": { bgcolor: green[700] } }}>Bắt đầu luyện tập</Button>
+                </CardContent>
+              </Card>
+              {/* Trung bình */}
+              <Card elevation={3} sx={{ borderRadius: 4, border: `2px solid ${orange[100]}`, transition: "border-color 0.2s", ":hover": { borderColor: orange[300] } }}>
+                <CardHeader
+                  avatar={<Box sx={{ width: 56, height: 56, bgcolor: orange[50], borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}><Typography variant="h4" color={orange[600]}>2</Typography></Box>}
+                  title={<Typography variant="h6" color={orange[700]}>Trung bình</Typography>}
+                  subheader={<Typography color="text.secondary">200+ bài tập nâng cao</Typography>}
+                />
+                <CardContent>
+                  <Typography color="text.secondary" mb={2}>Cho những ai đã có kiến thức cơ bản</Typography>
+                  <Button variant="contained" fullWidth sx={{ bgcolor: orange[600], ":hover": { bgcolor: orange[700] } }}>Thử thách bản thân</Button>
+                </CardContent>
+              </Card>
+              {/* Khó */}
+              <Card elevation={3} sx={{ borderRadius: 4, border: `2px solid ${red[100]}`, transition: "border-color 0.2s", ":hover": { borderColor: red[300] } }}>
+                <CardHeader
+                  avatar={<Box sx={{ width: 56, height: 56, bgcolor: red[50], borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}><Typography variant="h4" color={red[600]}>3</Typography></Box>}
+                  title={<Typography variant="h6" color={red[700]}>Khó</Typography>}
+                  subheader={<Typography color="text.secondary">100+ bài tập chuyên sâu</Typography>}
+                />
+                <CardContent>
+                  <Typography color="text.secondary" mb={2}>Dành cho lập trình viên có kinh nghiệm</Typography>
+                  <Button variant="contained" fullWidth sx={{ bgcolor: red[600], ":hover": { bgcolor: red[700] } }}>Chinh phục đỉnh cao</Button>
+                </CardContent>
+              </Card>
+            </Box>
+          </Container>
+        </Box>
+      </Box>
 
       {/* Footer */}
-      <footer className="w-full text-center py-6 mt-16 text-blue-200 text-sm bg-gradient-to-t from-[#232b39]/80 to-transparent">
-        © {new Date().getFullYear()} CodeC Platform. Made with <span className="text-pink-400">♥</span> for C learners.
-      </footer>
-    </div>
+      <Box component="footer" sx={{
+        bgcolor: "#f3f4f6",
+        color: "#374151",
+        py: 2,
+        textAlign: "center",
+        fontSize: 15,
+        borderTop: "1px solid #e5e7eb",
+      }}>
+        © {new Date().getFullYear()} CodeC Platform. Made with <Box component="span" sx={{ color: "#fb7185", fontWeight: 700, display: "inline" }}>♥</Box> for C learners.
+      </Box>
+    </Box>
   );
 }

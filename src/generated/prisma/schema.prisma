@@ -74,7 +74,6 @@ model testcaseresult {
 model topic {
   TpID     Int        @id @default(autoincrement())
   Name     String     @db.VarChar(50)
-  Slug     String     @unique(map: "Slug") @db.VarChar(50)
   exercise exercise[]
 }
 

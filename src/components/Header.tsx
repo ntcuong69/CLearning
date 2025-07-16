@@ -4,23 +4,12 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  IconButton,
   Box,
   Avatar,
-  Tooltip,
   Menu,
   MenuItem,
-  Badge,
-  InputBase,
   Divider,
-  Button,
-  Chip,
 } from "@mui/material";
-import { styled, alpha } from "@mui/material/styles";
-import HomeIcon from "@mui/icons-material/Home";
-import GroupIcon from "@mui/icons-material/Group";
-import SearchIcon from "@mui/icons-material/Search";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -31,61 +20,7 @@ import axios from "axios";
 import { signOut } from "next-auth/react";
 import LocaleSwitcher from "./LocaleSwitcher";
 import ThemeToggleButton from "./ThemeToggleButton";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-
-// Styled search input
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: 24,
-  backgroundColor: "#ffffff",
-  border: "1px solid #e8e8e8",
-  "&:hover": {
-    border: "1px solid #d0d0d0",
-    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.08)",
-  },
-  "&:focus-within": {
-    border: "1px solid #1a1a1a",
-    boxShadow: "0 0 0 3px rgba(26, 26, 26, 0.1)",
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-  transition: "all 0.2s ease",
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "#999",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "#333",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1.5, 1, 1.5, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    fontSize: "0.9rem",
-    fontWeight: 500,
-    [theme.breakpoints.up("md")]: {
-      width: "24ch",
-    },
-    "&::placeholder": {
-      color: "#999",
-      opacity: 1,
-    },
-  },
-}));
+import { CLearningLogo } from "./CLearningLogo";
 
 export default function NavBar() {
   const router = useRouter();
@@ -157,21 +92,7 @@ export default function NavBar() {
         }}
       >
         {/* Left Section - Logo và Tên web */}
-        <Box
-          className="flex items-center mr-8"
-          sx={{
-            cursor: "pointer",
-            transition: "all 0.2s ease",
-          }}
-          onClick={() => router.push("/home")}
-        >
-          <img src="/code-logo.png" alt="Code Forge" className="w-15 h-15" />
-          <Box>
-            <Typography variant="h6" className="font-bold text-gray-900 text-lg leading-tight">
-              CodeForge
-            </Typography>
-          </Box>
-        </Box>
+        <CLearningLogo />
 
         {/* Right Section - Theme Toggle, Locale Switcher, Notifications and User Profile */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -179,7 +100,7 @@ export default function NavBar() {
           <ThemeToggleButton />
 
           {/* Locale Switcher */}
-          <LocaleSwitcher />
+          {/* <LocaleSwitcher /> */}
 
           {/* Notifications */}
 

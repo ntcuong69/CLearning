@@ -29,6 +29,9 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import StarIcon from '@mui/icons-material/Star';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import TimelineIcon from '@mui/icons-material/Timeline';
+import React from "react";
+import "react-calendar-heatmap/dist/styles.css";
+import SubmissionHeatmap from "./SubmissionHeatmap";
 
 interface Topic {
   TpID: number;
@@ -54,8 +57,16 @@ interface RecentActivity {
   score?: number;
 }
 
+const mockData = [
+  { date: '2025-06-10', count: 1 },
+  { date: '2025-06-11', count: 2 },
+  { date: '2025-06-12', count: 3 },
+  { date: '2025-06-14', count: 1 },
+  { date: '2025-06-30', count: 2 },
+  { date: '2025-07-01', count: 1 },
+];
+
 export default function HomePage() {
-  const t2 = useTranslations("HomePage");
   const [topics, setTopics] = useState<Topic[]>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashboardStats>({
@@ -132,7 +143,6 @@ export default function HomePage() {
           ml: { md: "290px" },
           px: { xs: 2, sm: 6, md: 10 },
           py: 6,
-          maxWidth: 1200,
           mx: "auto",
         }}
       >
@@ -142,16 +152,13 @@ export default function HomePage() {
             <Box sx={{
               width: 4,
               height: 32,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: '#667eea',
               borderRadius: 2,
-              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)'
+              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.12)'
             }} />
             <Typography variant="h3" sx={{ 
               fontWeight: 800, 
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              color: '#222',
               fontSize: { xs: '28px', md: '36px' }
             }}>
               Dashboard
@@ -171,134 +178,176 @@ export default function HomePage() {
           display: 'grid', 
           gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' },
           gap: 3, 
-          mb: 6 
+          mb: 6
         }}>
+          {/* Bài tập đã hoàn thành */}
           <Card sx={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: '#f8fafc',
             borderRadius: 4,
-            boxShadow: '0 8px 32px rgba(102, 126, 234, 0.3)',
+            boxShadow: '0 2px 8px rgba(102, 126, 234, 0.06)',
+            border: '1px solid #e2e8f0',
             position: 'relative',
             overflow: 'hidden',
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-              opacity: 0.3
-            }
           }}>
             <CardContent sx={{ p: 3, position: 'relative', zIndex: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h4" sx={{ fontWeight: 800, color: '#ffffff' }}>
+                <Typography variant="h4" sx={{ fontWeight: 800, color: '#374151' }}>
                   {stats.completedExercises}
                 </Typography>
                 <Avatar sx={{ 
-                  bgcolor: 'rgba(255, 255, 255, 0.2)', 
+                  bgcolor: '#e0e7ff', 
                   width: 48, 
                   height: 48 
                 }}>
-                  <CheckCircleIcon sx={{ color: '#ffffff' }} />
+                  <CheckCircleIcon sx={{ color: '#2563eb' }} />
                 </Avatar>
               </Box>
-              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600 }}>
+              <Typography variant="body2" sx={{ color: '#374151', fontWeight: 600 }}>
                 Bài tập đã hoàn thành
               </Typography>
-              <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+              <Typography variant="caption" sx={{ color: '#64748b' }}>
                 {completionRate.toFixed(1)}% tổng số bài tập
               </Typography>
             </CardContent>
           </Card>
 
+          {/* Tổng số lượt nộp */}
           <Card sx={{
-            background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            background: '#f8fafc',
             borderRadius: 4,
-            boxShadow: '0 8px 32px rgba(240, 147, 251, 0.3)',
+            boxShadow: '0 2px 8px rgba(102, 126, 234, 0.06)',
+            border: '1px solid #e2e8f0',
             position: 'relative',
-            overflow: 'hidden'
+            overflow: 'hidden',
           }}>
             <CardContent sx={{ p: 3, position: 'relative', zIndex: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h4" sx={{ fontWeight: 800, color: '#ffffff' }}>
-                  {stats.currentStreak}
-                </Typography>
+                <Typography variant="h4" sx={{ fontWeight: 800, color: '#2563eb' }}>320</Typography>
                 <Avatar sx={{ 
-                  bgcolor: 'rgba(255, 255, 255, 0.2)', 
+                  bgcolor: '#e0e7ff', 
                   width: 48, 
                   height: 48 
                 }}>
-                  <TrendingUpIcon sx={{ color: '#ffffff' }} />
+                  <PlayArrowIcon sx={{ color: '#2563eb' }} />
                 </Avatar>
               </Box>
-              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600 }}>
-                Ngày học liên tiếp
+              <Typography variant="body2" sx={{ color: '#374151', fontWeight: 600 }}>
+                Tổng số lượt nộp
               </Typography>
-              <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                Kỷ lục: 15 ngày
+              <Typography variant="caption" sx={{ color: '#64748b' }}>
+                Tổng số lần bạn đã gửi bài
               </Typography>
             </CardContent>
           </Card>
 
+          {/* Số lần nộp trung bình mỗi bài */}
           <Card sx={{
-            background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            background: '#f8fafc',
             borderRadius: 4,
-            boxShadow: '0 8px 32px rgba(79, 172, 254, 0.3)',
+            boxShadow: '0 2px 8px rgba(102, 126, 234, 0.06)',
+            border: '1px solid #e2e8f0',
             position: 'relative',
-            overflow: 'hidden'
+            overflow: 'hidden',
           }}>
             <CardContent sx={{ p: 3, position: 'relative', zIndex: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h4" sx={{ fontWeight: 800, color: '#ffffff' }}>
-                  {stats.averageScore}%
-                </Typography>
+                <Typography variant="h4" sx={{ fontWeight: 800, color: '#f59e42' }}>2.7</Typography>
                 <Avatar sx={{ 
-                  bgcolor: 'rgba(255, 255, 255, 0.2)', 
+                  bgcolor: '#fff7ed', 
                   width: 48, 
                   height: 48 
                 }}>
-                  <EmojiEventsIcon sx={{ color: '#ffffff' }} />
+                  <TimelineIcon sx={{ color: '#f59e42' }} />
                 </Avatar>
               </Box>
-              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600 }}>
-                Điểm trung bình
+              <Typography variant="body2" sx={{ color: '#374151', fontWeight: 600 }}>
+                Số lần nộp trung bình mỗi bài
               </Typography>
-              <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                Xuất sắc!
+              <Typography variant="caption" sx={{ color: '#64748b' }}>
+                Trước khi đúng
               </Typography>
             </CardContent>
           </Card>
 
+          {/* Số bài đúng ngay lần đầu (1AC) */}
           <Card sx={{
-            background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+            background: '#f8fafc',
             borderRadius: 4,
-            boxShadow: '0 8px 32px rgba(67, 233, 123, 0.3)',
+            boxShadow: '0 2px 8px rgba(102, 126, 234, 0.06)',
+            border: '1px solid #e2e8f0',
             position: 'relative',
-            overflow: 'hidden'
+            overflow: 'hidden',
           }}>
             <CardContent sx={{ p: 3, position: 'relative', zIndex: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h4" sx={{ fontWeight: 800, color: '#ffffff' }}>
-                  #{stats.rank}
-                </Typography>
+                <Typography variant="h4" sx={{ fontWeight: 800, color: '#22c55e' }}>41</Typography>
                 <Avatar sx={{ 
-                  bgcolor: 'rgba(255, 255, 255, 0.2)', 
+                  bgcolor: '#dcfce7', 
                   width: 48, 
                   height: 48 
                 }}>
-                  <StarIcon sx={{ color: '#ffffff' }} />
+                  <StarIcon sx={{ color: '#22c55e' }} />
                 </Avatar>
               </Box>
-              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.9)', fontWeight: 600 }}>
-                Xếp hạng
+              <Typography variant="body2" sx={{ color: '#374151', fontWeight: 600 }}>
+                Số bài đúng ngay lần đầu (1AC)
               </Typography>
-              <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                Top 5% người học
+              <Typography variant="caption" sx={{ color: '#64748b' }}>
+                Đúng ngay lần nộp đầu tiên
               </Typography>
             </CardContent>
           </Card>
         </Box>
+
+        {/* Submission Heatmap Section */}
+        <SubmissionHeatmap data={mockData} />
+
+        {/* Skills & Difficulty Section */}
+        <Card sx={{ borderRadius: 4, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', border: '1px solid #e2e8f0', background: '#fff', mb: 6 }}>
+          <Box sx={{ p: 3, bgcolor: '#f3f4f6', color: '#222' }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+              Kỹ năng & mức độ
+            </Typography>
+            <Typography variant="body2" sx={{ opacity: 0.9 }}>
+              Đánh giá tổng quan về kỹ năng giải bài và chủ đề
+            </Typography>
+          </Box>
+          <CardContent sx={{ p: 3 }}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={4}>
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary" mb={1}>Số bài đã giải theo độ khó</Typography>
+                <Stack direction="row" spacing={2}>
+                  <Box textAlign="center">
+                    <Typography variant="h5" sx={{ color: '#22c55e', fontWeight: 700 }}>80</Typography>
+                    <Typography variant="body2" color="text.secondary">Dễ</Typography>
+                  </Box>
+                  <Box textAlign="center">
+                    <Typography variant="h5" sx={{ color: '#f59e42', fontWeight: 700 }}>50</Typography>
+                    <Typography variant="body2" color="text.secondary">Trung bình</Typography>
+                  </Box>
+                  <Box textAlign="center">
+                    <Typography variant="h5" sx={{ color: '#ef4444', fontWeight: 700 }}>20</Typography>
+                    <Typography variant="body2" color="text.secondary">Khó</Typography>
+                  </Box>
+                </Stack>
+              </Box>
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary" mb={1}>Chủ đề mạnh nhất</Typography>
+                <Card sx={{ bgcolor: '#e0f2fe', p: 2, borderRadius: 2, boxShadow: 'none' }}>
+                  <Typography variant="body1" sx={{ color: '#2563eb', fontWeight: 700 }}>Mảng một chiều</Typography>
+                  <Typography variant="body2" color="text.secondary">Hoàn thành 95%, tỉ lệ đúng 92%</Typography>
+                </Card>
+              </Box>
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary" mb={1}>Chủ đề yếu nhất</Typography>
+                <Card sx={{ bgcolor: '#fee2e2', p: 2, borderRadius: 2, boxShadow: 'none' }}>
+                  <Typography variant="body1" sx={{ color: '#ef4444', fontWeight: 700 }}>Con trỏ & bộ nhớ</Typography>
+                  <Typography variant="body2" color="text.secondary">Hoàn thành 40%, tỉ lệ đúng 55%</Typography>
+                </Card>
+              </Box>
+            </Stack>
+          </CardContent>
+        </Card>
 
         {/* Progress Section */}
         <Box sx={{ 
@@ -309,14 +358,15 @@ export default function HomePage() {
         }}>
           <Card sx={{
             borderRadius: 4,
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
             border: '1px solid #e2e8f0',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            background: '#fff'
           }}>
             <Box sx={{
               p: 3,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: '#ffffff'
+              bgcolor: '#f3f4f6',
+              color: '#222'
             }}>
               <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
                 Tiến độ học tập
@@ -331,7 +381,7 @@ export default function HomePage() {
                   <Typography variant="body2" sx={{ fontWeight: 600 }}>
                     Tổng thể
                   </Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#667eea' }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#2563eb' }}>
                     {completionRate.toFixed(1)}%
                   </Typography>
                 </Box>
@@ -343,7 +393,7 @@ export default function HomePage() {
                     borderRadius: 6,
                     backgroundColor: '#e2e8f0',
                     '& .MuiLinearProgress-bar': {
-                      background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                      background: '#2563eb',
                       borderRadius: 6
                     }
                   }}
@@ -363,7 +413,7 @@ export default function HomePage() {
                         <Typography variant="body2" sx={{ fontWeight: 500, fontSize: '14px' }}>
                           {topic.Name}
                         </Typography>
-                        <Typography variant="body2" sx={{ fontWeight: 600, color: '#667eea', fontSize: '14px' }}>
+                        <Typography variant="body2" sx={{ fontWeight: 600, color: '#2563eb', fontSize: '14px' }}>
                           {topicProgress.toFixed(0)}%
                         </Typography>
                       </Box>
@@ -375,7 +425,7 @@ export default function HomePage() {
                           borderRadius: 4,
                           backgroundColor: '#f1f5f9',
                           '& .MuiLinearProgress-bar': {
-                            background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)',
+                            background: '#2563eb',
                             borderRadius: 4
                           }
                         }}
@@ -389,14 +439,15 @@ export default function HomePage() {
 
           <Card sx={{
             borderRadius: 4,
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
             border: '1px solid #e2e8f0',
-            height: 'fit-content'
+            height: 'fit-content',
+            background: '#fff'
           }}>
             <Box sx={{
               p: 3,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: '#ffffff'
+              bgcolor: '#f3f4f6',
+              color: '#222'
             }}>
               <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
                 Hoạt động gần đây
@@ -470,14 +521,15 @@ export default function HomePage() {
         {/* Topics Section */}
         <Card sx={{
           borderRadius: 4,
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
           border: '1px solid #e2e8f0',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          background: '#fff'
         }}>
           <Box sx={{
             p: 3,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: '#ffffff'
+            bgcolor: '#f3f4f6',
+            color: '#222'
           }}>
             <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
               Chủ đề học tập
@@ -498,20 +550,21 @@ export default function HomePage() {
                   border: '2px solid #e2e8f0',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   cursor: 'pointer',
+                  background: '#f8fafc',
                   '&:hover': {
                     transform: 'translateY(-4px)',
-                    boxShadow: '0 12px 32px rgba(102, 126, 234, 0.2)',
-                    borderColor: '#667eea'
+                    boxShadow: '0 12px 32px rgba(102, 126, 234, 0.08)',
+                    borderColor: '#2563eb'
                   }
                 }}>
                   <CardContent sx={{ p: 3 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
                       <Avatar sx={{
-                        bgcolor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        bgcolor: '#e0e7ff',
                         width: 40,
                         height: 40
                       }}>
-                        <SchoolIcon sx={{ color: '#ffffff' }} />
+                        <SchoolIcon sx={{ color: '#2563eb' }} />
                       </Avatar>
                       <Box>
                         <Typography variant="h6" sx={{ 
@@ -535,11 +588,11 @@ export default function HomePage() {
                         label="Bắt đầu học" 
                         size="small"
                         sx={{
-                          bgcolor: '#667eea',
+                          bgcolor: '#2563eb',
                           color: '#ffffff',
                           fontWeight: 600,
                           '&:hover': {
-                            bgcolor: '#5a67d8'
+                            bgcolor: '#1d4ed8'
                           }
                         }}
                       />

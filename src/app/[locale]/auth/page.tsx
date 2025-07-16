@@ -313,7 +313,7 @@ export default function AuthPage() {
               </Typography>
             </Box>
 
-            {/* Đăng nhập mạng xã hội (chỉ Google, theo thiết kế mẫu, dùng ảnh SVG) */}
+            {/* Đăng nhập mạng xã hội */}
             <Box className="mt-8 mb-2">
               <Box className="relative flex items-center justify-center">
                 <Divider className="w-full" sx={{ borderColor: '#e5e7eb', borderBottomWidth: '1px', ".dark &": { borderColor: "#444950", borderBottomWidth: "1px" } }} />
@@ -324,7 +324,7 @@ export default function AuthPage() {
               <Box className="flex justify-center mt-6">
                 <Button
                   variant="outlined"
-                  aria-label="Continue with Google"
+                  aria-label="Đăng nhập với Google"
                   disabled={isGoogleLoading}
                   sx={{
                     borderRadius: "24px",
@@ -386,7 +386,7 @@ export default function AuthPage() {
                     alt="Google logo"
                     style={{ width: 22, height: 22, marginRight: 12, display: "inline-block" }}
                   />
-                  {isGoogleLoading ? <CircularProgress size={22} sx={{ color: "#3c4043" }} /> : "Continue with Google"}
+                  {isGoogleLoading ? <CircularProgress size={22} sx={{ color: "#3c4043" }} /> : "Đăng nhập với Google"}
                 </Button>
               </Box>
             </Box>

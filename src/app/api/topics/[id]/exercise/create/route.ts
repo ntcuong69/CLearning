@@ -36,6 +36,8 @@ export async function POST(req: NextRequest) {
             TpID: exercise.TpID,
             Content: exercise.Content,
             Difficulty: exercise.Difficulty,
+            Name: exercise.Name,
+            Slug: exercise.Slug,
             testcase: {
               create: exercise.testcase.map((tc: any) => ({
                 Input: tc.Input,

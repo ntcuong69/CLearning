@@ -7189,19 +7189,16 @@ export namespace Prisma {
   export type TopicMinAggregateOutputType = {
     TpID: number | null
     Name: string | null
-    Slug: string | null
   }
 
   export type TopicMaxAggregateOutputType = {
     TpID: number | null
     Name: string | null
-    Slug: string | null
   }
 
   export type TopicCountAggregateOutputType = {
     TpID: number
     Name: number
-    Slug: number
     _all: number
   }
 
@@ -7217,19 +7214,16 @@ export namespace Prisma {
   export type TopicMinAggregateInputType = {
     TpID?: true
     Name?: true
-    Slug?: true
   }
 
   export type TopicMaxAggregateInputType = {
     TpID?: true
     Name?: true
-    Slug?: true
   }
 
   export type TopicCountAggregateInputType = {
     TpID?: true
     Name?: true
-    Slug?: true
     _all?: true
   }
 
@@ -7322,7 +7316,6 @@ export namespace Prisma {
   export type TopicGroupByOutputType = {
     TpID: number
     Name: string
-    Slug: string
     _count: TopicCountAggregateOutputType | null
     _avg: TopicAvgAggregateOutputType | null
     _sum: TopicSumAggregateOutputType | null
@@ -7347,7 +7340,6 @@ export namespace Prisma {
   export type topicSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     TpID?: boolean
     Name?: boolean
-    Slug?: boolean
     exercise?: boolean | topic$exerciseArgs<ExtArgs>
     _count?: boolean | TopicCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topic"]>
@@ -7357,10 +7349,9 @@ export namespace Prisma {
   export type topicSelectScalar = {
     TpID?: boolean
     Name?: boolean
-    Slug?: boolean
   }
 
-  export type topicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"TpID" | "Name" | "Slug", ExtArgs["result"]["topic"]>
+  export type topicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"TpID" | "Name", ExtArgs["result"]["topic"]>
   export type topicInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     exercise?: boolean | topic$exerciseArgs<ExtArgs>
     _count?: boolean | TopicCountOutputTypeDefaultArgs<ExtArgs>
@@ -7374,7 +7365,6 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       TpID: number
       Name: string
-      Slug: string
     }, ExtArgs["result"]["topic"]>
     composites: {}
   }
@@ -7747,7 +7737,6 @@ export namespace Prisma {
   interface topicFieldRefs {
     readonly TpID: FieldRef<"topic", 'Int'>
     readonly Name: FieldRef<"topic", 'String'>
-    readonly Slug: FieldRef<"topic", 'String'>
   }
     
 
@@ -22303,8 +22292,7 @@ export namespace Prisma {
 
   export const TopicScalarFieldEnum: {
     TpID: 'TpID',
-    Name: 'Name',
-    Slug: 'Slug'
+    Name: 'Name'
   };
 
   export type TopicScalarFieldEnum = (typeof TopicScalarFieldEnum)[keyof typeof TopicScalarFieldEnum]
@@ -22512,8 +22500,7 @@ export namespace Prisma {
 
 
   export const topicOrderByRelevanceFieldEnum: {
-    Name: 'Name',
-    Slug: 'Slug'
+    Name: 'Name'
   };
 
   export type topicOrderByRelevanceFieldEnum = (typeof topicOrderByRelevanceFieldEnum)[keyof typeof topicOrderByRelevanceFieldEnum]
@@ -23019,32 +23006,28 @@ export namespace Prisma {
     NOT?: topicWhereInput | topicWhereInput[]
     TpID?: IntFilter<"topic"> | number
     Name?: StringFilter<"topic"> | string
-    Slug?: StringFilter<"topic"> | string
     exercise?: ExerciseListRelationFilter
   }
 
   export type topicOrderByWithRelationInput = {
     TpID?: SortOrder
     Name?: SortOrder
-    Slug?: SortOrder
     exercise?: exerciseOrderByRelationAggregateInput
     _relevance?: topicOrderByRelevanceInput
   }
 
   export type topicWhereUniqueInput = Prisma.AtLeast<{
     TpID?: number
-    Slug?: string
     AND?: topicWhereInput | topicWhereInput[]
     OR?: topicWhereInput[]
     NOT?: topicWhereInput | topicWhereInput[]
     Name?: StringFilter<"topic"> | string
     exercise?: ExerciseListRelationFilter
-  }, "TpID" | "Slug">
+  }, "TpID">
 
   export type topicOrderByWithAggregationInput = {
     TpID?: SortOrder
     Name?: SortOrder
-    Slug?: SortOrder
     _count?: topicCountOrderByAggregateInput
     _avg?: topicAvgOrderByAggregateInput
     _max?: topicMaxOrderByAggregateInput
@@ -23058,7 +23041,6 @@ export namespace Prisma {
     NOT?: topicScalarWhereWithAggregatesInput | topicScalarWhereWithAggregatesInput[]
     TpID?: IntWithAggregatesFilter<"topic"> | number
     Name?: StringWithAggregatesFilter<"topic"> | string
-    Slug?: StringWithAggregatesFilter<"topic"> | string
   }
 
   export type userWhereInput = {
@@ -24217,45 +24199,38 @@ export namespace Prisma {
 
   export type topicCreateInput = {
     Name: string
-    Slug: string
     exercise?: exerciseCreateNestedManyWithoutTopicInput
   }
 
   export type topicUncheckedCreateInput = {
     TpID?: number
     Name: string
-    Slug: string
     exercise?: exerciseUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type topicUpdateInput = {
     Name?: StringFieldUpdateOperationsInput | string
-    Slug?: StringFieldUpdateOperationsInput | string
     exercise?: exerciseUpdateManyWithoutTopicNestedInput
   }
 
   export type topicUncheckedUpdateInput = {
     TpID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
-    Slug?: StringFieldUpdateOperationsInput | string
     exercise?: exerciseUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type topicCreateManyInput = {
     TpID?: number
     Name: string
-    Slug: string
   }
 
   export type topicUpdateManyMutationInput = {
     Name?: StringFieldUpdateOperationsInput | string
-    Slug?: StringFieldUpdateOperationsInput | string
   }
 
   export type topicUncheckedUpdateManyInput = {
     TpID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
-    Slug?: StringFieldUpdateOperationsInput | string
   }
 
   export type userCreateInput = {
@@ -25560,7 +25535,6 @@ export namespace Prisma {
   export type topicCountOrderByAggregateInput = {
     TpID?: SortOrder
     Name?: SortOrder
-    Slug?: SortOrder
   }
 
   export type topicAvgOrderByAggregateInput = {
@@ -25570,13 +25544,11 @@ export namespace Prisma {
   export type topicMaxOrderByAggregateInput = {
     TpID?: SortOrder
     Name?: SortOrder
-    Slug?: SortOrder
   }
 
   export type topicMinOrderByAggregateInput = {
     TpID?: SortOrder
     Name?: SortOrder
-    Slug?: SortOrder
   }
 
   export type topicSumOrderByAggregateInput = {
@@ -28323,13 +28295,11 @@ export namespace Prisma {
 
   export type topicCreateWithoutExerciseInput = {
     Name: string
-    Slug: string
   }
 
   export type topicUncheckedCreateWithoutExerciseInput = {
     TpID?: number
     Name: string
-    Slug: string
   }
 
   export type topicCreateOrConnectWithoutExerciseInput = {
@@ -28510,13 +28480,11 @@ export namespace Prisma {
 
   export type topicUpdateWithoutExerciseInput = {
     Name?: StringFieldUpdateOperationsInput | string
-    Slug?: StringFieldUpdateOperationsInput | string
   }
 
   export type topicUncheckedUpdateWithoutExerciseInput = {
     TpID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
-    Slug?: StringFieldUpdateOperationsInput | string
   }
 
   export type studyplanitemUpsertWithoutExerciseInput = {

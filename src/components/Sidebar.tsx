@@ -19,10 +19,12 @@ import SchoolIcon from "@mui/icons-material/School";
 import CodeIcon from "@mui/icons-material/Code";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const menuItems = [
   { 
-    text: "Dashboard", 
+    text: "Tổng quan", 
     icon: <DashboardIcon />, 
     href: "/home",
     description: "Tổng quan học tập"
@@ -45,23 +47,37 @@ const menuItems = [
     href: "/resources",
     description: "Tài liệu học tập"
   },
-  { 
-    text: "Thống kê", 
-    icon: <BarChartIcon />, 
-    href: "/statistics",
-    description: "Tiến độ học tập"
-  },
-  { 
-    text: "Cài đặt", 
-    icon: <SettingsIcon />, 
-    href: "/settings",
-    description: "Tùy chỉnh hệ thống"
-  },
+  // { 
+  //   text: "Thống kê", 
+  //   icon: <BarChartIcon />, 
+  //   href: "/statistics",
+  //   description: "Tiến độ học tập"
+  // },
+  // { 
+  //   text: "Cài đặt", 
+  //   icon: <SettingsIcon />, 
+  //   href: "/settings",
+  //   description: "Tùy chỉnh hệ thống"
+  // },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
   const normalizedPathname = pathname.replace(/^\/[a-z]{2}\//, "/");
+
+  // Lấy role từ API /api/me
+  const [role, setRole] = useState<string | null>(null);
+  useEffect(() => {
+    const fetchRole = async () => {
+      try {
+        const res = await axios.get('/api/me');
+        setRole(res.data?.user.Role || null);
+      } catch {
+        setRole(null);
+      }
+    };
+    fetchRole();
+  }, []);
 
   return (
     <Box
@@ -142,6 +158,65 @@ export default function Sidebar() {
               </ListItemButton>
             </Tooltip>
           ))}
+          {/* Tab Admin dưới cùng nếu là Admin */}
+          {role === 'Admin' && (
+            <Tooltip 
+              key="Admin" 
+              title="Quản trị hệ thống"
+              placement="right"
+              arrow
+              sx={{
+                "& .MuiTooltip-tooltip": {
+                  bgcolor: "#2C5AA0",
+                  color: "#ffffff",
+                  fontSize: "0.75rem",
+                  fontWeight: 500,
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 12px rgba(44, 90, 160, 0.25)"
+                }
+              }}
+            >
+              <ListItemButton
+                component={Link}
+                href="/admin"
+                selected={normalizedPathname === "/admin"}
+                sx={{
+                  borderRadius: "12px",
+                  color: "#2D3748",
+                  "& .MuiListItemIcon-root": {
+                    color: normalizedPathname === "/admin" ? "#2C5AA0" : "#718096",
+                    minWidth: 44,
+                    fontSize: "1.25rem",
+                  },
+                  "& .MuiListItemText-primary": {
+                    fontWeight: normalizedPathname === "/admin" ? 600 : 400,
+                    fontSize: "0.9rem",
+                    color: normalizedPathname === "/admin" ? "#1A202C" : "#000000",
+                  },
+                  "&.Mui-selected": {
+                    backgroundColor: "#E8F4FF",
+                    color: "#1A202C",
+                    border: "1px solid #B8D4F0",
+                    "&:hover": {
+                      backgroundColor: "#D8ECFF",
+                    },
+                  },
+                  "&:hover": {
+                    backgroundColor: "#F0F8FF",
+                    color: "#1A202C",
+                    transform: "translateX(4px)",
+                  },
+                  transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                  position: "relative",
+                }}
+              >
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary="Admin" />
+              </ListItemButton>
+            </Tooltip>
+          )}
         </List>
       </Box>
 

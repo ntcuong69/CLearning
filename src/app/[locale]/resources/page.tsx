@@ -56,36 +56,6 @@ const resourceCategories = [
   },
 ];
 
-const featuredResources = [
-  {
-    title: "Giới thiệu C Programming",
-    type: "Bài giảng",
-    duration: "45 phút",
-    level: "Cơ bản",
-    rating: 4.8,
-    students: 1250,
-    image: "/images/lectures.jpg",
-  },
-  {
-    title: "Cấu trúc dữ liệu trong C",
-    type: "Video",
-    duration: "1 giờ 20 phút",
-    level: "Trung cấp",
-    rating: 4.9,
-    students: 890,
-    image: "/images/watchandlearn.jpg",
-  },
-  {
-    title: "Thuật toán sắp xếp",
-    type: "Code mẫu",
-    duration: "N/A",
-    level: "Nâng cao",
-    rating: 4.7,
-    students: 650,
-    image: "/images/sample-code.jpg",
-  },
-];
-
 const ResourcesPage = () => {
   const router = useRouter();
 
@@ -115,7 +85,7 @@ const ResourcesPage = () => {
             }}
           >
             <Typography variant="h3" fontWeight="bold" gutterBottom>
-              Tài nguyên học tập
+              Tài liệu học tập
             </Typography>
             <Typography variant="h6" sx={{ opacity: 0.9, mb: 3 }}>
               Khám phá bộ sưu tập bài giảng, video hướng dẫn và code mẫu chất lượng cao
@@ -128,9 +98,6 @@ const ResourcesPage = () => {
           </Box>
 
           {/* Resource Categories */}
-          <Typography variant="h5" fontWeight="bold" sx={{ mb: 3, color: "#333" }}>
-            Danh mục tài nguyên
-          </Typography>
           <Box sx={{ display: "flex", gap: 3, mb: 6, flexWrap: "wrap" }}>
             {resourceCategories.map((category) => (
               <Card
@@ -215,77 +182,7 @@ const ResourcesPage = () => {
           </Box>
 
           {/* Stats Section */}
-          <Box
-            sx={{
-              mt: 6,
-              p: 4,
-              bgcolor: "white",
-              borderRadius: 3,
-              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-            }}
-          >
-            <Typography variant="h6" fontWeight="bold" sx={{ mb: 3, textAlign: "center" }}>
-              Thống kê học tập
-            </Typography>
-            <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
-              <Box
-                sx={{
-                  flex: 1,
-                  minWidth: 200,
-                  textAlign: "center",
-                }}
-              >
-                <Typography variant="h4" fontWeight="bold" color="#cc2b5e">
-                  2,500+
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Học viên đã tham gia
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  flex: 1,
-                  minWidth: 200,
-                  textAlign: "center",
-                }}
-              >
-                <Typography variant="h4" fontWeight="bold" color="#667eea">
-                  87%
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Tỷ lệ hoàn thành
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  flex: 1,
-                  minWidth: 200,
-                  textAlign: "center",
-                }}
-              >
-                <Typography variant="h4" fontWeight="bold" color="#4facfe">
-                  24/7
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Hỗ trợ trực tuyến
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  flex: 1,
-                  minWidth: 200,
-                  textAlign: "center",
-                }}
-              >
-                <Typography variant="h4" fontWeight="bold" color="#f093fb">
-                  4.9★
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Đánh giá trung bình
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
+          
         </Box>
       </Box>
     </Box>

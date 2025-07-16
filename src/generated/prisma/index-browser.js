@@ -156,8 +156,7 @@ exports.Prisma.TestcaseresultScalarFieldEnum = {
 
 exports.Prisma.TopicScalarFieldEnum = {
   TpID: 'TpID',
-  Name: 'Name',
-  Slug: 'Slug'
+  Name: 'Name'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -302,8 +301,7 @@ exports.Prisma.testcaseresultOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.topicOrderByRelevanceFieldEnum = {
-  Name: 'Name',
-  Slug: 'Slug'
+  Name: 'Name'
 };
 
 exports.Prisma.userOrderByRelevanceFieldEnum = {

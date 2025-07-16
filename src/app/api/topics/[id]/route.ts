@@ -21,7 +21,6 @@ export async function GET(
             EID: true,
             Content: true,
             Difficulty: true,
-            Slug: true,
             Name: true,
           },
         },
