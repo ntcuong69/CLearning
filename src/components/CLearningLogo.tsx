@@ -1,11 +1,16 @@
 "use client";
 import { Box, Typography } from "@mui/material";
 import { Code as CodeIcon } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 export function CLearningLogo() {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push("/home");
+  };
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-      <Box sx={{ position: "relative" }}>
+      <Box sx={{ position: "relative", cursor: "pointer" }} onClick={handleClick}>
         <Box
           sx={{
             p: 0.75,

@@ -23,6 +23,9 @@ export async function GET(
         template: true,
         Name: true,
         Slug: true,
+        Tips: true,
+        Image: true,
+        isDeleted: true,
       },
     });
 

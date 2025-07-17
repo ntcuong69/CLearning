@@ -5,7 +5,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 // POST: Cập nhật trạng thái tiến độ của exercise
 export async function POST(req: NextRequest, context: { params: { slug: string } }) {
-  const { params } = context;
+  const { params } = await context;
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.uid) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest, context: { params: { slug: string }
 
 // GET: Lấy trạng thái tiến độ của exercise cho user hiện tại
 export async function GET(req: NextRequest, context: { params: { slug: string } }) {
-  const { params } = context;
+  const { params } = await context;
   const session = await getServerSession(authOptions);
   const slug = (await params).slug;
   
@@ -104,7 +104,7 @@ export async function GET(req: NextRequest, context: { params: { slug: string } 
 
 // DELETE: Xóa progress (reset về Unattempted)
 export async function DELETE(req: NextRequest, context: { params: { slug: string } }) {
-  const { params } = context;
+  const { params } = await context;
   const session = await getServerSession(authOptions);
   if (!session || !session.user?.uid) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

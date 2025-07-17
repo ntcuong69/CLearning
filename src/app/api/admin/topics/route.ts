@@ -6,7 +6,17 @@ export async function GET() {
   try {
     const topics = await prisma.topic.findMany({
       orderBy: { TpID: "asc" },
-      include: { _count: { select: { exercise: true } } }
+      include: { 
+        _count: { 
+          select: { 
+            exercise: {
+              where: {
+                isDeleted: 0
+              }
+            } 
+          } 
+        } 
+      }
     });
     return NextResponse.json({ topics });
   } catch (e) {

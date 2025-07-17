@@ -352,7 +352,7 @@ export default function HomePage() {
         {/* Progress Section */}
         <Box sx={{ 
           display: 'grid', 
-          gridTemplateColumns: { xs: '1fr', md: '2fr 1fr' },
+          // gridTemplateColumns: { xs: '1fr', md: '2fr 1fr' },
           gap: 4, 
           mb: 6 
         }}>
@@ -437,7 +437,7 @@ export default function HomePage() {
             </CardContent>
           </Card>
 
-          <Card sx={{
+          {/* <Card sx={{
             borderRadius: 4,
             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
             border: '1px solid #e2e8f0',
@@ -515,7 +515,7 @@ export default function HomePage() {
                 ))}
               </Stack>
             </CardContent>
-          </Card>
+          </Card> */}
         </Box>
 
         {/* Topics Section */}

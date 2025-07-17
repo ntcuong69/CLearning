@@ -8,6 +8,7 @@ import {
   Tab,
   CircularProgress,
   Alert,
+  Typography,
 } from "@mui/material";
 import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
@@ -212,17 +213,57 @@ export default function ExerciseDetailPage() {
 
   if (loading)
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
         <CircularProgress />
       </Box>
     );
-  if (error)
+  
+  // Kiểm tra nếu bài tập đã bị xóa
+  if (exercise.isDeleted) {
     return (
-      <Alert severity="error" sx={{ mt: 4 }}>
-        {error}
-      </Alert>
+      <Box sx={{ 
+        display: "flex", 
+        flexDirection: "column", 
+        alignItems: "center", 
+        justifyContent: "center", 
+        minHeight: "100vh",
+        textAlign: "center",
+        px: 3
+      }}>
+        <Box sx={{ 
+          maxWidth: 500, 
+          p: 4, 
+          borderRadius: 3, 
+          bgcolor: "#fff", 
+          boxShadow: "0 4px 24px rgba(0,0,0,0.1)",
+          border: "1px solid #e2e8f0"
+        }}>
+          <Alert severity="error" sx={{ mb: 3, fontSize: "1.1rem" }}>
+            Bài tập đã bị xóa
+          </Alert>
+          <Typography variant="h6" sx={{ mb: 2, color: "#374151" }}>
+            Bài tập "{exercise.Name}" không còn khả dụng
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 3, color: "#6b7280" }}>
+            Bài tập này đã bị xóa khỏi hệ thống. Vui lòng quay lại trang danh sách bài tập để tìm bài tập khác.
+          </Typography>
+          <Button 
+            variant="contained" 
+            color="primary"
+            onClick={() => window.location.href = "/exercises"}
+            sx={{ 
+              px: 3, 
+              py: 1.5, 
+              borderRadius: 2,
+              fontWeight: 600
+            }}
+          >
+            Quay lại danh sách bài tập
+          </Button>
+        </Box>
+      </Box>
     );
-  if (!exercise) return null;
+  }
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>

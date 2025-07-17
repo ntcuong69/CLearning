@@ -8,6 +8,12 @@ export async function GET(req: NextRequest) {
   
   try {
     const exercises = await prisma.exercise.findMany({
+      where: {
+        isDeleted: 0,
+        TpID: {
+          not: null,
+        },
+      },
       select: {
         EID: true,
         TpID: true,

@@ -219,7 +219,7 @@ export default function SubmissionHeatmap({ data }: Props) {
                     <span
                       key={dayIdx}
                       data-tooltip-id="submissions-tooltip"
-                      data-tooltip-content={`${day.count} submissions\n${formatDate(day.date)}`}
+                      data-tooltip-content={`${day.count} lượt nộp vào ${formatDate(day.date)}`}
                       style={{
                         width: 13,
                         height: 13,

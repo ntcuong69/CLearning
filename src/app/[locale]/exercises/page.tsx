@@ -288,11 +288,8 @@ const ExercisesPage = () => {
       { solved: 0, attempting: 0, unattempted: 0 }
     );
 
-  // Lọc các bài tập có TpID (bài tập thuộc chủ đề)
-  const problemsWithTpID = problems.filter((p) => p.TpID);
-
-  // Đếm trạng thái tổng quan chỉ với các bài tập có TpID
-  const statusCounts = getStatusCounts(problemsWithTpID);
+  // Đếm trạng thái tổng quan
+  const statusCounts = getStatusCounts(problems);
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", pt: "70px" }}>
@@ -323,7 +320,7 @@ const ExercisesPage = () => {
           >
             {topics.map((topic) => {
               // Đếm số bài theo trạng thái cho từng chủ đề
-              let topicProblems = topic.TpID === "all" ? problemsWithTpID : problems.filter((p) => p.TpID === Number(topic.TpID));
+              let topicProblems = topic.TpID === "all" ? problems : problems.filter((p) => p.TpID === Number(topic.TpID));
               const statusCounts = getStatusCounts(topicProblems);
               const totalCount = topicProblems.length;
               const isSelected = selectedTopic === String(topic.TpID);
@@ -603,7 +600,7 @@ const ExercisesPage = () => {
                   strokeWidth={3}
                   fill="none"
                   strokeDasharray={2 * Math.PI * 16}
-                  strokeDashoffset={2 * Math.PI * 16 * (1 - (problemsWithTpID.length === 0 ? 0 : statusCounts.solved / problemsWithTpID.length))}
+                strokeDashoffset={2 * Math.PI * 16 * (1 - (problems.length === 0 ? 0 : statusCounts.solved / problems.length))}
                   style={{
                     transition: "stroke-dashoffset 0.8s ease-in-out",
                     transform: "rotate(-90deg)",
@@ -616,7 +613,7 @@ const ExercisesPage = () => {
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
               <Typography variant="body2" sx={{ fontWeight: 600, color: "#1a1a1a" }}>
-                {statusCounts.solved}/{problemsWithTpID.length}
+                {statusCounts.solved}/{problems.length}
               </Typography>
               <Typography variant="caption" sx={{ color: "text.secondary", fontWeight: 500 }}>
                 Đã giải xong
@@ -682,7 +679,6 @@ const ExercisesPage = () => {
               </TableHead>
               <TableBody>
                 {displayedProblems
-                  .filter((problem) => problem.TpID)
                   .map((problem, idx) => {
                     // Tạo ref cho mỗi TableCell nếu chưa có
                     if (!cellRefs.current[problem.EID]) {
@@ -782,7 +778,7 @@ const ExercisesPage = () => {
         {!hasMore && displayedProblems.length > 0 && (
           <Box sx={{ textAlign: "center", py: 4, mt: 2 }}>
             <Typography variant="body2" color="text.secondary">
-              Đã hiển thị tất cả {filteredProblems.filter(p => p.TpID).length} bài tập
+              Đã hiển thị tất cả {filteredProblems.length} bài tập
             </Typography>
           </Box>
         )}

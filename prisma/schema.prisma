@@ -17,6 +17,9 @@ model exercise {
   Content          String              @db.Text
   Difficulty       exercise_Difficulty @default(Easy)
   template         String?             @db.Text
+  Tips             String?             @db.Text
+  Image            String?             @db.VarChar(255)
+  isDeleted        Int?                @default(0) @db.TinyInt
   comment          comment[]
   topic            topic?              @relation(fields: [TpID], references: [TpID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_1")
   studyplanitem    studyplanitem?      @relation(fields: [SPIID], references: [SPIID], onDelete: NoAction, onUpdate: NoAction, map: "exercise_ibfk_2")

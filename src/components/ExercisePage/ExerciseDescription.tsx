@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Paper, IconButton, Tooltip } from "@mui/material";
-import { TaskAlt, Favorite, FavoriteBorder, Pending } from "@mui/icons-material";
+import { Box, Typography, Paper, IconButton, Tooltip, Collapse } from "@mui/material";
+import { TaskAlt, Favorite, FavoriteBorder, Pending, ExpandMore, ExpandLess } from "@mui/icons-material";
 import ExerciseStatusBadge from "./ExerciseStatusBadge";
 
 export default function ExerciseDescription({ exercise, testcases, onExerciseUpdate }: any) {
   const [isLiked, setIsLiked] = useState(exercise.isLiked || false);
   const [likeCount, setLikeCount] = useState(exercise.likeCount || 0);
   const [isLiking, setIsLiking] = useState(false);
+  const [showTips, setShowTips] = useState(false);
 
   // Đồng bộ state khi exercise prop thay đổi
   useEffect(() => {
@@ -147,6 +148,23 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
       <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
         {exercise.Content}
       </Typography>
+
+      {/* Ảnh mô tả nếu có */}
+      {exercise.Image && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }}>
+          <img
+            src={exercise.Image}
+            alt="Mô tả bài tập"
+            style={{
+              maxWidth: '100%',
+              maxHeight: 320,
+              borderRadius: 12,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+              objectFit: 'contain',
+            }}
+          />
+        </Box>
+      )}
       
       {testcases.length > 0 && (
         <Box mt={4}>
@@ -166,6 +184,73 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
                 </Box>
               </Paper>
             ))}
+        </Box>
+      )}
+
+      {/* Hướng dẫn section */}
+      {exercise.Tips && (
+        <Box mt={4}>
+          <Paper 
+            sx={{ 
+              borderRadius: 2,
+              boxShadow: "0 1px 4px rgba(0,0,0,0.07)", 
+              overflow: "hidden",
+              border: "1px solid #e0e0e0",
+            }}
+          >
+            <Box
+              onClick={() => setShowTips(!showTips)}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                p: 1,
+                cursor: "pointer",
+                bgcolor: "#f8f9fa",
+                "&:hover": {
+                  bgcolor: "#e9ecef",
+                },
+                transition: "background-color 0.2s ease",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#232b38",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                💡 Hướng dẫn
+              </Typography>
+              <IconButton
+                size="small"
+                sx={{
+                  color: "#666",
+                  transform: showTips ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.2s ease",
+                }}
+              >
+                {showTips ? <ExpandLess /> : <ExpandMore />}
+              </IconButton>
+            </Box>
+            <Collapse in={showTips}>
+              <Box sx={{ p: 2 }}>
+                <Typography 
+                  variant="body1" 
+                  sx={{ 
+                    whiteSpace: "pre-line",
+                    lineHeight: 1.6,
+                    color: "#374151",
+                    textAlign: "justify",
+                    textIndent: "2em",
+                  }}
+                >
+                  {exercise.Tips}
+                </Typography>
+              </Box>
+            </Collapse>
+          </Paper>
         </Box>
       )}
     </>

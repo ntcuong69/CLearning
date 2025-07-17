@@ -1,3 +1,23 @@
+/**
+ * API cho quản lý các bài tập (exercise) trong từng danh sách (list).
+ * 
+ * GET /api/listitem/:lid
+ * - Lấy tất cả bài tập trong 1 danh sách (chỉ lấy bài tập chưa bị xóa)
+ * - Trả về: { exercises: Array<{EID, Name, Difficulty, Slug, status}> }
+ * 
+ * POST /api/listitem
+ * - Thêm bài tập vào danh sách
+ * - Body: { lid: number, eid: number }
+ * 
+ * DELETE /api/listitem  
+ * - Xóa bài tập khỏi danh sách
+ * - Body: { lid: number, eid: number }
+ * 
+ * GET /api/listitem/user
+ * - Lấy tất cả EID mà user đã lưu vào bất kỳ list nào (chỉ lấy bài tập chưa bị xóa)
+ * - Trả về: { eids: number[] }
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth/next';
@@ -21,10 +41,19 @@ export async function GET(req: NextRequest, { params }: { params: { lid: string 
   if (!list || list.UID !== user.UID) {
     return NextResponse.json({ error: 'Không có quyền với list này' }, { status: 403 });
   }
-  // Lấy các bài tập đã lưu
+  // Lấy các bài tập đã lưu (chỉ lấy bài tập chưa bị xóa)
   const items = await prisma.listitem.findMany({
-    where: { LID: lid },
-    include: { exercise: { select: { EID: true, Name: true, Difficulty: true, Slug: true } } },
+    where: { 
+      LID: lid,
+      exercise: {
+        isDeleted: 0 // Chỉ lấy bài tập chưa bị xóa
+      }
+    },
+    include: { 
+      exercise: { 
+        select: { EID: true, Name: true, Difficulty: true, Slug: true } 
+      } 
+    },
   });
   
   const exercises = items.map(i => i.exercise);

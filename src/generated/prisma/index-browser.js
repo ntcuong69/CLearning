@@ -125,7 +125,10 @@ exports.Prisma.ExerciseScalarFieldEnum = {
   Slug: 'Slug',
   Content: 'Content',
   Difficulty: 'Difficulty',
-  template: 'template'
+  template: 'template',
+  Tips: 'Tips',
+  Image: 'Image',
+  isDeleted: 'isDeleted'
 };
 
 exports.Prisma.SubmissionScalarFieldEnum = {
@@ -283,7 +286,9 @@ exports.Prisma.exerciseOrderByRelevanceFieldEnum = {
   Name: 'Name',
   Slug: 'Slug',
   Content: 'Content',
-  template: 'template'
+  template: 'template',
+  Tips: 'Tips',
+  Image: 'Image'
 };
 
 exports.Prisma.submissionOrderByRelevanceFieldEnum = {

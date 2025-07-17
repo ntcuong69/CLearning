@@ -1,3 +1,26 @@
+/**
+ * API cho quản lý danh sách (list) của người dùng.
+ * 
+ * GET /api/list
+ * - Lấy tất cả danh sách của user hiện tại
+ * - Trả về: { lists: Array<{LID, Name, Description, CreatedAt, ExerciseCount}> }
+ * 
+ * POST /api/list
+ * - Tạo danh sách mới
+ * - Body: { name: string, description?: string }
+ * - Trả về: { list: {LID, Name, Description, CreatedAt, ExerciseCount} }
+ * 
+ * PUT /api/list/:lid
+ * - Sửa thông tin danh sách
+ * - Body: { name: string, description?: string }
+ * 
+ * DELETE /api/list/:lid
+ * - Xóa danh sách
+ * 
+ * GET /api/list/:lid
+ * - Lấy thông tin chi tiết 1 danh sách (nếu cần)
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth/next';
@@ -23,7 +46,13 @@ export async function GET(req: NextRequest) {
       CreatedAt: true,
       _count: {
         select: {
-          listitem: true
+          listitem: {
+            where: {
+              exercise: {
+                isDeleted: 0 // Chỉ đếm bài tập chưa bị xóa
+              }
+            }
+          }
         }
       }
     },
@@ -68,7 +97,13 @@ export async function POST(req: NextRequest) {
       CreatedAt: true,
       _count: {
         select: {
-          listitem: true
+          listitem: {
+            where: {
+              exercise: {
+                isDeleted: 0 // Chỉ đếm bài tập chưa bị xóa
+              }
+            }
+          }
         }
       }
     },

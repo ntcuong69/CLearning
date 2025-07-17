@@ -2971,12 +2971,14 @@ export namespace Prisma {
     EID: number | null
     TpID: number | null
     SPIID: number | null
+    isDeleted: number | null
   }
 
   export type ExerciseSumAggregateOutputType = {
     EID: number | null
     TpID: number | null
     SPIID: number | null
+    isDeleted: number | null
   }
 
   export type ExerciseMinAggregateOutputType = {
@@ -2988,6 +2990,9 @@ export namespace Prisma {
     Content: string | null
     Difficulty: $Enums.exercise_Difficulty | null
     template: string | null
+    Tips: string | null
+    Image: string | null
+    isDeleted: number | null
   }
 
   export type ExerciseMaxAggregateOutputType = {
@@ -2999,6 +3004,9 @@ export namespace Prisma {
     Content: string | null
     Difficulty: $Enums.exercise_Difficulty | null
     template: string | null
+    Tips: string | null
+    Image: string | null
+    isDeleted: number | null
   }
 
   export type ExerciseCountAggregateOutputType = {
@@ -3010,6 +3018,9 @@ export namespace Prisma {
     Content: number
     Difficulty: number
     template: number
+    Tips: number
+    Image: number
+    isDeleted: number
     _all: number
   }
 
@@ -3018,12 +3029,14 @@ export namespace Prisma {
     EID?: true
     TpID?: true
     SPIID?: true
+    isDeleted?: true
   }
 
   export type ExerciseSumAggregateInputType = {
     EID?: true
     TpID?: true
     SPIID?: true
+    isDeleted?: true
   }
 
   export type ExerciseMinAggregateInputType = {
@@ -3035,6 +3048,9 @@ export namespace Prisma {
     Content?: true
     Difficulty?: true
     template?: true
+    Tips?: true
+    Image?: true
+    isDeleted?: true
   }
 
   export type ExerciseMaxAggregateInputType = {
@@ -3046,6 +3062,9 @@ export namespace Prisma {
     Content?: true
     Difficulty?: true
     template?: true
+    Tips?: true
+    Image?: true
+    isDeleted?: true
   }
 
   export type ExerciseCountAggregateInputType = {
@@ -3057,6 +3076,9 @@ export namespace Prisma {
     Content?: true
     Difficulty?: true
     template?: true
+    Tips?: true
+    Image?: true
+    isDeleted?: true
     _all?: true
   }
 
@@ -3155,6 +3177,9 @@ export namespace Prisma {
     Content: string
     Difficulty: $Enums.exercise_Difficulty
     template: string | null
+    Tips: string | null
+    Image: string | null
+    isDeleted: number | null
     _count: ExerciseCountAggregateOutputType | null
     _avg: ExerciseAvgAggregateOutputType | null
     _sum: ExerciseSumAggregateOutputType | null
@@ -3185,6 +3210,9 @@ export namespace Prisma {
     Content?: boolean
     Difficulty?: boolean
     template?: boolean
+    Tips?: boolean
+    Image?: boolean
+    isDeleted?: boolean
     comment?: boolean | exercise$commentArgs<ExtArgs>
     topic?: boolean | exercise$topicArgs<ExtArgs>
     studyplanitem?: boolean | exercise$studyplanitemArgs<ExtArgs>
@@ -3207,9 +3235,12 @@ export namespace Prisma {
     Content?: boolean
     Difficulty?: boolean
     template?: boolean
+    Tips?: boolean
+    Image?: boolean
+    isDeleted?: boolean
   }
 
-  export type exerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"EID" | "TpID" | "SPIID" | "Name" | "Slug" | "Content" | "Difficulty" | "template", ExtArgs["result"]["exercise"]>
+  export type exerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"EID" | "TpID" | "SPIID" | "Name" | "Slug" | "Content" | "Difficulty" | "template" | "Tips" | "Image" | "isDeleted", ExtArgs["result"]["exercise"]>
   export type exerciseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     comment?: boolean | exercise$commentArgs<ExtArgs>
     topic?: boolean | exercise$topicArgs<ExtArgs>
@@ -3243,6 +3274,9 @@ export namespace Prisma {
       Content: string
       Difficulty: $Enums.exercise_Difficulty
       template: string | null
+      Tips: string | null
+      Image: string | null
+      isDeleted: number | null
     }, ExtArgs["result"]["exercise"]>
     composites: {}
   }
@@ -3628,6 +3662,9 @@ export namespace Prisma {
     readonly Content: FieldRef<"exercise", 'String'>
     readonly Difficulty: FieldRef<"exercise", 'exercise_Difficulty'>
     readonly template: FieldRef<"exercise", 'String'>
+    readonly Tips: FieldRef<"exercise", 'String'>
+    readonly Image: FieldRef<"exercise", 'String'>
+    readonly isDeleted: FieldRef<"exercise", 'Int'>
   }
     
 
@@ -22249,7 +22286,10 @@ export namespace Prisma {
     Slug: 'Slug',
     Content: 'Content',
     Difficulty: 'Difficulty',
-    template: 'template'
+    template: 'template',
+    Tips: 'Tips',
+    Image: 'Image',
+    isDeleted: 'isDeleted'
   };
 
   export type ExerciseScalarFieldEnum = (typeof ExerciseScalarFieldEnum)[keyof typeof ExerciseScalarFieldEnum]
@@ -22470,7 +22510,9 @@ export namespace Prisma {
     Name: 'Name',
     Slug: 'Slug',
     Content: 'Content',
-    template: 'template'
+    template: 'template',
+    Tips: 'Tips',
+    Image: 'Image'
   };
 
   export type exerciseOrderByRelevanceFieldEnum = (typeof exerciseOrderByRelevanceFieldEnum)[keyof typeof exerciseOrderByRelevanceFieldEnum]
@@ -22722,6 +22764,9 @@ export namespace Prisma {
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableFilter<"exercise"> | string | null
+    Tips?: StringNullableFilter<"exercise"> | string | null
+    Image?: StringNullableFilter<"exercise"> | string | null
+    isDeleted?: IntNullableFilter<"exercise"> | number | null
     comment?: CommentListRelationFilter
     topic?: XOR<TopicNullableScalarRelationFilter, topicWhereInput> | null
     studyplanitem?: XOR<StudyplanitemNullableScalarRelationFilter, studyplanitemWhereInput> | null
@@ -22741,6 +22786,9 @@ export namespace Prisma {
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrderInput | SortOrder
+    Tips?: SortOrderInput | SortOrder
+    Image?: SortOrderInput | SortOrder
+    isDeleted?: SortOrderInput | SortOrder
     comment?: commentOrderByRelationAggregateInput
     topic?: topicOrderByWithRelationInput
     studyplanitem?: studyplanitemOrderByWithRelationInput
@@ -22764,6 +22812,9 @@ export namespace Prisma {
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableFilter<"exercise"> | string | null
+    Tips?: StringNullableFilter<"exercise"> | string | null
+    Image?: StringNullableFilter<"exercise"> | string | null
+    isDeleted?: IntNullableFilter<"exercise"> | number | null
     comment?: CommentListRelationFilter
     topic?: XOR<TopicNullableScalarRelationFilter, topicWhereInput> | null
     studyplanitem?: XOR<StudyplanitemNullableScalarRelationFilter, studyplanitemWhereInput> | null
@@ -22783,6 +22834,9 @@ export namespace Prisma {
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrderInput | SortOrder
+    Tips?: SortOrderInput | SortOrder
+    Image?: SortOrderInput | SortOrder
+    isDeleted?: SortOrderInput | SortOrder
     _count?: exerciseCountOrderByAggregateInput
     _avg?: exerciseAvgOrderByAggregateInput
     _max?: exerciseMaxOrderByAggregateInput
@@ -22802,6 +22856,9 @@ export namespace Prisma {
     Content?: StringWithAggregatesFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyWithAggregatesFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableWithAggregatesFilter<"exercise"> | string | null
+    Tips?: StringNullableWithAggregatesFilter<"exercise"> | string | null
+    Image?: StringNullableWithAggregatesFilter<"exercise"> | string | null
+    isDeleted?: IntNullableWithAggregatesFilter<"exercise"> | number | null
   }
 
   export type submissionWhereInput = {
@@ -23931,6 +23988,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
@@ -23950,6 +24010,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
@@ -23964,6 +24027,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
@@ -23983,6 +24049,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
@@ -24000,6 +24069,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
   }
 
   export type exerciseUpdateManyMutationInput = {
@@ -24008,6 +24080,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type exerciseUncheckedUpdateManyInput = {
@@ -24019,6 +24094,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type submissionCreateInput = {
@@ -25172,12 +25250,16 @@ export namespace Prisma {
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrder
+    Tips?: SortOrder
+    Image?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type exerciseAvgOrderByAggregateInput = {
     EID?: SortOrder
     TpID?: SortOrder
     SPIID?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type exerciseMaxOrderByAggregateInput = {
@@ -25189,6 +25271,9 @@ export namespace Prisma {
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrder
+    Tips?: SortOrder
+    Image?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type exerciseMinOrderByAggregateInput = {
@@ -25200,12 +25285,16 @@ export namespace Prisma {
     Content?: SortOrder
     Difficulty?: SortOrder
     template?: SortOrder
+    Tips?: SortOrder
+    Image?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type exerciseSumOrderByAggregateInput = {
     EID?: SortOrder
     TpID?: SortOrder
     SPIID?: SortOrder
+    isDeleted?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -26414,6 +26503,14 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type commentUpdateManyWithoutExerciseNestedInput = {
     create?: XOR<commentCreateWithoutExerciseInput, commentUncheckedCreateWithoutExerciseInput> | commentCreateWithoutExerciseInput[] | commentUncheckedCreateWithoutExerciseInput[]
     connectOrCreate?: commentCreateOrConnectWithoutExerciseInput | commentCreateOrConnectWithoutExerciseInput[]
@@ -26520,14 +26617,6 @@ export namespace Prisma {
 
   export type IntFieldUpdateOperationsInput = {
     set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
@@ -28648,6 +28737,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
@@ -28666,6 +28758,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
@@ -28763,6 +28858,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
@@ -28781,6 +28879,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
@@ -28872,6 +28973,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
@@ -28890,6 +28994,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
@@ -28942,6 +29049,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
@@ -28960,6 +29070,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
@@ -29089,6 +29202,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentCreateNestedManyWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
@@ -29106,6 +29222,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
@@ -29152,6 +29271,9 @@ export namespace Prisma {
     Content?: StringFilter<"exercise"> | string
     Difficulty?: Enumexercise_DifficultyFilter<"exercise"> | $Enums.exercise_Difficulty
     template?: StringNullableFilter<"exercise"> | string | null
+    Tips?: StringNullableFilter<"exercise"> | string | null
+    Image?: StringNullableFilter<"exercise"> | string | null
+    isDeleted?: IntNullableFilter<"exercise"> | number | null
   }
 
   export type commentCreateWithoutUserInput = {
@@ -29980,6 +30102,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
@@ -29998,6 +30123,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
     listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
@@ -30154,6 +30282,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
@@ -30172,6 +30303,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
     listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
@@ -30412,6 +30546,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
@@ -30430,6 +30567,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
     listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
@@ -30510,6 +30650,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
@@ -30528,6 +30671,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
     listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
@@ -30957,6 +31103,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     exerciselike?: exerciselikeCreateNestedManyWithoutExerciseInput
@@ -30974,6 +31123,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
@@ -31109,6 +31261,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
@@ -31127,6 +31282,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     listitem?: listitemUncheckedCreateNestedManyWithoutExerciseInput
@@ -31207,6 +31365,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
@@ -31225,6 +31386,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     listitem?: listitemUncheckedUpdateManyWithoutExerciseNestedInput
@@ -31534,6 +31698,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentCreateNestedManyWithoutExerciseInput
     topic?: topicCreateNestedOneWithoutExerciseInput
     studyplanitem?: studyplanitemCreateNestedOneWithoutExerciseInput
@@ -31552,6 +31719,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
     comment?: commentUncheckedCreateNestedManyWithoutExerciseInput
     exerciselike?: exerciselikeUncheckedCreateNestedManyWithoutExerciseInput
     exerciseprogress?: exerciseprogressUncheckedCreateNestedManyWithoutExerciseInput
@@ -31607,6 +31777,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
@@ -31625,6 +31798,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
@@ -31861,6 +32037,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
   }
 
   export type exerciseUpdateWithoutTopicInput = {
@@ -31869,6 +32048,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUpdateManyWithoutExerciseNestedInput
     studyplanitem?: studyplanitemUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
@@ -31886,6 +32068,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
@@ -31902,6 +32087,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type commentCreateManyUserInput = {
@@ -32427,6 +32615,9 @@ export namespace Prisma {
     Content: string
     Difficulty?: $Enums.exercise_Difficulty
     template?: string | null
+    Tips?: string | null
+    Image?: string | null
+    isDeleted?: number | null
   }
 
   export type exerciseUpdateWithoutStudyplanitemInput = {
@@ -32435,6 +32626,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUpdateManyWithoutExerciseNestedInput
     topic?: topicUpdateOneWithoutExerciseNestedInput
     exerciselike?: exerciselikeUpdateManyWithoutExerciseNestedInput
@@ -32452,6 +32646,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
     comment?: commentUncheckedUpdateManyWithoutExerciseNestedInput
     exerciselike?: exerciselikeUncheckedUpdateManyWithoutExerciseNestedInput
     exerciseprogress?: exerciseprogressUncheckedUpdateManyWithoutExerciseNestedInput
@@ -32468,6 +32665,9 @@ export namespace Prisma {
     Content?: StringFieldUpdateOperationsInput | string
     Difficulty?: Enumexercise_DifficultyFieldUpdateOperationsInput | $Enums.exercise_Difficulty
     template?: NullableStringFieldUpdateOperationsInput | string | null
+    Tips?: NullableStringFieldUpdateOperationsInput | string | null
+    Image?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type listitemCreateManyListInput = {
