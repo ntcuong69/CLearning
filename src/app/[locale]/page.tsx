@@ -22,6 +22,8 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { blue, green, orange, red } from "@mui/material/colors";
 import { CLearningLogo } from "../../components/CLearningLogo";
 import { useRouter } from "next/navigation";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter/dist/esm';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function HomePage() {
   const router = useRouter();
@@ -60,7 +62,7 @@ export default function HomePage() {
                   <Typography variant="h2" fontWeight={600} color="text.primary" gutterBottom>
                     Thành thạo <Box component="span" color={blue[600]}>C</Box> từ con số 0
                   </Typography>
-                  <Typography variant="h5" color="text.secondary">
+                  <Typography variant="h6" color="text.secondary">
                     Khóa học lập trình C toàn diện với hàng trăm bài tập thực hành, từ cơ bản đến nâng cao. Học theo lộ trình khoa học.
                   </Typography>
                   <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
@@ -79,14 +81,14 @@ export default function HomePage() {
                       <Box width={12} height={12} borderRadius={6} bgcolor={green[500]} />
                       <Typography color="gray" fontSize={14} ml={2}>main.c</Typography>
                     </Stack>
-                    <Box component="pre" sx={{ color: green[200], fontSize: 15, m: 0, fontFamily: "monospace"}}>
+                    <SyntaxHighlighter language="c" style={vscDarkPlus} customStyle={{ borderRadius: 8, fontSize: 15, margin: 0, fontFamily: 'Fira Mono, monospace', background: '#222', padding: 0 }}>
 {`#include <stdio.h>
 int main() {
     printf("Hello, World!\\n");
     printf("Chào mừng đến với C!\\n");
     return 0;
 }`}
-                    </Box>
+                    </SyntaxHighlighter>
                   </Box>
                   <Box sx={{ position: "absolute", bottom: -24, right: -24, bgcolor: blue[600], color: "white", p: 2, borderRadius: 2, boxShadow: 4 }}>
                     <CheckCircleIcon fontSize="large" />
@@ -155,16 +157,13 @@ int main() {
                 />
                 <CardContent>
                   <Stack spacing={2}>
-                    {["Giới thiệu về lập trình và ngôn ngữ C", "Biến, kiểu dữ liệu và toán tử", "Cấu trúc điều khiển (if, switch, loops)", "Hàm và phạm vi biến", "Mảng và chuỗi"].map((txt, idx) => (
+                    {["Cú pháp cơ bản của C", "Kiểu dữ liệu, biến, hằng, toán tử", "Cấu trúc rẽ nhánh - Câu điều kiện", "Vòng lặp", "Mảng và chuỗi", "Hàm và phạm vi biến"].map((txt, idx) => (
                       <Stack key={idx} direction="row" spacing={1} alignItems="center">
                         <CheckCircleIcon color="success" />
                         <Typography>{txt}</Typography>
                       </Stack>
                     ))}
                   </Stack>
-                  <Button variant="outlined" fullWidth sx={{ mt: 4 }} endIcon={<ArrowForwardIcon />}>
-                    Xem chi tiết
-                  </Button>
                 </CardContent>
               </Card>
               {/* Nâng cao */}
@@ -176,16 +175,13 @@ int main() {
                 />
                 <CardContent>
                   <Stack spacing={2}>
-                    {["Con trỏ và quản lý bộ nhớ", "Cấu trúc dữ liệu (struct, union)", "Xử lý file và I/O", "Preprocessor và Macro", "Debug và tối ưu hóa code"].map((txt, idx) => (
+                    {["Mảng 2 chiều", "Đệ quy", "Cấp phát bộ nhớ động", "Con trỏ", "Cấu trúc"].map((txt, idx) => (
                       <Stack key={idx} direction="row" spacing={1} alignItems="center">
                         <CheckCircleIcon color="primary" />
                         <Typography>{txt}</Typography>
                       </Stack>
                     ))}
                   </Stack>
-                  <Button variant="outlined" fullWidth sx={{ mt: 4 }} endIcon={<ArrowForwardIcon />}>
-                    Xem chi tiết
-                  </Button>
                 </CardContent>
               </Card>
             </Box>

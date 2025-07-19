@@ -196,6 +196,8 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
               boxShadow: "0 1px 4px rgba(0,0,0,0.07)", 
               overflow: "hidden",
               border: "1px solid #e0e0e0",
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <Box
@@ -235,12 +237,10 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
               </IconButton>
             </Box>
             <Collapse in={showTips}>
-              <Box sx={{ p: 2 }}>
+              <Box sx={{ width: '100%', p: 1 }}>
                 <Typography 
                   variant="body1" 
                   sx={{ 
-                    whiteSpace: "pre-line",
-                    lineHeight: 1.6,
                     color: "#374151",
                     textAlign: "justify",
                     textIndent: "2em",

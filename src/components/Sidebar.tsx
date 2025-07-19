@@ -12,8 +12,6 @@ import {
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import QuizIcon from "@mui/icons-material/Quiz";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SchoolIcon from "@mui/icons-material/School";
 import CodeIcon from "@mui/icons-material/Code";
@@ -46,19 +44,7 @@ const menuItems = [
     icon: <LibraryBooksIcon />, 
     href: "/resources",
     description: "Tài liệu học tập"
-  },
-  // { 
-  //   text: "Thống kê", 
-  //   icon: <BarChartIcon />, 
-  //   href: "/statistics",
-  //   description: "Tiến độ học tập"
-  // },
-  // { 
-  //   text: "Cài đặt", 
-  //   icon: <SettingsIcon />, 
-  //   href: "/settings",
-  //   description: "Tùy chỉnh hệ thống"
-  // },
+  }
 ];
 
 export default function Sidebar() {

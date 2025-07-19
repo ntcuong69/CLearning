@@ -352,16 +352,16 @@ const ExercisesPage = () => {
                       minWidth: 150,
                       position: "relative",
                       overflow: "hidden",
-                      "&::before": {
-                        content: '""',
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        height: "3px",
-                        background: `linear-gradient(90deg, #4caf50 ${progressPercentage}%, #e0e0e0 ${progressPercentage}%)`,
-                        borderRadius: "2px 2px 0 0",
-                      },
+                      // "&::before": {
+                      //   content: '""',
+                      //   position: "absolute",
+                      //   top: 0,
+                      //   left: 0,
+                      //   right: 0,
+                      //   height: "3px",
+                      //   background: `linear-gradient(90deg, #4caf50 ${progressPercentage}%, #e0e0e0 ${progressPercentage}%)`,
+                      //   borderRadius: "2px 2px 0 0",
+                      // },
                     }}
                   >
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>

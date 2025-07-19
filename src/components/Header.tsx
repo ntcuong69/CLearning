@@ -59,7 +59,7 @@ export default function NavBar() {
   };
 
   const handleLogout = () => {
-    signOut();
+    signOut({ callbackUrl: '/auth' });
     handleClose();
   };
 

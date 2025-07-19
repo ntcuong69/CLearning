@@ -17,11 +17,14 @@ export async function GET(
         TpID: true,
         Name: true,
         exercise: {
+          where: { isDeleted: 0 },
           select: {
             EID: true,
             Content: true,
             Difficulty: true,
             Name: true,
+            isDeleted: true,
+            Slug: true,
           },
         },
       },
