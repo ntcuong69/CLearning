@@ -17431,18 +17431,21 @@ export namespace Prisma {
     SPIID: number | null
     SPID: number | null
     Name: string | null
+    Description: string | null
   }
 
   export type StudyplanitemMaxAggregateOutputType = {
     SPIID: number | null
     SPID: number | null
     Name: string | null
+    Description: string | null
   }
 
   export type StudyplanitemCountAggregateOutputType = {
     SPIID: number
     SPID: number
     Name: number
+    Description: number
     _all: number
   }
 
@@ -17461,18 +17464,21 @@ export namespace Prisma {
     SPIID?: true
     SPID?: true
     Name?: true
+    Description?: true
   }
 
   export type StudyplanitemMaxAggregateInputType = {
     SPIID?: true
     SPID?: true
     Name?: true
+    Description?: true
   }
 
   export type StudyplanitemCountAggregateInputType = {
     SPIID?: true
     SPID?: true
     Name?: true
+    Description?: true
     _all?: true
   }
 
@@ -17566,6 +17572,7 @@ export namespace Prisma {
     SPIID: number
     SPID: number
     Name: string
+    Description: string | null
     _count: StudyplanitemCountAggregateOutputType | null
     _avg: StudyplanitemAvgAggregateOutputType | null
     _sum: StudyplanitemSumAggregateOutputType | null
@@ -17591,6 +17598,7 @@ export namespace Prisma {
     SPIID?: boolean
     SPID?: boolean
     Name?: boolean
+    Description?: boolean
     exercise?: boolean | studyplanitem$exerciseArgs<ExtArgs>
     studyplan?: boolean | studyplanDefaultArgs<ExtArgs>
     _count?: boolean | StudyplanitemCountOutputTypeDefaultArgs<ExtArgs>
@@ -17602,9 +17610,10 @@ export namespace Prisma {
     SPIID?: boolean
     SPID?: boolean
     Name?: boolean
+    Description?: boolean
   }
 
-  export type studyplanitemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"SPIID" | "SPID" | "Name", ExtArgs["result"]["studyplanitem"]>
+  export type studyplanitemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"SPIID" | "SPID" | "Name" | "Description", ExtArgs["result"]["studyplanitem"]>
   export type studyplanitemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     exercise?: boolean | studyplanitem$exerciseArgs<ExtArgs>
     studyplan?: boolean | studyplanDefaultArgs<ExtArgs>
@@ -17621,6 +17630,7 @@ export namespace Prisma {
       SPIID: number
       SPID: number
       Name: string
+      Description: string | null
     }, ExtArgs["result"]["studyplanitem"]>
     composites: {}
   }
@@ -17995,6 +18005,7 @@ export namespace Prisma {
     readonly SPIID: FieldRef<"studyplanitem", 'Int'>
     readonly SPID: FieldRef<"studyplanitem", 'Int'>
     readonly Name: FieldRef<"studyplanitem", 'String'>
+    readonly Description: FieldRef<"studyplanitem", 'String'>
   }
     
 
@@ -22442,7 +22453,8 @@ export namespace Prisma {
   export const StudyplanitemScalarFieldEnum: {
     SPIID: 'SPIID',
     SPID: 'SPID',
-    Name: 'Name'
+    Name: 'Name',
+    Description: 'Description'
   };
 
   export type StudyplanitemScalarFieldEnum = (typeof StudyplanitemScalarFieldEnum)[keyof typeof StudyplanitemScalarFieldEnum]
@@ -22624,7 +22636,8 @@ export namespace Prisma {
 
 
   export const studyplanitemOrderByRelevanceFieldEnum: {
-    Name: 'Name'
+    Name: 'Name',
+    Description: 'Description'
   };
 
   export type studyplanitemOrderByRelevanceFieldEnum = (typeof studyplanitemOrderByRelevanceFieldEnum)[keyof typeof studyplanitemOrderByRelevanceFieldEnum]
@@ -23703,6 +23716,7 @@ export namespace Prisma {
     SPIID?: IntFilter<"studyplanitem"> | number
     SPID?: IntFilter<"studyplanitem"> | number
     Name?: StringFilter<"studyplanitem"> | string
+    Description?: StringNullableFilter<"studyplanitem"> | string | null
     exercise?: ExerciseListRelationFilter
     studyplan?: XOR<StudyplanScalarRelationFilter, studyplanWhereInput>
   }
@@ -23711,6 +23725,7 @@ export namespace Prisma {
     SPIID?: SortOrder
     SPID?: SortOrder
     Name?: SortOrder
+    Description?: SortOrderInput | SortOrder
     exercise?: exerciseOrderByRelationAggregateInput
     studyplan?: studyplanOrderByWithRelationInput
     _relevance?: studyplanitemOrderByRelevanceInput
@@ -23723,6 +23738,7 @@ export namespace Prisma {
     NOT?: studyplanitemWhereInput | studyplanitemWhereInput[]
     SPID?: IntFilter<"studyplanitem"> | number
     Name?: StringFilter<"studyplanitem"> | string
+    Description?: StringNullableFilter<"studyplanitem"> | string | null
     exercise?: ExerciseListRelationFilter
     studyplan?: XOR<StudyplanScalarRelationFilter, studyplanWhereInput>
   }, "SPIID">
@@ -23731,6 +23747,7 @@ export namespace Prisma {
     SPIID?: SortOrder
     SPID?: SortOrder
     Name?: SortOrder
+    Description?: SortOrderInput | SortOrder
     _count?: studyplanitemCountOrderByAggregateInput
     _avg?: studyplanitemAvgOrderByAggregateInput
     _max?: studyplanitemMaxOrderByAggregateInput
@@ -23745,6 +23762,7 @@ export namespace Prisma {
     SPIID?: IntWithAggregatesFilter<"studyplanitem"> | number
     SPID?: IntWithAggregatesFilter<"studyplanitem"> | number
     Name?: StringWithAggregatesFilter<"studyplanitem"> | string
+    Description?: StringNullableWithAggregatesFilter<"studyplanitem"> | string | null
   }
 
   export type exerciseprogressWhereInput = {
@@ -24862,6 +24880,7 @@ export namespace Prisma {
 
   export type studyplanitemCreateInput = {
     Name: string
+    Description?: string | null
     exercise?: exerciseCreateNestedManyWithoutStudyplanitemInput
     studyplan: studyplanCreateNestedOneWithoutStudyplanitemInput
   }
@@ -24870,11 +24889,13 @@ export namespace Prisma {
     SPIID?: number
     SPID: number
     Name: string
+    Description?: string | null
     exercise?: exerciseUncheckedCreateNestedManyWithoutStudyplanitemInput
   }
 
   export type studyplanitemUpdateInput = {
     Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
     exercise?: exerciseUpdateManyWithoutStudyplanitemNestedInput
     studyplan?: studyplanUpdateOneRequiredWithoutStudyplanitemNestedInput
   }
@@ -24883,6 +24904,7 @@ export namespace Prisma {
     SPIID?: IntFieldUpdateOperationsInput | number
     SPID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
     exercise?: exerciseUncheckedUpdateManyWithoutStudyplanitemNestedInput
   }
 
@@ -24890,16 +24912,19 @@ export namespace Prisma {
     SPIID?: number
     SPID: number
     Name: string
+    Description?: string | null
   }
 
   export type studyplanitemUpdateManyMutationInput = {
     Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type studyplanitemUncheckedUpdateManyInput = {
     SPIID?: IntFieldUpdateOperationsInput | number
     SPID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type exerciseprogressCreateInput = {
@@ -26176,6 +26201,7 @@ export namespace Prisma {
     SPIID?: SortOrder
     SPID?: SortOrder
     Name?: SortOrder
+    Description?: SortOrder
   }
 
   export type studyplanitemAvgOrderByAggregateInput = {
@@ -26187,12 +26213,14 @@ export namespace Prisma {
     SPIID?: SortOrder
     SPID?: SortOrder
     Name?: SortOrder
+    Description?: SortOrder
   }
 
   export type studyplanitemMinOrderByAggregateInput = {
     SPIID?: SortOrder
     SPID?: SortOrder
     Name?: SortOrder
+    Description?: SortOrder
   }
 
   export type studyplanitemSumOrderByAggregateInput = {
@@ -28398,6 +28426,7 @@ export namespace Prisma {
 
   export type studyplanitemCreateWithoutExerciseInput = {
     Name: string
+    Description?: string | null
     studyplan: studyplanCreateNestedOneWithoutStudyplanitemInput
   }
 
@@ -28405,6 +28434,7 @@ export namespace Prisma {
     SPIID?: number
     SPID: number
     Name: string
+    Description?: string | null
   }
 
   export type studyplanitemCreateOrConnectWithoutExerciseInput = {
@@ -28589,6 +28619,7 @@ export namespace Prisma {
 
   export type studyplanitemUpdateWithoutExerciseInput = {
     Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
     studyplan?: studyplanUpdateOneRequiredWithoutStudyplanitemNestedInput
   }
 
@@ -28596,6 +28627,7 @@ export namespace Prisma {
     SPIID?: IntFieldUpdateOperationsInput | number
     SPID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type exerciselikeUpsertWithWhereUniqueWithoutExerciseInput = {
@@ -31012,12 +31044,14 @@ export namespace Prisma {
 
   export type studyplanitemCreateWithoutStudyplanInput = {
     Name: string
+    Description?: string | null
     exercise?: exerciseCreateNestedManyWithoutStudyplanitemInput
   }
 
   export type studyplanitemUncheckedCreateWithoutStudyplanInput = {
     SPIID?: number
     Name: string
+    Description?: string | null
     exercise?: exerciseUncheckedCreateNestedManyWithoutStudyplanitemInput
   }
 
@@ -31079,6 +31113,7 @@ export namespace Prisma {
     SPIID?: IntFilter<"studyplanitem"> | number
     SPID?: IntFilter<"studyplanitem"> | number
     Name?: StringFilter<"studyplanitem"> | string
+    Description?: StringNullableFilter<"studyplanitem"> | string | null
   }
 
   export type studyplanprogressUpsertWithWhereUniqueWithoutStudyplanInput = {
@@ -32558,6 +32593,7 @@ export namespace Prisma {
   export type studyplanitemCreateManyStudyplanInput = {
     SPIID?: number
     Name: string
+    Description?: string | null
   }
 
   export type studyplanprogressCreateManyStudyplanInput = {
@@ -32570,18 +32606,21 @@ export namespace Prisma {
 
   export type studyplanitemUpdateWithoutStudyplanInput = {
     Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
     exercise?: exerciseUpdateManyWithoutStudyplanitemNestedInput
   }
 
   export type studyplanitemUncheckedUpdateWithoutStudyplanInput = {
     SPIID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
     exercise?: exerciseUncheckedUpdateManyWithoutStudyplanitemNestedInput
   }
 
   export type studyplanitemUncheckedUpdateManyWithoutStudyplanInput = {
     SPIID?: IntFieldUpdateOperationsInput | number
     Name?: StringFieldUpdateOperationsInput | string
+    Description?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type studyplanprogressUpdateWithoutStudyplanInput = {

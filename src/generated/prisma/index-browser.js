@@ -239,7 +239,8 @@ exports.Prisma.StudyplanScalarFieldEnum = {
 exports.Prisma.StudyplanitemScalarFieldEnum = {
   SPIID: 'SPIID',
   SPID: 'SPID',
-  Name: 'Name'
+  Name: 'Name',
+  Description: 'Description'
 };
 
 exports.Prisma.ExerciseprogressScalarFieldEnum = {
@@ -358,7 +359,8 @@ exports.Prisma.studyplanOrderByRelevanceFieldEnum = {
 };
 
 exports.Prisma.studyplanitemOrderByRelevanceFieldEnum = {
-  Name: 'Name'
+  Name: 'Name',
+  Description: 'Description'
 };
 
 exports.Prisma.exerciseprogressOrderByRelevanceFieldEnum = {

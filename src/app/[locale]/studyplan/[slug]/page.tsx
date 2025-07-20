@@ -10,6 +10,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import SchoolIcon from '@mui/icons-material/School';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import StarIcon from '@mui/icons-material/Star';
+import InfoIcon from '@mui/icons-material/Info';
 
 const ExerciseListItem = ({ ex, spiid }: { ex: any, spiid: number }) => {
   const solved = ex.status === 'Solved';
@@ -532,6 +533,35 @@ const StudyPlanDetailPage = () => {
                                 {item.isCompleted && <StarIcon sx={{ fontSize: 20 }} />}
                                 {item.Name}
                               </Typography>
+                              {item.Description && (
+                                <Box sx={{ 
+                                  display: 'flex', 
+                                  alignItems: 'flex-start', 
+                                  gap: 1, 
+                                  mb: 1,
+                                  maxWidth: '80%'
+                                }}>
+                                  <InfoIcon sx={{ 
+                                    fontSize: 16, 
+                                    mt: 0.2,
+                                    opacity: item.isCompleted ? 0.8 : 0.6
+                                  }} />
+                                  <Typography variant="body2" sx={{ 
+                                    opacity: item.isCompleted ? 0.9 : 0.7,
+                                    fontWeight: 400,
+                                    fontStyle: 'italic',
+                                    lineHeight: 1.4,
+                                    background: item.isCompleted ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+                                    px: 2,
+                                    py: 1,
+                                    borderRadius: 2,
+                                    border: item.isCompleted ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.1)',
+                                    flex: 1
+                                  }}>
+                                    {item.Description}
+                                  </Typography>
+                                </Box>
+                              )}
                               <Typography variant="body2" sx={{ 
                                 opacity: item.isCompleted ? 0.9 : 0.7,
                                 fontWeight: 400

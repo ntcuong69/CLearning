@@ -23,27 +23,29 @@ export async function GET() {
 
 // POST: Thêm studyplan mới
 export async function POST(req: Request) {
-  const { Name, Description } = await req.json();
+  const { Name, Description, Slug } = await req.json();
   try {
     const newPlan = await prisma.studyplan.create({
-      data: { Name, Description },
+      data: { Name, Description, Slug },
     });
     return NextResponse.json({ studyPlan: { ...newPlan, studyplanitem: [] } });
-  } catch {
+  } catch (error) {
+    console.error("Error creating study plan:", error);
     return NextResponse.json({ error: "Failed to create study plan" }, { status: 500 });
   }
 }
 
 // PUT: Sửa studyplan
 export async function PUT(req: Request) {
-  const { SPID, Name, Description } = await req.json();
+  const { SPID, Name, Description, Slug } = await req.json();
   try {
     const updated = await prisma.studyplan.update({
       where: { SPID },
-      data: { Name, Description },
+      data: { Name, Description, Slug },
     });
     return NextResponse.json({ studyPlan: updated });
-  } catch {
+  } catch (error) {
+    console.error("Error updating study plan:", error);
     return NextResponse.json({ error: "Failed to update study plan" }, { status: 500 });
   }
 }
@@ -52,9 +54,76 @@ export async function PUT(req: Request) {
 export async function DELETE(req: Request) {
   const { SPID } = await req.json();
   try {
-    await prisma.studyplan.delete({ where: { SPID } });
+    // Xóa tất cả dữ liệu liên quan trước
+    await prisma.$transaction(async (tx) => {
+      // Lấy danh sách SPIID của studyplanitem thuộc studyplan này
+      const studyPlanItems = await tx.studyplanitem.findMany({
+        where: { SPID },
+        select: { SPIID: true }
+      });
+      
+      const spiids = studyPlanItems.map(item => item.SPIID);
+      
+      // Xóa studyplanprogress
+      await tx.studyplanprogress.deleteMany({
+        where: { SPID }
+      });
+      
+      if (spiids.length > 0) {
+        // Xóa testcaseresult liên quan đến exercise của studyplanitem
+        await tx.testcaseresult.deleteMany({
+          where: {
+            testcase: {
+              exercise: {
+                SPIID: { in: spiids }
+              }
+            }
+          }
+        });
+        
+        // Xóa exerciseprogress liên quan đến exercise của studyplanitem
+        await tx.exerciseprogress.deleteMany({
+          where: {
+            exercise: {
+              SPIID: { in: spiids }
+            }
+          }
+        });
+        
+        // Xóa submission liên quan đến exercise của studyplanitem
+        await tx.submission.deleteMany({
+          where: {
+            exercise: {
+              SPIID: { in: spiids }
+            }
+          }
+        });
+        
+        // Set SPIID của exercise thành null (không xóa exercise)
+        await tx.exercise.updateMany({
+          where: {
+            SPIID: { in: spiids }
+          },
+          data: {
+            SPIID: null
+          }
+        });
+      }
+      
+      // Xóa studyplanitem
+      await tx.studyplanitem.deleteMany({
+        where: { SPID }
+      });
+      
+      // Cuối cùng xóa studyplan
+      await tx.studyplan.delete({
+        where: { SPID }
+      });
+    });
+    
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (error) {
+    console.error("Error deleting study plan:", error);
     return NextResponse.json({ error: "Failed to delete study plan" }, { status: 500 });
   }
 }

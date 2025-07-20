@@ -204,11 +204,12 @@ model studyplan {
 }
 
 model studyplanitem {
-  SPIID     Int        @id @default(autoincrement())
-  SPID      Int
-  Name      String     @db.VarChar(50)
-  exercise  exercise[]
-  studyplan studyplan  @relation(fields: [SPID], references: [SPID], onDelete: NoAction, onUpdate: NoAction, map: "studyplanitem_ibfk_1")
+  SPIID       Int        @id @default(autoincrement())
+  SPID        Int
+  Name        String     @db.VarChar(50)
+  Description String?    @db.Text
+  exercise    exercise[]
+  studyplan   studyplan  @relation(fields: [SPID], references: [SPID], onDelete: NoAction, onUpdate: NoAction, map: "studyplanitem_ibfk_1")
 
   @@index([SPID], map: "SPID")
 }
