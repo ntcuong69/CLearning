@@ -67,7 +67,7 @@ export async function DELETE(request: NextRequest) {
       
       if (exerciseIds.length > 0) {
         // 2. Xóa tất cả test case results liên quan đến exercises này
-        const deletedTestResults = await tx.testcaseresult.deleteMany({
+        await tx.testcaseresult.deleteMany({
           where: {
             submission: {
               EID: {
@@ -78,7 +78,7 @@ export async function DELETE(request: NextRequest) {
         });
 
         // 3. Xóa tất cả submissions liên quan đến exercises này
-        const deletedSubmissions = await tx.submission.deleteMany({
+        await tx.submission.deleteMany({
           where: {
             EID: {
               in: exerciseIds
@@ -87,7 +87,7 @@ export async function DELETE(request: NextRequest) {
         });
 
         // 4. Xóa tất cả exercise progress liên quan đến exercises này
-        const deletedProgress = await tx.exerciseprogress.deleteMany({
+        await tx.exerciseprogress.deleteMany({
           where: {
             EID: {
               in: exerciseIds
@@ -97,7 +97,7 @@ export async function DELETE(request: NextRequest) {
       }
 
       // 5. Cập nhật SPIID của tất cả exercises trong các chương học này về null
-      const updatedExercises = await tx.exercise.updateMany({
+      await tx.exercise.updateMany({
         where: {
           SPIID: {
             in: SPIIDs

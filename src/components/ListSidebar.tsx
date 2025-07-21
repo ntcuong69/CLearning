@@ -233,6 +233,26 @@ const ListSidebar = ({ onListDeleted, onListExerciseChanged }: any) => {
     }
   };
 
+  // Xóa bài tập khỏi list
+  const handleRemoveExercise = async (eid: number) => {
+    if (!selectedList) return;
+    try {
+      await axios.delete('/api/listitem', { data: { lid: selectedList.LID, eid } });
+      setListExercises(prev => prev.filter(ex => ex.EID !== eid));
+      setLists(prev => prev.map(list =>
+        list.LID === selectedList.LID
+          ? { ...list, ExerciseCount: Math.max(0, (list.ExerciseCount || 1) - 1) }
+          : list
+      ));
+      // Gọi callback để đồng bộ trạng thái bookmark ở trang exercises
+      if (onListExerciseChanged) {
+        onListExerciseChanged(selectedList.LID, eid, false);
+      }
+    } catch (e) {
+      alert("Xóa bài tập khỏi danh sách thất bại!");
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -795,6 +815,7 @@ const ListSidebar = ({ onListDeleted, onListExerciseChanged }: any) => {
                       >
                         Độ khó
                       </TableCell>
+                      <TableCell align="center" sx={{ width: "10%", fontWeight: 700, color: '#1a1a1a', fontSize: '14px', py: 2 }}>Xóa</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -849,6 +870,13 @@ const ListSidebar = ({ onListDeleted, onListExerciseChanged }: any) => {
                              ex.Difficulty === 'Medium' ? 'Vừa' : 
                              ex.Difficulty === 'Hard' ? 'Khó' : ex.Difficulty}
                           </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Tooltip title="Xóa khỏi danh sách">
+                            <IconButton color="error" onClick={e => { e.stopPropagation(); handleRemoveExercise(ex.EID); }}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
                         </TableCell>
                       </TableRow>
                     ))}

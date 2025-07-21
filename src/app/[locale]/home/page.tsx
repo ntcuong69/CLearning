@@ -42,10 +42,9 @@ interface Topic {
 interface DashboardStats {
   totalExercises: number;
   completedExercises: number;
-  currentStreak: number;
-  totalStudyTime: number;
-  averageScore: number;
-  rank: number;
+  totalSubmissions: number;
+  averageAttemptsPerExercise: number;
+  firstAttemptCorrect: number;
 }
 
 interface RecentActivity {
@@ -63,19 +62,18 @@ const mockData = [
   { date: '2025-06-12', count: 3 },
   { date: '2025-06-14', count: 1 },
   { date: '2025-06-30', count: 2 },
-  { date: '2025-07-01', count: 1 },
+  { date: '2026-07-01', count: 1 },
 ];
 
 export default function HomePage() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashboardStats>({
-    totalExercises: 150,
-    completedExercises: 87,
-    currentStreak: 12,
-    totalStudyTime: 45,
-    averageScore: 92,
-    rank: 5
+    totalExercises: 0,
+    completedExercises: 0,
+    totalSubmissions: 0,
+    averageAttemptsPerExercise: 0,
+    firstAttemptCorrect: 0
   });
   const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([
     {
@@ -109,18 +107,28 @@ export default function HomePage() {
       score: 88
     }
   ]);
+  const [heatmapData, setHeatmapData] = useState<{ date: string; count: number }[]>([]);
 
   useEffect(() => {
-    axios
-      .get("/api/topics/list")
-      .then((res) => {
-        setTopics(res.data.topics);
+    const fetchData = async () => {
+      try {
+        // Fetch topics
+        const topicsResponse = await axios.get("/api/topics/list");
+        setTopics(topicsResponse.data.topics);
+        
+        // Fetch user stats
+        const statsResponse = await axios.get("/api/me/stats");
+        setStats(statsResponse.data.stats);
+        setHeatmapData(statsResponse.data.stats.submissionHeatmap || []);
+        
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching topics:", err);
+      } catch (err) {
+        console.error("Error fetching data:", err);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   if (loading)
@@ -222,7 +230,7 @@ export default function HomePage() {
           }}>
             <CardContent sx={{ p: 3, position: 'relative', zIndex: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h4" sx={{ fontWeight: 800, color: '#2563eb' }}>320</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 800, color: '#2563eb' }}>{stats.totalSubmissions}</Typography>
                 <Avatar sx={{ 
                   bgcolor: '#e0e7ff', 
                   width: 48, 
@@ -251,7 +259,7 @@ export default function HomePage() {
           }}>
             <CardContent sx={{ p: 3, position: 'relative', zIndex: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h4" sx={{ fontWeight: 800, color: '#f59e42' }}>2.7</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 800, color: '#f59e42' }}>{stats.averageAttemptsPerExercise}</Typography>
                 <Avatar sx={{ 
                   bgcolor: '#fff7ed', 
                   width: 48, 
@@ -280,7 +288,7 @@ export default function HomePage() {
           }}>
             <CardContent sx={{ p: 3, position: 'relative', zIndex: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h4" sx={{ fontWeight: 800, color: '#22c55e' }}>41</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 800, color: '#22c55e' }}>{stats.firstAttemptCorrect}</Typography>
                 <Avatar sx={{ 
                   bgcolor: '#dcfce7', 
                   width: 48, 
@@ -300,7 +308,7 @@ export default function HomePage() {
         </Box>
 
         {/* Submission Heatmap Section */}
-        <SubmissionHeatmap data={mockData} />
+        <SubmissionHeatmap data={heatmapData} />
 
         {/* Skills & Difficulty Section */}
         <Card sx={{ borderRadius: 4, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', border: '1px solid #e2e8f0', background: '#fff', mb: 6 }}>

@@ -97,6 +97,15 @@ export default function ExerciseManagement() {
   const [slugError, setSlugError] = React.useState("");
   const [editMode, setEditMode] = React.useState(false);
   const [editForm, setEditForm] = React.useState<any>(null);
+  // State cho CRUD testcase
+  const [testcaseInput, setTestcaseInput] = React.useState("");
+  const [testcaseOutput, setTestcaseOutput] = React.useState("");
+  const [testcaseHidden, setTestcaseHidden] = React.useState(false);
+  const [editingTestcase, setEditingTestcase] = React.useState<any>(null);
+  const [editingTestcaseInput, setEditingTestcaseInput] = React.useState("");
+  const [editingTestcaseOutput, setEditingTestcaseOutput] = React.useState("");
+  const [editingTestcaseHidden, setEditingTestcaseHidden] = React.useState(false);
+  const [testcaseSubmitting, setTestcaseSubmitting] = React.useState(false);
 
   const fetchExercises = async () => {
     setLoading(true);
@@ -195,6 +204,7 @@ export default function ExerciseManagement() {
       setSelectedExercise({
         ...exercise,
         testcases: testcases.map((tc: any) => ({
+          TCID: tc.TCID,
           Input: tc.Input,
           ExpectedOutput: tc.ExpectedOutput,
           isHidden: tc.isHidden,
@@ -334,6 +344,77 @@ export default function ExerciseManagement() {
   React.useEffect(() => {
     setPage(1);
   }, [search, eid, tpId, spiId, difficulty, statusFilter]);
+
+  // Thêm testcase cho bài tập đang xem chi tiết
+  const handleAddTestcaseDetail = async () => {
+    if (!selectedExercise) return;
+    if (!testcaseInput || !testcaseOutput) return;
+    setTestcaseSubmitting(true);
+    try {
+      await axios.post("/api/admin/testcases/create", {
+        EID: selectedExercise.EID,
+        Input: testcaseInput,
+        ExpectedOutput: testcaseOutput,
+        isHidden: testcaseHidden,
+      });
+      setTestcaseInput("");
+      setTestcaseOutput("");
+      setTestcaseHidden(false);
+      // Reload testcases
+      handleViewExercise(selectedExercise.EID);
+      setSnackbar({ open: true, message: "Đã thêm testcase!", severity: "success" });
+    } catch {
+      setSnackbar({ open: true, message: "Thêm testcase thất bại!", severity: "error" });
+    }
+    setTestcaseSubmitting(false);
+  };
+  // Xóa testcase
+  const handleDeleteTestcase = async (tcid: number) => {
+    if (!selectedExercise) return;
+    if (!window.confirm("Bạn có chắc chắn muốn xóa testcase này?")) return;
+    try {
+      await axios.delete(`/api/admin/testcases/${tcid}`);
+      handleViewExercise(selectedExercise.EID);
+      setSnackbar({ open: true, message: "Đã xóa testcase!", severity: "success" });
+    } catch {
+      setSnackbar({ open: true, message: "Xóa testcase thất bại!", severity: "error" });
+    }
+  };
+  // Bắt đầu sửa testcase
+  const handleEditTestcase = (tc: any) => {
+    setEditingTestcase(tc);
+    setEditingTestcaseInput(tc.Input);
+    setEditingTestcaseOutput(tc.ExpectedOutput);
+    setEditingTestcaseHidden(tc.isHidden);
+  };
+  // Lưu testcase đã sửa
+  const handleSaveEditTestcase = async () => {
+    if (!editingTestcase) return;
+    setTestcaseSubmitting(true);
+    try {
+      await axios.patch(`/api/admin/testcases/${editingTestcase.TCID}`, {
+        Input: editingTestcaseInput,
+        ExpectedOutput: editingTestcaseOutput,
+        isHidden: editingTestcaseHidden,
+      });
+      setEditingTestcase(null);
+      setEditingTestcaseInput("");
+      setEditingTestcaseOutput("");
+      setEditingTestcaseHidden(false);
+      if (selectedExercise) handleViewExercise(selectedExercise.EID);
+      setSnackbar({ open: true, message: "Đã cập nhật testcase!", severity: "success" });
+    } catch {
+      setSnackbar({ open: true, message: "Cập nhật testcase thất bại!", severity: "error" });
+    }
+    setTestcaseSubmitting(false);
+  };
+  // Hủy sửa testcase
+  const handleCancelEditTestcase = () => {
+    setEditingTestcase(null);
+    setEditingTestcaseInput("");
+    setEditingTestcaseOutput("");
+    setEditingTestcaseHidden(false);
+  };
 
   return (
     <Box>
@@ -547,30 +628,91 @@ export default function ExerciseManagement() {
                   <Typography fontWeight={600} sx={{ mb: 2, mt: 1 }}>
                     Danh sách testcase
                   </Typography>
-                  <Box>
-                    {selectedExercise.testcases.length === 0 ? (
-                      <Typography color="text.secondary">Không có testcase nào</Typography>
-                    ) : (
-                      <Table size="small">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Input</TableCell>
-                            <TableCell>ExpectedOutput</TableCell>
-                            <TableCell>Ẩn?</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {selectedExercise.testcases.map((tc: any, idx: number) => (
-                            <TableRow key={idx}>
+                  {/* Form thêm testcase mới */}
+                  <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
+                    <TextField
+                      label="Input"
+                      size="small"
+                      value={testcaseInput}
+                      onChange={e => setTestcaseInput(e.target.value)}
+                      sx={{ flex: 1 }}
+                      multiline
+                      minRows={1}
+                    />
+                    <TextField
+                      label="ExpectedOutput"
+                      size="small"
+                      value={testcaseOutput}
+                      onChange={e => setTestcaseOutput(e.target.value)}
+                      sx={{ flex: 1 }}
+                      multiline
+                      minRows={1}
+                    />
+                    <FormControl size="small" sx={{ minWidth: 90 }}>
+                      <InputLabel>Ẩn?</InputLabel>
+                      <Select label="Ẩn?" value={testcaseHidden ? 1 : 0} onChange={e => setTestcaseHidden(Boolean(Number(e.target.value)))}>
+                        <MenuItem value={0}>Hiện</MenuItem>
+                        <MenuItem value={1}>Ẩn</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <Button variant="contained" color="primary" onClick={handleAddTestcaseDetail} disabled={testcaseSubmitting} sx={{ minWidth: 80, fontWeight: 600 }}>
+                      <AddIcon sx={{ mr: 1 }} />Thêm
+                    </Button>
+                  </Stack>
+                  {/* Danh sách testcase với CRUD */}
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Input</TableCell>
+                        <TableCell>ExpectedOutput</TableCell>
+                        <TableCell>Ẩn?</TableCell>
+                        <TableCell align="center">Hành động</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {selectedExercise.testcases.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={4} align="center">Không có testcase nào</TableCell>
+                        </TableRow>
+                      ) : (
+                        selectedExercise.testcases.map((tc: any) =>
+                          editingTestcase && editingTestcase.TCID === tc.TCID ? (
+                            <TableRow key={tc.TCID}>
+                              <TableCell>
+                                <TextField size="small" value={editingTestcaseInput} onChange={e => setEditingTestcaseInput(e.target.value)} multiline minRows={1} fullWidth />
+                              </TableCell>
+                              <TableCell>
+                                <TextField size="small" value={editingTestcaseOutput} onChange={e => setEditingTestcaseOutput(e.target.value)} multiline minRows={1} fullWidth />
+                              </TableCell>
+                              <TableCell>
+                                <FormControl size="small" fullWidth>
+                                  <InputLabel>Ẩn?</InputLabel>
+                                  <Select label="Ẩn?" value={editingTestcaseHidden ? 1 : 0} onChange={e => setEditingTestcaseHidden(Boolean(Number(e.target.value)))}>
+                                    <MenuItem value={0}>Hiện</MenuItem>
+                                    <MenuItem value={1}>Ẩn</MenuItem>
+                                  </Select>
+                                </FormControl>
+                              </TableCell>
+                              <TableCell align="center">
+                                <Button color="primary" variant="contained" size="small" onClick={handleSaveEditTestcase} disabled={testcaseSubmitting} sx={{ mr: 1 }}>Lưu</Button>
+                                <Button color="secondary" variant="outlined" size="small" onClick={handleCancelEditTestcase}>Hủy</Button>
+                              </TableCell>
+                            </TableRow>
+                          ) : (
+                            <TableRow key={tc.TCID}>
                               <TableCell sx={{ whiteSpace: "pre-wrap" }}>{tc.Input}</TableCell>
                               <TableCell sx={{ whiteSpace: "pre-wrap" }}>{tc.ExpectedOutput}</TableCell>
                               <TableCell>{tc.isHidden ? "Ẩn" : "Hiện"}</TableCell>
+                              <TableCell align="center">
+                                <Button color="primary" size="small" onClick={() => handleEditTestcase(tc)} sx={{ mr: 1 }}>Sửa</Button>
+                                <Button color="error" size="small" onClick={() => handleDeleteTestcase(tc.TCID)}>Xóa</Button>
+                              </TableCell>
                             </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    )}
-                  </Box>
+                          )
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
                 </Box>
               </Stack>
             ) : (

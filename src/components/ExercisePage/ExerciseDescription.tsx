@@ -168,22 +168,30 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
       
       {testcases.length > 0 && (
         <Box mt={4}>
-          {testcases
-            .filter((tc: any) => !tc.isHidden)
-            .slice(0, 2)
-            .map((tc: any, idx: number) => (
-              <Paper key={tc.TCID} sx={{ mb: 2, borderRadius: 2, boxShadow: "0 1px 4px rgba(0,0,0,0.07)", p: 1 }}>
-                <Box sx={{ fontWeight: 700, fontSize: 16, px: 1, pt: 1 }}>Ví dụ {idx + 1}:</Box>
-                <Box sx={{ bgcolor: "#f8f9fa", borderRadius: 2, px: 1, py: 1, m: 1 }}>
-                  <div style={{ fontWeight: 700, marginBottom: 2 }}>
-                    <span style={{ fontWeight: 700 }}>Input:</span> <span style={{ fontWeight: 350 }}>{tc.Input}</span>
-                  </div>
-                  <div style={{ fontWeight: 700 }}>
-                    <span style={{ fontWeight: 700 }}>Output:</span> <span style={{ fontWeight: 350 }}>{tc.ExpectedOutput}</span>
-                  </div>
-                </Box>
-              </Paper>
-            ))}
+          <Typography sx={{ fontWeight: 700, mb: 1 }}>Dữ liệu mẫu:</Typography>
+          <Box sx={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 320 }}>
+              <thead>
+                <tr style={{ background: '#f3f4f6' }}>
+                  <th style={{ padding: 8, border: '1px solid #e0e0e0', fontWeight: 700, width: 48, minWidth: 40 }}>STT</th>
+                  <th style={{ padding: 8, border: '1px solid #e0e0e0', fontWeight: 700 }}>Input</th>
+                  <th style={{ padding: 8, border: '1px solid #e0e0e0', fontWeight: 700 }}>Output</th>
+                </tr>
+              </thead>
+              <tbody>
+                {testcases
+                  .filter((tc: any) => !tc.isHidden)
+                  .slice(0, 2)
+                  .map((tc: any, idx: number) => (
+                    <tr key={tc.TCID} style={{ background: idx % 2 === 0 ? '#fff' : '#f9fafb' }}>
+                      <td style={{ padding: 8, border: '1px solid #e0e0e0', textAlign: 'center', width: 48, minWidth: 40 }}>{idx + 1}</td>
+                      <td style={{ padding: 8, border: '1px solid #e0e0e0', fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{tc.Input}</td>
+                      <td style={{ padding: 8, border: '1px solid #e0e0e0', fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{tc.ExpectedOutput}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </Box>
         </Box>
       )}
 
