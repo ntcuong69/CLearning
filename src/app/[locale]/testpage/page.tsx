@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Editor from '@monaco-editor/react';
 import axios from 'axios';
+import AIDemo from '@/components/ExercisePage/AIDemo';
 
 export default function MonacoTestPage() {
   const [code, setCode] = useState<string>(`#include <stdio.h>
@@ -72,6 +73,7 @@ int main() {
           </p>
         )}
       </div>
+      <AIDemo />
     </div>
   );
 }

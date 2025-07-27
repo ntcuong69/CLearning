@@ -380,7 +380,7 @@ export default function ExerciseDetailPage() {
           </Tabs>
           <Box sx={{ flex: 1, p: 3, overflow: "auto" }}>
             {leftTab === 0 && <ExerciseDescription exercise={exercise} testcases={testcases} onExerciseUpdate={setExercise} />}
-            {leftTab === 1 && <ExerciseHelp results={results || []} testcases={testcases} />}
+            {leftTab === 1 && <ExerciseHelp results={results || []} testcases={testcases} code={code} />}
             {leftTab === 2 && <SubmissionHistory submissions={submissions} onViewHistory={handleViewHistory} />}
             {leftTab === 3 && (
               <CommentSection

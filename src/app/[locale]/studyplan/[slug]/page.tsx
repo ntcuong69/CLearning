@@ -11,6 +11,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import StarIcon from '@mui/icons-material/Star';
 import InfoIcon from '@mui/icons-material/Info';
+import Linkify from 'linkify-react';
 
 const ExerciseListItem = ({ ex, spiid }: { ex: any, spiid: number }) => {
   const solved = ex.status === 'Solved';
@@ -539,7 +540,7 @@ const StudyPlanDetailPage = () => {
                                   alignItems: 'flex-start', 
                                   gap: 1, 
                                   mb: 1,
-                                  maxWidth: '80%'
+                                  width: '100%'
                                 }}>
                                   <InfoIcon sx={{ 
                                     fontSize: 16, 
@@ -547,18 +548,17 @@ const StudyPlanDetailPage = () => {
                                     opacity: item.isCompleted ? 0.8 : 0.6
                                   }} />
                                   <Typography variant="body2" sx={{ 
-                                    opacity: item.isCompleted ? 0.9 : 0.7,
-                                    fontWeight: 400,
-                                    fontStyle: 'italic',
                                     lineHeight: 1.4,
                                     background: item.isCompleted ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
                                     px: 2,
                                     py: 1,
                                     borderRadius: 2,
                                     border: item.isCompleted ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.1)',
-                                    flex: 1
+                                    width: '100%'
                                   }}>
-                                    {item.Description}
+                                    <Linkify options={{ target: '_blank', rel: 'noopener noreferrer' }}>
+                                      {item.Description}
+                                    </Linkify>
                                   </Typography>
                                 </Box>
                               )}
@@ -569,7 +569,7 @@ const StudyPlanDetailPage = () => {
                                 {item.exercise.length} bài tập
                               </Typography>
                             </Box>
-                            <Box sx={{ textAlign: 'right' }}>
+                            <Box sx={{ textAlign: 'right', width: '15%' }}>
                               <Typography variant="h4" fontWeight={700} sx={{ 
                                 color: item.isCompleted ? 'white' : '#4caf50'
                               }}>

@@ -45,6 +45,11 @@ interface DashboardStats {
   totalSubmissions: number;
   averageAttemptsPerExercise: number;
   firstAttemptCorrect: number;
+  solvedByDifficulty?: {
+    Easy: number;
+    Medium: number;
+    Hard: number;
+  };
 }
 
 interface RecentActivity {
@@ -326,15 +331,15 @@ export default function HomePage() {
                 <Typography variant="subtitle2" color="text.secondary" mb={1}>Số bài đã giải theo độ khó</Typography>
                 <Stack direction="row" spacing={2}>
                   <Box textAlign="center">
-                    <Typography variant="h5" sx={{ color: '#22c55e', fontWeight: 700 }}>80</Typography>
+                    <Typography variant="h5" sx={{ color: '#22c55e', fontWeight: 700 }}>{stats.solvedByDifficulty?.Easy ?? 0}</Typography>
                     <Typography variant="body2" color="text.secondary">Dễ</Typography>
                   </Box>
                   <Box textAlign="center">
-                    <Typography variant="h5" sx={{ color: '#f59e42', fontWeight: 700 }}>50</Typography>
+                    <Typography variant="h5" sx={{ color: '#f59e42', fontWeight: 700 }}>{stats.solvedByDifficulty?.Medium ?? 0}</Typography>
                     <Typography variant="body2" color="text.secondary">Trung bình</Typography>
                   </Box>
                   <Box textAlign="center">
-                    <Typography variant="h5" sx={{ color: '#ef4444', fontWeight: 700 }}>20</Typography>
+                    <Typography variant="h5" sx={{ color: '#ef4444', fontWeight: 700 }}>{stats.solvedByDifficulty?.Hard ?? 0}</Typography>
                     <Typography variant="body2" color="text.secondary">Khó</Typography>
                   </Box>
                 </Stack>

@@ -91,13 +91,33 @@ export async function GET(request: NextRequest) {
     });
     const submissionHeatmap = Array.from(heatmapMap.entries()).map(([date, count]) => ({ date, count }));
 
+    // Lấy thông tin độ khó của các bài đã giải
+    let solvedByDifficulty = { Easy: 0, Medium: 0, Hard: 0 };
+    if (completedEIDs.length > 0) {
+      const solvedExercises = await prisma.exercise.findMany({
+        where: {
+          EID: { in: completedEIDs },
+          TpID: { not: null },
+          SPIID: null,
+          isDeleted: 0
+        },
+        select: { Difficulty: true }
+      });
+      solvedExercises.forEach(ex => {
+        if (ex.Difficulty && solvedByDifficulty.hasOwnProperty(ex.Difficulty)) {
+          solvedByDifficulty[ex.Difficulty]++;
+        }
+      });
+    }
+
     const stats = {
       totalExercises,
       completedExercises: completedExercisesCount,
       totalSubmissions,
       averageAttemptsPerExercise,
       firstAttemptCorrect,
-      submissionHeatmap
+      submissionHeatmap,
+      solvedByDifficulty
     };
     return NextResponse.json({ stats });
   } catch (error) {
