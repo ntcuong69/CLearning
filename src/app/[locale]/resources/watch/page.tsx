@@ -332,7 +332,8 @@ const WatchPage = () => {
                           sx={{ 
                             lineHeight: 1.8,
                             wordBreak: 'break-word',
-                            fontSize: "1.1rem"
+                            fontSize: "1.1rem",
+                            whiteSpace: "pre-wrap"
                           }}
                         >
                           {selectedVideo.Description || "Không có mô tả"}

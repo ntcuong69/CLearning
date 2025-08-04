@@ -35,6 +35,7 @@ import {
   AccountCircle as AccountCircleIcon,
   Settings as SettingsIcon,
   Logout as LogoutIcon,
+  ArrowBack,
 } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { useSubmitCode } from "@/hooks/useSubmitCode";
@@ -88,6 +89,7 @@ export default function ExerciseHeader({
 
   // Control flag for manual topic selection
   const [isManualSelection, setIsManualSelection] = useState(false);
+  const [studyplanSlug, setStudyplanSlug] = useState<string>("");
 
   // ======================
   // HOOKS
@@ -146,6 +148,18 @@ export default function ExerciseHeader({
     if (sourceId) params.set('id', sourceId);
     
     return params.toString() ? `${url}?${params.toString()}` : url;
+  };
+
+  /**
+   * Tạo URL quay về trang chứa bài tập
+   */
+  const createBackUrl = () => {
+    if (source === "studyplan" && studyplanSlug) {
+      return `/studyplan/${studyplanSlug}`;
+    } else {
+      // source=all hoặc source=list
+      return "/exercises";
+    }
   };
 
   /**
@@ -343,6 +357,8 @@ export default function ExerciseHeader({
           if (studyplanRes.ok) {
             const studyplanData = await studyplanRes.json();
             setTopics(studyplanData.studyplanitem || []);
+            // Lưu studyplan slug để sử dụng cho nút quay về
+            setStudyplanSlug(studyplanData.Slug || "");
           }
         } else {
           const topicsRes = await fetch("/api/topics/list");
@@ -505,6 +521,10 @@ export default function ExerciseHeader({
     handleMenuClose();
   };
 
+  const handleBackToSource = () => {
+    router.push(createBackUrl());
+  };
+
   // ======================
   // RENDER
   // ======================
@@ -586,6 +606,29 @@ export default function ExerciseHeader({
             </IconButton>
           </Box>
 
+          {/* Back Button */}
+          <Button
+            variant="outlined"
+            onClick={handleBackToSource}
+            startIcon={<ArrowBack />}
+            sx={{
+              mr: 2,
+              borderColor: "#d1d5db",
+              color: "#374151",
+              fontWeight: 600,
+              textTransform: "none",
+              px: 3,
+              py: 1,
+              borderRadius: 2,
+              "&:hover": { 
+                borderColor: "#9ca3af",
+                backgroundColor: "#f9fafb",
+              },
+            }}
+          >
+            Quay về
+          </Button>
+
           {/* Submit Button */}
           <Button
             variant="contained"
@@ -605,7 +648,7 @@ export default function ExerciseHeader({
               "&:disabled": { background: "#9ca3af" },
             }}
           >
-            {submitting ? "Đang nộp..." : "Nộp bài"}
+            {submitting ? "Đang chấm..." : "Nộp bài"}
           </Button>
 
           {/* User Menu */}

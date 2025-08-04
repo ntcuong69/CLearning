@@ -110,6 +110,64 @@ export async function GET(request: NextRequest) {
       });
     }
 
+    // Tính tiến độ theo từng topic
+    const topicProgress = await prisma.topic.findMany({
+      select: {
+        TpID: true,
+        Name: true,
+        exercise: {
+          where: {
+            SPIID: null,
+            isDeleted: 0
+          },
+          select: {
+            EID: true
+          }
+        }
+      }
+    });
+
+    const topicProgressData = await Promise.all(
+      topicProgress.map(async (topic) => {
+        const totalExercisesInTopic = topic.exercise.length;
+        
+        if (totalExercisesInTopic === 0) {
+          return {
+            TpID: topic.TpID,
+            Name: topic.Name,
+            totalExercises: 0,
+            completedExercises: 0,
+            progressPercentage: 0
+          };
+        }
+
+        // Đếm số bài đã hoàn thành trong topic này
+        const completedExercisesInTopic = await prisma.exerciseprogress.count({
+          where: {
+            UID: user.UID,
+            Status: 'Solved',
+            exercise: {
+              TpID: topic.TpID,
+              SPIID: null,
+              isDeleted: 0
+            }
+          }
+        });
+
+        const progressPercentage = totalExercisesInTopic > 0 
+          ? Math.round((completedExercisesInTopic / totalExercisesInTopic) * 100)
+          : 0;
+
+        return {
+          TpID: topic.TpID,
+          Name: topic.Name,
+          totalExercises: totalExercisesInTopic,
+          completedExercises: completedExercisesInTopic,
+          progressPercentage
+        };
+      })
+    );
+
     const stats = {
       totalExercises,
       completedExercises: completedExercisesCount,
@@ -117,7 +175,8 @@ export async function GET(request: NextRequest) {
       averageAttemptsPerExercise,
       firstAttemptCorrect,
       submissionHeatmap,
-      solvedByDifficulty
+      solvedByDifficulty,
+      topicProgress: topicProgressData
     };
     return NextResponse.json({ stats });
   } catch (error) {

@@ -71,6 +71,7 @@ const ResourcesPage = () => {
             px: { xs: 2, sm: 4, md: 6 },
             py: 4,
             minHeight: "calc(100vh - 70px)",
+            backgroundColor: "#fafafa",
           }}
         >
           {/* Hero Section */}
@@ -78,22 +79,75 @@ const ResourcesPage = () => {
             sx={{
               textAlign: "center",
               mb: 6,
-              p: 4,
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              borderRadius: 3,
-              color: "white",
+              p: 6,
+              backgroundColor: "white",
+              borderRadius: 2,
+              boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+              border: "1px solid rgba(0,0,0,0.05)",
             }}
           >
-            <Typography variant="h3" fontWeight="bold" gutterBottom>
+            <Typography 
+              variant="h3" 
+              fontWeight="600" 
+              gutterBottom
+              sx={{ 
+                color: "#1a1a1a",
+                mb: 3,
+                fontSize: { xs: "2rem", md: "2.5rem" }
+              }}
+            >
               Tài liệu học tập
             </Typography>
-            <Typography variant="h6" sx={{ opacity: 0.9, mb: 3 }}>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                color: "#666",
+                mb: 4,
+                maxWidth: "600px",
+                mx: "auto",
+                lineHeight: 1.6,
+                fontWeight: 400
+              }}
+            >
               Khám phá bộ sưu tập bài giảng, video hướng dẫn và code mẫu chất lượng cao
             </Typography>
-            <Box sx={{ display: "flex", justifyContent: "center", gap: 2, flexWrap: "wrap" }}>
-              <Chip icon={<SchoolIcon />} label="30+ Bài giảng" sx={{ bgcolor: "rgba(255,255,255,0.2)", color: "white" }} />
-              <Chip icon={<PlayCircleIcon />} label="25+ Video" sx={{ bgcolor: "rgba(255,255,255,0.2)", color: "white" }} />
-              <Chip icon={<CodeIcon />} label="50+ Code mẫu" sx={{ bgcolor: "rgba(255,255,255,0.2)", color: "white" }} />
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 3, flexWrap: "wrap" }}>
+              <Chip 
+                icon={<SchoolIcon />} 
+                label="30+ Bài giảng" 
+                sx={{ 
+                  bgcolor: "#f5f5f5", 
+                  color: "#333",
+                  fontWeight: 500,
+                  px: 2,
+                  py: 1,
+                  "& .MuiChip-icon": { color: "#1976d2" }
+                }} 
+              />
+              <Chip 
+                icon={<PlayCircleIcon />} 
+                label="25+ Video" 
+                sx={{ 
+                  bgcolor: "#f5f5f5", 
+                  color: "#333",
+                  fontWeight: 500,
+                  px: 2,
+                  py: 1,
+                  "& .MuiChip-icon": { color: "#2e7d32" }
+                }} 
+              />
+              <Chip 
+                icon={<CodeIcon />} 
+                label="50+ Code mẫu" 
+                sx={{ 
+                  bgcolor: "#f5f5f5", 
+                  color: "#333",
+                  fontWeight: 500,
+                  px: 2,
+                  py: 1,
+                  "& .MuiChip-icon": { color: "#ed6c02" }
+                }} 
+              />
             </Box>
           </Box>
 

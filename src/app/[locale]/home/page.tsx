@@ -39,6 +39,14 @@ interface Topic {
   Description: string | null;
 }
 
+interface TopicProgress {
+  TpID: number;
+  Name: string;
+  totalExercises: number;
+  completedExercises: number;
+  progressPercentage: number;
+}
+
 interface DashboardStats {
   totalExercises: number;
   completedExercises: number;
@@ -50,6 +58,7 @@ interface DashboardStats {
     Medium: number;
     Hard: number;
   };
+  topicProgress?: TopicProgress[];
 }
 
 interface RecentActivity {
@@ -415,24 +424,23 @@ export default function HomePage() {
               
               <Box sx={{ 
                 display: 'grid', 
-                gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' },
+                gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
                 gap: 2
               }}>
-                {topics.slice(0, 4).map((topic, index) => {
-                  const topicProgress = Math.random() * 100;
-                  return (
+                {stats.topicProgress && stats.topicProgress.length > 0 ? (
+                  stats.topicProgress.map((topic) => (
                     <Box key={topic.TpID} sx={{ mb: 2 }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
                         <Typography variant="body2" sx={{ fontWeight: 500, fontSize: '14px' }}>
                           {topic.Name}
                         </Typography>
                         <Typography variant="body2" sx={{ fontWeight: 600, color: '#2563eb', fontSize: '14px' }}>
-                          {topicProgress.toFixed(0)}%
+                          {topic.progressPercentage}%
                         </Typography>
                       </Box>
                       <LinearProgress 
                         variant="determinate" 
-                        value={topicProgress}
+                        value={topic.progressPercentage}
                         sx={{
                           height: 8,
                           borderRadius: 4,
@@ -443,9 +451,18 @@ export default function HomePage() {
                           }
                         }}
                       />
+                      <Typography variant="caption" sx={{ color: '#64748b', fontSize: '11px' }}>
+                        {topic.completedExercises}/{topic.totalExercises} bài tập
+                      </Typography>
                     </Box>
-                  );
-                })}
+                  ))
+                ) : (
+                  <Box sx={{ gridColumn: '1 / -1', textAlign: 'center', py: 4 }}>
+                    <Typography variant="body2" sx={{ color: '#64748b' }}>
+                      Chưa có dữ liệu tiến độ học tập
+                    </Typography>
+                  </Box>
+                )}
               </Box>
             </CardContent>
           </Card>
@@ -531,94 +548,7 @@ export default function HomePage() {
           </Card> */}
         </Box>
 
-        {/* Topics Section */}
-        <Card sx={{
-          borderRadius: 4,
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-          border: '1px solid #e2e8f0',
-          overflow: 'hidden',
-          background: '#fff'
-        }}>
-          <Box sx={{
-            p: 3,
-            bgcolor: '#f3f4f6',
-            color: '#222'
-          }}>
-            <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-              Chủ đề học tập
-            </Typography>
-            <Typography variant="body2" sx={{ opacity: 0.9 }}>
-              Khám phá các chủ đề lập trình C
-            </Typography>
-          </Box>
-          <CardContent sx={{ p: 3 }}>
-            <Box sx={{ 
-              display: 'grid', 
-              gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-              gap: 3
-            }}>
-              {topics.map((topic) => (
-                <Card key={topic.TpID} sx={{
-                  borderRadius: 3,
-                  border: '2px solid #e2e8f0',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  cursor: 'pointer',
-                  background: '#f8fafc',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: '0 12px 32px rgba(102, 126, 234, 0.08)',
-                    borderColor: '#2563eb'
-                  }
-                }}>
-                  <CardContent sx={{ p: 3 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                      <Avatar sx={{
-                        bgcolor: '#e0e7ff',
-                        width: 40,
-                        height: 40
-                      }}>
-                        <SchoolIcon sx={{ color: '#2563eb' }} />
-                      </Avatar>
-                      <Box>
-                        <Typography variant="h6" sx={{ 
-                          fontWeight: 700, 
-                          fontSize: '16px',
-                          color: '#1a1a1a'
-                        }}>
-                          {topic.Name}
-                        </Typography>
-                        <Typography variant="body2" sx={{ 
-                          color: '#64748b',
-                          fontSize: '13px'
-                        }}>
-                          {topic.Description || 'Chủ đề lập trình C'}
-                        </Typography>
-                      </Box>
-                    </Box>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Chip 
-                        label="Bắt đầu học" 
-                        size="small"
-                        sx={{
-                          bgcolor: '#2563eb',
-                          color: '#ffffff',
-                          fontWeight: 600,
-                          '&:hover': {
-                            bgcolor: '#1d4ed8'
-                          }
-                        }}
-                      />
-                      <Typography variant="caption" sx={{ color: '#64748b' }}>
-                        {Math.floor(Math.random() * 20) + 5} bài tập
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              ))}
-            </Box>
-          </CardContent>
-        </Card>
+
       </Box>
     </Box>
   );
