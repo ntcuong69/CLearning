@@ -9,42 +9,29 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { code, errorMessage, testcaseInput, expectedOutput, actualOutput } = await req.json();
+    const { code, errorMessage } = await req.json();
 
     if (!code || !errorMessage) {
       return NextResponse.json({ error: "Code and error message are required" }, { status: 400 });
     }
 
     // Tạo prompt cho AI để giải thích lỗi
-    const prompt = `Bạn là một giáo viên lập trình C giỏi. Hãy phân tích và giải thích lỗi sau đây cho học sinh:
+    const prompt = `Đọc kỹ và phân tích lỗi trong đoạn code C sau:
 
-Code của học sinh:
+Code:
 \`\`\`c
 ${code}
 \`\`\`
 
-Lỗi gặp phải: ${errorMessage}
+Lỗi: ${errorMessage}
 
-${testcaseInput ? `Input testcase: ${testcaseInput}` : ''}
-${expectedOutput ? `Output mong đợi: ${expectedOutput}` : ''}
-${actualOutput ? `Output thực tế: ${actualOutput}` : ''}
-
-Hãy:
-1. Giải thích nguyên nhân gây ra lỗi này
-2. Đưa ra gợi ý cách sửa lỗi
-3. Giải thích ngắn gọn và dễ hiểu cho người mới học
-4. Trả lời bằng tiếng Việt
-
-Trả về JSON với format:
+Trả về JSON:
 {
-  "errorAnalysis": "Phân tích lỗi",
-  "suggestions": "Gợi ý sửa lỗi",
-  "explanation": "Giải thích chi tiết"
+  "result": "Phân tích nguyên nhân và gợi ý sửa lỗi ngắn gọn, dễ hiểu"
 }`;
 
-    // Gọi API AI (có thể sử dụng OpenAI, Claude, hoặc các AI service khác)
-    // Ở đây tôi sẽ sử dụng một AI service mẫu, bạn có thể thay thế bằng service thực tế
-    const aiResponse = await callAIService(prompt);
+    // Gọi OpenRouter API
+    const aiResponse = await callOpenRouter(prompt);
 
     return NextResponse.json({ 
       success: true, 
@@ -57,157 +44,86 @@ Trả về JSON với format:
   }
 }
 
-async function callAIService(prompt: string) {
+async function callOpenRouter(prompt: string) {
   try {
-    // Thử OpenAI trước
-    if (process.env.OPENAI_API_KEY) {
-      try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'gpt-3.5-turbo',
-            messages: [
-              {
-                role: 'system',
-                content: 'Bạn là một giáo viên lập trình C giỏi, chuyên giúp học sinh hiểu và sửa lỗi code. Hãy trả lời bằng tiếng Việt và đưa ra gợi ý cụ thể.'
-              },
-              {
-                role: 'user',
-                content: prompt
-              }
-            ],
-            temperature: 0.7,
-            max_tokens: 1000
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(`OpenAI API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (data.choices && data.choices[0]) {
-          const content = data.choices[0].message.content;
-          // Thử parse JSON response
-          try {
-            return JSON.parse(content);
-          } catch {
-            // Nếu không parse được JSON, trả về text thường
-            return {
-              explanation: content
-            };
-          }
-        }
-      } catch (openaiError) {
-        console.error("OpenAI error:", openaiError);
-        // Tiếp tục thử service khác
-      }
+    // Kiểm tra API key
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    if (!apiKey) {
+      throw new Error("OpenRouter API key not configured");
     }
 
-    // Thử Claude (Anthropic) nếu có
-    if (process.env.ANTHROPIC_API_KEY) {
-      try {
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`,
-            'Content-Type': 'application/json',
-            'anthropic-version': '2023-06-01'
+    // Model mặc định - có thể thay đổi trong .env
+    const model = process.env.OPENROUTER_MODEL || "openai/gpt-3.5-turbo";
+    
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+        'X-Title': 'Code Challenge AI Helper'
+      },
+      body: JSON.stringify({
+        model: model,
+        messages: [
+          {
+            role: 'system',
+            content: 'Bạn là giáo viên C. Phân tích lỗi chính xác và ngắn gọn. Chỉ trả về JSON với trường "result". Trả lời bằng tiếng Việt.'
           },
-          body: JSON.stringify({
-            model: 'claude-3-sonnet-20240229',
-            max_tokens: 1000,
-            messages: [
-              {
-                role: 'user',
-                content: prompt
-              }
-            ]
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(`Claude API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (data.content && data.content[0]) {
-          const content = data.content[0].text;
-          try {
-            return JSON.parse(content);
-          } catch {
-            return {
-              explanation: content
-            };
+          {
+            role: 'user',
+            content: prompt
           }
-        }
-      } catch (claudeError) {
-        console.error("Claude error:", claudeError);
-      }
+        ],
+        temperature: 0.1,
+        max_tokens: 1600,
+        stream: false
+      })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`OpenRouter API error: ${response.status} - ${errorText}`);
     }
 
-    // Thử Google Gemini nếu có
-    if (process.env.GOOGLE_AI_API_KEY) {
+    const data = await response.json();
+    
+    if (data.choices && data.choices[0] && data.choices[0].message) {
+      const content = data.choices[0].message.content.trim();
+      
+      // Thử parse JSON response
       try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${process.env.GOOGLE_AI_API_KEY}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [
-                  {
-                    text: prompt
-                  }
-                ]
-              }
-            ],
-            generationConfig: {
-              temperature: 0.7,
-              maxOutputTokens: 1000
-            }
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error(`Gemini API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-          const content = data.candidates[0].content.parts[0].text;
+        const parsedContent = JSON.parse(content);
+        return parsedContent;
+      } catch (parseError) {
+        console.log("Could not parse JSON response, trying to extract JSON from text:", content);
+        
+        // Thử extract JSON từ text nếu có
+        const jsonMatch = content.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
           try {
-            return JSON.parse(content);
-          } catch {
-            return {
-              explanation: content
-            };
+            const extractedJson = JSON.parse(jsonMatch[0]);
+            return extractedJson;
+          } catch (e2) {
+            console.log("Could not parse extracted JSON");
           }
         }
-      } catch (geminiError) {
-        console.error("Gemini error:", geminiError);
+        
+        // Nếu không parse được JSON, trả về text thường
+        return {
+          result: content
+        };
       }
+    } else {
+      throw new Error("Invalid response format from OpenRouter");
     }
-
-    // Fallback: Trả về giải thích mẫu nếu không có AI service nào hoạt động
-    return {
-      errorAnalysis: "Dựa trên thông tin lỗi, có thể code của bạn gặp vấn đề về cú pháp hoặc logic.",
-      suggestions: "Hãy kiểm tra lại cú pháp, biến, và logic của chương trình.",
-      explanation: "Lỗi này thường xảy ra do sai cú pháp, khai báo biến không đúng, hoặc logic chương trình có vấn đề."
-    };
 
   } catch (error) {
-    console.error("AI service error:", error);
+    console.error("OpenRouter error:", error);
+    
+    // Fallback: Trả về giải thích mẫu nếu OpenRouter không hoạt động
     return {
-      errorAnalysis: "Không thể phân tích lỗi do lỗi kết nối AI service.",
-      suggestions: "Hãy kiểm tra lại code và thử lại.",
-      explanation: "Vui lòng thử lại sau hoặc liên hệ hỗ trợ."
+      result: "Dựa trên thông tin lỗi, có thể code của bạn gặp vấn đề về cú pháp hoặc logic. Hãy kiểm tra lại cú pháp, biến, và logic của chương trình. Lỗi này thường xảy ra do sai cú pháp, khai báo biến không đúng, hoặc logic chương trình có vấn đề. Vui lòng kiểm tra lại code và thử lại."
     };
   }
 } 

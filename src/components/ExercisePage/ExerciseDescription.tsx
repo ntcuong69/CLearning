@@ -56,13 +56,17 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
         mb={1}
         sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 2 }}
       >
-        {exercise.Name}
-        <ExerciseStatusBadge 
-          status={exercise.status || 'Unattempted'} 
-          showIcon={true} 
-          showText={true} 
-          size="small"
-        />
+        <Box sx={{ flex: 1, minWidth: 0, whiteSpace: "pre-line", wordBreak: "break-word" }}>
+          {exercise.Name}
+        </Box>
+        <Box sx={{ minWidth: 90, textAlign: "right", flexShrink: 0 }}>
+          <ExerciseStatusBadge 
+            status={exercise.status || 'Unattempted'} 
+            showIcon={true} 
+            showText={true} 
+            size="small"
+          />
+        </Box>
       </Typography>
       
       <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: 2 }}>
@@ -263,4 +267,4 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
       )}
     </>
   );
-} 
+}

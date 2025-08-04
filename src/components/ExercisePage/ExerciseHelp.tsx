@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Box, 
   Typography, 
@@ -20,20 +20,24 @@ interface ExerciseHelpProps {
 }
 
 interface AIExplanation {
-  errorAnalysis?: string;
-  suggestions?: string;
-  explanation?: string;
+  result?: string;
 }
 
 export default function ExerciseHelp({ results = [], testcases = [], code = "" }: ExerciseHelpProps) {
-  const [expanded, setExpanded] = useState(false);
   const [aiExplanation, setAiExplanation] = useState<AIExplanation | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Reset AI explanation khi results thay đổi (nộp bài mới)
+  useEffect(() => {
+    setAiExplanation(null);
+    setError(null);
+    setLoading(false);
+  }, [results]);
+
   // Mapping theo TCID giống TestcaseResults
   const errorIndices: number[] = [];
-  const errorDetails: any[] = [];
+  const uniqueErrors: any[] = [];
   
   if (results && testcases && results.length && testcases.length) {
     let publicIdx = 0;
@@ -48,13 +52,18 @@ export default function ExerciseHelp({ results = [], testcases = [], code = "" }
           )
         ) {
           errorIndices.push(publicIdx + 1);
-          errorDetails.push({
-            testcaseIndex: publicIdx + 1,
-            errorMessage: r.ActualOutput,
-            input: testcases[i].Input,
-            expectedOutput: testcases[i].ExpectedOutput,
-            actualOutput: r.ActualOutput
-          });
+          
+          // Kiểm tra xem lỗi này đã có chưa
+          const existingError = uniqueErrors.find(err => err.errorMessage === r.ActualOutput);
+          if (!existingError) {
+            uniqueErrors.push({
+              testcaseIndex: publicIdx + 1,
+              errorMessage: r.ActualOutput,
+              input: testcases[i].Input,
+              expectedOutput: testcases[i].ExpectedOutput,
+              actualOutput: r.ActualOutput
+            });
+          }
         }
         publicIdx++;
       }
@@ -62,13 +71,13 @@ export default function ExerciseHelp({ results = [], testcases = [], code = "" }
   }
 
   const handleGetAIHelp = async () => {
-    if (errorDetails.length === 0 || !code) return;
+    if (uniqueErrors.length === 0 || !code) return;
 
     setLoading(true);
     setError(null);
     
     try {
-      const firstError = errorDetails[0]; // Lấy lỗi đầu tiên để phân tích
+      const firstError = uniqueErrors[0]; // Lấy lỗi đầu tiên để phân tích
       
       const response = await fetch('/api/ai/explain-error', {
         method: 'POST',
@@ -77,15 +86,13 @@ export default function ExerciseHelp({ results = [], testcases = [], code = "" }
         },
         body: JSON.stringify({
           code,
-          errorMessage: firstError.errorMessage,
-          testcaseInput: firstError.input,
-          expectedOutput: firstError.expectedOutput,
-          actualOutput: firstError.actualOutput
+          errorMessage: firstError.errorMessage
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Không thể kết nối với AI service');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -99,20 +106,26 @@ export default function ExerciseHelp({ results = [], testcases = [], code = "" }
           } catch {
             // Nếu không parse được JSON, coi như text thường
             explanation = {
-              explanation: data.explanation
+              result: data.explanation
             };
           }
         } else {
           explanation = data.explanation;
         }
         
+        // Kiểm tra xem response có đầy đủ không
+        if (!explanation.result) {
+          console.warn('AI response seems incomplete:', explanation);
+        }
+        
         setAiExplanation(explanation);
       } else {
-        throw new Error('AI không thể phân tích lỗi');
+        throw new Error('AI không thể phân tích lỗi hoặc LM Studio chưa được khởi động');
       }
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Có lỗi xảy ra khi phân tích với AI';
       setError(errorMessage);
+      console.error('AI Help Error:', err);
     } finally {
       setLoading(false);
     }
@@ -129,16 +142,6 @@ export default function ExerciseHelp({ results = [], testcases = [], code = "" }
             <Lightbulb color="primary" />
             Trợ giúp
           </Typography>
-          {hasErrors && (
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={() => setExpanded(!expanded)}
-              endIcon={expanded ? <ExpandLess /> : <ExpandMore />}
-            >
-              {expanded ? 'Thu gọn' : 'Mở rộng'}
-            </Button>
-          )}
         </Box>
 
         <Divider sx={{ my: 2 }} />
@@ -153,129 +156,115 @@ export default function ExerciseHelp({ results = [], testcases = [], code = "" }
 
             <Box display="flex" gap={1} flexWrap="wrap" mb={2}>
               {errorIndices.map((index) => (
-                                 <Chip
-                   key={index}
-                   icon={<ErrorIcon />}
-                   label={`Testcase ${index}`}
-                   color="error"
-                   variant="outlined"
-                   size="small"
-                 />
+                <Chip
+                  key={index}
+                  icon={<ErrorIcon />}
+                  label={`Testcase ${index}`}
+                  color="error"
+                  variant="outlined"
+                  size="small"
+                />
               ))}
             </Box>
 
-            <Collapse in={expanded}>
-              <Box>
-                <Typography variant="subtitle2" color="text.secondary" mb={1}>
-                  Chi tiết lỗi:
-                </Typography>
-                {errorDetails.map((error, index) => (
-                  <Box key={index} mb={2} p={2} border={1} borderColor="divider" borderRadius={1}>
-                    <Typography variant="body2" fontWeight="bold" mb={1}>
-                      Testcase {error.testcaseIndex}:
-                    </Typography>
-                    <Typography variant="body2" color="error" mb={1}>
-                      <strong>Lỗi:</strong> {error.errorMessage}
-                    </Typography>
-                    {error.input && (
-                      <Typography variant="body2" mb={0.5}>
-                        <strong>Input:</strong> {error.input}
-                      </Typography>
-                    )}
-                    {error.expectedOutput && (
-                      <Typography variant="body2" mb={0.5}>
-                        <strong>Output mong đợi:</strong> {error.expectedOutput}
-                      </Typography>
-                    )}
-                  </Box>
-                ))}
-
-                <Divider sx={{ my: 2 }} />
-
-                {/* AI Help Section */}
-                <Box>
-                  <Typography variant="subtitle1" fontWeight="bold" mb={2}>
-                    🤖 Hỗ trợ AI
+            <Box>
+              <Typography variant="subtitle2" color="text.secondary" mb={1}>
+                Chi tiết lỗi:
+              </Typography>
+              {uniqueErrors.map((error, index) => (
+                <Box key={index} mb={2} p={2} border={1} borderColor="divider" borderRadius={1}>
+                  <Typography variant="body2" fontWeight="bold" mb={1}>
+                    {uniqueErrors.length > 1 ? `Lỗi ${index + 1}:` : 'Lỗi:'}
                   </Typography>
-                  
-                  {!aiExplanation && !loading && (
-                    <Button
-                      variant="contained"
-                      onClick={handleGetAIHelp}
-                      disabled={!code}
-                      startIcon={<Lightbulb />}
-                      sx={{ mb: 2 }}
-                    >
-                      Nhận gợi ý từ AI
-                    </Button>
-                  )}
-
-                  {loading && (
-                    <Box display="flex" alignItems="center" gap={2} mb={2}>
-                      <CircularProgress size={20} />
-                      <Typography variant="body2">AI đang phân tích lỗi...</Typography>
-                    </Box>
-                  )}
-
-                  {error && (
-                    <Alert severity="warning" sx={{ mb: 2 }}>
-                      {error}
-                    </Alert>
-                  )}
-
-                  {aiExplanation && (
-                    <Card variant="outlined" sx={{ backgroundColor: 'primary.50' }}>
-                      <CardContent>
-                        {aiExplanation.errorAnalysis && (
-                          <Box mb={2}>
-                            <Typography variant="subtitle2" fontWeight="bold" color="primary" mb={1}>
-                              📊 Phân tích lỗi:
-                            </Typography>
-                            <Typography variant="body2">
-                              {aiExplanation.errorAnalysis}
-                            </Typography>
-                          </Box>
-                        )}
-
-                        {aiExplanation.suggestions && (
-                          <Box mb={2}>
-                            <Typography variant="subtitle2" fontWeight="bold" color="primary" mb={1}>
-                              💡 Gợi ý sửa lỗi:
-                            </Typography>
-                            <Typography variant="body2">
-                              {aiExplanation.suggestions}
-                            </Typography>
-                          </Box>
-                        )}
-
-                        {aiExplanation.explanation && (
-                          <Box>
-                            <Typography variant="subtitle2" fontWeight="bold" color="primary" mb={1}>
-                              📝 Giải thích chi tiết:
-                            </Typography>
-                            <Typography variant="body2">
-                              {aiExplanation.explanation}
-                            </Typography>
-                          </Box>
-                        )}
-                      </CardContent>
-                    </Card>
-                  )}
+                  <Typography variant="body2" color="error" mb={1}>
+                    <strong>Thông báo lỗi:</strong> {error.errorMessage}
+                  </Typography>
                 </Box>
-              </Box>
-            </Collapse>
+              ))}
 
-            {!expanded && (
-              <Button
-                variant="text"
-                onClick={handleGetAIHelp}
-                disabled={!code || loading}
-                startIcon={loading ? <CircularProgress size={16} /> : <Lightbulb />}
-                sx={{ mt: 1 }}
-              >
-                {loading ? 'Đang phân tích...' : 'Nhận gợi ý từ AI'}
-              </Button>
-            )}
+              <Divider sx={{ my: 2 }} />
+
+              {/* AI Help Section */}
+              <Box>
+                <Typography variant="subtitle1" fontWeight="bold" mb={2}>
+                  🤖 Hỗ trợ AI
+                </Typography>
+                
+                {!aiExplanation && !loading && (
+                  <Button
+                    variant="contained"
+                    onClick={handleGetAIHelp}
+                    disabled={!code}
+                    startIcon={<Lightbulb />}
+                    sx={{ mb: 2 }}
+                  >
+                    Nhận gợi ý từ AI
+                  </Button>
+                )}
+
+                {loading && (
+                  <Box display="flex" alignItems="center" gap={2} mb={2}>
+                    <CircularProgress size={20} />
+                    <Box>
+                      <Typography variant="body2">
+                        AI đang phân tích lỗi...
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Sử dụng OpenRouter AI
+                      </Typography>
+                    </Box>
+                  </Box>
+                )}
+
+                {error && (
+                  <Alert severity="warning" sx={{ mb: 2 }}>
+                    {error}
+                  </Alert>
+                )}
+
+                {aiExplanation && (
+                  <Card variant="outlined" sx={{ backgroundColor: 'primary.50' }}>
+                    <CardContent>
+                      {aiExplanation.result && (
+                        <Box>
+                          <Typography variant="subtitle2" fontWeight="bold" color="primary" mb={1}>
+                            🤖 Phân tích từ AI:
+                          </Typography>
+                          <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                            {aiExplanation.result}
+                          </Typography>
+                        </Box>
+                      )}
+
+                      {/* Hiển thị cảnh báo nếu response không đầy đủ */}
+                      {!aiExplanation.result && (
+                        <Alert severity="info" sx={{ mt: 2 }}>
+                          <Typography variant="body2">
+                            ⚠️ Phản hồi AI có thể không đầy đủ. Hãy thử lại để có kết quả tốt hơn.
+                          </Typography>
+                        </Alert>
+                      )}
+
+                      {/* Thêm nút để thử lại nếu kết quả không tốt */}
+                      <Box mt={2} display="flex" justifyContent="space-between" alignItems="center">
+                        <Typography variant="caption" color="text.secondary">
+                          💡 Nếu kết quả không chính xác, hãy thử lại
+                        </Typography>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          onClick={handleGetAIHelp}
+                          disabled={loading}
+                          startIcon={loading ? <CircularProgress size={16} /> : <Lightbulb />}
+                        >
+                          Thử lại
+                        </Button>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                )}
+              </Box>
+            </Box>
           </Box>
         ) : (
           <Alert severity="success" icon={<CheckCircle />}>

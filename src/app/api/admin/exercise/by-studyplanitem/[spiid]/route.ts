@@ -7,7 +7,7 @@ export async function GET(
   { params }: { params: { spiid: string } }
 ) {
   try {
-    const spiid = parseInt(params.spiid);
+    const spiid = parseInt((await params).spiid);
     if (isNaN(spiid)) {
       return NextResponse.json({ error: "Invalid SPIID" }, { status: 400 });
     }
@@ -41,7 +41,7 @@ export async function POST(
   { params }: { params: { spiid: string } }
 ) {
   try {
-    const spiid = parseInt(params.spiid);
+    const spiid = parseInt((await params).spiid);
     if (isNaN(spiid)) {
       return NextResponse.json({ error: "Invalid SPIID" }, { status: 400 });
     }
@@ -90,7 +90,7 @@ export async function DELETE(
   { params }: { params: { spiid: string } }
 ) {
   try {
-    const spiid = parseInt(params.spiid);
+    const spiid = parseInt((await params).spiid);
     if (isNaN(spiid)) {
       return NextResponse.json({ error: "Invalid SPIID" }, { status: 400 });
     }

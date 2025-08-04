@@ -263,6 +263,23 @@ model listitem {
   @@index([EID], map: "EID")
 }
 
+model playlist {
+  PID   Int     @id @default(autoincrement())
+  Name  String  @db.VarChar(255)
+  video video[]
+}
+
+model video {
+  VID         Int      @id @default(autoincrement())
+  PID         Int
+  Title       String   @db.VarChar(255)
+  Description String?  @db.Text
+  VideoUrl    String   @db.VarChar(255)
+  playlist    playlist @relation(fields: [PID], references: [PID], onDelete: NoAction, onUpdate: NoAction, map: "video_ibfk_1")
+
+  @@index([PID], map: "PID")
+}
+
 enum exercise_Difficulty {
   Easy
   Medium

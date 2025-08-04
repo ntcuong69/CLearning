@@ -39,8 +39,10 @@ export async function GET(req: NextRequest, { params }: { params: { spid: string
       }, {} as Record<number, string>);
     }
 
-    // Lấy trạng thái study plan
+    // Lấy trạng thái study plan và thời gian
     let studyPlanStatus = 'NotStarted';
+    let startTime = null;
+    let endTime = null;
     if (session?.user?.uid) {
       const studyPlanProgress = await prisma.studyplanprogress.findFirst({
         where: {
@@ -51,6 +53,8 @@ export async function GET(req: NextRequest, { params }: { params: { spid: string
       
       if (studyPlanProgress) {
         studyPlanStatus = studyPlanProgress.Status;
+        startTime = studyPlanProgress.StartTime;
+        endTime = studyPlanProgress.EndTime;
       }
     }
 
@@ -72,7 +76,7 @@ export async function GET(req: NextRequest, { params }: { params: { spid: string
       };
     });
 
-    return NextResponse.json({ ...plan, studyplanitem, studyPlanStatus });
+    return NextResponse.json({ ...plan, studyplanitem, studyPlanStatus, startTime, endTime });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch study plan' }, { status: 500 });
   }

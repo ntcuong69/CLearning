@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import NavBar from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
-import { Box, Typography, Card, CardContent, List, ListItem, ListItemText, Divider, CircularProgress, Alert, Avatar, IconButton, Paper, Chip, LinearProgress } from '@mui/material';
+import { Box, Typography, Card, CardContent, List, ListItem, ListItemText, Divider, CircularProgress, Alert, Avatar, IconButton, Paper, Chip, LinearProgress, Snackbar } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
@@ -99,7 +99,7 @@ const ExerciseListItem = ({ ex, spiid }: { ex: any, spiid: number }) => {
         }
         secondary={
           <Typography variant="caption" sx={{ color: '#666', fontSize: 11 }}>
-            {solved ? 'Đã hoàn thành' : attempting ? 'Đang thực hiện' : 'Chưa bắt đầu'}
+            {solved ? 'Đã hoàn thành' : attempting ? 'Đang làm' : 'Chưa làm'}
           </Typography>
         }
         sx={{ ml: 1 }}
@@ -113,6 +113,8 @@ const StudyPlanDetailPage = () => {
   const [plan, setPlan] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     if (!slug) return;
@@ -212,211 +214,396 @@ const StudyPlanDetailPage = () => {
           <Alert severity="error" sx={{ mt: 4 }}>{error}</Alert>
         ) : plan ? (
           <>
-            {/* Header Section */}
-            <Box sx={{ 
-              textAlign: 'center', 
-              mb: 6,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              borderRadius: 4,
-              p: 4,
-              color: 'white',
-              boxShadow: '0 8px 32px rgba(102, 126, 234, 0.3)'
-            }}>
-              <SchoolIcon sx={{ fontSize: 48, mb: 2, opacity: 0.9 }} />
-              <Typography variant="h3" fontWeight={700} sx={{ mb: 2, textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
-                {plan.Name}
-              </Typography>
-              <Typography variant="h6" sx={{ 
-                mb: 3, 
-                opacity: 0.9,
-                fontWeight: 300,
-                maxWidth: 600,
-                mx: 'auto'
-              }}>
-                {plan.Description}
-              </Typography>
-              
-              {/* Action Buttons */}
+                                       {/* Header Section */}
               <Box sx={{ 
-                display: 'flex', 
-                justifyContent: 'center', 
-                gap: 2, 
-                mt: 3,
-                flexWrap: 'wrap'
+                mb: 4,
+                background: '#ffffff',
+                borderRadius: 2,
+                p: 3,
+                boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
+                border: '1px solid #f0f0f0'
               }}>
-                {plan.studyPlanStatus === 'NotStarted' && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      py: 1.5,
-                      px: 3,
-                      borderRadius: 3,
-                      bgcolor: 'rgba(255,255,255,0.2)',
-                      color: 'white',
-                      fontWeight: 600,
-                      fontSize: 14,
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255,255,255,0.3)',
-                      '&:hover': {
-                        bgcolor: 'rgba(255,255,255,0.3)',
-                        transform: 'scale(1.05)',
-                      }
-                    }}
-                    onClick={async () => {
-                      try {
-                        await fetch('/api/studyplan/progress', {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json',
-                          },
-                          body: JSON.stringify({
-                            SPID: plan.SPID,
-                            action: 'start'
-                          }),
-                        });
-                        // Reload page to update status
-                        window.location.reload();
-                      } catch (error) {
-                        console.error('Error starting study plan:', error);
-                      }
-                    }}
-                  >
-                    <PlayArrowIcon sx={{ fontSize: 18 }} />
-                    Bắt đầu học
+                {/* Title and Description */}
+                <Box sx={{ textAlign: 'center', mb: 3 }}>
+                  <Box sx={{ 
+                    display: 'inline-flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    width: 48,
+                    height: 48,
+                    borderRadius: '50%',
+                    bgcolor: '#f8f9fa',
+                    mb: 1.5
+                  }}>
+                    <SchoolIcon sx={{ fontSize: 22, color: '#6c757d' }} />
                   </Box>
-                )}
+                  <Typography variant="h5" fontWeight={600} sx={{ 
+                    mb: 1.5, 
+                    color: '#2c3e50',
+                    lineHeight: 1.2
+                  }}>
+                    {plan.Name}
+                  </Typography>
+                  <Typography variant="body2" sx={{ 
+                    color: '#6c757d',
+                    maxWidth: 500,
+                    mx: 'auto',
+                    lineHeight: 1.5
+                  }}>
+                    {plan.Description}
+                  </Typography>
+                </Box>
                 
-                {plan.studyPlanStatus === 'InProgress' && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      py: 1.5,
-                      px: 3,
-                      borderRadius: 3,
-                      bgcolor: 'rgba(255,255,255,0.2)',
-                      color: 'white',
-                      fontWeight: 600,
-                      fontSize: 14,
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255,255,255,0.3)',
-                      '&:hover': {
-                        bgcolor: 'rgba(255,255,255,0.3)',
-                        transform: 'scale(1.05)',
-                      }
-                    }}
-                    onClick={async () => {
-                      try {
-                        await fetch('/api/studyplan/progress', {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json',
-                          },
-                          body: JSON.stringify({
-                            SPID: plan.SPID,
-                            action: 'complete'
-                          }),
-                        });
-                        // Reload page to update status
-                        window.location.reload();
-                      } catch (error) {
-                        console.error('Error completing study plan:', error);
-                      }
-                    }}
-                  >
-                    <CheckCircleIcon sx={{ fontSize: 18 }} />
-                    Đánh dấu hoàn thành
+                {/* Action Button */}
+                <Box sx={{ 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  mb: 3
+                }}>
+                 {plan.studyPlanStatus === 'NotStarted' && (
+                   <Box
+                     sx={{
+                       display: 'flex',
+                       alignItems: 'center',
+                       gap: 1,
+                       py: 2,
+                       px: 4,
+                       borderRadius: 2,
+                       bgcolor: '#007bff',
+                       color: 'white',
+                       fontWeight: 600,
+                       fontSize: 15,
+                       cursor: 'pointer',
+                       transition: 'all 0.2s ease',
+                       '&:hover': {
+                         bgcolor: '#0056b3',
+                         transform: 'translateY(-1px)',
+                         boxShadow: '0 4px 12px rgba(0,123,255,0.3)',
+                       }
+                     }}
+                     onClick={async () => {
+                       try {
+                         await fetch('/api/studyplan/progress', {
+                           method: 'POST',
+                           headers: {
+                             'Content-Type': 'application/json',
+                           },
+                           body: JSON.stringify({
+                             SPID: plan.SPID,
+                             action: 'start'
+                           }),
+                         });
+                         window.location.reload();
+                       } catch (error) {
+                         console.error('Error starting study plan:', error);
+                       }
+                     }}
+                   >
+                     <PlayArrowIcon sx={{ fontSize: 20 }} />
+                     Bắt đầu học
+                   </Box>
+                 )}
+                 
+                 {plan.studyPlanStatus === 'InProgress' && (
+                   <Box
+                     sx={{
+                       display: 'flex',
+                       alignItems: 'center',
+                       gap: 1,
+                       py: 2,
+                       px: 4,
+                       borderRadius: 2,
+                       bgcolor: '#28a745',
+                       color: 'white',
+                       fontWeight: 600,
+                       fontSize: 15,
+                       cursor: 'pointer',
+                       transition: 'all 0.2s ease',
+                       '&:hover': {
+                         bgcolor: '#1e7e34',
+                         transform: 'translateY(-1px)',
+                         boxShadow: '0 4px 12px rgba(40,167,69,0.3)',
+                       }
+                     }}
+                     onClick={async () => {
+                       // Kiểm tra xem tất cả bài tập đã hoàn thành chưa
+                       const allExercises = plan.studyplanitem.flatMap((item: any) => item.exercise);
+                       const completedExercises = allExercises.filter((ex: any) => ex.status === 'Solved');
+                       
+                       if (completedExercises.length === allExercises.length && allExercises.length > 0) {
+                         // Tất cả bài tập đã hoàn thành, cho phép đánh dấu hoàn thành
+                         try {
+                           await fetch('/api/studyplan/progress', {
+                             method: 'POST',
+                             headers: {
+                               'Content-Type': 'application/json',
+                             },
+                             body: JSON.stringify({
+                               SPID: plan.SPID,
+                               action: 'complete'
+                             }),
+                           });
+                           window.location.reload();
+                         } catch (error) {
+                           console.error('Error completing study plan:', error);
+                           setSnackbarMessage('Có lỗi xảy ra khi đánh dấu hoàn thành');
+                           setSnackbarOpen(true);
+                         }
+                       } else {
+                         // Chưa hoàn thành hết bài tập, hiển thị thông báo
+                         setSnackbarMessage('Bạn cần hoàn thành tất cả bài tập trước khi đánh dấu hoàn thành khóa học');
+                         setSnackbarOpen(true);
+                       }
+                     }}
+                   >
+                     <CheckCircleIcon sx={{ fontSize: 20 }} />
+                     Đánh dấu hoàn thành
+                   </Box>
+                 )}
+                 
+                                   {plan.studyPlanStatus === 'Completed' && (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        py: 2,
+                        px: 4,
+                        borderRadius: 2,
+                        bgcolor: '#4caf50',
+                        color: 'white',
+                        fontWeight: 600,
+                        fontSize: 15
+                      }}
+                    >
+                      <CheckCircleIcon sx={{ fontSize: 20 }} />
+                      Đã hoàn thành khóa học
+                    </Box>
+                  )}
+                  
+                  {/* Reminder message for users who completed all exercises but haven't marked as complete */}
+                  {plan.studyPlanStatus === 'InProgress' && (() => {
+                    const allExercises = plan.studyplanitem.flatMap((item: any) => item.exercise);
+                    const completedExercises = allExercises.filter((ex: any) => ex.status === 'Solved');
+                    const allCompleted = completedExercises.length === allExercises.length && allExercises.length > 0;
+                    
+                    return allCompleted ? (
+                      <Box
+                        sx={{
+                          mt: 2,
+                          p: 2,
+                          bgcolor: '#fff3cd',
+                          border: '1px solid #ffeaa7',
+                          borderRadius: 2,
+                          textAlign: 'center'
+                        }}
+                      >
+                        <Typography variant="body2" sx={{ 
+                          color: '#856404',
+                          fontWeight: 500,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 1
+                        }}>
+                          <CheckCircleIcon sx={{ fontSize: 18 }} />
+                          Chúc mừng! Bạn đã hoàn thành tất cả bài tập. Hãy nhấn "Đánh dấu hoàn thành" ở trên để hoàn tất khóa học.
+                        </Typography>
+                      </Box>
+                    ) : null;
+                  })()}
+               </Box>
+               
+                               {/* Progress Overview */}
+                <Box sx={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
+                  gap: 2,
+                  mb: 2
+                }}>
+                  <Box sx={{ 
+                    textAlign: 'center', 
+                    p: 2, 
+                    bgcolor: '#f8f9fa', 
+                    borderRadius: 1.5,
+                    border: '1px solid #e9ecef'
+                  }}>
+                    <Typography variant="h4" fontWeight={700} sx={{ 
+                      color: '#495057',
+                      mb: 0.5
+                    }}>
+                      {plan.studyplanitem.length}
+                    </Typography>
+                    <Typography variant="caption" sx={{ 
+                      color: '#6c757d',
+                      fontWeight: 500
+                    }}>
+                      Chương học
+                    </Typography>
                   </Box>
-                )}
-                
-                {plan.studyPlanStatus === 'Completed' && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                      py: 1.5,
-                      px: 3,
-                      borderRadius: 3,
-                      bgcolor: 'rgba(255,255,255,0.2)',
-                      color: 'white',
-                      fontWeight: 600,
-                      fontSize: 14,
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255,255,255,0.3)',
-                      '&:hover': {
-                        bgcolor: 'rgba(255,255,255,0.3)',
-                        transform: 'scale(1.05)',
-                      }
-                    }}
-                    onClick={async () => {
-                      try {
-                        await fetch('/api/studyplan/progress', {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json',
-                          },
-                          body: JSON.stringify({
-                            SPID: plan.SPID,
-                            action: 'restart'
-                          }),
-                        });
-                        // Reload page to update status
-                        window.location.reload();
-                      } catch (error) {
-                        console.error('Error restarting study plan:', error);
-                      }
-                    }}
-                  >
-                    <PlayArrowIcon sx={{ fontSize: 18 }} />
-                    Học lại
+                  <Box sx={{ 
+                    textAlign: 'center', 
+                    p: 2, 
+                    bgcolor: '#f8f9fa', 
+                    borderRadius: 1.5,
+                    border: '1px solid #e9ecef'
+                  }}>
+                    <Typography variant="h4" fontWeight={700} sx={{ 
+                      color: '#495057',
+                      mb: 0.5
+                    }}>
+                      {plan.studyplanitem.reduce((acc: number, item: any) => acc + item.exercise.length, 0)}
+                    </Typography>
+                    <Typography variant="caption" sx={{ 
+                      color: '#6c757d',
+                      fontWeight: 500
+                    }}>
+                      Bài tập
+                    </Typography>
                   </Box>
-                )}
-              </Box>
-              
-              {/* Progress Overview */}
-              <Box sx={{ 
-                display: 'flex', 
-                justifyContent: 'center', 
-                gap: 4, 
-                mt: 3,
-                flexWrap: 'wrap'
-              }}>
-                <Box sx={{ textAlign: 'center' }}>
-                  <Typography variant="h4" fontWeight={700} sx={{ color: '#fff' }}>
-                    {plan.studyplanitem.length}
-                  </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                    Chương học
-                  </Typography>
+                  <Box sx={{ 
+                    textAlign: 'center', 
+                    p: 2, 
+                    bgcolor: '#f8f9fa', 
+                    borderRadius: 1.5,
+                    border: '1px solid #e9ecef'
+                  }}>
+                    <Typography variant="h4" fontWeight={700} sx={{ 
+                      color: '#495057',
+                      mb: 0.5
+                    }}>
+                      {plan.studyplanitem.filter((item: any) => item.isCompleted).length}
+                    </Typography>
+                    <Typography variant="caption" sx={{ 
+                      color: '#6c757d',
+                      fontWeight: 500
+                    }}>
+                      Đã hoàn thành
+                    </Typography>
+                  </Box>
                 </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                  <Typography variant="h4" fontWeight={700} sx={{ color: '#fff' }}>
-                    {plan.studyplanitem.reduce((acc: number, item: any) => acc + item.exercise.length, 0)}
-                  </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                    Bài tập
-                  </Typography>
-                </Box>
-                <Box sx={{ textAlign: 'center' }}>
-                  <Typography variant="h4" fontWeight={700} sx={{ color: '#fff' }}>
-                    {plan.studyplanitem.filter((item: any) => item.isCompleted).length}
-                  </Typography>
-                  <Typography variant="body2" sx={{ opacity: 0.8 }}>
-                    Đã hoàn thành
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
+               
+                               {/* Study Plan Timeline */}
+                {(plan.startTime || plan.endTime) && (
+                  <Box sx={{ 
+                    p: 2, 
+                    bgcolor: '#f8f9fa', 
+                    borderRadius: 1.5,
+                    border: '1px solid #e9ecef'
+                  }}>
+                    <Typography variant="subtitle1" sx={{ 
+                      mb: 2, 
+                      color: '#495057', 
+                      fontWeight: 600,
+                      textAlign: 'center'
+                    }}>
+                      Thời gian học tập
+                    </Typography>
+                    <Box sx={{ 
+                      display: 'grid', 
+                      gridTemplateColumns: { xs: '1fr', sm: 'repeat(auto-fit, minmax(180px, 1fr))' },
+                      gap: 2
+                    }}>
+                                           {plan.startTime && (
+                        <Box sx={{ 
+                          textAlign: 'center',
+                          p: 1.5,
+                          bgcolor: 'white',
+                          borderRadius: 1.5,
+                          border: '1px solid #dee2e6'
+                        }}>
+                          <Typography variant="caption" sx={{ 
+                            color: '#6c757d', 
+                            mb: 0.5,
+                            fontWeight: 500
+                          }}>
+                            Ngày bắt đầu
+                          </Typography>
+                          <Typography variant="body2" sx={{ 
+                            color: '#495057', 
+                            fontWeight: 600
+                          }}>
+                            {new Date(plan.startTime).toLocaleDateString('vi-VN', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </Typography>
+                        </Box>
+                      )}
+                      {plan.endTime && (
+                        <Box sx={{ 
+                          textAlign: 'center',
+                          p: 1.5,
+                          bgcolor: 'white',
+                          borderRadius: 1.5,
+                          border: '1px solid #dee2e6'
+                        }}>
+                          <Typography variant="caption" sx={{ 
+                            color: '#6c757d', 
+                            mb: 0.5,
+                            fontWeight: 500
+                          }}>
+                            Ngày hoàn thành
+                          </Typography>
+                          <Typography variant="body2" sx={{ 
+                            color: '#495057', 
+                            fontWeight: 600
+                          }}>
+                            {new Date(plan.endTime).toLocaleDateString('vi-VN', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </Typography>
+                        </Box>
+                      )}
+                      {plan.startTime && plan.endTime && (
+                        <Box sx={{ 
+                          textAlign: 'center',
+                          p: 1.5,
+                          bgcolor: 'white',
+                          borderRadius: 1.5,
+                          border: '1px solid #dee2e6'
+                        }}>
+                          <Typography variant="caption" sx={{ 
+                            color: '#6c757d', 
+                            mb: 0.5,
+                            fontWeight: 500
+                          }}>
+                            Thời gian học
+                          </Typography>
+                          <Typography variant="body2" sx={{ 
+                            color: '#495057', 
+                            fontWeight: 600
+                          }}>
+                            {(() => {
+                              const start = new Date(plan.startTime);
+                              const end = new Date(plan.endTime);
+                              const diffTime = Math.abs(end.getTime() - start.getTime());
+                              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                              const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
+                              
+                              if (diffDays > 1) {
+                                return `${diffDays} ngày`;
+                              } else if (diffHours > 1) {
+                                return `${diffHours} giờ`;
+                              } else {
+                                const diffMinutes = Math.ceil(diffTime / (1000 * 60));
+                                return `${diffMinutes} phút`;
+                              }
+                            })()}
+                          </Typography>
+                        </Box>
+                      )}
+                   </Box>
+                 </Box>
+               )}
+             </Box>
             {plan.studyplanitem.length > 0 && (
               <Box sx={{ width: '100%' }}>
                 {plan.studyplanitem.map((item: any, idx: number) => (
@@ -556,7 +743,14 @@ const StudyPlanDetailPage = () => {
                                     border: item.isCompleted ? '1px solid rgba(255,255,255,0.2)' : '1px solid rgba(0,0,0,0.1)',
                                     width: '100%'
                                   }}>
-                                    <Linkify options={{ target: '_blank', rel: 'noopener noreferrer' }}>
+                                    <Linkify
+                                      options={{
+                                        target: '_blank',
+                                        rel: 'noopener noreferrer',
+                                        format: (value, type) => type === 'url' ? 'Đi đến' : value,
+                                        className: () => 'text-blue-600'
+                                      }}
+                                    >
                                       {item.Description}
                                     </Linkify>
                                   </Typography>
@@ -618,6 +812,28 @@ const StudyPlanDetailPage = () => {
             )}
           </>
         ) : null}
+        
+        {/* Snackbar for notifications */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={4000}
+          onClose={() => setSnackbarOpen(false)}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          sx={{
+            '& .MuiSnackbarContent-root': {
+              bgcolor: '#f44336',
+              fontWeight: 500,
+            }
+          }}
+        >
+          <Alert 
+            onClose={() => setSnackbarOpen(false)} 
+            severity="warning" 
+            sx={{ width: '100%' }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
       </Box>
     </Box>
   );

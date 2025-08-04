@@ -129,7 +129,7 @@ export default function ExerciseManagement() {
   }, [showCreateForm]);
 
   const handleAddTestcase = () => {
-    if (!tcInput || !tcOutput) return;
+    if (tcInput === undefined || tcInput === null || tcOutput === undefined || tcOutput === null) return;
     setForm((f) => ({ ...f, testcases: [...f.testcases, { Input: tcInput, ExpectedOutput: tcOutput, isHidden: tcHidden }] }));
     setTcInput("");
     setTcOutput("");
@@ -348,7 +348,7 @@ export default function ExerciseManagement() {
   // Thêm testcase cho bài tập đang xem chi tiết
   const handleAddTestcaseDetail = async () => {
     if (!selectedExercise) return;
-    if (!testcaseInput || !testcaseOutput) return;
+    if (testcaseInput === undefined || testcaseInput === null || testcaseOutput === undefined || testcaseOutput === null) return;
     setTestcaseSubmitting(true);
     try {
       await axios.post("/api/admin/testcases/create", {
@@ -390,6 +390,7 @@ export default function ExerciseManagement() {
   // Lưu testcase đã sửa
   const handleSaveEditTestcase = async () => {
     if (!editingTestcase) return;
+    if (editingTestcaseInput === undefined || editingTestcaseInput === null || editingTestcaseOutput === undefined || editingTestcaseOutput === null) return;
     setTestcaseSubmitting(true);
     try {
       await axios.patch(`/api/admin/testcases/${editingTestcase.TCID}`, {
@@ -507,36 +508,40 @@ export default function ExerciseManagement() {
                   <Typography fontWeight={600} sx={{ mb: 2, mt: 1 }}>
                     Danh sách testcase
                   </Typography>
-                  <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                  <Stack spacing={2} sx={{ mb: 2 }}>
                     <TextField
                       label="Input"
                       size="small"
                       value={tcInput}
                       onChange={(e) => setTcInput(e.target.value)}
-                      sx={{ flex: 1 }}
+                      fullWidth
                       multiline
-                      minRows={1}
+                      minRows={2}
+                      maxRows={4}
                     />
                     <TextField
                       label="ExpectedOutput"
                       size="small"
                       value={tcOutput}
                       onChange={(e) => setTcOutput(e.target.value)}
-                      sx={{ flex: 1 }}
+                      fullWidth
                       multiline
-                      minRows={1}
+                      minRows={2}
+                      maxRows={4}
                     />
-                    <FormControl size="small" sx={{ minWidth: 90 }}>
-                      <InputLabel>Ẩn?</InputLabel>
-                      <Select label="Ẩn?" value={tcHidden ? 1 : 0} onChange={(e) => setTcHidden(Boolean(Number(e.target.value)))}>
-                        <MenuItem value={0}>Hiện</MenuItem>
-                        <MenuItem value={1}>Ẩn</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <Button variant="contained" color="primary" onClick={handleAddTestcase} sx={{ minWidth: 80, fontWeight: 600 }}>
-                      <AddIcon sx={{ mr: 1 }} />
-                      Thêm
-                    </Button>
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <FormControl size="small" sx={{ minWidth: 120 }}>
+                        <InputLabel>Ẩn?</InputLabel>
+                        <Select label="Ẩn?" value={tcHidden ? 1 : 0} onChange={(e) => setTcHidden(Boolean(Number(e.target.value)))}>
+                          <MenuItem value={0}>Hiện</MenuItem>
+                          <MenuItem value={1}>Ẩn</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <Button variant="contained" color="primary" onClick={handleAddTestcase} sx={{ minWidth: 100, fontWeight: 600 }}>
+                        <AddIcon sx={{ mr: 1 }} />
+                        Thêm
+                      </Button>
+                    </Stack>
                   </Stack>
                   <Box>
                     {form.testcases.length === 0 ? (
@@ -629,35 +634,39 @@ export default function ExerciseManagement() {
                     Danh sách testcase
                   </Typography>
                   {/* Form thêm testcase mới */}
-                  <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
+                  <Stack spacing={2} sx={{ mb: 2 }}>
                     <TextField
                       label="Input"
                       size="small"
                       value={testcaseInput}
                       onChange={e => setTestcaseInput(e.target.value)}
-                      sx={{ flex: 1 }}
+                      fullWidth
                       multiline
-                      minRows={1}
+                      minRows={2}
+                      maxRows={4}
                     />
                     <TextField
                       label="ExpectedOutput"
                       size="small"
                       value={testcaseOutput}
                       onChange={e => setTestcaseOutput(e.target.value)}
-                      sx={{ flex: 1 }}
+                      fullWidth
                       multiline
-                      minRows={1}
+                      minRows={2}
+                      maxRows={4}
                     />
-                    <FormControl size="small" sx={{ minWidth: 90 }}>
-                      <InputLabel>Ẩn?</InputLabel>
-                      <Select label="Ẩn?" value={testcaseHidden ? 1 : 0} onChange={e => setTestcaseHidden(Boolean(Number(e.target.value)))}>
-                        <MenuItem value={0}>Hiện</MenuItem>
-                        <MenuItem value={1}>Ẩn</MenuItem>
-                      </Select>
-                    </FormControl>
-                    <Button variant="contained" color="primary" onClick={handleAddTestcaseDetail} disabled={testcaseSubmitting} sx={{ minWidth: 80, fontWeight: 600 }}>
-                      <AddIcon sx={{ mr: 1 }} />Thêm
-                    </Button>
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <FormControl size="small" sx={{ minWidth: 120 }}>
+                        <InputLabel>Ẩn?</InputLabel>
+                        <Select label="Ẩn?" value={testcaseHidden ? 1 : 0} onChange={e => setTestcaseHidden(Boolean(Number(e.target.value)))}>
+                          <MenuItem value={0}>Hiện</MenuItem>
+                          <MenuItem value={1}>Ẩn</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <Button variant="contained" color="primary" onClick={handleAddTestcaseDetail} disabled={testcaseSubmitting} sx={{ minWidth: 100, fontWeight: 600 }}>
+                        <AddIcon sx={{ mr: 1 }} />Thêm
+                      </Button>
+                    </Stack>
                   </Stack>
                   {/* Danh sách testcase với CRUD */}
                   <Table size="small">

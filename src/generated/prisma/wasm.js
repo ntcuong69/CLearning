@@ -273,6 +273,19 @@ exports.Prisma.ListitemScalarFieldEnum = {
   EID: 'EID'
 };
 
+exports.Prisma.PlaylistScalarFieldEnum = {
+  PID: 'PID',
+  Name: 'Name'
+};
+
+exports.Prisma.VideoScalarFieldEnum = {
+  VID: 'VID',
+  PID: 'PID',
+  Title: 'Title',
+  Description: 'Description',
+  VideoUrl: 'VideoUrl'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -376,6 +389,16 @@ exports.Prisma.listOrderByRelevanceFieldEnum = {
   Name: 'Name',
   Description: 'Description'
 };
+
+exports.Prisma.playlistOrderByRelevanceFieldEnum = {
+  Name: 'Name'
+};
+
+exports.Prisma.videoOrderByRelevanceFieldEnum = {
+  Title: 'Title',
+  Description: 'Description',
+  VideoUrl: 'VideoUrl'
+};
 exports.exercise_Difficulty = exports.$Enums.exercise_Difficulty = {
   Easy: 'Easy',
   Medium: 'Medium',
@@ -441,7 +464,9 @@ exports.Prisma.ModelName = {
   exerciseprogress: 'exerciseprogress',
   studyplanprogress: 'studyplanprogress',
   list: 'list',
-  listitem: 'listitem'
+  listitem: 'listitem',
+  playlist: 'playlist',
+  video: 'video'
 };
 
 /**
