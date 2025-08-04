@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import NavBar from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import { Box, Typography, Card, CardContent, List, ListItem, ListItemText, Divider, CircularProgress, Alert, Avatar, IconButton, Paper, Chip, LinearProgress, Snackbar } from '@mui/material';
@@ -14,6 +14,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import Linkify from 'linkify-react';
 
 const ExerciseListItem = ({ ex, spiid }: { ex: any, spiid: number }) => {
+  const router = useRouter();
   const solved = ex.status === 'Solved';
   const attempting = ex.status === 'Attempting';
   
@@ -55,12 +56,12 @@ const ExerciseListItem = ({ ex, spiid }: { ex: any, spiid: number }) => {
           })
           .then((spid) => {
             const url = `/exercises/${ex.Slug}?source=studyplan&id=${spid}`;
-            window.location.href = url;
+            router.push(url);
           })
           .catch((error) => {
             console.error('Error getting studyplan ID:', error);
             // Fallback to regular exercise URL
-            window.location.href = `/exercises/${ex.Slug}`;
+            router.push(`/exercises/${ex.Slug}`);
           });
       }}
       secondaryAction={
@@ -110,6 +111,7 @@ const ExerciseListItem = ({ ex, spiid }: { ex: any, spiid: number }) => {
 
 const StudyPlanDetailPage = () => {
   const { slug } = useParams();
+  const router = useRouter();
   const [plan, setPlan] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -293,7 +295,7 @@ const StudyPlanDetailPage = () => {
                              action: 'start'
                            }),
                          });
-                         window.location.reload();
+                         router.refresh();
                        } catch (error) {
                          console.error('Error starting study plan:', error);
                        }
@@ -343,7 +345,7 @@ const StudyPlanDetailPage = () => {
                                action: 'complete'
                              }),
                            });
-                           window.location.reload();
+                           router.refresh();
                          } catch (error) {
                            console.error('Error completing study plan:', error);
                            setSnackbarMessage('Có lỗi xảy ra khi đánh dấu hoàn thành');

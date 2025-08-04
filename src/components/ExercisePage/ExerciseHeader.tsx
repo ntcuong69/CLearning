@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   AppBar,
   Toolbar,
@@ -21,23 +21,16 @@ import {
   Select,
   FormControl,
   InputLabel,
-  Tooltip,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
   NavigateBefore,
   NavigateNext,
   PlayArrow,
-  Person,
-  Settings,
-  Help,
-  ExitToApp,
   KeyboardArrowDown,
   CheckCircle,
   RadioButtonUnchecked,
   Folder,
-  ArrowBack,
-  Close,
   Pending,
   AccountCircle as AccountCircleIcon,
   Settings as SettingsIcon,
@@ -72,7 +65,6 @@ export default function ExerciseHeader({
   // ======================
   
   // User và UI states
-  const [user, setUser] = useState<any>(null);
   const [mounted, setMounted] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -83,7 +75,6 @@ export default function ExerciseHeader({
   const [topics, setTopics] = useState<any[]>([]);
   const [selectedTopicId, setSelectedTopicId] = useState<number | string>(topicId || "");
   const [topicExercises, setTopicExercises] = useState<any[]>([]);
-  const [allExercises, setAllExercises] = useState<any[]>([]);
 
   // Loading states
   const [loadingTopics, setLoadingTopics] = useState(false);
@@ -94,6 +85,9 @@ export default function ExerciseHeader({
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(-1);
   const [hasPreviousExercise, setHasPreviousExercise] = useState(false);
   const [hasNextExercise, setHasNextExercise] = useState(false);
+
+  // Control flag for manual topic selection
+  const [isManualSelection, setIsManualSelection] = useState(false);
 
   // ======================
   // HOOKS
@@ -106,54 +100,205 @@ export default function ExerciseHeader({
     async (results: any[] | null, finalResult?: string) => {
       setResults(results);
       
-      // Cập nhật submissions sau khi submit
+      // Cập nhật submissions và trạng thái exercise sau khi submit
       if (exercise) {
-        const subRes = await fetch(`/api/submissions/by-exercise/${exercise.EID}`);
-        if (subRes.ok) {
-          const subData = await subRes.json();
-          setSubmissions(subData.submissions || []);
-        }
-        
-        // Cập nhật trạng thái exercise
-        if (finalResult === "Pass") {
-          // Cập nhật progress thành Solved
-          try {
-            await fetch(`/api/exercise/${exercise.Slug}/progress`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ status: "Solved" }),
-            });
-            setExercise({ ...exercise, status: "Solved" });
-            
-            // Refresh danh sách exercises để cập nhật trạng thái trong menu
-            if (selectedTopicId) {
-              refreshExercises();
-            }
-          } catch (error) {
-            console.error("Error updating exercise progress:", error);
+        try {
+          // Cập nhật submissions
+          const subRes = await fetch(`/api/submissions/by-exercise/${exercise.EID}`);
+          if (subRes.ok) {
+            const subData = await subRes.json();
+            setSubmissions(subData.submissions || []);
           }
-        } else if (finalResult === "Fail") {
-          // Cập nhật progress thành Attempting (nếu chưa có thì tạo mới, nếu có rồi thì cập nhật)
-          try {
-            await fetch(`/api/exercise/${exercise.Slug}/progress`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ status: "Attempting" }),
-            });
-            setExercise({ ...exercise, status: "Attempting" });
-            
-            // Refresh danh sách exercises để cập nhật trạng thái trong menu
-            if (selectedTopicId) {
-              refreshExercises();
-            }
-          } catch (error) {
-            console.error("Error updating exercise progress:", error);
+          
+          // Cập nhật trạng thái exercise
+          const status = finalResult === "Pass" ? "Solved" : "Attempting";
+          await fetch(`/api/exercise/${exercise.Slug}/progress`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status }),
+          });
+          setExercise({ ...exercise, status });
+          
+          // Refresh danh sách exercises để cập nhật trạng thái trong menu
+          if (selectedTopicId) {
+            refreshExercises();
           }
+        } catch (error) {
+          console.error("Error updating exercise progress:", error);
         }
       }
     },
     setSubmissionResult
   );
+
+  // ======================
+  // UTILITY FUNCTIONS
+  // ======================
+  
+  /**
+   * Tạo URL với query parameters
+   */
+  const createExerciseUrl = (exerciseSlug: string) => {
+    let url = `/exercises/${exerciseSlug}`;
+    const params = new URLSearchParams();
+    
+    if (source) params.set('source', source);
+    if (sourceId) params.set('id', sourceId);
+    
+    return params.toString() ? `${url}?${params.toString()}` : url;
+  };
+
+  /**
+   * Tìm và set topic/list/studyplan item chứa bài tập hiện tại
+   */
+  const findAndSetContainerForExercise = useCallback(async () => {
+    if (!exercise || !topics.length) return;
+    
+    try {
+      if (source === "list") {
+        // Tìm list chứa bài tập
+        for (const list of topics) {
+          const listRes = await fetch(`/api/listitem/${list.LID}`);
+          if (listRes.ok) {
+            const listData = await listRes.json();
+            const exercises = listData.exercises || [];
+            if (exercises.some((ex: any) => ex.EID === exercise.EID)) {
+              setSelectedTopicId(list.LID);
+              return;
+            }
+          }
+        }
+      } else if (source === "studyplan" && sourceId) {
+        // Tìm studyplan item chứa bài tập
+        const studyplanRes = await fetch(`/api/studyplan/${sourceId}`);
+        if (studyplanRes.ok) {
+          const studyplanData = await studyplanRes.json();
+          const studyplanItems = studyplanData.studyplanitem || [];
+          
+          for (const item of studyplanItems) {
+            if (item.exercise && Array.isArray(item.exercise)) {
+              if (item.exercise.some((ex: any) => ex.EID === exercise.EID)) {
+                setSelectedTopicId(item.SPIID);
+                setTopicExercises(item.exercise || []);
+                return;
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error finding container for exercise:", error);
+    }
+  }, [exercise, topics, source, sourceId]);
+
+  /**
+   * Fetch exercises dựa trên source và selectedTopicId
+   */
+  const fetchExercises = async (forceRefresh = false) => {
+    if (!selectedTopicId || (isFetchingExercises && !forceRefresh)) return;
+    
+    setIsFetchingExercises(true);
+    setLoadingExercises(true);
+    
+    try {
+      if (source === "list" && sourceId) {
+        const listRes = await fetch(`/api/listitem/${selectedTopicId}`);
+        if (listRes.ok) {
+          const listData = await listRes.json();
+          setTopicExercises(listData.exercises || []);
+        }
+      } else if (source === "studyplan" && sourceId) {
+        const studyplanRes = await fetch(`/api/studyplan/${sourceId}`);
+        if (studyplanRes.ok) {
+          const studyplanData = await studyplanRes.json();
+          const selectedItem = studyplanData.studyplanitem.find((item: any) => item.SPIID === Number(selectedTopicId));
+          setTopicExercises(selectedItem?.exercise || []);
+        }
+      } else {
+        // source="all" hoặc không có source
+        const topicRes = await fetch(`/api/topics/${selectedTopicId}`);
+        if (topicRes.ok) {
+          const topicData = await topicRes.json();
+          setTopicExercises(topicData.topic.exercise || []);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching exercises:", error);
+    } finally {
+      setLoadingExercises(false);
+      setIsFetchingExercises(false);
+    }
+  };
+
+  /**
+   * Refresh exercises (force fetch)
+   */
+  const refreshExercises = () => fetchExercises(true);
+
+  /**
+   * Cập nhật trạng thái navigation
+   */
+  const updateNavigationState = () => {
+    const currentIndex = topicExercises.findIndex((ex: any) => ex.Slug === currentExerciseSlug);
+    setCurrentExerciseIndex(currentIndex);
+    
+    if (currentIndex !== -1) {
+      setHasPreviousExercise(currentIndex > 0);
+      setHasNextExercise(currentIndex < topicExercises.length - 1);
+    } else {
+      setHasPreviousExercise(false);
+      setHasNextExercise(false);
+    }
+  };
+
+  /**
+   * Lấy trạng thái bài tập
+   */
+  const getExerciseStatus = (exercise: any) => {
+    const status = exercise.status || 'Unattempted';
+    switch (status) {
+      case 'Solved': return "completed";
+      case 'Attempting': return "attempting";
+      default: return "not-started";
+    }
+  };
+
+  /**
+   * Lấy icon trạng thái
+   */
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "completed": return <CheckCircle sx={{ color: "#10b981", fontSize: 20 }} />;
+      case "attempting": return <Pending sx={{ color: "#f59e0b", fontSize: 20 }} />;
+      default: return <RadioButtonUnchecked sx={{ color: "#9ca3af", fontSize: 20 }} />;
+    }
+  };
+
+  /**
+   * Lấy text trạng thái
+   */
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case "completed": return "Hoàn thành";
+      case "attempting": return "Đang làm";
+      default: return "Chưa làm";
+    }
+  };
+
+  /**
+   * Lấy tên topic được chọn
+   */
+  const getSelectedTopicName = () => {
+    const selectedTopic = topics.find(t => {
+      if (source === "list") return t.LID === Number(selectedTopicId);
+      if (source === "studyplan") return t.SPIID === Number(selectedTopicId);
+      return t.TpID === Number(selectedTopicId);
+    });
+    
+    if (source === "list") return selectedTopic?.Name || "Chọn danh sách";
+    if (source === "studyplan") return selectedTopic?.Name || "Chọn chương học";
+    return selectedTopic?.Name || "Chọn chủ đề";
+  };
 
   // ======================
   // EFFECTS
@@ -182,59 +327,88 @@ export default function ExerciseHeader({
     fetchUser();
   }, []);
 
-  // Fetch topics và exercises khi component mount
+  // Fetch topics khi component mount
   useEffect(() => {
-    fetchTopicsAndExercises();
-  }, []);
+    const fetchTopics = async () => {
+      setLoadingTopics(true);
+      try {
+        if (source === "list" && sourceId) {
+          const listsRes = await fetch("/api/list");
+          if (listsRes.ok) {
+            const listsData = await listsRes.json();
+            setTopics(listsData.lists || []);
+          }
+        } else if (source === "studyplan" && sourceId) {
+          const studyplanRes = await fetch(`/api/studyplan/${sourceId}`);
+          if (studyplanRes.ok) {
+            const studyplanData = await studyplanRes.json();
+            setTopics(studyplanData.studyplanitem || []);
+          }
+        } else {
+          const topicsRes = await fetch("/api/topics/list");
+          if (topicsRes.ok) {
+            const topicsData = await topicsRes.json();
+            setTopics(topicsData.topics || []);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching topics:", error);
+      } finally {
+        setLoadingTopics(false);
+      }
+    };
+    fetchTopics();
+  }, [source, sourceId]);
 
   // Cập nhật selectedTopicId khi topicId prop thay đổi
   useEffect(() => {
-    if (topicId) {
-      setSelectedTopicId(topicId);
-    }
+    if (topicId) setSelectedTopicId(topicId);
   }, [topicId]);
 
   // Set initial selected topic based on source
   useEffect(() => {
     if (source === "list" && sourceId && topics.length > 0) {
-      // For list source, select the first list by default
-      setSelectedTopicId(topics[0]?.LID || "");
+      setSelectedTopicId(sourceId);
     } else if (source === "studyplan" && sourceId && topics.length > 0) {
-      // For studyplan source, select the first studyplan item by default
-      setSelectedTopicId(topics[0]?.SPIID || "");
-    } else if (source === "all" && topics.length > 0) {
-      // For all source, select the first topic by default
-      setSelectedTopicId(topics[0]?.TpID || "");
+      setSelectedTopicId(sourceId);
+    } else if (source === "all" && topics.length > 0 && exercise) {
+      setSelectedTopicId(exercise.TpID || topics[0]?.TpID || "");
     } else if (!source || !sourceId) {
-      // Fallback for when no source is specified - use all topics
       if (topics.length > 0) {
         setSelectedTopicId(topics[0]?.TpID || "");
       }
     }
-  }, [source, sourceId, topics]);
+  }, [source, sourceId, topics, exercise]);
+
+  // Cập nhật selectedTopicId khi exercise thay đổi
+  useEffect(() => {
+    if (isManualSelection) return; // Skip if user manually selected
+    
+    if (source === "all" && exercise && exercise.TpID && topics.length > 0) {
+      setSelectedTopicId(exercise.TpID);
+    } else if ((source === "list" || source === "studyplan") && exercise && topics.length > 0) {
+      findAndSetContainerForExercise();
+    }
+  }, [exercise, source, topics.length, findAndSetContainerForExercise, isManualSelection]);
 
   // Fetch exercises khi selectedTopicId thay đổi
   useEffect(() => {
     if (selectedTopicId && !isFetchingExercises) {
-      fetchTopicExercises();
+      fetchExercises();
     }
   }, [selectedTopicId]);
 
-  // Fetch exercises khi mở menu (chỉ khi chưa có data hoặc cần refresh)
+  // Fetch exercises khi mở menu
   useEffect(() => {
     if (menuOpen && selectedTopicId && topicExercises.length === 0 && !isFetchingExercises) {
-      fetchTopicExercises();
+      fetchExercises();
     }
   }, [menuOpen, selectedTopicId]);
 
-  // Refresh exercises khi menu mở để đảm bảo trạng thái được cập nhật
+  // Refresh exercises khi menu mở
   useEffect(() => {
     if (menuOpen && selectedTopicId && topicExercises.length > 0 && !isFetchingExercises) {
-      // Refresh sau 500ms để đảm bảo có đủ thời gian cho các API calls khác hoàn thành
-      const timer = setTimeout(() => {
-        refreshExercises();
-      }, 500);
-      
+      const timer = setTimeout(() => refreshExercises(), 500);
       return () => clearTimeout(timer);
     }
   }, [menuOpen]);
@@ -246,247 +420,81 @@ export default function ExerciseHeader({
     }
   }, [currentExerciseSlug, topicExercises, selectedTopicId]);
 
-  // ======================
-  // API FUNCTIONS
-  // ======================
-  
-  /**
-   * Fetch tất cả topics và exercises dựa trên source
-   */
-  const fetchTopicsAndExercises = async () => {
-    setLoadingTopics(true);
-    try {
-      if (source === "list" && sourceId) {
-        // Fetch user lists
-        const listsRes = await fetch("/api/list");
-        if (listsRes.ok) {
-          const listsData = await listsRes.json();
-          setTopics(listsData.lists || []);
+  // Auto-load exercises for studyplan when exercise changes
+  useEffect(() => {
+    if (source === "studyplan" && exercise && sourceId && !isFetchingExercises && !isManualSelection) {
+      const loadStudyplanExercises = async () => {
+        try {
+          const studyplanRes = await fetch(`/api/studyplan/${sourceId}`);
+          if (studyplanRes.ok) {
+            const studyplanData = await studyplanRes.json();
+            const studyplanItems = studyplanData.studyplanitem || [];
+            
+            for (const item of studyplanItems) {
+              if (item.exercise && Array.isArray(item.exercise)) {
+                if (item.exercise.some((ex: any) => ex.EID === exercise.EID)) {
+                  setSelectedTopicId(item.SPIID);
+                  setTopicExercises(item.exercise || []);
+                  return;
+                }
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Error loading studyplan exercises:", error);
         }
-      } else if (source === "studyplan" && sourceId) {
-        // Fetch studyplan items
-        const studyplanRes = await fetch(`/api/studyplan/${sourceId}`);
-        if (studyplanRes.ok) {
-          const studyplanData = await studyplanRes.json();
-          setTopics(studyplanData.studyplanitem || []);
-        }
-      } else {
-        // Default: fetch all topics (for source="all" or no source)
-        const topicsRes = await fetch("/api/topics/list");
-        if (topicsRes.ok) {
-          const topicsData = await topicsRes.json();
-          setTopics(topicsData.topics || []);
-        }
-      }
-
-      // Fetch exercises
-      const exercisesRes = await fetch("/api/exercise/list");
-      if (exercisesRes.ok) {
-        const exercisesData = await exercisesRes.json();
-        setAllExercises(exercisesData.exercises || []);
-      }
-    } catch (error) {
-      console.error("Error fetching topics and exercises:", error);
-    } finally {
-      setLoadingTopics(false);
+      };
+      loadStudyplanExercises();
     }
-  };
-
-  /**
-   * Fetch exercises của topic được chọn
-   */
-  const fetchTopicExercises = async () => {
-    if (!selectedTopicId || isFetchingExercises) return;
-    
-    setIsFetchingExercises(true);
-    setLoadingExercises(true);
-    try {
-      if (source === "list" && sourceId) {
-        // Fetch exercises from user list
-        const listRes = await fetch(`/api/listitem/${selectedTopicId}`);
-        if (listRes.ok) {
-          const listData = await listRes.json();
-          setTopicExercises(listData.exercises || []);
-        }
-      } else if (source === "studyplan" && sourceId) {
-        // Fetch exercises from studyplan item
-        const studyplanRes = await fetch(`/api/studyplan/${sourceId}`);
-        if (studyplanRes.ok) {
-          const studyplanData = await studyplanRes.json();
-          const selectedItem = studyplanData.studyplanitem.find((item: any) => item.SPIID === Number(selectedTopicId));
-          setTopicExercises(selectedItem?.exercise || []);
-        }
-      } else {
-        // Default: fetch exercises from topic (for source="all" or no source)
-        const topicRes = await fetch(`/api/topics/${selectedTopicId}`);
-        if (topicRes.ok) {
-          const topicData = await topicRes.json();
-          const exercises = topicData.topic.exercise || [];
-          setTopicExercises(exercises);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching topic exercises:", error);
-    } finally {
-      setLoadingExercises(false);
-      setIsFetchingExercises(false);
-    }
-  };
-
-  /**
-   * Refresh exercises (force fetch)
-   */
-  const refreshExercises = async () => {
-    if (!selectedTopicId) return;
-    
-    setIsFetchingExercises(true);
-    setLoadingExercises(true);
-    try {
-      if (source === "list" && sourceId) {
-        // Refresh exercises from user list
-        const listRes = await fetch(`/api/listitem/${selectedTopicId}`);
-        if (listRes.ok) {
-          const listData = await listRes.json();
-          setTopicExercises(listData.exercises || []);
-        }
-      } else if (source === "studyplan" && sourceId) {
-        // Refresh exercises from studyplan item
-        const studyplanRes = await fetch(`/api/studyplan/${sourceId}`);
-        if (studyplanRes.ok) {
-          const studyplanData = await studyplanRes.json();
-          const selectedItem = studyplanData.studyplanitem.find((item: any) => item.SPIID === Number(selectedTopicId));
-          setTopicExercises(selectedItem?.exercise || []);
-        }
-      } else {
-        // Default: refresh exercises from topic (for source="all" or no source)
-        const topicRes = await fetch(`/api/topics/${selectedTopicId}`);
-        if (topicRes.ok) {
-          const topicData = await topicRes.json();
-          const exercises = topicData.topic.exercise || [];
-          setTopicExercises(exercises);
-        }
-      }
-    } catch (error) {
-      console.error("Error refreshing topic exercises:", error);
-    } finally {
-      setLoadingExercises(false);
-      setIsFetchingExercises(false);
-    }
-  };
+  }, [source, exercise, sourceId, isFetchingExercises, isManualSelection]);
 
   // ======================
   // EVENT HANDLERS
   // ======================
   
-  /**
-   * Xử lý khi chọn topic mới
-   */
   const handleTopicChange = (event: any) => {
-    const newTopicId = event.target.value;
-    setSelectedTopicId(newTopicId);
-    // Chỉ cập nhật danh sách bài tập, không tự động chuyển hướng
+    setIsManualSelection(true);
+    setSelectedTopicId(event.target.value);
   };
 
-  /**
-   * Xử lý khi click vào bài tập
-   */
   const handleExerciseClick = (exerciseSlug: string) => {
     if (mounted) {
-      // Tạo URL với query parameters
-      let url = `/exercises/${exerciseSlug}`;
-      const params = new URLSearchParams();
-      
-      if (source) {
-        params.set('source', source);
-      }
-      if (sourceId) {
-        params.set('id', sourceId);
-      }
-      
-      if (params.toString()) {
-        url += `?${params.toString()}`;
-      }
-      
-      router.push(url);
+      router.push(createExerciseUrl(exerciseSlug));
       setMenuOpen(false);
     }
   };
 
-  /**
-   * Xử lý navigation - bài tập trước
-   */
   const handlePreviousExercise = () => {
     if (hasPreviousExercise && currentExerciseIndex > 0) {
       const previousExercise = topicExercises[currentExerciseIndex - 1];
-      
-      // Tạo URL với query parameters
-      let url = `/exercises/${previousExercise.Slug}`;
-      const params = new URLSearchParams();
-      
-      if (source) {
-        params.set('source', source);
-      }
-      if (sourceId) {
-        params.set('id', sourceId);
-      }
-      
-      if (params.toString()) {
-        url += `?${params.toString()}`;
-      }
-      
-      router.push(url);
+      router.push(createExerciseUrl(previousExercise.Slug));
     }
   };
 
-  /**
-   * Xử lý navigation - bài tập tiếp theo
-   */
   const handleNextExercise = () => {
     if (hasNextExercise && currentExerciseIndex < topicExercises.length - 1) {
       const nextExercise = topicExercises[currentExerciseIndex + 1];
-      
-      // Tạo URL với query parameters
-      let url = `/exercises/${nextExercise.Slug}`;
-      const params = new URLSearchParams();
-      
-      if (source) {
-        params.set('source', source);
-      }
-      if (sourceId) {
-        params.set('id', sourceId);
-      }
-      
-      if (params.toString()) {
-        url += `?${params.toString()}`;
-      }
-      
-      router.push(url);
+      router.push(createExerciseUrl(nextExercise.Slug));
     }
   };
 
-  /**
-   * Xử lý menu user dropdown
-   */
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuToggle = () => {
-    setMenuOpen(!menuOpen);
-  };
+  const handleMenuClose = () => setAnchorEl(null);
+  const handleMenuToggle = () => setMenuOpen(!menuOpen);
 
   const handleProfile = () => {
     router.push("/profile");
     handleMenuClose();
   };
+
   const handleSettings = () => {
     router.push("/settings");
     handleMenuClose();
   };
+
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/signout", { method: "POST" });
@@ -498,96 +506,10 @@ export default function ExerciseHeader({
   };
 
   // ======================
-  // UTILITY FUNCTIONS
-  // ======================
-  
-  /**
-   * Cập nhật trạng thái navigation
-   */
-  const updateNavigationState = () => {
-    const currentIndex = topicExercises.findIndex((ex: any) => ex.Slug === currentExerciseSlug);
-    setCurrentExerciseIndex(currentIndex);
-    
-    if (currentIndex !== -1) {
-      setHasPreviousExercise(currentIndex > 0);
-      setHasNextExercise(currentIndex < topicExercises.length - 1);
-    } else {
-      setHasPreviousExercise(false);
-      setHasNextExercise(false);
-    }
-  };
-
-  /**
-   * Lấy trạng thái bài tập
-   */
-  const getExerciseStatus = (exercise: any) => {
-    const status = exercise.status || 'Unattempted';
-    switch (status) {
-      case 'Solved':
-        return "completed";
-      case 'Attempting':
-        return "attempting";
-      case 'Unattempted':
-      default:
-        return "not-started";
-    }
-  };
-
-  /**
-   * Lấy icon trạng thái
-   */
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "completed":
-        return <CheckCircle sx={{ color: "#10b981", fontSize: 20 }} />;
-      case "attempting":
-        return <Pending sx={{ color: "#f59e0b", fontSize: 20 }} />;
-      case "not-started":
-      default:
-        return <RadioButtonUnchecked sx={{ color: "#9ca3af", fontSize: 20 }} />;
-    }
-  };
-
-  /**
-   * Lấy text trạng thái
-   */
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "Hoàn thành";
-      case "attempting":
-        return "Đang làm";
-      case "not-started":
-      default:
-        return "Chưa làm";
-    }
-  };
-
-  /**
-   * Lấy tên topic được chọn
-   */
-  const getSelectedTopicName = () => {
-    if (source === "list") {
-      const selectedTopic = topics.find(t => t.LID === Number(selectedTopicId));
-      return selectedTopic ? selectedTopic.Name : "Chọn danh sách";
-    } else if (source === "studyplan") {
-      const selectedTopic = topics.find(t => t.SPIID === Number(selectedTopicId));
-      return selectedTopic ? selectedTopic.Name : "Chọn chương học";
-    } else {
-      // Default for source="all" or no source
-      const selectedTopic = topics.find(t => t.TpID === Number(selectedTopicId));
-      return selectedTopic ? selectedTopic.Name : "Chọn chủ đề";
-    }
-  };
-
-  // ======================
   // RENDER
   // ======================
   
-  // Không render cho đến khi mounted để tránh hydration issues
-  if (!mounted) {
-    return null;
-  }
+  if (!mounted) return null;
 
   return (
     <>
@@ -744,7 +666,8 @@ export default function ExerciseHeader({
                 }} 
               />
             </Box>
-            {/* User Dropdown Menu giống Header */}
+            
+            {/* User Dropdown Menu */}
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
@@ -771,18 +694,8 @@ export default function ExerciseHeader({
                   borderRadius: "8px",
                   transition: "background 0.15s",
                   backgroundColor: "transparent !important",
-                  "&:hover": {
-                    backgroundColor: "#e3f0ff !important",
-                  },
-                  "&.Mui-selected": {
-                    backgroundColor: "transparent !important",
-                  },
-                  "&.Mui-focusVisible": {
-                    backgroundColor: "transparent !important",
-                  },
-                  "&.MuiMenuItem-root:hover": {
-                    backgroundColor: "#e3f0ff !important",
-                  },
+                  "&:hover": { backgroundColor: "#e3f0ff !important" },
+                  "&.Mui-selected, &.Mui-focusVisible": { backgroundColor: "transparent !important" },
                 }}
               >
                 <AccountCircleIcon sx={{ mr: 2, color: "#666", fontSize: 20 }} />
@@ -796,18 +709,8 @@ export default function ExerciseHeader({
                   borderRadius: "8px",
                   transition: "background 0.15s",
                   backgroundColor: "transparent !important",
-                  "&:hover": {
-                    backgroundColor: "#e3f0ff !important",
-                  },
-                  "&.Mui-selected": {
-                    backgroundColor: "transparent !important",
-                  },
-                  "&.Mui-focusVisible": {
-                    backgroundColor: "transparent !important",
-                  },
-                  "&.MuiMenuItem-root:hover": {
-                    backgroundColor: "#e3f0ff !important",
-                  },
+                  "&:hover": { backgroundColor: "#e3f0ff !important" },
+                  "&.Mui-selected, &.Mui-focusVisible": { backgroundColor: "transparent !important" },
                 }}
               >
                 <SettingsIcon sx={{ mr: 2, color: "#666", fontSize: 20 }} />
@@ -823,18 +726,8 @@ export default function ExerciseHeader({
                   borderRadius: "8px",
                   transition: "background 0.15s",
                   backgroundColor: "transparent !important",
-                  "&:hover": {
-                    backgroundColor: "#ffeaea !important",
-                  },
-                  "&.Mui-selected": {
-                    backgroundColor: "transparent !important",
-                  },
-                  "&.Mui-focusVisible": {
-                    backgroundColor: "transparent !important",
-                  },
-                  "&.MuiMenuItem-root:hover": {
-                    backgroundColor: "#ffeaea !important",
-                  },
+                  "&:hover": { backgroundColor: "#ffeaea !important" },
+                  "&.Mui-selected, &.Mui-focusVisible": { backgroundColor: "transparent !important" },
                 }}
               >
                 <LogoutIcon sx={{ mr: 2, fontSize: 20 }} />
@@ -913,19 +806,23 @@ export default function ExerciseHeader({
                     Đang tải...
                   </MenuItem>
                 ) : (
-                  topics.map((topic) => (
-                    <MenuItem key={source === "list" ? topic.LID : 
-                                   source === "studyplan" ? topic.SPIID : 
-                                   topic.TpID} 
-                              value={source === "list" ? topic.LID : 
-                                     source === "studyplan" ? topic.SPIID : 
-                                     topic.TpID}>
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <Folder sx={{ fontSize: 18, color: "#6b7280" }} />
-                        {topic.Name}
-                      </Box>
-                    </MenuItem>
-                  ))
+                  topics.map((topic) => {
+                    const key = source === "list" ? topic.LID : 
+                               source === "studyplan" ? topic.SPIID : 
+                               topic.TpID;
+                    const value = source === "list" ? topic.LID : 
+                                 source === "studyplan" ? topic.SPIID : 
+                                 topic.TpID;
+                    
+                    return (
+                      <MenuItem key={key} value={value}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                          <Folder sx={{ fontSize: 18, color: "#6b7280" }} />
+                          {topic.Name}
+                        </Box>
+                      </MenuItem>
+                    );
+                  })
                 )}
               </Select>
             </FormControl>
@@ -1056,4 +953,4 @@ export default function ExerciseHeader({
       </Drawer>
     </>
   );
-} 
+}
