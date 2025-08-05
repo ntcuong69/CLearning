@@ -49,7 +49,7 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
   };
 
   return (
-    <>
+    <Box sx={{ width: '100%', boxSizing: 'border-box' }}>
       <Typography
         variant="h6"
         fontWeight={700}
@@ -149,7 +149,7 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
         </Box>
       </Box>
       
-      <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
+      <Typography variant="body1" sx={{ whiteSpace: "pre-line", wordBreak: "break-word", overflowWrap: "break-word", textAlign: "justify", textIndent: "2em" }}>
         {exercise.Content}
       </Typography>
 
@@ -265,6 +265,6 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
           </Paper>
         </Box>
       )}
-    </>
+    </Box>
   );
 }

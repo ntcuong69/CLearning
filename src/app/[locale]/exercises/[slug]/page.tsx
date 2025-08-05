@@ -297,8 +297,6 @@ export default function ExerciseDetailPage() {
             borderRadius: 16,
             padding: 0,
             boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
-            overflowY: "auto",
-            overflowX: "hidden",
             position: "relative",
           }}
         >
@@ -378,7 +376,14 @@ export default function ExerciseDetailPage() {
               }}
             />
           </Tabs>
-          <Box sx={{ flex: 1, p: 3, overflow: "auto" }}>
+          <Box sx={{ 
+            flex: 1, 
+            p: 3, 
+            overflow: "auto",
+            scrollbarHeight: "none",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none"
+          }}>
             {leftTab === 0 && <ExerciseDescription exercise={exercise} testcases={testcases} onExerciseUpdate={setExercise} />}
             {leftTab === 1 && <ExerciseHelp results={results || []} testcases={testcases} code={code} />}
             {leftTab === 2 && <SubmissionHistory submissions={submissions} onViewHistory={handleViewHistory} />}
