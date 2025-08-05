@@ -548,47 +548,115 @@ export default function StudyplanManagement() {
           <>
             {detailPlan ? (
               <Box>
-                <Button
-                  startIcon={<ArrowBackIcon />}
-                  onClick={() => {
-                    setDetailPlan(null);
-                    setSelectedItems([]);
-                    setSelectedExercisesByChapter({});
-                  }}
-                  sx={{ mb: 2 }}
-                >
-                  Quay lại danh sách khóa học
-                </Button>
-                <Paper sx={{ p: 3 }}>
-                  <Typography variant="h6" fontWeight={600} sx={{ mb: 2 }}>
-                    {detailPlan.Name} (ID: {detailPlan.SPID})
+                {/* Header với thông tin khóa học */}
+                <Box sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'space-between',
+                  mb: 3,
+                  p: 3,
+                  bgcolor: 'primary.50',
+                  borderRadius: 2,
+                  border: '1px solid',
+                  borderColor: 'primary.200'
+                }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Button
+                      startIcon={<ArrowBackIcon />}
+                      onClick={() => {
+                        setDetailPlan(null);
+                        setSelectedItems([]);
+                        setSelectedExercisesByChapter({});
+                      }}
+                      variant="outlined"
+                      size="small"
+                    >
+                      Quay lại
+                    </Button>
+                    <Box>
+                      <Typography variant="h5" fontWeight={700} color="primary">
+                        {detailPlan.Name}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        ID: {detailPlan.SPID} • {detailPlan.studyplanitem.length} chương học • {detailPlan.studyplanitem.reduce((acc, item) => acc + item.exercise.length, 0)} bài tập
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => handleDeleteClick(detailPlan)}
+                    size="small"
+                  >
+                    Xóa khóa học
+                  </Button>
+                </Box>
+
+                {/* Mô tả khóa học */}
+                <Paper sx={{ p: 3, mb: 3, bgcolor: 'grey.50' }}>
+                  <Typography variant="h6" fontWeight={600} mb={1}>
+                    Mô tả khóa học
                   </Typography>
-                  <Typography sx={{ mb: 2 }}>{detailPlan.Description}</Typography>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                    <Typography variant="subtitle1" fontWeight={600}>
-                      Danh sách chương học ({detailPlan.studyplanitem.length})
-                    </Typography>
+                  <Typography variant="body1">
+                    {detailPlan.Description || "Chưa có mô tả cho khóa học này."}
+                  </Typography>
+                </Paper>
+
+                {/* Phần quản lý chương học */}
+                <Paper sx={{ p: 3 }}>
+                  <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    mb: 3,
+                    pb: 2,
+                    borderBottom: '2px solid',
+                    borderColor: 'divider'
+                  }}>
+                    <Box>
+                      <Typography variant="h6" fontWeight={600}>
+                        Danh sách chương học
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {detailPlan.studyplanitem.length} chương học
+                      </Typography>
+                    </Box>
                     <Box sx={{ display: 'flex', gap: 1 }}>
                       {selectedItems.length > 0 && (
                         <Button 
-                          variant="outlined" 
+                          variant="contained" 
                           color="error"
+                          size="small"
                           onClick={() => setConfirmDeleteItems({ 
                             open: true, 
                             selectedItems: selectedItems, 
                             plan: detailPlan 
                           })}
                         >
-                          Xóa {selectedItems.length} chương đã chọn
+                          Xóa {selectedItems.length} chương
                         </Button>
                       )}
-                      <Button variant="outlined" onClick={() => setAddItemDialogOpen(true)}>
+                      <Button 
+                        variant="contained" 
+                        onClick={() => setAddItemDialogOpen(true)}
+                        startIcon={<AddCircleIcon />}
+                        size="small"
+                      >
                         Thêm chương học
                       </Button>
                     </Box>
                   </Box>
+
+                  {/* Checkbox chọn tất cả chương học */}
                   {detailPlan.studyplanitem.length > 0 && (
-                    <Box sx={{ mb: 2 }}>
+                    <Box sx={{ 
+                      mb: 3, 
+                      p: 2, 
+                      bgcolor: 'background.paper',
+                      borderRadius: 1,
+                      border: '1px solid',
+                      borderColor: 'divider'
+                    }}>
                       <FormControlLabel
                         control={
                           <Checkbox
@@ -597,110 +665,210 @@ export default function StudyplanManagement() {
                             onChange={handleSelectAll}
                           />
                         }
-                        label={`Chọn tất cả (${selectedItems.length}/${detailPlan.studyplanitem.length})`}
+                        label={
+                          <Typography variant="subtitle2" fontWeight={600}>
+                            Chọn tất cả chương học ({selectedItems.length}/{detailPlan.studyplanitem.length})
+                          </Typography>
+                        }
                       />
                     </Box>
                   )}
+
+                  {/* Danh sách chương học */}
                   {detailPlan.studyplanitem.length === 0 ? (
-                    <Typography color="text.secondary">Chưa có chương học.</Typography>
+                    <Box sx={{ 
+                      textAlign: 'center', 
+                      py: 4,
+                      bgcolor: 'grey.50',
+                      borderRadius: 2
+                    }}>
+                      <Typography color="text.secondary" variant="h6">
+                        Chưa có chương học nào
+                      </Typography>
+                      <Typography color="text.secondary" variant="body2" sx={{ mt: 1 }}>
+                        Bấm "Thêm chương học" để bắt đầu
+                      </Typography>
+                    </Box>
                   ) : (
-                    detailPlan.studyplanitem.map((item) => (
-                      <Box key={item.SPIID} sx={{ mb: 3, pl: 2, borderLeft: "2px solid #eee" }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                          <Checkbox
-                            checked={selectedItems.includes(item.SPIID)}
-                            onChange={() => handleItemSelect(item.SPIID)}
-                            size="small"
-                          />
-                          <Typography fontWeight={500} sx={{ flex: 1 }}>
-                            {item.Name} (ID: {item.SPIID})
-                          </Typography>
-                          <IconButton
-                            size="small"
-                            onClick={() => handleEditItem(item)}
-                            sx={{ ml: 'auto' }}
-                          >
-                            <EditIcon fontSize="small" />
-                          </IconButton>
-                        </Box>
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                          {item.Description || "Chưa có mô tả"}
-                        </Typography>
-                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 1 }}>
-                          <Typography variant="body2" fontWeight={500}>
-                            Bài tập:
-                          </Typography>
-                          <Box sx={{ display: "flex", gap: 1 }}>
-                            {(selectedExercisesByChapter[item.SPIID] || []).length > 0 && (
-                              <Button
-                                size="small"
-                                variant="outlined"
-                                color="error"
-                                onClick={() => setConfirmDeleteExercises({ 
-                                  open: true, 
-                                  selectedExercises: selectedExercisesByChapter[item.SPIID] || [], 
-                                  spiid: item.SPIID,
-                                  plan: detailPlan 
-                                })}
-                              >
-                                Xóa {(selectedExercisesByChapter[item.SPIID] || []).length} bài tập
-                              </Button>
-                            )}
-                            <Button
-                              size="small"
-                              startIcon={<AddCircleIcon />}
-                              onClick={() => handleAddExerciseClick(item.SPIID)}
-                            >
-                              Thêm bài tập
-                            </Button>
-                          </Box>
-                        </Box>
-                        {item.exercise.length === 0 ? (
-                          <Typography color="text.secondary" sx={{ pl: 2 }}>
-                            Chưa có bài tập.
-                          </Typography>
-                        ) : (
-                          <>
-                            <Box sx={{ mb: 1 }}>
-                              <FormControlLabel
-                                control={
-                                  <Checkbox
-                                    checked={(selectedExercisesByChapter[item.SPIID] || []).length === item.exercise.length && item.exercise.length > 0}
-                                    indeterminate={(selectedExercisesByChapter[item.SPIID] || []).length > 0 && (selectedExercisesByChapter[item.SPIID] || []).length < item.exercise.length}
-                                    onChange={() => handleSelectAllExercises(item.exercise, item.SPIID)}
-                                    size="small"
-                                  />
-                                }
-                                label={`Chọn tất cả bài tập (${(selectedExercisesByChapter[item.SPIID] || []).length}/${item.exercise.length})`}
-                                sx={{ fontSize: '0.875rem' }}
-                              />
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      {detailPlan.studyplanitem.map((item, index) => (
+                        <Paper 
+                          key={item.SPIID} 
+                          sx={{ 
+                            p: 3,
+                            border: '1px solid',
+                            borderColor: selectedItems.includes(item.SPIID) ? 'primary.main' : 'divider',
+                            bgcolor: selectedItems.includes(item.SPIID) ? 'primary.50' : 'background.paper',
+                            borderRadius: 2,
+                            transition: 'all 0.2s ease-in-out'
+                          }}
+                        >
+                          {/* Header chương học */}
+                          <Box sx={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: 2, 
+                            mb: 2,
+                            pb: 2,
+                            borderBottom: '1px solid',
+                            borderColor: 'divider'
+                          }}>
+                            <Checkbox
+                              checked={selectedItems.includes(item.SPIID)}
+                              onChange={() => handleItemSelect(item.SPIID)}
+                              color="primary"
+                            />
+                            <Box sx={{ flex: 1 }}>
+                              <Typography variant="h6" fontWeight={600} color="primary">
+                                Chương {index + 1}: {item.Name}
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary">
+                                ID: {item.SPIID} • {item.exercise.length} bài tập
+                              </Typography>
                             </Box>
-                            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                              {item.exercise.map((ex) => (
-                                <li key={ex.EID} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0' }}>
-                                  <Checkbox
-                                    checked={(selectedExercisesByChapter[item.SPIID] || []).includes(ex.EID)}
-                                    onChange={() => handleExerciseSelect(ex.EID, item.SPIID)}
+                            <IconButton
+                              onClick={() => handleEditItem(item)}
+                              color="primary"
+                              size="small"
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </Box>
+
+                          {/* Mô tả chương học */}
+                          <Box sx={{ mb: 3 }}>
+                            <Typography variant="body1" sx={{ 
+                              p: 2, 
+                              bgcolor: 'grey.50', 
+                              borderRadius: 1,
+                              fontStyle: item.Description ? 'normal' : 'italic'
+                            }}>
+                              {item.Description || "Chưa có mô tả cho chương học này."}
+                            </Typography>
+                          </Box>
+
+                          {/* Phần quản lý bài tập */}
+                          <Box>
+                            <Box sx={{ 
+                              display: "flex", 
+                              justifyContent: "space-between", 
+                              alignItems: "center", 
+                              mb: 2
+                            }}>
+                              <Typography variant="subtitle1" fontWeight={600}>
+                                Danh sách bài tập
+                              </Typography>
+                              <Box sx={{ display: "flex", gap: 1 }}>
+                                {(selectedExercisesByChapter[item.SPIID] || []).length > 0 && (
+                                  <Button
                                     size="small"
+                                    variant="outlined"
+                                    color="error"
+                                    onClick={() => setConfirmDeleteExercises({ 
+                                      open: true, 
+                                      selectedExercises: selectedExercisesByChapter[item.SPIID] || [], 
+                                      spiid: item.SPIID,
+                                      plan: detailPlan 
+                                    })}
+                                  >
+                                    Xóa {(selectedExercisesByChapter[item.SPIID] || []).length} bài tập
+                                  </Button>
+                                )}
+                                <Button
+                                  size="small"
+                                  variant="contained"
+                                  startIcon={<AddCircleIcon />}
+                                  onClick={() => handleAddExerciseClick(item.SPIID)}
+                                >
+                                  Thêm bài tập
+                                </Button>
+                              </Box>
+                            </Box>
+
+                            {item.exercise.length === 0 ? (
+                              <Box sx={{ 
+                                textAlign: 'center', 
+                                py: 3,
+                                bgcolor: 'grey.50',
+                                borderRadius: 1
+                              }}>
+                                <Typography color="text.secondary">
+                                  Chưa có bài tập nào trong chương này.
+                                </Typography>
+                              </Box>
+                            ) : (
+                              <Box>
+                                {/* Checkbox chọn tất cả bài tập */}
+                                <Box sx={{ mb: 2 }}>
+                                  <FormControlLabel
+                                    control={
+                                      <Checkbox
+                                        checked={(selectedExercisesByChapter[item.SPIID] || []).length === item.exercise.length && item.exercise.length > 0}
+                                        indeterminate={(selectedExercisesByChapter[item.SPIID] || []).length > 0 && (selectedExercisesByChapter[item.SPIID] || []).length < item.exercise.length}
+                                        onChange={() => handleSelectAllExercises(item.exercise, item.SPIID)}
+                                        size="small"
+                                      />
+                                    }
+                                    label={
+                                      <Typography variant="body2" fontWeight={500}>
+                                        Chọn tất cả bài tập ({(selectedExercisesByChapter[item.SPIID] || []).length}/{item.exercise.length})
+                                      </Typography>
+                                    }
                                   />
-                                  <span>{ex.Name} (ID: {ex.EID})</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </>
-                        )}
-                      </Box>
-                    ))
+                                </Box>
+
+                                {/* Danh sách bài tập */}
+                                <Box sx={{ 
+                                  display: 'flex', 
+                                  flexDirection: 'column', 
+                                  gap: 1,
+                                  maxHeight: 300,
+                                  overflow: 'auto',
+                                  p: 1,
+                                  bgcolor: 'background.paper',
+                                  borderRadius: 1,
+                                  border: '1px solid',
+                                  borderColor: 'divider'
+                                }}>
+                                  {item.exercise.map((ex, exIndex) => (
+                                    <Box 
+                                      key={ex.EID} 
+                                      sx={{ 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        gap: 2, 
+                                        p: 1.5,
+                                        borderRadius: 1,
+                                        bgcolor: (selectedExercisesByChapter[item.SPIID] || []).includes(ex.EID) ? 'primary.50' : 'transparent',
+                                        border: '1px solid',
+                                        borderColor: (selectedExercisesByChapter[item.SPIID] || []).includes(ex.EID) ? 'primary.main' : 'transparent',
+                                        transition: 'all 0.2s ease-in-out'
+                                      }}
+                                    >
+                                      <Checkbox
+                                        checked={(selectedExercisesByChapter[item.SPIID] || []).includes(ex.EID)}
+                                        onChange={() => handleExerciseSelect(ex.EID, item.SPIID)}
+                                        size="small"
+                                        color="primary"
+                                      />
+                                      <Box sx={{ flex: 1 }}>
+                                        <Typography variant="body2" fontWeight={500}>
+                                          {exIndex + 1}. {ex.Name}
+                                        </Typography>
+                                        <Typography variant="caption" color="text.secondary">
+                                          ID: {ex.EID}
+                                        </Typography>
+                                      </Box>
+                                    </Box>
+                                  ))}
+                                </Box>
+                              </Box>
+                            )}
+                          </Box>
+                        </Paper>
+                      ))}
+                    </Box>
                   )}
-                  <Box sx={{ display: "flex", gap: 2, mt: 4, justifyContent: "flex-end" }}>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() => handleDeleteClick(detailPlan)}
-                    >
-                      Xóa
-                    </Button>
-                  </Box>
                 </Paper>
                 {/* Dialog thêm chương học */}
                 <Dialog open={addItemDialogOpen} onClose={() => setAddItemDialogOpen(false)}>

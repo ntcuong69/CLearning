@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Typography, Paper, IconButton, Tooltip, Collapse } from "@mui/material";
 import { TaskAlt, Favorite, FavoriteBorder, Pending, ExpandMore, ExpandLess } from "@mui/icons-material";
 import ExerciseStatusBadge from "./ExerciseStatusBadge";
+import ReactMarkdown from 'react-markdown';
 
 export default function ExerciseDescription({ exercise, testcases, onExerciseUpdate }: any) {
   const [isLiked, setIsLiked] = useState(exercise.isLiked || false);
@@ -149,9 +150,9 @@ export default function ExerciseDescription({ exercise, testcases, onExerciseUpd
         </Box>
       </Box>
       
-      <Typography variant="body1" sx={{ whiteSpace: "pre-line", wordBreak: "break-word", overflowWrap: "break-word", textAlign: "justify", textIndent: "2em" }}>
-        {exercise.Content}
-      </Typography>
+      <div style={{ textAlign: "justify", wordBreak: "break-word" }}>
+        <ReactMarkdown>{exercise.Content}</ReactMarkdown>
+      </div>
 
       {/* Ảnh mô tả nếu có */}
       {exercise.Image && (

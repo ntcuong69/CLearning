@@ -480,7 +480,7 @@ const StudyPlanDetailPage = () => {
                       color: '#6c757d',
                       fontWeight: 500
                     }}>
-                      Đã hoàn thành
+                      Chương đã hoàn thành
                     </Typography>
                   </Box>
                 </Box>

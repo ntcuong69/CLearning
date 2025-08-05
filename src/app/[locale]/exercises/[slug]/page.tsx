@@ -284,7 +284,7 @@ export default function ExerciseDetailPage() {
       <Box sx={{ display: "flex", height: "calc(100vh - 64px)", py: 1, px: 2, gap: 1 }}>
         {/* Left: Tabs panel */}
         <ResizableBox
-          width={420}
+          width={500}
           height={Infinity}
           axis="x"
           resizeHandles={["e"]}

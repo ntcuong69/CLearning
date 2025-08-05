@@ -687,24 +687,80 @@ export default function ExerciseManagement() {
                         selectedExercise.testcases.map((tc: any) =>
                           editingTestcase && editingTestcase.TCID === tc.TCID ? (
                             <TableRow key={tc.TCID}>
-                              <TableCell>
-                                <TextField size="small" value={editingTestcaseInput} onChange={e => setEditingTestcaseInput(e.target.value)} multiline minRows={1} fullWidth />
-                              </TableCell>
-                              <TableCell>
-                                <TextField size="small" value={editingTestcaseOutput} onChange={e => setEditingTestcaseOutput(e.target.value)} multiline minRows={1} fullWidth />
-                              </TableCell>
-                              <TableCell>
-                                <FormControl size="small" fullWidth>
-                                  <InputLabel>Ẩn?</InputLabel>
-                                  <Select label="Ẩn?" value={editingTestcaseHidden ? 1 : 0} onChange={e => setEditingTestcaseHidden(Boolean(Number(e.target.value)))}>
-                                    <MenuItem value={0}>Hiện</MenuItem>
-                                    <MenuItem value={1}>Ẩn</MenuItem>
-                                  </Select>
-                                </FormControl>
-                              </TableCell>
-                              <TableCell align="center">
-                                <Button color="primary" variant="contained" size="small" onClick={handleSaveEditTestcase} disabled={testcaseSubmitting} sx={{ mr: 1 }}>Lưu</Button>
-                                <Button color="secondary" variant="outlined" size="small" onClick={handleCancelEditTestcase}>Hủy</Button>
+                              <TableCell colSpan={4}>
+                                <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1, border: 1, borderColor: 'primary.200' }}>
+                                  <Typography variant="subtitle2" fontWeight="bold" color="primary" mb={2}>
+                                    Chỉnh sửa testcase
+                                  </Typography>
+                                  <Stack spacing={2}>
+                                    <Box>
+                                      <Typography variant="body2" fontWeight="bold" mb={1}>
+                                        Input:
+                                      </Typography>
+                                      <TextField 
+                                        size="small" 
+                                        value={editingTestcaseInput} 
+                                        onChange={e => setEditingTestcaseInput(e.target.value)} 
+                                        multiline 
+                                        minRows={2}
+                                        maxRows={4}
+                                        fullWidth 
+                                        sx={{ bgcolor: 'white' }}
+                                      />
+                                    </Box>
+                                    <Box>
+                                      <Typography variant="body2" fontWeight="bold" mb={1}>
+                                        Expected Output:
+                                      </Typography>
+                                      <TextField 
+                                        size="small" 
+                                        value={editingTestcaseOutput} 
+                                        onChange={e => setEditingTestcaseOutput(e.target.value)} 
+                                        multiline 
+                                        minRows={2}
+                                        maxRows={4}
+                                        fullWidth 
+                                        sx={{ bgcolor: 'white' }}
+                                      />
+                                    </Box>
+                                    <Box>
+                                      <Typography variant="body2" fontWeight="bold" mb={1}>
+                                        Trạng thái:
+                                      </Typography>
+                                      <FormControl size="small" sx={{ minWidth: 120 }}>
+                                        <InputLabel>Ẩn?</InputLabel>
+                                        <Select 
+                                          label="Ẩn?" 
+                                          value={editingTestcaseHidden ? 1 : 0} 
+                                          onChange={e => setEditingTestcaseHidden(Boolean(Number(e.target.value)))}
+                                          sx={{ bgcolor: 'white' }}
+                                        >
+                                          <MenuItem value={0}>Hiện</MenuItem>
+                                          <MenuItem value={1}>Ẩn</MenuItem>
+                                        </Select>
+                                      </FormControl>
+                                    </Box>
+                                    <Box display="flex" gap={1} justifyContent="flex-end">
+                                      <Button 
+                                        color="primary" 
+                                        variant="contained" 
+                                        size="small" 
+                                        onClick={handleSaveEditTestcase} 
+                                        disabled={testcaseSubmitting}
+                                      >
+                                        Lưu
+                                      </Button>
+                                      <Button 
+                                        color="secondary" 
+                                        variant="outlined" 
+                                        size="small" 
+                                        onClick={handleCancelEditTestcase}
+                                      >
+                                        Hủy
+                                      </Button>
+                                    </Box>
+                                  </Stack>
+                                </Box>
                               </TableCell>
                             </TableRow>
                           ) : (

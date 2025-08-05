@@ -51,6 +51,14 @@ export default function Sidebar() {
   const pathname = usePathname();
   const normalizedPathname = pathname.replace(/^\/[a-z]{2}\//, "/");
 
+  // Hàm kiểm tra xem pathname có match với href không (bao gồm cả trang con)
+  const isPathActive = (href: string, currentPath: string) => {
+    if (href === "/home") {
+      return currentPath === "/home";
+    }
+    return currentPath.startsWith(href);
+  };
+
   // Lấy role từ API /api/me
   const [role, setRole] = useState<string | null>(null);
   useEffect(() => {
@@ -85,65 +93,68 @@ export default function Sidebar() {
       {/* Navigation Menu */}
       <Box sx={{ flex: 1, overflow: "auto", py: 2 }}>
         <List sx={{ px: 2 }}>
-          {menuItems.map((item) => (
-            <Tooltip 
-              key={item.text} 
-              title={item.description}
-              placement="right"
-              arrow
-              sx={{
-                "& .MuiTooltip-tooltip": {
-                  bgcolor: "#2C5AA0",
-                  color: "#ffffff",
-                  fontSize: "0.75rem",
-                  fontWeight: 500,
-                  borderRadius: "8px",
-                  boxShadow: "0 4px 12px rgba(44, 90, 160, 0.25)"
-                }
-              }}
-            >
-              <ListItemButton
-                component={Link}
-                href={item.href}
-                selected={normalizedPathname === item.href}
+          {menuItems.map((item) => {
+            const isActive = isPathActive(item.href, normalizedPathname);
+            return (
+              <Tooltip 
+                key={item.text} 
+                title={item.description}
+                placement="right"
+                arrow
                 sx={{
-                  borderRadius: "12px",
-                  mb: 0.5,
-                  color: "#2D3748",
-                  "& .MuiListItemIcon-root": {
-                    color: normalizedPathname === item.href ? "#2C5AA0" : "#718096",
-                    minWidth: 44,
-                    fontSize: "1.25rem",
-                  },
-                  "& .MuiListItemText-primary": {
-                    fontWeight: normalizedPathname === item.href ? 600 : 400,
-                    fontSize: "0.9rem",
-                    color: normalizedPathname === item.href ? "#1A202C" : "#000000",
-                  },
-                  "&.Mui-selected": {
-                    backgroundColor: "#E8F4FF",
-                    color: "#1A202C",
-                    border: "1px solid #B8D4F0",
-                    "&:hover": {
-                      backgroundColor: "#D8ECFF",
-                    },
-                  },
-                  "&:hover": {
-                    backgroundColor: "#F0F8FF",
-                    color: "#1A202C",
-                    transform: "translateX(4px)",
-                  },
-                  transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
-                  position: "relative",
+                  "& .MuiTooltip-tooltip": {
+                    bgcolor: "#2C5AA0",
+                    color: "#ffffff",
+                    fontSize: "0.75rem",
+                    fontWeight: 500,
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 12px rgba(44, 90, 160, 0.25)"
+                  }
                 }}
               >
-                <ListItemIcon>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </Tooltip>
-          ))}
+                <ListItemButton
+                  component={Link}
+                  href={item.href}
+                  selected={isActive}
+                  sx={{
+                    borderRadius: "12px",
+                    mb: 0.5,
+                    color: "#2D3748",
+                    "& .MuiListItemIcon-root": {
+                      color: isActive ? "#2C5AA0" : "#718096",
+                      minWidth: 44,
+                      fontSize: "1.25rem",
+                    },
+                    "& .MuiListItemText-primary": {
+                      fontWeight: isActive ? 600 : 400,
+                      fontSize: "0.9rem",
+                      color: isActive ? "#1A202C" : "#000000",
+                    },
+                    "&.Mui-selected": {
+                      backgroundColor: "#E8F4FF",
+                      color: "#1A202C",
+                      border: "1px solid #B8D4F0",
+                      "&:hover": {
+                        backgroundColor: "#D8ECFF",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "#F0F8FF",
+                      color: "#1A202C",
+                      transform: "translateX(4px)",
+                    },
+                    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+                    position: "relative",
+                  }}
+                >
+                  <ListItemIcon>
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </Tooltip>
+            );
+          })}
           {/* Tab Admin dưới cùng nếu là Admin */}
           {role === 'Admin' && (
             <Tooltip 
@@ -165,19 +176,19 @@ export default function Sidebar() {
               <ListItemButton
                 component={Link}
                 href="/admin"
-                selected={normalizedPathname === "/admin"}
+                selected={isPathActive("/admin", normalizedPathname)}
                 sx={{
                   borderRadius: "12px",
                   color: "#2D3748",
                   "& .MuiListItemIcon-root": {
-                    color: normalizedPathname === "/admin" ? "#2C5AA0" : "#718096",
+                    color: isPathActive("/admin", normalizedPathname) ? "#2C5AA0" : "#718096",
                     minWidth: 44,
                     fontSize: "1.25rem",
                   },
                   "& .MuiListItemText-primary": {
-                    fontWeight: normalizedPathname === "/admin" ? 600 : 400,
+                    fontWeight: isPathActive("/admin", normalizedPathname) ? 600 : 400,
                     fontSize: "0.9rem",
-                    color: normalizedPathname === "/admin" ? "#1A202C" : "#000000",
+                    color: isPathActive("/admin", normalizedPathname) ? "#1A202C" : "#000000",
                   },
                   "&.Mui-selected": {
                     backgroundColor: "#E8F4FF",
