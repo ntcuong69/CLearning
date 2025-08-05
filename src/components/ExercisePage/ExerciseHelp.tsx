@@ -168,17 +168,97 @@ export default function ExerciseHelp({ results = [], testcases = [], code = "" }
             </Box>
 
             <Box>
-              <Typography variant="subtitle2" color="text.secondary" mb={1}>
+              <Typography variant="subtitle2" color="text.secondary" mb={2}>
                 Chi tiết lỗi:
               </Typography>
               {uniqueErrors.map((error, index) => (
-                <Box key={index} mb={2} p={2} border={1} borderColor="divider" borderRadius={1}>
-                  <Typography variant="body2" fontWeight="bold" mb={1}>
+                <Box key={index} mb={3} p={3} border={1} borderColor="divider" borderRadius={2} sx={{ backgroundColor: 'background.paper' }}>
+                  <Typography variant="body1" fontWeight="bold" mb={2} color="error">
                     {uniqueErrors.length > 1 ? `Lỗi ${index + 1}:` : 'Lỗi:'}
                   </Typography>
-                  <Typography variant="body2" color="error" mb={1}>
-                    <strong>Thông báo lỗi:</strong> {error.errorMessage}
-                  </Typography>
+                  
+                    <Typography 
+                      variant="body2" 
+                      color="error" 
+                      sx={{ 
+                        whiteSpace: 'pre-wrap',
+                        fontFamily: 'monospace',
+                        backgroundColor: 'error.50',
+                        p: 1.5,
+                        mb: 2,
+                        borderRadius: 1,
+                        border: 1,
+                        borderColor: 'error.200'
+                      }}
+                    >
+                      {error.errorMessage}
+                    </Typography>
+
+                  {error.input && (
+                    <Box mb={2}>
+                      <Typography variant="body2" fontWeight="bold" mb={1} color="text.primary">
+                        Input:
+                      </Typography>
+                      <Typography 
+                        variant="body2" 
+                        sx={{ 
+                          whiteSpace: 'pre-line',
+                          fontFamily: 'monospace',
+                          backgroundColor: 'grey.50',
+                          p: 1.5,
+                          borderRadius: 1,
+                          border: 1,
+                          borderColor: 'grey.300'
+                        }}
+                      >
+                        {error.input}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {error.expectedOutput && (
+                    <Box mb={2}>
+                      <Typography variant="body2" fontWeight="bold" mb={1} color="text.primary">
+                        Expected Output:
+                      </Typography>
+                      <Typography 
+                        variant="body2" 
+                        sx={{ 
+                          whiteSpace: 'pre-line',
+                          fontFamily: 'monospace',
+                          backgroundColor: 'success.50',
+                          p: 1.5,
+                          borderRadius: 1,
+                          border: 1,
+                          borderColor: 'success.200'
+                        }}
+                      >
+                        {error.expectedOutput}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {error.actualOutput && error.actualOutput !== error.errorMessage && (
+                    <Box>
+                      <Typography variant="body2" fontWeight="bold" mb={1} color="text.primary">
+                        Actual Output:
+                      </Typography>
+                      <Typography 
+                        variant="body2" 
+                        sx={{ 
+                          whiteSpace: 'pre-line',
+                          fontFamily: 'monospace',
+                          backgroundColor: 'warning.50',
+                          p: 1.5,
+                          borderRadius: 1,
+                          border: 1,
+                          borderColor: 'warning.200'
+                        }}
+                      >
+                        {error.actualOutput}
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
               ))}
 
@@ -187,7 +267,7 @@ export default function ExerciseHelp({ results = [], testcases = [], code = "" }
               {/* AI Help Section */}
               <Box>
                 <Typography variant="subtitle1" fontWeight="bold" mb={2}>
-                  🤖 Hỗ trợ AI
+                  Hỗ trợ AI
                 </Typography>
                 
                 {!aiExplanation && !loading && (
@@ -228,7 +308,7 @@ export default function ExerciseHelp({ results = [], testcases = [], code = "" }
                       {aiExplanation.result && (
                         <Box>
                           <Typography variant="subtitle2" fontWeight="bold" color="primary" mb={1}>
-                            🤖 Phân tích từ AI:
+                            Phân tích từ AI:
                           </Typography>
                           <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
                             {aiExplanation.result}
