@@ -1,30 +1,46 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import NavBar from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import { Box, Tabs, Tab, Typography, Paper } from "@mui/material";
-import TopicManagement from "./TopicManagement";
-import ExerciseManagement from "./ExerciseManagement";
-import StudyplanManagement from "./StudyplanManagement";
-
-function TabPanel(props: { children?: React.ReactNode; value: number; index: number }) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`admin-tabpanel-${index}`}
-      aria-labelledby={`admin-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-}
+import { 
+  Box, 
+  Typography, 
+  Paper, 
+  Card, 
+  CardContent, 
+  CardActionArea,
+  CardActions,
+  Button
+} from "@mui/material";
+import TopicIcon from "@mui/icons-material/Topic";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import BookIcon from "@mui/icons-material/Book";
+import Link from "next/link";
 
 export default function AdminPage() {
-  const [tab, setTab] = useState(0);
-  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => setTab(newValue);
+  const adminCards = [
+    {
+      title: "Quản lý chủ đề",
+      description: "Quản lý các chủ đề học tập và nội dung bài giảng",
+      icon: <TopicIcon sx={{ fontSize: 48, color: "#2C5AA0" }} />,
+      href: "/admin/topics",
+      color: "#E8F4FF"
+    },
+    {
+      title: "Quản lý bài tập",
+      description: "Quản lý các bài tập lập trình và test cases",
+      icon: <AssignmentIcon sx={{ fontSize: 48, color: "#2C5AA0" }} />,
+      href: "/admin/exercises",
+      color: "#F0F8FF"
+    },
+    {
+      title: "Quản lý khóa học",
+      description: "Quản lý các khóa học và lộ trình học tập",
+      icon: <BookIcon sx={{ fontSize: 48, color: "#2C5AA0" }} />,
+      href: "/admin/studyplans",
+      color: "#E8F4FF"
+    }
+  ];
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", pt: "70px" }}>
@@ -41,22 +57,86 @@ export default function AdminPage() {
           maxWidth: 1200,
         }}
       >
-        <Paper sx={{ mb: 4 }}>
-          <Tabs value={tab} onChange={handleTabChange} aria-label="admin tabs">
-            <Tab label="Quản lý chủ đề" id="admin-tab-0" aria-controls="admin-tabpanel-0" />
-            <Tab label="Quản lý bài tập" id="admin-tab-1" aria-controls="admin-tabpanel-1" />
-            <Tab label="Quản lý khóa học" id="admin-tab-2" aria-controls="admin-tabpanel-2" />
-          </Tabs>
+        <Paper sx={{ mb: 4, p: 3 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Quản trị hệ thống
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Chào mừng đến với trang quản trị. Vui lòng chọn chức năng bạn muốn quản lý.
+          </Typography>
         </Paper>
-        <TabPanel value={tab} index={0}>
-          <TopicManagement />
-        </TabPanel>
-        <TabPanel value={tab} index={1}>
-          <ExerciseManagement />
-        </TabPanel>
-        <TabPanel value={tab} index={2}>
-          <StudyplanManagement />
-        </TabPanel>
+
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: 3 }}>
+          {adminCards.map((card, index) => (
+            <Card 
+              key={index}
+              sx={{ 
+                height: '100%',
+                transition: 'all 0.3s ease-in-out',
+                '&:hover': {
+                  transform: 'translateY(-8px)',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.15)',
+                }
+              }}
+            >
+              <CardActionArea 
+                component={Link}
+                href={card.href}
+                sx={{ 
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'stretch'
+                }}
+              >
+                <CardContent 
+                  sx={{ 
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    p: 4,
+                    backgroundColor: card.color
+                  }}
+                >
+                  <Box sx={{ mb: 2 }}>
+                    {card.icon}
+                  </Box>
+                  <Typography 
+                    variant="h6" 
+                    component="h2" 
+                    gutterBottom
+                    sx={{ fontWeight: 600, color: '#1A202C' }}
+                  >
+                    {card.title}
+                  </Typography>
+                  <Typography 
+                    variant="body2" 
+                    color="text.secondary"
+                    sx={{ mb: 2 }}
+                  >
+                    {card.description}
+                  </Typography>
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'center', pb: 2 }}>
+                  <Button 
+                    variant="contained" 
+                    size="small"
+                    sx={{ 
+                      backgroundColor: '#2C5AA0',
+                      '&:hover': {
+                        backgroundColor: '#1E3A8A'
+                      }
+                    }}
+                  >
+                    Truy cập
+                  </Button>
+                </CardActions>
+              </CardActionArea>
+            </Card>
+          ))}
+        </Box>
       </Box>
     </Box>
   );

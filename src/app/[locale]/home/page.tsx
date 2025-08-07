@@ -353,7 +353,7 @@ export default function HomePage() {
                   </Box>
                 </Stack>
               </Box>
-              <Box>
+              {/* <Box>
                 <Typography variant="subtitle2" color="text.secondary" mb={1}>Chủ đề mạnh nhất</Typography>
                 <Card sx={{ bgcolor: '#e0f2fe', p: 2, borderRadius: 2, boxShadow: 'none' }}>
                   <Typography variant="body1" sx={{ color: '#2563eb', fontWeight: 700 }}>Mảng một chiều</Typography>
@@ -366,7 +366,7 @@ export default function HomePage() {
                   <Typography variant="body1" sx={{ color: '#ef4444', fontWeight: 700 }}>Con trỏ & bộ nhớ</Typography>
                   <Typography variant="body2" color="text.secondary">Hoàn thành 40%, tỉ lệ đúng 55%</Typography>
                 </Card>
-              </Box>
+              </Box> */}
             </Stack>
           </CardContent>
         </Card>
@@ -466,89 +466,7 @@ export default function HomePage() {
               </Box>
             </CardContent>
           </Card>
-
-          {/* <Card sx={{
-            borderRadius: 4,
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
-            border: '1px solid #e2e8f0',
-            height: 'fit-content',
-            background: '#fff'
-          }}>
-            <Box sx={{
-              p: 3,
-              bgcolor: '#f3f4f6',
-              color: '#222'
-            }}>
-              <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-                Hoạt động gần đây
-              </Typography>
-              <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                Những bài tập bạn đã làm gần đây
-              </Typography>
-            </Box>
-            <CardContent sx={{ p: 2 }}>
-              <Stack spacing={2}>
-                {recentActivities.map((activity) => (
-                  <Box key={activity.id} sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 2,
-                    p: 2,
-                    borderRadius: 2,
-                    bgcolor: '#f8fafc',
-                    border: '1px solid #e2e8f0',
-                    transition: 'all 0.2s ease',
-                    '&:hover': {
-                      bgcolor: '#f1f5f9',
-                      transform: 'translateX(4px)'
-                    }
-                  }}>
-                    <Avatar sx={{
-                      width: 32,
-                      height: 32,
-                      bgcolor: activity.type === 'completed' ? '#4caf50' : 
-                              activity.type === 'started' ? '#ff9800' : '#9c27b0'
-                    }}>
-                      {activity.type === 'completed' ? <CheckCircleIcon sx={{ fontSize: 16 }} /> :
-                       activity.type === 'started' ? <PlayArrowIcon sx={{ fontSize: 16 }} /> :
-                       <BookmarkIcon sx={{ fontSize: 16 }} />}
-                    </Avatar>
-                    <Box sx={{ flex: 1, minWidth: 0 }}>
-                      <Typography variant="body2" sx={{ 
-                        fontWeight: 600, 
-                        fontSize: '13px',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                      }}>
-                        {activity.exerciseName}
-                      </Typography>
-                      <Typography variant="caption" sx={{ color: '#64748b', fontSize: '11px' }}>
-                        {activity.topic} • {activity.timestamp}
-                      </Typography>
-                      {activity.score && (
-                        <Chip 
-                          label={`${activity.score}%`} 
-                          size="small" 
-                          sx={{ 
-                            mt: 0.5,
-                            bgcolor: activity.score >= 90 ? '#4caf50' : 
-                                    activity.score >= 70 ? '#ff9800' : '#f44336',
-                            color: '#ffffff',
-                            fontSize: '10px',
-                            height: 20
-                          }} 
-                        />
-                      )}
-                    </Box>
-                  </Box>
-                ))}
-              </Stack>
-            </CardContent>
-          </Card> */}
         </Box>
-
-
       </Box>
     </Box>
   );
