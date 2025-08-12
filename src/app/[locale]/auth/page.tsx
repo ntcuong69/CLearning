@@ -265,13 +265,13 @@ export default function AuthPage() {
               )}
 
               {/* Link quên mật khẩu */}
-              {!isSignUp && (
+              {/* {!isSignUp && (
                 <Box className="flex items-center justify-center mt-4">
                   <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
                     {t("forgot_password")}
                   </Link>
                 </Box>
-              )}
+              )} */}
 
               {/* Nút submit */}
               <Box className="flex justify-center mt-8">

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useCallback, useRef, createRef } from "react";
+import React, { useState, useEffect, useRef, createRef } from "react";
 import NavBar from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import ExerciseStatusBadge from "@/components/ExercisePage/ExerciseStatusBadge";
@@ -26,6 +26,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  Pagination,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
@@ -48,9 +49,8 @@ const DIFFICULTY_OPTIONS = [
   { label: "Khó", value: "Hard" },
 ];
 
-// Đặt initialLoadCount và loadMoreCount ở ngoài component, không lặp lại trong component
-const initialLoadCount = 50;
-const loadMoreCount = 20;
+// Số bài tập hiển thị trên mỗi trang
+const ITEMS_PER_PAGE = 50;
 
 const ExercisesPage = () => {
   // State cho chủ đề, bài tập, loading
@@ -59,12 +59,8 @@ const ExercisesPage = () => {
   const [problems, setProblems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // State cho lazy loading
-  const [displayedProblems, setDisplayedProblems] = useState<any[]>([]);
+  // State cho pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const loadingRef = useRef<HTMLDivElement>(null);
 
   // State cho tìm kiếm và filter
   const [searchTerm, setSearchTerm] = useState("");
@@ -234,46 +230,27 @@ const ExercisesPage = () => {
   };
   const filteredProblems = getFilteredProblems();
 
-  // Cập nhật displayedProblems khi filter thay đổi
+  // Tính toán bài tập hiển thị cho trang hiện tại
+  const getCurrentPageProblems = () => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    return filteredProblems.slice(startIndex, endIndex);
+  };
+
+  // Tính tổng số trang
+  const totalPages = Math.ceil(filteredProblems.length / ITEMS_PER_PAGE);
+
+  // Reset về trang 1 khi filter thay đổi
   useEffect(() => {
     setCurrentPage(1);
-    setDisplayedProblems(filteredProblems.slice(0, initialLoadCount));
-    setHasMore(filteredProblems.length > initialLoadCount);
   }, [selectedTopic, problems, searchTerm, statusFilter, difficultyFilter]);
 
-  // Lazy load thêm bài tập khi scroll
-  const loadMore = useCallback(() => {
-    if (loadingMore || !hasMore) return;
-    setLoadingMore(true);
-    setTimeout(() => {
-      const nextPage = currentPage + 1;
-      const startIndex = (nextPage - 1) * loadMoreCount;
-      const endIndex = startIndex + loadMoreCount;
-      const newProblems = filteredProblems.slice(startIndex, endIndex);
-      setDisplayedProblems((prev) => [...prev, ...newProblems]);
-      setCurrentPage(nextPage);
-      setHasMore(endIndex < filteredProblems.length);
-      setLoadingMore(false);
-    }, 500); // Hiệu ứng loading
-  }, [currentPage, filteredProblems, loadingMore, hasMore]);
-
-  // Intersection Observer để detect scroll cuối trang
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loadingMore) {
-          loadMore();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    if (loadingRef.current) {
-      observer.observe(loadingRef.current);
-    }
-    return () => {
-      observer.disconnect();
-    };
-  }, [loadMore, hasMore, loadingMore]);
+  // Xử lý thay đổi trang
+  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    setCurrentPage(page);
+    // Scroll to top of the table
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Đếm số bài tập theo trạng thái
   const getStatusCounts = (problems: any[]) =>
@@ -352,16 +329,6 @@ const ExercisesPage = () => {
                       minWidth: 150,
                       position: "relative",
                       overflow: "hidden",
-                      // "&::before": {
-                      //   content: '""',
-                      //   position: "absolute",
-                      //   top: 0,
-                      //   left: 0,
-                      //   right: 0,
-                      //   height: "3px",
-                      //   background: `linear-gradient(90deg, #4caf50 ${progressPercentage}%, #e0e0e0 ${progressPercentage}%)`,
-                      //   borderRadius: "2px 2px 0 0",
-                      // },
                     }}
                   >
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -600,7 +567,7 @@ const ExercisesPage = () => {
                   strokeWidth={3}
                   fill="none"
                   strokeDasharray={2 * Math.PI * 16}
-                strokeDashoffset={2 * Math.PI * 16 * (1 - (problems.length === 0 ? 0 : statusCounts.solved / problems.length))}
+                  strokeDashoffset={2 * Math.PI * 16 * (1 - (problems.length === 0 ? 0 : statusCounts.solved / problems.length))}
                   style={{
                     transition: "stroke-dashoffset 0.8s ease-in-out",
                     transform: "rotate(-90deg)",
@@ -678,110 +645,108 @@ const ExercisesPage = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {displayedProblems
-                  .map((problem, idx) => {
-                    // Tạo ref cho mỗi TableCell nếu chưa có
-                    if (!cellRefs.current[problem.EID]) {
-                      cellRefs.current[problem.EID] = createRef<HTMLTableCellElement>();
-                    }
-                    return (
-                      <TableRow
-                        key={problem.EID}
-                        className="transition-colors duration-150 cursor-pointer"
-                        sx={{ backgroundColor: idx % 2 === 0 ? "#fff" : "#f9fafb", "&:hover": { backgroundColor: "#f1f5f9" } }}
+                {getCurrentPageProblems().map((problem, idx) => {
+                  // Tạo ref cho mỗi TableCell nếu chưa có
+                  if (!cellRefs.current[problem.EID]) {
+                    cellRefs.current[problem.EID] = createRef<HTMLTableCellElement>();
+                  }
+                  return (
+                    <TableRow
+                      key={problem.EID}
+                      className="transition-colors duration-150 cursor-pointer"
+                      sx={{ backgroundColor: idx % 2 === 0 ? "#fff" : "#f9fafb", "&:hover": { backgroundColor: "#f1f5f9" } }}
+                    >
+                      <TableCell align="center">
+                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
+                          <ExerciseStatusBadge status={problem.status || "Unattempted"} />
+                        </Box>
+                      </TableCell>
+                      <TableCell
+                        onClick={() => {
+                          const url = `/exercises/${problem.Slug}?source=all`;
+                          window.location.href = url;
+                        }}
+                        style={{ cursor: "pointer" }}
                       >
-                        <TableCell align="center">
-                          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
-                            <ExerciseStatusBadge status={problem.status || "Unattempted"} />
-                          </Box>
-                        </TableCell>
-                        <TableCell
-                          onClick={() => {
-                            const url = `/exercises/${problem.Slug}?source=all`;
-                            window.location.href = url;
-                          }}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <Box>
-                            <Typography variant="body2" className="font-medium text-gray-900 hover:text-blue-600">
-                              {problem.Name}
-                            </Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell align="center">
-                          <Typography
-                            variant="body2"
-                            className={`font-medium ${
-                              (problem.Difficulty || "") === "Easy"
-                                ? "text-green-500"
-                                : (problem.Difficulty || "") === "Medium"
-                                ? "text-yellow-500"
-                                : (problem.Difficulty || "") === "Hard"
-                                ? "text-red-500"
-                                : ""
-                            }`}
-                          >
-                            {problem.Difficulty === "Easy"
-                              ? "Dễ"
-                              : problem.Difficulty === "Medium"
-                              ? "Vừa"
-                              : problem.Difficulty === "Hard"
-                              ? "Khó"
-                              : problem.Difficulty}
+                        <Box>
+                          <Typography variant="body2" className="font-medium text-gray-900 hover:text-blue-600">
+                            {problem.Name}
                           </Typography>
-                        </TableCell>
-                        <TableCell align="center" ref={cellRefs.current[problem.EID]}>
-                          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            {savedEIDs.includes(problem.EID) ? (
-                              <BookmarkIcon sx={{ cursor: "pointer", color: "#FFD600" }} onClick={() => handleBookmarkClick(problem.EID)} />
-                            ) : (
-                              <BookmarkBorderIcon sx={{ cursor: "pointer", color: "#888" }} onClick={() => handleBookmarkClick(problem.EID)} />
-                            )}
-                          </Box>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                        </Box>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography
+                          variant="body2"
+                          className={`font-medium ${
+                            (problem.Difficulty || "") === "Easy"
+                              ? "text-green-500"
+                              : (problem.Difficulty || "") === "Medium"
+                              ? "text-yellow-500"
+                              : (problem.Difficulty || "") === "Hard"
+                              ? "text-red-500"
+                              : ""
+                          }`}
+                        >
+                          {problem.Difficulty === "Easy"
+                            ? "Dễ"
+                            : problem.Difficulty === "Medium"
+                            ? "Vừa"
+                            : problem.Difficulty === "Hard"
+                            ? "Khó"
+                            : problem.Difficulty}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center" ref={cellRefs.current[problem.EID]}>
+                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          {savedEIDs.includes(problem.EID) ? (
+                            <BookmarkIcon sx={{ cursor: "pointer", color: "#FFD600" }} onClick={() => handleBookmarkClick(problem.EID)} />
+                          ) : (
+                            <BookmarkBorderIcon sx={{ cursor: "pointer", color: "#888" }} onClick={() => handleBookmarkClick(problem.EID)} />
+                          )}
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>
         </Card>
 
-        {/* Loading indicator khi lazy load */}
-        {hasMore && (
-          <Box
-            ref={loadingRef}
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              py: 4,
-              mt: 2,
-            }}
-          >
-            {loadingMore ? (
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <CircularProgress size={24} />
-                <Typography variant="body2" color="text.secondary">
-                  Đang tải thêm bài tập...
-                </Typography>
-              </Box>
-            ) : (
-              <Typography variant="body2" color="text.secondary">
-                Cuộn xuống để xem thêm
-              </Typography>
-            )}
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={handlePageChange}
+              color="primary"
+              size="large"
+              showFirstButton
+              showLastButton
+              sx={{
+                "& .MuiPaginationItem-root": {
+                  borderRadius: 2,
+                  fontWeight: 600,
+                },
+                "& .Mui-selected": {
+                  backgroundColor: "#1976d2 !important",
+                  color: "#fff !important",
+                },
+              }}
+            />
           </Box>
         )}
 
-        {/* End message khi đã hiển thị hết */}
-        {!hasMore && displayedProblems.length > 0 && (
-          <Box sx={{ textAlign: "center", py: 4, mt: 2 }}>
+        {/* Thông tin về số bài tập hiển thị */}
+        {filteredProblems.length > 0 && (
+          <Box sx={{ textAlign: "center", py: 2, mt: 2 }}>
             <Typography variant="body2" color="text.secondary">
-              Đã hiển thị tất cả {filteredProblems.length} bài tập
+              Hiển thị {((currentPage - 1) * ITEMS_PER_PAGE) + 1} - {Math.min(currentPage * ITEMS_PER_PAGE, filteredProblems.length)} trong tổng số {filteredProblems.length} bài tập
             </Typography>
           </Box>
         )}
+
         {/* Popup đánh dấu */}
         <Menu
           anchorEl={bookmarkAnchorEl}

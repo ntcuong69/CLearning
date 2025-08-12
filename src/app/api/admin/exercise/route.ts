@@ -22,42 +22,97 @@ export async function GET() {
   }
 }
 
-// POST: Tạo mới bài tập và các testcase
+// POST: Tạo mới bài tập và các testcase (hỗ trợ tạo đơn lẻ hoặc hàng loạt)
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const {
-      TpID, Name, Slug, Content, Difficulty, template, Tips, Image, testcases
-    } = body;
-    // Tạo bài tập và các testcase trong transaction
-    const result = await prisma.$transaction(async (tx) => {
-      const exercise = await tx.exercise.create({
-        data: {
-          TpID: TpID ? Number(TpID) : null,
-          Name,
-          Slug,
-          Content,
-          Difficulty,
-          template,
-          Tips,
-          Image,
-        },
-      });
-      if (Array.isArray(testcases) && testcases.length > 0) {
-        await Promise.all(testcases.map(tc =>
-          tx.testcase.create({
+    
+    // Kiểm tra xem body có phải là mảng hay không
+    if (Array.isArray(body)) {
+      // Tạo nhiều bài tập cùng lúc
+      const result = await prisma.$transaction(async (tx) => {
+        const createdExercises = [];
+        
+        for (const exerciseData of body) {
+          const {
+            TpID, Name, Slug, Content, Difficulty, template, Tips, Image, testcases
+          } = exerciseData;
+          
+          const exercise = await tx.exercise.create({
             data: {
-              EID: exercise.EID,
-              Input: tc.Input,
-              ExpectedOutput: tc.ExpectedOutput,
-              isHidden: !!tc.isHidden,
+              TpID: TpID ? Number(TpID) : null,
+              Name,
+              Slug,
+              Content,
+              Difficulty,
+              template,
+              Tips,
+              Image,
             },
-          })
-        ));
-      }
-      return exercise;
-    });
-    return NextResponse.json({ success: true, exercise: result });
+          });
+          
+          if (Array.isArray(testcases) && testcases.length > 0) {
+            await Promise.all(testcases.map(tc =>
+              tx.testcase.create({
+                data: {
+                  EID: exercise.EID,
+                  Input: tc.Input,
+                  ExpectedOutput: tc.ExpectedOutput,
+                  isHidden: !!tc.isHidden,
+                },
+              })
+            ));
+          }
+          
+          createdExercises.push(exercise);
+        }
+        
+        return createdExercises;
+      });
+      
+      return NextResponse.json({ 
+        success: true, 
+        exercises: result,
+        message: `Đã tạo thành công ${result.length} bài tập`
+      });
+    } else {
+      // Tạo một bài tập đơn lẻ (giữ nguyên logic cũ)
+      const {
+        TpID, Name, Slug, Content, Difficulty, template, Tips, Image, testcases
+      } = body;
+      
+      const result = await prisma.$transaction(async (tx) => {
+        const exercise = await tx.exercise.create({
+          data: {
+            TpID: TpID ? Number(TpID) : null,
+            Name,
+            Slug,
+            Content,
+            Difficulty,
+            template,
+            Tips,
+            Image,
+          },
+        });
+        
+        if (Array.isArray(testcases) && testcases.length > 0) {
+          await Promise.all(testcases.map(tc =>
+            tx.testcase.create({
+              data: {
+                EID: exercise.EID,
+                Input: tc.Input,
+                ExpectedOutput: tc.ExpectedOutput,
+                isHidden: !!tc.isHidden,
+              },
+            })
+          ));
+        }
+        
+        return exercise;
+      });
+      
+      return NextResponse.json({ success: true, exercise: result });
+    }
   } catch (e) {
     return NextResponse.json({ error: "Lỗi tạo bài tập" }, { status: 500 });
   }
