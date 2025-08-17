@@ -97,7 +97,7 @@ export default function NavBar() {
         {/* Right Section - Theme Toggle, Locale Switcher, Notifications and User Profile */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           {/* Theme Toggle Button */}
-          <ThemeToggleButton />
+          {/* <ThemeToggleButton /> */}
 
           {/* Locale Switcher */}
           {/* <LocaleSwitcher /> */}

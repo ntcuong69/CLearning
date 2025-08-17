@@ -192,6 +192,682 @@ int main() {
     return 0;
 }`,
   },
+  {
+    id: "7",
+    title: "Tìm ước chung lớn nhất (GCD)",
+    description: "Chương trình tìm ước chung lớn nhất của hai số sử dụng thuật toán Euclidean",
+    language: "c",
+    code: `#include <stdio.h>
+
+int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+int main() {
+    int num1, num2;
+    
+    printf("Nhập số thứ nhất: ");
+    scanf("%d", &num1);
+    
+    printf("Nhập số thứ hai: ");
+    scanf("%d", &num2);
+    
+    int result = gcd(num1, num2);
+    printf("Ước chung lớn nhất của %d và %d là: %d\\n", num1, num2, result);
+    
+    return 0;
+}`,
+  },
+  {
+    id: "8",
+    title: "Kiểm tra số nguyên tố",
+    description: "Chương trình kiểm tra một số có phải là số nguyên tố hay không",
+    language: "c",
+    code: `#include <stdio.h>
+#include <stdbool.h>
+
+bool isPrime(int n) {
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
+    
+    for (int i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0)
+            return false;
+    }
+    return true;
+}
+
+int main() {
+    int number;
+    
+    printf("Nhập một số nguyên: ");
+    scanf("%d", &number);
+    
+    if (isPrime(number)) {
+        printf("%d là số nguyên tố\\n", number);
+    } else {
+        printf("%d không phải là số nguyên tố\\n", number);
+    }
+    
+    return 0;
+}`,
+  },
+  {
+    id: "9",
+    title: "Đảo ngược chuỗi",
+    description: "Chương trình đảo ngược một chuỗi ký tự",
+    language: "c",
+    code: `#include <stdio.h>
+#include <string.h>
+
+void reverseString(char str[]) {
+    int length = strlen(str);
+    int start = 0;
+    int end = length - 1;
+    
+    while (start < end) {
+        char temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+        start++;
+        end--;
+    }
+}
+
+int main() {
+    char str[100];
+    
+    printf("Nhập một chuỗi: ");
+    scanf("%s", str);
+    
+    printf("Chuỗi ban đầu: %s\\n", str);
+    
+    reverseString(str);
+    
+    printf("Chuỗi sau khi đảo ngược: %s\\n", str);
+    
+    return 0;
+}`,
+  },
+  {
+    id: "10",
+    title: "Tìm kiếm nhị phân",
+    description: "Thuật toán tìm kiếm nhị phân trong mảng đã sắp xếp",
+    language: "c",
+    code: `#include <stdio.h>
+
+int binarySearch(int arr[], int left, int right, int x) {
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        
+        if (arr[mid] == x)
+            return mid;
+        
+        if (arr[mid] < x)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return -1;
+}
+
+int main() {
+    int arr[] = {2, 3, 4, 10, 40, 50, 60, 70, 80, 90};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int x = 10;
+    
+    printf("Mảng: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\\n");
+    
+    int result = binarySearch(arr, 0, n - 1, x);
+    
+    if (result == -1) {
+        printf("Không tìm thấy %d trong mảng\\n", x);
+    } else {
+        printf("%d được tìm thấy tại vị trí %d\\n", x, result);
+    }
+    
+    return 0;
+}`,
+  },
+  {
+    id: "11",
+    title: "Cấu trúc Student",
+    description: "Ví dụ về sử dụng cấu trúc (struct) để quản lý thông tin sinh viên",
+    language: "c",
+    code: `#include <stdio.h>
+#include <string.h>
+
+struct Student {
+    char name[50];
+    int roll_no;
+    float marks;
+};
+
+void inputStudent(struct Student *s) {
+    printf("Nhập tên sinh viên: ");
+    scanf(" %[^\\n]s", s->name);
+    
+    printf("Nhập mã số sinh viên: ");
+    scanf("%d", &s->roll_no);
+    
+    printf("Nhập điểm: ");
+    scanf("%f", &s->marks);
+}
+
+void displayStudent(struct Student s) {
+    printf("\\nThông tin sinh viên:\\n");
+    printf("Tên: %s\\n", s.name);
+    printf("Mã số: %d\\n", s.roll_no);
+    printf("Điểm: %.2f\\n", s.marks);
+}
+
+int main() {
+    struct Student student;
+    
+    inputStudent(&student);
+    displayStudent(student);
+    
+    return 0;
+}`,
+  },
+  {
+    id: "12",
+    title: "Con trỏ và mảng",
+    description: "Ví dụ về sử dụng con trỏ để truy cập và thao tác với mảng",
+    language: "c",
+    code: `#include <stdio.h>
+
+void printArray(int *arr, int size) {
+    printf("Mảng: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", *(arr + i));
+    }
+    printf("\\n");
+}
+
+void modifyArray(int *arr, int size) {
+    for (int i = 0; i < size; i++) {
+        *(arr + i) *= 2;  // Nhân mỗi phần tử với 2
+    }
+}
+
+int main() {
+    int numbers[] = {1, 2, 3, 4, 5};
+    int size = sizeof(numbers) / sizeof(numbers[0]);
+    
+    printf("Trước khi sửa đổi:\\n");
+    printArray(numbers, size);
+    
+    modifyArray(numbers, size);
+    
+    printf("Sau khi sửa đổi:\\n");
+    printArray(numbers, size);
+    
+    return 0;
+}`,
+  },
+  {
+    id: "13",
+    title: "Đọc ghi file",
+    description: "Chương trình đọc và ghi dữ liệu vào file văn bản",
+    language: "c",
+    code: `#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    FILE *file;
+    char filename[] = "data.txt";
+    char content[100];
+    
+    // Ghi vào file
+    file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Không thể mở file để ghi\\n");
+        return 1;
+    }
+    
+    fprintf(file, "Hello World!\\n");
+    fprintf(file, "Đây là dòng thứ hai\\n");
+    fprintf(file, "Dòng cuối cùng\\n");
+    
+    fclose(file);
+    printf("Đã ghi dữ liệu vào file %s\\n", filename);
+    
+    // Đọc từ file
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Không thể mở file để đọc\\n");
+        return 1;
+    }
+    
+    printf("\\nNội dung file:\\n");
+    while (fgets(content, sizeof(content), file) != NULL) {
+        printf("%s", content);
+    }
+    
+    fclose(file);
+    return 0;
+}`,
+  },
+  {
+    id: "14",
+    title: "Sắp xếp nhanh (Quick Sort)",
+    description: "Thuật toán sắp xếp nhanh sử dụng đệ quy",
+    language: "c",
+    code: `#include <stdio.h>
+
+void swap(int* a, int* b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+    
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++)
+        printf("%d ", arr[i]);
+    printf("\\n");
+}
+
+int main() {
+    int arr[] = {10, 7, 8, 9, 1, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    
+    printf("Mảng ban đầu: ");
+    printArray(arr, n);
+    
+    quickSort(arr, 0, n - 1);
+    
+    printf("Mảng sau khi sắp xếp: ");
+    printArray(arr, n);
+    
+    return 0;
+}`,
+  },
+  {
+    id: "15",
+    title: "Danh sách liên kết đơn",
+    description: "Triển khai danh sách liên kết đơn với các thao tác cơ bản",
+    language: "c",
+    code: `#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+    
+    struct Node* current = *head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+    current->next = newNode;
+}
+
+void printList(struct Node* head) {
+    struct Node* current = head;
+    printf("Danh sách: ");
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    
+    insertAtEnd(&head, 10);
+    insertAtEnd(&head, 20);
+    insertAtEnd(&head, 30);
+    insertAtEnd(&head, 40);
+    
+    printList(head);
+    
+    return 0;
+}`,
+  },
+  {
+    id: "16",
+    title: "Tính tổng dãy số",
+    description: "Chương trình tính tổng của dãy số từ 1 đến n",
+    language: "c",
+    code: `#include <stdio.h>
+
+int sumSeries(int n) {
+    if (n <= 0) return 0;
+    return n + sumSeries(n - 1);
+}
+
+int main() {
+    int n;
+    
+    printf("Nhập số nguyên dương n: ");
+    scanf("%d", &n);
+    
+    if (n <= 0) {
+        printf("Vui lòng nhập số nguyên dương\\n");
+        return 1;
+    }
+    
+    int result = sumSeries(n);
+    printf("Tổng dãy số từ 1 đến %d là: %d\\n", n, result);
+    
+    // Công thức toán học: n*(n+1)/2
+    int formula = n * (n + 1) / 2;
+    printf("Kiểm tra bằng công thức: %d\\n", formula);
+    
+    return 0;
+}`,
+  },
+  {
+    id: "17",
+    title: "Chuyển đổi hệ số",
+    description: "Chương trình chuyển đổi số từ hệ thập phân sang hệ nhị phân",
+    language: "c",
+    code: `#include <stdio.h>
+
+void decimalToBinary(int decimal) {
+    if (decimal == 0) {
+        printf("0");
+        return;
+    }
+    
+    int binary[32];
+    int i = 0;
+    
+    while (decimal > 0) {
+        binary[i] = decimal % 2;
+        decimal = decimal / 2;
+        i++;
+    }
+    
+    printf("Số nhị phân: ");
+    for (int j = i - 1; j >= 0; j--) {
+        printf("%d", binary[j]);
+    }
+    printf("\\n");
+}
+
+int main() {
+    int decimal;
+    
+    printf("Nhập số thập phân: ");
+    scanf("%d", &decimal);
+    
+    if (decimal < 0) {
+        printf("Vui lòng nhập số không âm\\n");
+        return 1;
+    }
+    
+    decimalToBinary(decimal);
+    
+    return 0;
+}`,
+  },
+  {
+    id: "18",
+    title: "Ma trận và phép nhân",
+    description: "Chương trình nhân hai ma trận",
+    language: "c",
+    code: `#include <stdio.h>
+
+#define MAX_SIZE 10
+
+void inputMatrix(int matrix[][MAX_SIZE], int rows, int cols, char name) {
+    printf("Nhập ma trận %c:\\n", name);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("%c[%d][%d] = ", name, i, j);
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+}
+
+void printMatrix(int matrix[][MAX_SIZE], int rows, int cols) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf("%d\\t", matrix[i][j]);
+        }
+        printf("\\n");
+    }
+}
+
+void multiplyMatrices(int a[][MAX_SIZE], int b[][MAX_SIZE], 
+                     int result[][MAX_SIZE], int rowsA, int colsA, int colsB) {
+    for (int i = 0; i < rowsA; i++) {
+        for (int j = 0; j < colsB; j++) {
+            result[i][j] = 0;
+            for (int k = 0; k < colsA; k++) {
+                result[i][j] += a[i][k] * b[k][j];
+            }
+        }
+    }
+}
+
+int main() {
+    int a[MAX_SIZE][MAX_SIZE], b[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
+    int rowsA, colsA, rowsB, colsB;
+    
+    printf("Nhập số hàng ma trận A: ");
+    scanf("%d", &rowsA);
+    printf("Nhập số cột ma trận A: ");
+    scanf("%d", &colsA);
+    
+    printf("Nhập số hàng ma trận B: ");
+    scanf("%d", &rowsB);
+    printf("Nhập số cột ma trận B: ");
+    scanf("%d", &colsB);
+    
+    if (colsA != rowsB) {
+        printf("Không thể nhân hai ma trận này\\n");
+        return 1;
+    }
+    
+    inputMatrix(a, rowsA, colsA, 'A');
+    inputMatrix(b, rowsB, colsB, 'B');
+    
+    printf("\\nMa trận A:\\n");
+    printMatrix(a, rowsA, colsA);
+    
+    printf("\\nMa trận B:\\n");
+    printMatrix(b, rowsB, colsB);
+    
+    multiplyMatrices(a, b, result, rowsA, colsA, colsB);
+    
+    printf("\\nKết quả nhân ma trận:\\n");
+    printMatrix(result, rowsA, colsB);
+    
+    return 0;
+}`,
+  },
+  {
+    id: "19",
+    title: "Xử lý chuỗi nâng cao",
+    description: "Các hàm xử lý chuỗi tự viết",
+    language: "c",
+    code: `#include <stdio.h>
+#include <string.h>
+
+int stringLength(const char* str) {
+    int length = 0;
+    while (str[length] != '\\0') {
+        length++;
+    }
+    return length;
+}
+
+void stringCopy(char* dest, const char* src) {
+    int i = 0;
+    while (src[i] != '\\0') {
+        dest[i] = src[i];
+        i++;
+    }
+    dest[i] = '\\0';
+}
+
+int stringCompare(const char* str1, const char* str2) {
+    int i = 0;
+    while (str1[i] != '\\0' && str2[i] != '\\0') {
+        if (str1[i] != str2[i]) {
+            return str1[i] - str2[i];
+        }
+        i++;
+    }
+    return str1[i] - str2[i];
+}
+
+void stringConcatenate(char* dest, const char* src) {
+    int destLen = stringLength(dest);
+    int i = 0;
+    while (src[i] != '\\0') {
+        dest[destLen + i] = src[i];
+        i++;
+    }
+    dest[destLen + i] = '\\0';
+}
+
+int main() {
+    char str1[100] = "Hello";
+    char str2[100] = "World";
+    char str3[100];
+    
+    printf("Chuỗi 1: %s\\n", str1);
+    printf("Chuỗi 2: %s\\n", str2);
+    printf("Độ dài chuỗi 1: %d\\n", stringLength(str1));
+    
+    stringCopy(str3, str1);
+    printf("Sao chép chuỗi 1 vào chuỗi 3: %s\\n", str3);
+    
+    stringConcatenate(str1, " ");
+    stringConcatenate(str1, str2);
+    printf("Nối chuỗi: %s\\n", str1);
+    
+    int result = stringCompare("Hello", "Hello");
+    printf("So sánh 'Hello' với 'Hello': %d\\n", result);
+    
+    return 0;
+}`,
+  },
+  {
+    id: "20",
+    title: "Quản lý bộ nhớ động",
+    description: "Ví dụ về cấp phát và giải phóng bộ nhớ động",
+    language: "c",
+    code: `#include <stdio.h>
+#include <stdlib.h>
+
+int* createDynamicArray(int size) {
+    int* arr = (int*)malloc(size * sizeof(int));
+    if (arr == NULL) {
+        printf("Không thể cấp phát bộ nhớ\\n");
+        exit(1);
+    }
+    return arr;
+}
+
+void inputArray(int* arr, int size) {
+    printf("Nhập %d phần tử:\\n", size);
+    for (int i = 0; i < size; i++) {
+        printf("Phần tử %d: ", i + 1);
+        scanf("%d", &arr[i]);
+    }
+}
+
+void printArray(int* arr, int size) {
+    printf("Mảng: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\\n");
+}
+
+int* resizeArray(int* arr, int oldSize, int newSize) {
+    int* newArr = (int*)realloc(arr, newSize * sizeof(int));
+    if (newArr == NULL) {
+        printf("Không thể thay đổi kích thước mảng\\n");
+        return arr;
+    }
+    return newArr;
+}
+
+int main() {
+    int size;
+    printf("Nhập kích thước mảng: ");
+    scanf("%d", &size);
+    
+    // Cấp phát bộ nhớ
+    int* dynamicArray = createDynamicArray(size);
+    
+    // Nhập dữ liệu
+    inputArray(dynamicArray, size);
+    printArray(dynamicArray, size);
+    
+    // Thay đổi kích thước mảng
+    int newSize = size + 2;
+    dynamicArray = resizeArray(dynamicArray, size, newSize);
+    
+    printf("\\nNhập thêm 2 phần tử:\\n");
+    for (int i = size; i < newSize; i++) {
+        printf("Phần tử %d: ", i + 1);
+        scanf("%d", &dynamicArray[i]);
+    }
+    
+    printArray(dynamicArray, newSize);
+    
+    // Giải phóng bộ nhớ
+    free(dynamicArray);
+    printf("\\nĐã giải phóng bộ nhớ\\n");
+    
+    return 0;
+}`,
+  },
 ];
 
 

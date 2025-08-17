@@ -21,14 +21,7 @@ export default function ExercisesPage() {
           maxWidth: 1200,
         }}
       >
-        <Paper sx={{ mb: 4, p: 3 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            Quản lý bài tập
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-            Quản lý các bài tập lập trình và test cases
-          </Typography>
-        </Paper>
+        
         <ExerciseManagement />
       </Box>
     </Box>
